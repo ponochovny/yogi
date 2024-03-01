@@ -7,4 +7,17 @@ export default defineNuxtConfig({
 		jwtAccessSecret: process.env.JWT_ACCESS_TOKEN_SECRET,
 		jwtRefreshSecret: process.env.JWT_REFRESH_TOKEN_SECRET,
 	},
+
+	app: {
+		head: {
+			link: [
+				{
+					hid: 'icon',
+					rel: 'icon',
+					type: 'image/x-icon',
+					href: '/logoBg.svg',
+				},
+			],
+		},
+	},
 })
