@@ -30,7 +30,17 @@
 			</template>
 
 			<template v-else>
-				{{ user?.email }}
+				<div class="flex items-center gap-2">
+					<img
+						:src="user.profileImage || ''"
+						:alt="user.name || ''"
+						width="36"
+						class="rounded-full"
+					/>
+					<span class="font-semibold">
+						{{ user?.email }}
+					</span>
+				</div>
 			</template>
 		</div>
 	</div>
