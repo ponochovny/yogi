@@ -1,14 +1,14 @@
 <template>
 	<div :class="{ dark: darkMode, 'bg-[#FEF3E4] min-h-screen': true }">
 		<Transition>
-			<LoadingPage v-if="isAuthLoading" />
+			<LoadingPage v-if="isAuthInitLoading" />
 		</Transition>
 		<NuxtPage />
 	</div>
 </template>
 <script setup>
-const { initAuth, useAuthLoading } = useAuth()
-const isAuthLoading = useAuthLoading()
+const { initAuth, useAuthInitLoading } = useAuth()
+const isAuthInitLoading = useAuthInitLoading()
 const darkMode = ref(false)
 
 onBeforeMount(() => {
