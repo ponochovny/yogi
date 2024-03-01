@@ -7,6 +7,7 @@ export default () => {
 	const useAuthUser = (): Ref<IUser | unknown> =>
 		useState<IUser | unknown>('auth_user')
 	const useAuthLoading = () => useState('auth_loading', () => true)
+	const useAuthInitLoading = () => useState('auth_init_loading', () => true)
 
 	const setToken = (newToken: string) => {
 		const authToken = useAuthToken()
@@ -14,7 +15,7 @@ export default () => {
 	}
 
 	// TODO: set type
-	const setUser = (newUser: IUser) => {
+	const setUser = (newUser: IUser | null) => {
 		const authUser = useAuthUser()
 		authUser.value = newUser
 	}
@@ -23,10 +24,15 @@ export default () => {
 		const authLoading = useAuthLoading()
 		authLoading.value = value
 	}
+	const setIsAuthInitLoading = (value: boolean) => {
+		const authInitLoading = useAuthInitLoading()
+		authInitLoading.value = value
+	}
 
 	const login = ({ email, password }: { email: string; password: string }) => {
 		return new Promise(async (resolve, reject) => {
 			try {
+				setIsAuthLoading(true)
 				// TODO: set type
 				// @ts-ignore
 				const data: { user: IUser; access_token: string } = await $fetch(
@@ -46,6 +52,35 @@ export default () => {
 				resolve(true)
 			} catch (error) {
 				reject(error)
+			} finally {
+				setIsAuthLoading(false)
+			}
+		})
+	}
+
+	const logout = () => {
+		return new Promise(async (resolve, reject) => {
+			try {
+				setIsAuthLoading(true)
+
+				const authToken = useAuthToken()
+
+				console.log('auth token: ', authToken.value)
+
+				await $fetch('/api/auth/logout', {
+					method: 'POST',
+					body: {
+						refreshToken: authToken.value,
+					},
+				})
+				setToken('')
+				setUser(null)
+
+				resolve(true)
+			} catch (error) {
+				reject(error)
+			} finally {
+				setIsAuthLoading(false)
 			}
 		})
 	}
@@ -98,6 +133,7 @@ export default () => {
 
 	const initAuth = () => {
 		return new Promise(async (resolve, reject) => {
+			setIsAuthInitLoading(true)
 			setIsAuthLoading(true)
 			try {
 				await refreshToken()
@@ -109,6 +145,7 @@ export default () => {
 			} catch (error) {
 				reject(error)
 			} finally {
+				setIsAuthInitLoading(false)
 				setIsAuthLoading(false)
 			}
 		})
@@ -116,9 +153,11 @@ export default () => {
 
 	return {
 		login,
+		logout,
 		useAuthUser,
 		useAuthToken,
 		initAuth,
 		useAuthLoading,
+		useAuthInitLoading,
 	}
 }

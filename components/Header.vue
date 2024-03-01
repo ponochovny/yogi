@@ -30,17 +30,24 @@
 			</template>
 
 			<template v-else>
-				<div class="flex items-center gap-2">
-					<img
-						:src="user.profileImage || ''"
-						:alt="user.name || ''"
-						width="36"
-						class="rounded-full"
-					/>
-					<span class="font-semibold">
-						{{ user?.email }}
-					</span>
-				</div>
+				<Popover>
+					<PopoverTrigger>
+						<div class="flex items-center gap-2">
+							<img
+								:src="user.profileImage || ''"
+								:alt="user.name || ''"
+								width="36"
+								class="rounded-full"
+							/>
+							<span class="font-semibold">
+								{{ user?.email }}
+							</span>
+						</div>
+					</PopoverTrigger>
+					<PopoverContent align="end" :arrowPadding="0" class="mt-2">
+						<button @click="logout">Logout</button>
+					</PopoverContent>
+				</Popover>
 			</template>
 		</div>
 	</div>
@@ -55,7 +62,7 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
-const { useAuthUser, useAuthLoading } = useAuth()
+const { useAuthUser, useAuthLoading, logout } = useAuth()
 const isAuthLoading = useAuthLoading()
 const user = useAuthUser() as Ref<IUser>
 </script>

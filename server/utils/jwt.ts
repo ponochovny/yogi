@@ -58,10 +58,11 @@ export const generateTokens = (user: IUser) => {
 // TODO: set type
 // "Cannot find name 'H3Event'. Did you mean 'Event'?"
 export const sendRefreshToken = (event: any, token: string) => {
-	console.dir(event)
-	console.dir(!!event.node.res)
 	setCookie(event, 'refresh_token', token, {
 		httpOnly: true,
 		sameSite: true,
 	})
+}
+export const resetRefreshToken = (event: any) => {
+	deleteCookie(event, 'refresh_token')
 }
