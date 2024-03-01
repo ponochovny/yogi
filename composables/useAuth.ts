@@ -27,6 +27,8 @@ export default () => {
 	const login = ({ email, password }: { email: string; password: string }) => {
 		return new Promise(async (resolve, reject) => {
 			try {
+				// TODO: set type
+				// @ts-ignore
 				const data: { user: IUser; access_token: string } = await $fetch(
 					'/api/auth/login',
 					{
