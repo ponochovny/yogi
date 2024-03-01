@@ -18,4 +18,8 @@ export default defineComponent({
 	name: 'AuthPage',
 })
 </script>
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+definePageMeta({
+	middleware: ['auth'],
+})
+</script>
