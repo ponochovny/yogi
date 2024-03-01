@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken'
+import jwt, { type JwtPayload } from 'jsonwebtoken'
 import type { IUser } from '../types'
 
 const generateAccessToken = (user: IUser) => {
@@ -15,6 +15,34 @@ const generateRefreshToken = (user: IUser) => {
 	return jwt.sign({ userId: user.id }, config.jwtRefreshSecret as string, {
 		expiresIn: '10m',
 	})
+}
+
+export const decodeRefreshToken = (token: string) => {
+	const config = useRuntimeConfig()
+
+	try {
+		return jwt.verify(token, config.jwtRefreshSecret) as {
+			userId: string
+			iat: number
+			exp: number
+		}
+	} catch (error) {
+		return null
+	}
+}
+
+export const decodeAccessToken = (token: string) => {
+	const config = useRuntimeConfig()
+
+	try {
+		return jwt.verify(token, config.jwtAccessSecret) as {
+			userId: string
+			iat: number
+			exp: number
+		}
+	} catch (error) {
+		return null
+	}
 }
 
 export const generateTokens = (user: IUser) => {
