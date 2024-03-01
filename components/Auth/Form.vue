@@ -1,5 +1,8 @@
 <template>
-	<div class="flex flex-col items-start w-full gap-4 max-w-96">
+	<form
+		class="flex flex-col items-start w-full gap-4 max-w-96"
+		@submit.prevent="handleLogin"
+	>
 		<Input
 			v-model="data.email"
 			label="Your e-mail"
@@ -12,10 +15,10 @@
 			placeholder="********"
 			type="password"
 		/>
-		<Button @click="handleLogin">
+		<Button @click="handleLogin" type="submit">
 			<span class="font-bold text-white">Login</span>
 		</Button>
-	</div>
+	</form>
 </template>
 
 <script lang="ts">
@@ -41,6 +44,7 @@ async function handleLogin() {
 			email: data.email,
 			password: data.password,
 		})
+		navigateTo('/')
 	} catch (error) {
 		console.log(error)
 	} finally {
