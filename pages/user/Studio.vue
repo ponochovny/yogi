@@ -26,5 +26,8 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
+definePageMeta({
+	middleware: ['user'],
+})
 const _userMenu = userMenu
 </script>

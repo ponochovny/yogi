@@ -57,6 +57,9 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
+definePageMeta({
+	middleware: ['user'],
+})
 const { useAuthUser, updateProfile } = useAuth()
 
 const user = useAuthUser() as Ref<IUser>
