@@ -112,6 +112,29 @@ export default () => {
 		})
 	}
 
+	const updateProfile = (newData: Pick<IUser, 'name' | 'email'>) => {
+		return new Promise(async (resolve, reject) => {
+			// TODO: set type
+			const authUser = useAuthUser() as Ref<IUser>
+
+			try {
+				// TODO: set type
+				const data = await useFetchApi<any>('/api/auth/updateProfile', {
+					method: 'POST',
+					body: {
+						...newData,
+						userId: authUser.value?.id || '',
+					},
+				})
+
+				setUser(data.user)
+				resolve(true)
+			} catch (error) {
+				reject(error)
+			}
+		})
+	}
+
 	const reRefreshAccessToken = () => {
 		const authToken = useAuthToken()
 
@@ -159,5 +182,6 @@ export default () => {
 		initAuth,
 		useAuthLoading,
 		useAuthInitLoading,
+		updateProfile,
 	}
 }

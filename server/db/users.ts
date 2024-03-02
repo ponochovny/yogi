@@ -30,3 +30,17 @@ export const getUserById = (id: string) => {
 		},
 	})
 }
+
+export const updateProfile = (
+	userId: string,
+	newData: Pick<IUser, 'name' | 'email'>
+) => {
+	return prisma.user.update({
+		where: {
+			id: userId,
+		},
+		data: {
+			...newData,
+		},
+	})
+}

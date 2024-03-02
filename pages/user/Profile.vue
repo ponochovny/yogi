@@ -21,16 +21,19 @@
 								/>
 							</div>
 							<Input
-								:modelValue="user?.email || ''"
+								v-model="data.email"
 								label="Your e-mail"
 								placeholder="Your e-mail"
 								type="email"
 							/>
 							<Input
-								:modelValue="user?.name || ''"
+								v-model="data.name"
 								label="Your name"
 								placeholder="Your name"
 							/>
+							<Button class="self-start" @click="handleUpdateProfile">
+								<span class="text-white font-bold">Update</span>
+							</Button>
 						</div>
 					</div>
 				</div>
@@ -40,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, watch } from 'vue'
 import type { IUser } from '~/server/types'
 import { userMenu } from '~/helpers/adminPanel'
 
@@ -49,8 +52,32 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
-const { useAuthUser } = useAuth()
+const { useAuthUser, updateProfile } = useAuth()
 
 const user = useAuthUser() as Ref<IUser>
 const _userMenu = userMenu
+
+const data = reactive({
+	name: '',
+	email: '',
+})
+
+setData(user.value)
+
+watch(user, (val) => {
+	if (val) setData(val)
+})
+
+function setData(val: any) {
+	if (val) {
+		data.name = val.name || ''
+		data.email = val.email
+	}
+}
+
+function handleUpdateProfile() {
+	updateProfile(data).catch(() => {
+		setData(user.value)
+	})
+}
 </script>
