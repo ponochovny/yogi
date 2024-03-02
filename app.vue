@@ -16,7 +16,8 @@ onBeforeMount(() => {
 })
 </script>
 <style lang="scss">
-a {
+a,
+button {
 	color: black;
 	transition: all 0.35s ease;
 	&:hover {
