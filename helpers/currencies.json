@@ -1,0 +1,22 @@
+[
+	{
+		"name": "United States dollar",
+		"symbol": "$",
+		"code": "USD"
+	},
+	{
+		"name": "Euro",
+		"symbol": "€",
+		"code": "EUR"
+	},
+	{
+		"name": "Ukrainian hryvnia",
+		"symbol": "₴",
+		"code": "UAH"
+	},
+	{
+		"name": "Philippine peso",
+		"symbol": "₱",
+		"code": "PHP"
+	}
+]

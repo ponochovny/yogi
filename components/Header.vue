@@ -15,7 +15,27 @@
 			</NuxtLink>
 		</div>
 		<div class="flex items-center gap-4 ml-auto">
-			<!-- Currency Select -->
+			<Select v-model="currencySelected">
+				<SelectTrigger
+					class="inline-flex w-auto items-center justify-between rounded px-[15px] text-[13px] leading-none h-[35px] gap-[5px] bg-transparent text-grass11 border-none outline-none ring-0 focus:ring-0 focus:outline-none ring-offset-0 focus:ring-offset-0"
+				>
+					<div>
+						<div class="flex items-center gap-2">
+							<BanknotesIcon class="w-6 stroke-1" />
+							<span>{{ currencySelected }}</span>
+						</div>
+					</div>
+				</SelectTrigger>
+				<SelectContent>
+					<SelectItem
+						v-for="currency of _currencies"
+						:key="currency.code"
+						:value="currency.code"
+					>
+						{{ currency.code }}
+					</SelectItem>
+				</SelectContent>
+			</Select>
 			<!-- Cart status -->
 
 			<template v-if="isAuthLoading">Loading...</template>
@@ -44,7 +64,11 @@
 							</span>
 						</div>
 					</PopoverTrigger>
-					<PopoverContent align="end" :arrowPadding="0" class="mt-2">
+					<PopoverContent
+						align="end"
+						:arrowPadding="0"
+						class="mt-2 max-w-[200px]"
+					>
 						<div class="flex flex-col gap-2 w-full">
 							<NuxtLink to="/user/profile">
 								<button>My Profile</button>
@@ -62,13 +86,21 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import type { IUser } from '~/server/types'
+import currencies from '~/helpers/currencies.json'
+import { BanknotesIcon } from '@heroicons/vue/24/outline'
 
 export default defineComponent({
 	name: 'Header',
+	components: {
+		BanknotesIcon,
+	},
 })
 </script>
 <script lang="ts" setup>
 const { useAuthUser, useAuthLoading, logout } = useAuth()
 const isAuthLoading = useAuthLoading()
 const user = useAuthUser() as Ref<IUser>
+const _currencies = currencies
+
+const currencySelected = ref(_currencies[0].code)
 </script>
