@@ -45,7 +45,13 @@
 						</div>
 					</PopoverTrigger>
 					<PopoverContent align="end" :arrowPadding="0" class="mt-2">
-						<button @click="logout">Logout</button>
+						<div class="flex flex-col gap-2 w-full">
+							<NuxtLink to="/user/profile">
+								<button>My Profile</button>
+							</NuxtLink>
+
+							<button @click="logout" class="text-left">Logout</button>
+						</div>
 					</PopoverContent>
 				</Popover>
 			</template>
