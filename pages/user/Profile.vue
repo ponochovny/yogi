@@ -31,7 +31,11 @@
 								label="Your name"
 								placeholder="Your name"
 							/>
-							<Button class="self-start" @click="handleUpdateProfile">
+							<Button
+								class="self-start"
+								@click="handleUpdateProfile"
+								:disabled="actionButtonDisabled"
+							>
 								<span class="text-white font-bold">Update</span>
 							</Button>
 						</div>
@@ -44,6 +48,7 @@
 
 <script lang="ts">
 import { defineComponent, watch } from 'vue'
+import { toast } from 'vue-sonner'
 import type { IUser } from '~/server/types'
 import { userMenu } from '~/helpers/adminPanel'
 
@@ -56,6 +61,15 @@ const { useAuthUser, updateProfile } = useAuth()
 
 const user = useAuthUser() as Ref<IUser>
 const _userMenu = userMenu
+const actionButtonDisabled = computed(() => {
+	if (!user.value) return true
+	const obj1 = { ...data }
+	const obj2 = {
+		name: user.value?.name || '',
+		email: user.value?.email || '',
+	}
+	return isEqual(obj1, obj2)
+})
 
 const data = reactive({
 	name: '',
@@ -76,8 +90,13 @@ function setData(val: any) {
 }
 
 function handleUpdateProfile() {
-	updateProfile(data).catch(() => {
-		setData(user.value)
-	})
+	updateProfile(data)
+		.then(() => {
+			toast.success('Data has been updated')
+		})
+		.catch((error) => {
+			setData(user.value)
+			toast.error(error.data.statusMessage)
+		})
 }
 </script>

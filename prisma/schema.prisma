@@ -8,13 +8,13 @@ datasource db {
 }
 
 model User {
-  id                String   @id @default(auto()) @map("_id") @db.ObjectId
-  email             String   @unique
+  id                String     @id @default(auto()) @map("_id") @db.ObjectId
+  email             String     @unique
   password          String
   name              String?
   profileImage      String?
-  interestsCategory String[]
-  interestsType     String[]
+  interestsCategory Category[]
+  interestsType     Type[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -35,16 +35,69 @@ model RefreshToken {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userId String @db.ObjectId
   user   User   @relation(fields: [userId], references: [id])
+  userId String @db.ObjectId
 }
 
 model Category {
   id   String @id @default(auto()) @map("_id") @db.ObjectId
   name String @unique
+
+  userId String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id])
+
+  studio   Studio @relation(fields: [studioId], references: [id])
+  studioId String @db.ObjectId
 }
 
 model Type {
   id   String @id @default(auto()) @map("_id") @db.ObjectId
   name String @unique
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @db.ObjectId
+
+  studio   Studio @relation(fields: [studioId], references: [id])
+  studioId String @db.ObjectId
+}
+
+model Studio {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  location   String[]
+  timezone   Json
+  currency   Json
+  categories Category[]
+  types      Type[]
+
+  // Mediafiles
+  // logo MediaFile
+  // banner MediaFile
+  logo   String
+  banner String
+
+  tags    Tag[]
+  bio     String
+  mission String
+
+  //
+  // policy_waiver      String
+  // policy_conditions  String
+  // contacts           any
+  // locations          Location[]
+  // offerings          Offering[]
+  // practitioners      Practitioner[]
+  // causes             Cause[]
+  // memberships        any[]
+  // tickets            Ticket3[]
+  // options            any[]
+  // can_accept_payment Number
+}
+
+model Tag {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+
+  studio   Studio? @relation(fields: [studioId], references: [id])
+  studioId String? @db.ObjectId
 }
