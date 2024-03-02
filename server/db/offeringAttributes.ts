@@ -36,3 +36,10 @@ export const insertTypes = () => {
 		],
 	})
 }
+
+export const getOfferingCategories = () => {
+	return prisma.category.findMany()
+}
+export const getOfferingTypes = () => {
+	return prisma.type.findMany()
+}
