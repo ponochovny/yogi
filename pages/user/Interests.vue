@@ -1,7 +1,7 @@
 <template>
 	<div class="p-10">
 		<div class="bg-white rounded-md flex">
-			<div class="pr-10">
+			<div class="pr-10 w-full max-w-[200px]">
 				<AdminSidebar :menu-items="userMenu" />
 			</div>
 			<div class="pl-10 border-l pb-10 w-full max-w-[600px]">
@@ -14,10 +14,10 @@
 							</span>
 							<div class="flex gap-2 flex-wrap">
 								<button
-									v-for="category of categories"
+									v-for="category of data.categories"
 									class="px-4 py-2 rounded-full bg-white border"
 								>
-									{{ category }}
+									{{ category.name }}
 								</button>
 							</div>
 						</div>
@@ -27,10 +27,10 @@
 							</span>
 							<div class="flex gap-2 flex-wrap">
 								<button
-									v-for="type of types"
+									v-for="type of data.types"
 									class="px-4 py-2 rounded-full bg-white border"
 								>
-									{{ type }}
+									{{ type.name }}
 								</button>
 							</div>
 						</div>
@@ -43,15 +43,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import type { IUser } from '~/server/types'
-import { userMenu, categories, types } from '~/helpers/adminPanel'
+import { userMenu } from '~/helpers/adminPanel'
+import data from '~/helpers/offeringAttributes.json'
 
 export default defineComponent({
 	name: 'InterestsPage',
 })
 </script>
-<script lang="ts" setup>
-const { useAuthUser } = useAuth()
-
-const user = useAuthUser() as Ref<IUser>
-</script>
+<script lang="ts" setup></script>
