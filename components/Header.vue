@@ -10,7 +10,7 @@
 			<NuxtLink to="/">
 				<span class="font-semibold">Explore live offerings</span>
 			</NuxtLink>
-			<NuxtLink to="/">
+			<NuxtLink to="/user/studio">
 				<span class="font-semibold">Add your business</span>
 			</NuxtLink>
 		</div>

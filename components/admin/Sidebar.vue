@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col pt-7">
+	<div class="flex flex-col py-7">
 		<NuxtLink
 			v-for="item of props.menuItems"
 			:key="item.name"

@@ -1,7 +1,7 @@
 <template>
 	<div class="p-10">
 		<div class="bg-white rounded-md flex">
-			<div class="pr-10">
+			<div class="pr-10 w-full max-w-[200px]">
 				<AdminSidebar :menu-items="userMenu" />
 			</div>
 			<div class="pl-10 border-l pb-10 w-full max-w-[600px]">

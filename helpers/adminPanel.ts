@@ -1,4 +1,8 @@
-import { PencilSquareIcon, SparklesIcon } from '@heroicons/vue/24/outline'
+import {
+	PencilSquareIcon,
+	SparklesIcon,
+	UserGroupIcon,
+} from '@heroicons/vue/24/outline'
 
 export const userMenu = [
 	{
@@ -10,6 +14,11 @@ export const userMenu = [
 		name: 'Interests',
 		icon: SparklesIcon,
 		link: '/user/interests',
+	},
+	{
+		name: 'Studio',
+		icon: UserGroupIcon,
+		link: '/user/studio',
 	},
 ]
 
