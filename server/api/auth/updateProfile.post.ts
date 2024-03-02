@@ -4,26 +4,30 @@ import { userTransformer } from '~/server/transformers/user'
 export default defineEventHandler(async (event) => {
 	const body = await readBody(event)
 
-	const { email, name, userId } = body
+	const { userId, ...rest } = body
 
-	if (!email || !name) {
-		return sendError(
-			event,
-			createError({ statusCode: 400, statusMessage: 'Invalid params' })
-		)
-	}
+	if ('email' in body) {
+		const { email, name } = body
 
-	const user = await getUserByEmail(email)
+		if (!email || !name) {
+			return sendError(
+				event,
+				createError({ statusCode: 400, statusMessage: 'Invalid params' })
+			)
+		}
 
-	if (user && user.id !== userId) {
-		return sendError(
-			event,
-			createError({ statusCode: 400, statusMessage: 'Email is taken' })
-		)
+		const user = await getUserByEmail(email)
+
+		if (user && user.id !== userId) {
+			return sendError(
+				event,
+				createError({ statusCode: 400, statusMessage: 'Email is taken' })
+			)
+		}
 	}
 
 	// Update profile in db with userId
-	const updatedUser = await updateProfile(userId, { email, name })
+	const updatedUser = await updateProfile(userId, { ...rest })
 
 	return {
 		user: userTransformer(updatedUser),

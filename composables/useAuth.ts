@@ -112,7 +112,11 @@ export default () => {
 		})
 	}
 
-	const updateProfile = (newData: Pick<IUser, 'name' | 'email'>) => {
+	const updateProfile = (
+		newData: Partial<
+			Pick<IUser, 'name' | 'email' | 'interestsCategory' | 'interestsType'>
+		>
+	) => {
 		return new Promise(async (resolve, reject) => {
 			// TODO: set type
 			const authUser = useAuthUser() as Ref<IUser>
