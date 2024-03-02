@@ -29,6 +29,47 @@ export default () => {
 		authInitLoading.value = value
 	}
 
+	const register = ({
+		name,
+		email,
+		password,
+		repeatPassword,
+	}: {
+		name: string
+		email: string
+		password: string
+		repeatPassword: string
+	}) => {
+		return new Promise(async (resolve, reject) => {
+			try {
+				setIsAuthLoading(true)
+				// TODO: set type
+				// @ts-ignore
+				const data: { user: IUser; access_token: string } = await $fetch(
+					'/api/auth/register',
+					{
+						method: 'POST',
+						body: {
+							name,
+							email,
+							password,
+							repeatPassword,
+						},
+					}
+				)
+				setToken(data.access_token)
+				setUser(data.user)
+
+				console.log(data)
+				resolve(true)
+			} catch (error) {
+				reject(error)
+			} finally {
+				setIsAuthLoading(false)
+			}
+		})
+	}
+
 	const login = ({ email, password }: { email: string; password: string }) => {
 		return new Promise(async (resolve, reject) => {
 			try {
@@ -65,8 +106,6 @@ export default () => {
 
 				const authToken = useAuthToken()
 
-				console.log('auth token: ', authToken.value)
-
 				await $fetch('/api/auth/logout', {
 					method: 'POST',
 					body: {
@@ -75,6 +114,7 @@ export default () => {
 				})
 				setToken('')
 				setUser(null)
+				navigateTo('/')
 
 				resolve(true)
 			} catch (error) {
@@ -180,6 +220,7 @@ export default () => {
 
 	return {
 		login,
+		register,
 		logout,
 		useAuthUser,
 		useAuthToken,

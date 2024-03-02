@@ -1,6 +1,7 @@
 import type { IUser } from '~/server/types'
 import { createUser } from '../../db/users'
 import { userTransformer } from '~/server/transformers/user'
+import { createRefreshToken } from '~/server/db/refreshTokens'
 
 export default defineEventHandler(async (event) => {
 	const body = await readBody(event)
@@ -31,7 +32,22 @@ export default defineEventHandler(async (event) => {
 
 	const user = await createUser(userData)
 
+	// Generate Tokens
+	// Access token
+	// Refresh token
+	const { accessToken, refreshToken } = generateTokens(user)
+
+	// Save it inside db
+	await createRefreshToken({
+		token: refreshToken,
+		userId: user.id,
+	})
+
+	// Add http only cookie
+	sendRefreshToken(event, refreshToken)
+
 	return {
-		body: userTransformer(user),
+		user: userTransformer(user),
+		access_token: accessToken,
 	}
 })
