@@ -15,6 +15,10 @@ const darkMode = ref(false)
 onBeforeMount(() => {
 	initAuth()
 })
+
+useHead({
+	title: 'Yogi',
+})
 </script>
 <style lang="scss">
 a,
