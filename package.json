@@ -25,13 +25,15 @@
     "tailwindcss-animate": "^1.0.7",
     "url-pattern": "^1.0.3",
     "vue": "^3.4.19",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "vue-sonner": "^1.1.1"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.11.4",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/jwt-decode": "^3.1.0",
+    "nuxt-lodash": "^2.5.3",
     "prisma": "^5.10.2",
     "sass": "^1.71.1",
     "shadcn-nuxt": "^0.9.0",

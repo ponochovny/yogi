@@ -4,6 +4,7 @@
 			<LoadingPage v-if="isAuthInitLoading" />
 		</Transition>
 		<NuxtPage />
+		<Toaster position="bottom-center" :duration="7000" />
 	</div>
 </template>
 <script setup>
