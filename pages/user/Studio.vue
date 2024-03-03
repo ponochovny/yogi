@@ -9,7 +9,9 @@
 				<div class="pl-10 border-l pb-10 w-full max-w-[600px]">
 					<div class="max-w-[600px]">
 						<h1 class="pt-8 text-2xl font-bold mb-6">Studio</h1>
-						<div class="flex flex-col gap-8">Content</div>
+						<div class="flex flex-col gap-8">
+							<StudioCreation />
+						</div>
 					</div>
 				</div>
 			</div>
