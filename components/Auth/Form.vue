@@ -33,6 +33,20 @@
 				{{ props.mode === 'register' ? 'Register' : 'Login' }}
 			</span>
 		</Button>
+		<div class="flex gap-1 items-center text-sm">
+			<template v-if="mode === 'login'">
+				<span>Don't have an account?</span>
+				<button type="button" @click="emit('mode', 'register')">
+					<span class="font-semibold">Join now</span>
+				</button>
+			</template>
+			<template v-else>
+				<span>Already have an account?</span>
+				<button type="button" @click="emit('mode', 'login')">
+					<span class="font-semibold">Log in</span>
+				</button>
+			</template>
+		</div>
 	</form>
 </template>
 
@@ -48,6 +62,7 @@ interface IProps {
 	mode: 'register' | 'login'
 }
 const props = defineProps<IProps>()
+const emit = defineEmits(['mode'])
 
 const data = reactive({
 	name: '',
