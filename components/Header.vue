@@ -22,7 +22,7 @@
 					<div>
 						<div class="flex items-center gap-2">
 							<BanknotesIcon class="w-6 stroke-1" />
-							<span>{{ currencySelected }}</span>
+							<span class="font-semibold">{{ currencySelected }}</span>
 						</div>
 					</div>
 				</SelectTrigger>

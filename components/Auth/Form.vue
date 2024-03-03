@@ -8,18 +8,21 @@
 			v-model="data.name"
 			label="Your name"
 			placeholder="Your name"
+			name="name"
 		/>
 		<Input
 			v-model="data.email"
 			label="Your e-mail"
 			placeholder="Your e-mail"
 			type="email"
+			name="email"
 		/>
 		<Input
 			v-model="data.password"
 			label="Your password"
 			placeholder="********"
 			type="password"
+			name="password"
 		/>
 		<Input
 			v-if="mode === 'register'"
@@ -27,6 +30,7 @@
 			label="Repeat Your password"
 			placeholder="********"
 			type="password"
+			name="repeatPassword"
 		/>
 		<Button @click="handleAuth" type="submit">
 			<span class="font-bold text-white">

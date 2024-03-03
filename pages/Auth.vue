@@ -3,7 +3,10 @@
 		<div
 			class="w-1/3 min-h-full bg-orange-400 bg-[url('https://picsum.photos/500/1080?blur=9')] bg-no-repeat bg-cover bg-center flex flex-col items-start gap-16 pt-36 pl-20"
 		>
-			<NuxtLink to="/" class="rounded-full bg-orange-200">
+			<NuxtLink
+				to="/"
+				class="rounded-full bg-orange-200 hover:bg-orange-200/50 transition-colors duration-700 ease-out"
+			>
 				<img src="/img/logo.svg" alt="Yogi app" width="65" />
 			</NuxtLink>
 			<h1 class="text-4xl font-bold text-white">

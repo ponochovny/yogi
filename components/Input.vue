@@ -6,6 +6,7 @@
 			}}</span>
 			<input
 				:placeholder="props.placeholder"
+				:name="props.name"
 				:type="props.type"
 				:value="props.modelValue"
 				@input="(event: any) => emits('update:modelValue', event.target.value)"
@@ -25,22 +26,18 @@ export default defineComponent({
 <script lang="ts" setup>
 const emits = defineEmits(['update:modelValue'])
 
-const props = defineProps({
-	modelValue: {
-		type: String,
-		required: true,
-	},
-	label: {
-		type: String,
-		default: null,
-	},
-	placeholder: {
-		type: String,
-		default: '',
-	},
-	type: {
-		type: String,
-		default: 'text',
-	},
+interface IProps {
+	name?: string
+	modelValue: string
+	label?: string | null
+	placeholder?: string
+	type?: string
+}
+const props = withDefaults(defineProps<IProps>(), {
+	name: '',
+	label: null,
+	placeholder: '',
+	type: 'text',
+	autocomplete: false,
 })
 </script>
