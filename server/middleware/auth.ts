@@ -3,7 +3,7 @@ import { decodeAccessToken } from '../utils/jwt'
 import { getUserById } from '../db/users'
 
 export default defineEventHandler(async (event) => {
-	const endpoints = ['/api/auth/user']
+	const endpoints = ['/api/auth/user', '/api/studio']
 
 	const isHandledByThisMiddleware = endpoints.some((endpoint) => {
 		const pattern = new UrlPattern(endpoint)
@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
 		return
 	}
 
-	const token = event.req.headers['authorization']?.split(' ')[1]
+	const token = event.node.req.headers['authorization']?.split(' ')[1]
 
 	const decoded = decodeAccessToken(token || '')
 

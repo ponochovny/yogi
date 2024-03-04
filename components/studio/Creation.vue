@@ -36,6 +36,23 @@
 		<!-- <Yselect label="Tags" /> -->
 		<Textarea v-model="data.bio" label="Bio" />
 		<Textarea v-model="data.mission" label="Mission" />
+		<input
+			type="file"
+			ref="imageInput"
+			hidden
+			accept="image/png, image/gif, image/jpeg"
+			@change="handleImageChange"
+		/>
+		<div @click="handleLogoChange">Set logo</div>
+		<img
+			v-if="inputImageUrl"
+			:src="inputImageUrl"
+			alt=""
+			class="rounded-md w-auto max-h-48 self-start"
+		/>
+		<Button @click="handleStudioCreation" class="self-start">
+			<span class="font-semibold text-white">Create</span>
+		</Button>
 	</div>
 </template>
 
@@ -50,6 +67,10 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
+const { createStudio } = useStudio()
+const imageInput = ref()
+const selectedFileLogo = ref(null)
+const inputImageUrl = ref(null)
 const _timezones = timezones
 const _currencies = currencies
 const _categories = _data.categories
@@ -65,4 +86,36 @@ const data = reactive({
 	bio: '',
 	mission: '',
 })
+
+function handleLogoChange() {
+	imageInput.value.click()
+}
+
+async function handleStudioCreation() {
+	try {
+		const response = await createStudio({
+			...data,
+			mediaFiles: {
+				logo: selectedFileLogo.value,
+				// banner: selectedFileBanner.value
+			},
+		})
+	} catch (error) {
+		console.log(error)
+	}
+}
+
+// TODO: event type
+function handleImageChange(event: any) {
+	const file = event.target.files[0]
+
+	selectedFileLogo.value = file
+
+	const reader = new FileReader()
+
+	reader.onload = (event: any) => {
+		inputImageUrl.value = event.target.result
+	}
+	reader.readAsDataURL(file)
+}
 </script>
