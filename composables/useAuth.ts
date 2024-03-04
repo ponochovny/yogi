@@ -60,7 +60,6 @@ export default () => {
 				setToken(data.access_token)
 				setUser(data.user)
 
-				console.log(data)
 				resolve(true)
 			} catch (error) {
 				reject(error)
@@ -89,7 +88,6 @@ export default () => {
 				setToken(data.access_token)
 				setUser(data.user)
 
-				console.log(data)
 				resolve(true)
 			} catch (error) {
 				reject(error)
