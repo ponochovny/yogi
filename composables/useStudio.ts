@@ -24,9 +24,31 @@ export default () => {
 			// @ts-ignore
 			form.append(key, data[key])
 		})
-		form.append('logo', data.mediaFiles.logo)
+		if (data.mediaFiles.logo) {
+			form.append('logo', data.mediaFiles.logo)
+		}
 
 		return useFetchApi('/api/studio', {
+			method: 'POST',
+			body: form,
+		})
+	}
+	const updateStudio = (data: IData, studioId: string) => {
+		const form = new FormData()
+
+		const { mediaFiles, ...rest } = data
+
+		form.append('studio_id', studioId)
+
+		Object.keys(rest).map((key: string) => {
+			// @ts-ignore
+			form.append(key, data[key])
+		})
+		if (data.mediaFiles.logo) {
+			form.append('logo', data.mediaFiles.logo)
+		}
+
+		return useFetchApi('/api/studio/update', {
 			method: 'POST',
 			body: form,
 		})
@@ -38,6 +60,7 @@ export default () => {
 
 	return {
 		createStudio,
+		updateStudio,
 		getStudios,
 	}
 }

@@ -6,10 +6,8 @@ import type { DefaultArgs } from '@prisma/client/runtime/library'
 export const createStudio = (
 	studioData: Pick<
 		IStudio,
-		| 'banner'
 		| 'bio'
 		| 'currency'
-		| 'logo'
 		| 'mission'
 		| 'name'
 		| 'timezone'
@@ -21,10 +19,40 @@ export const createStudio = (
 ) => {
 	return prisma.studio.create({
 		data: {
-			// banner: [studioData.banner],
 			bio: studioData.bio,
 			currency: studioData.currency,
-			// logo: studioData.logo,
+			mission: studioData.mission,
+			name: studioData.name,
+			timezone: studioData.timezone,
+			categories: studioData.categories,
+			types: studioData.types,
+			location: studioData.location,
+			ownerId: studioData.ownerId,
+		},
+	})
+}
+export const updateStudio = (
+	studioData: Pick<
+		IStudio,
+		| 'bio'
+		| 'currency'
+		| 'mission'
+		| 'name'
+		| 'timezone'
+		| 'ownerId'
+		| 'categories'
+		| 'types'
+		| 'location'
+	>,
+	studioId: string
+) => {
+	return prisma.studio.update({
+		where: {
+			id: studioId,
+		},
+		data: {
+			bio: studioData.bio,
+			currency: studioData.currency,
 			mission: studioData.mission,
 			name: studioData.name,
 			timezone: studioData.timezone,
