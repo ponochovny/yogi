@@ -71,6 +71,7 @@ import timezones from '~/helpers/timeZones.json'
 import currencies from '~/helpers/currencies.json'
 import _data from '~/helpers/offeringAttributes.json'
 import type { IStudio } from '~/helpers/types/studio'
+import { toast } from 'vue-sonner'
 
 export default defineComponent({
 	name: 'Creation',
@@ -218,8 +219,10 @@ async function updateStudioHandler() {
 			props.studio?.id as string
 		)
 		emit('updated')
+		toast.success('Studio data has been updated')
 	} catch (error) {
 		console.log(error)
+		toast.error('Error ocurred')
 	}
 }
 
@@ -233,9 +236,12 @@ async function createStudioHandler() {
 				// banner: selectedFileBanner.value
 			},
 		})
+		emit('updated')
+		toast.success('Studio has been created successfully')
 		// TODO: reset fields
 	} catch (error) {
 		console.log(error)
+		toast.error('Error ocurred')
 	} finally {
 		loading.value = false
 	}

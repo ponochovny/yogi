@@ -37,7 +37,7 @@
 					<div class="max-w-[600px]">
 						<h1 class="pt-8 text-2xl font-bold mb-6">Create studio</h1>
 						<div class="flex flex-col gap-8">
-							<StudioCreation />
+							<StudioCreation @updated="loadStudios" />
 						</div>
 					</div>
 				</div>
