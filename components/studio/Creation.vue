@@ -6,6 +6,7 @@
 			v-model="data.timezone"
 			label="Timezone"
 			:options="_timezones"
+			searchable
 			field="tzId"
 			value-prop="tzId"
 		/>
