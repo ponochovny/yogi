@@ -4,13 +4,13 @@ export interface IStudio {
 	id: string
 	name: string
 	location: string[]
-	timezone: object
-	currency: object
+	timezone: string
+	currency: string
 	categories: string[]
 	types: string[]
 
 	// Media files
-	logo: string
+	logo: { url: string }[]
 	banner: string
 
 	// TODO: add tag interface

@@ -43,7 +43,7 @@ export default defineEventHandler(async (event) => {
 		// tags: [fields.tags[0]],
 		bio: fields.bio[0],
 		mission: fields.mission[0],
-		logo: '',
+		logo: [],
 		banner: '',
 
 		// owner

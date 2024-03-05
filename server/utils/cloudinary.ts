@@ -43,6 +43,8 @@ export const uploadToCloudinary = (
 	return new Promise((resolve, reject) => {
 		cloudinary().uploader.upload(
 			image,
+			{ folder: 'yogi' },
+			// @ts-ignore
 			(error: any, data: ICloudinaryResource) => {
 				if (error) {
 					reject(error)
