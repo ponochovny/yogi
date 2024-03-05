@@ -14,7 +14,6 @@ export default () => {
 		authToken.value = newToken
 	}
 
-	// TODO: set type
 	const setUser = (newUser: IUser | null) => {
 		const authUser = useAuthUser()
 		authUser.value = newUser
@@ -43,8 +42,6 @@ export default () => {
 		return new Promise(async (resolve, reject) => {
 			try {
 				setIsAuthLoading(true)
-				// TODO: set type
-				// @ts-ignore
 				const data: { user: IUser; access_token: string } = await $fetch(
 					'/api/auth/register',
 					{
@@ -73,8 +70,6 @@ export default () => {
 		return new Promise(async (resolve, reject) => {
 			try {
 				setIsAuthLoading(true)
-				// TODO: set type
-				// @ts-ignore
 				const data: { user: IUser; access_token: string } = await $fetch(
 					'/api/auth/login',
 					{

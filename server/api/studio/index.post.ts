@@ -1,6 +1,6 @@
 import formidable from 'formidable'
 import type { IStudio } from '~/helpers/types/studio'
-import { createMediaFile } from '~/server/db/mediaFiles'
+import { createMediaFile, type IMediaFile } from '~/server/db/mediaFiles'
 import { createStudio } from '~/server/db/studio'
 import { uploadToCloudinary } from '~/server/utils/cloudinary'
 
@@ -57,12 +57,18 @@ export default defineEventHandler(async (event) => {
 
 		const cloudinaryResource = await uploadToCloudinary(file.filepath)
 
-		return createMediaFile({
+		const mediaFile: IMediaFile = {
 			url: cloudinaryResource.secure_url,
 			providerPublicId: cloudinaryResource.public_id,
-			logoStudioId: key === 'logo' ? studio.id : null,
-			bannerStudioId: key === 'banner' ? studio.id : null,
-		})
+		}
+		if (key === 'logo') {
+			mediaFile.logoStudioId = studio.id
+		}
+		if (key === 'banner') {
+			mediaFile.bannerStudioId = studio.id
+		}
+
+		return createMediaFile(mediaFile)
 	})
 
 	await Promise.all(filePromises)
