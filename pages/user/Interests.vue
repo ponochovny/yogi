@@ -83,12 +83,12 @@ const updatedData = reactive<any>({
 const actionButtonDisabled = computed(() => {
 	if (!user.value) return true
 	const obj1 = {
-		interestsCategory: updatedData.categories || [],
-		interestsType: updatedData.types || [],
+		interestsCategory: updatedData.categories.sort() || [],
+		interestsType: updatedData.types.sort() || [],
 	}
 	const obj2 = {
-		interestsCategory: user.value?.interestsCategory || [],
-		interestsType: user.value?.interestsType || [],
+		interestsCategory: user.value?.interestsCategory.sort() || [],
+		interestsType: user.value?.interestsType.sort() || [],
 	}
 	return isEqual(obj1, obj2)
 })

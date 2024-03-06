@@ -11,6 +11,7 @@
 						<h1 class="pt-8 text-2xl font-bold mb-6">Edit profile</h1>
 						<div class="flex flex-col gap-3">
 							<div class="flex flex-col gap-2">
+								<!-- TODO: avatar uploader -->
 								<span class="text-sm font-bold text-gray-700">Photo</span>
 								<img
 									:src="user?.profileImage || ''"
