@@ -9,7 +9,7 @@ jobs:
   standard-checks:
     name: Lint & Type
     runs-on: ubuntu-latest
-    container: node:18-alpine
+    container: node:21.7.0
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
