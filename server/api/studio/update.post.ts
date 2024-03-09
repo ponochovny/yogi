@@ -17,7 +17,6 @@ export default defineEventHandler(async (event) => {
 	})
 
 	const { fields, files } = formExtracted as { fields: any; files: any }
-	debugger
 
 	const userId = event.context.auth.user.id
 

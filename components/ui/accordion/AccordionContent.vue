@@ -6,19 +6,19 @@ import { cn } from '@/lib/utils'
 const props = defineProps<AccordionContentProps & { class?: HTMLAttributes['class'] }>()
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props
+	const { class: _, ...delegated } = props
 
-  return delegated
+	return delegated
 })
 </script>
 
 <template>
-  <AccordionContent
-    v-bind="delegatedProps"
-    class="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
-  >
-    <div :class="cn('pb-4 pt-0', props.class)">
-      <slot />
-    </div>
-  </AccordionContent>
+	<AccordionContent
+		v-bind="delegatedProps"
+		class="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+	>
+		<div :class="cn('pb-4 pt-0', props.class)">
+			<slot />
+		</div>
+	</AccordionContent>
 </template>
