@@ -1,5 +1,5 @@
 <template>
-	<div class="max-w-screen-xl pt-3 mx-auto">
+	<div class="relative max-w-screen-xl pt-3 mx-auto">
 		<Header />
 		<div class="py-10">
 			<div class="bg-white rounded-md flex">

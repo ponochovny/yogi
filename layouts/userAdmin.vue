@@ -1,5 +1,5 @@
 <template>
-	<div class="max-w-screen-xl pt-3 mx-auto">
+	<div class="relative max-w-screen-xl pt-3 mx-auto" :class="cn(props.class)">
 		<Header />
 		<div class="py-10">
 			<div class="bg-white rounded-md flex">
@@ -16,6 +16,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { cn } from '@/lib/utils'
 import { userMenu } from '~/helpers/adminPanel'
 
 export default defineComponent({
@@ -23,5 +24,9 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
+interface IProps {
+	class?: string
+}
+const props = defineProps<IProps>()
 const _userMenu = userMenu
 </script>

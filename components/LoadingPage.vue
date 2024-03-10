@@ -2,7 +2,7 @@
 	<div
 		class="z-20 fixed inset-0 bg-[#FEF3E4] flex items-center justify-center h-screen"
 	>
-		<div class="absolute w-20 h-20 animate-ping">
+		<div class="absolute w-20 h-20 animate-ping will-change-transform">
 			<img src="/img/logo.svg" />
 		</div>
 	</div>
