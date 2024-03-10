@@ -57,7 +57,7 @@ const { getStudios } = useStudio()
 
 async function loadStudios() {
 	try {
-		const { studios: studiosRes } = await getStudios()
+		const { data: studiosRes } = await getStudios()
 		studios.value = studiosRes
 	} catch (error) {
 		console.log(error)

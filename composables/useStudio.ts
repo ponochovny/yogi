@@ -28,7 +28,7 @@ export default () => {
 			form.append('logo', data.mediaFiles.logo)
 		}
 
-		return useFetchApi('/api/studio', {
+		return useFetchApi('/api/studios', {
 			method: 'POST',
 			body: form,
 		})
@@ -48,14 +48,14 @@ export default () => {
 			form.append('logo', data.mediaFiles.logo)
 		}
 
-		return useFetchApi('/api/studio/update', {
+		return useFetchApi('/api/studios/update', {
 			method: 'POST',
 			body: form,
 		})
 	}
 
 	const getStudios = () => {
-		return useFetchApi<{ studios: IStudio[] }>('/api/studio')
+		return useFetchApi<{ data: IStudio[] }>('/api/studios')
 	}
 
 	return {
