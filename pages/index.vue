@@ -6,9 +6,21 @@
 		<div
 			class="bg-[#CA9A8E] w-[400px] h-[400px] rounded-full absolute -right-[200px] top-[800px]"
 		></div>
-		<MainContainer>
+		<MainContainer contentClass="py-6">
 			<!-- Search block -->
+			<div
+				class="my-6 rounded-xl border px-10 py-8 flex items-center justify-center border-gray-400"
+			>
+				Search
+			</div>
 			<!-- Slider with categories which link to search page -->
+			<div class="grid grid-cols-4 gap-4">
+				<OfferingCard
+					v-for="offering of offerings?.data"
+					:key="offering?.id"
+					:offering="offering"
+				/>
+			</div>
 			<!-- Popular locally list -->
 			<!-- Studios & Hosts list -->
 			<!-- Quote randomized -->
@@ -34,8 +46,4 @@ export default defineComponent({
 const { getOfferings } = useOffering()
 
 const { data: offerings } = await getOfferings()
-
-onMounted(() => {
-	console.log(offerings.value?.data)
-})
 </script>
