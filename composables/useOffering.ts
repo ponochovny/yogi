@@ -1,3 +1,5 @@
+import type { IOffering } from '~/helpers/types/offering'
+
 interface IData {
 	mediaFiles?: any
 }
@@ -23,7 +25,7 @@ export default () => {
 	}
 
 	const getOfferings = () => {
-		return useFetch('/api/offerings')
+		return useFetch<{ data: IOffering[] }>('/api/offerings')
 	}
 
 	return {
