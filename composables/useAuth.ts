@@ -8,6 +8,8 @@ export default () => {
 		useState<IUser | unknown>('auth_user')
 	const useAuthLoading = () => useState('auth_loading', () => true)
 	const useAuthInitLoading = () => useState('auth_init_loading', () => true)
+	const useStudioSelected = (): Ref<string | null> =>
+		useState<string | null>('auth_studio_selected', () => null)
 
 	const setToken = (newToken: string) => {
 		const authToken = useAuthToken()
@@ -226,5 +228,6 @@ export default () => {
 		useAuthLoading,
 		useAuthInitLoading,
 		updateProfile,
+		useStudioSelected,
 	}
 }
