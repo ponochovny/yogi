@@ -11,6 +11,7 @@ export default defineEventHandler(async (event) => {
 	})
 
 	return {
-		studios: studios.map((studio) => studioTransformer(studio)),
+		data: studios.map((studio) => studioTransformer(studio)),
+		status: 'Success!',
 	}
 })

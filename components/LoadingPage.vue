@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="z-10 fixed inset-0 bg-[#FEF3E4] flex items-center justify-center h-screen"
+		class="z-20 fixed inset-0 bg-[#FEF3E4] flex items-center justify-center h-screen"
 	>
 		<div class="absolute w-20 h-20 animate-ping">
 			<img src="/img/logo.svg" />

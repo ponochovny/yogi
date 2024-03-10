@@ -3,7 +3,9 @@
 		<Transition>
 			<LoadingPage v-if="isAuthInitLoading" />
 		</Transition>
-		<NuxtPage />
+		<NuxtLayout>
+			<NuxtPage />
+		</NuxtLayout>
 		<Toaster position="bottom-center" :duration="7000" />
 	</div>
 </template>

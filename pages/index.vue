@@ -30,4 +30,12 @@ export default defineComponent({
 	name: 'MainPage',
 })
 </script>
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const { getOfferings } = useOffering()
+
+const { data: offerings } = await getOfferings()
+
+onMounted(() => {
+	console.log(offerings.value?.data)
+})
+</script>

@@ -2,6 +2,8 @@ import {
 	PencilSquareIcon,
 	SparklesIcon,
 	UserGroupIcon,
+	ChevronLeftIcon,
+	BookOpenIcon,
 } from '@heroicons/vue/24/outline'
 
 export const userMenu = [
@@ -19,6 +21,18 @@ export const userMenu = [
 		name: 'Studio',
 		icon: UserGroupIcon,
 		link: '/user/studio',
+	},
+]
+export const userOfferingSettingsMenu = [
+	{
+		name: 'Back',
+		icon: ChevronLeftIcon,
+		link: '/user/studio',
+	},
+	{
+		name: 'Offerings',
+		icon: BookOpenIcon,
+		link: '/user/studio/offerings',
 	},
 ]
 

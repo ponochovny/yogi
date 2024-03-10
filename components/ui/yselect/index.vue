@@ -36,7 +36,7 @@
 							class="w-4"
 							:class="{ 'text-orange-400': isSelected }"
 						/>
-						<span>{{ props.field ? option[props.field] : props.field }}</span>
+						<span>{{ props.field ? option[props.field] : option.value }}</span>
 					</div>
 				</template>
 			</Multiselect>
