@@ -12,7 +12,7 @@
 							v-for="category of _data.categories"
 							:key="category.name"
 							class="px-4 py-2 rounded-full border"
-							:class="[updatedData.categories.find((el: string) => el === category.name) ? 'bg-orange-300 !text-white' : 'bg-white']"
+							:class="[updatedData.categories.find((el: string) => el === category.name) ? 'bg-orange-400 !text-white' : 'bg-white']"
 							@click="setUpdatedData('categories', category.name)"
 						>
 							{{ category.name }}

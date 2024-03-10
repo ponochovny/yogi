@@ -27,7 +27,7 @@ export const userOfferingSettingsMenu = [
 	{
 		name: 'Back',
 		icon: ChevronLeftIcon,
-		link: '/user/profile',
+		link: '/user/studio',
 	},
 	{
 		name: 'Offerings',

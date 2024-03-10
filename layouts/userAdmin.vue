@@ -1,7 +1,7 @@
 <template>
 	<div class="max-w-screen-xl pt-3 mx-auto">
 		<Header />
-		<div class="pt-10">
+		<div class="py-10">
 			<div class="bg-white rounded-md flex">
 				<div class="pr-10 w-full max-w-[220px]">
 					<AdminSidebar :menu-items="_userMenu" />

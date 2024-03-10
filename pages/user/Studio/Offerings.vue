@@ -89,6 +89,7 @@ export default defineComponent({
 <script lang="ts" setup>
 const { createOffering } = useOffering()
 const { useStudioSelected } = useAuth()
+const studioId = useStudioSelected()
 const _timezones = timezones
 const _categories = _data.categories
 const _types = _data.types
@@ -108,8 +109,9 @@ const formData = reactive<any>({
 	timezone: _timezones[0].tzId,
 })
 
+onBeforeMount(() => !studioId.value && navigateTo('/user/studio'))
+
 function createOfferingHandler() {
-	const studioId = useStudioSelected()
 	createOffering({
 		...formData,
 		studioId: studioId.value,
