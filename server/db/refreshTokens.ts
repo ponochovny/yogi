@@ -1,7 +1,9 @@
 import { prisma } from '.'
 
-// TODO: set type
-export const createRefreshToken = (refreshToken: any) => {
+export const createRefreshToken = (refreshToken: {
+	token: string
+	userId: string
+}) => {
 	return prisma.refreshToken.create({
 		data: refreshToken,
 	})

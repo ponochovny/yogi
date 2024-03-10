@@ -101,7 +101,7 @@ const isButtonDisabled = computed(() => {
 			types: formData.types,
 			bio: formData.bio,
 			mission: formData.mission,
-			value: logoImageUrl.value,
+			logo: logoImageUrl.value,
 		}
 		const studioData = {
 			name: props.studio.name,
@@ -112,7 +112,7 @@ const isButtonDisabled = computed(() => {
 			types: props.studio.types,
 			bio: props.studio.bio,
 			mission: props.studio.mission,
-			value: props.studio.logo.length && (props.studio.logo[0].url || ''),
+			logo: props.studio.logo.length ? props.studio.logo[0].url || '' : '',
 		}
 		const isEqualState = isEqual(currentFields, studioData)
 
