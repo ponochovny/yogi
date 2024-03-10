@@ -1,7 +1,7 @@
 import formidable from 'formidable'
 import type { IOffering } from '~/helpers/types/offering'
 import { createMediaFile } from '~/server/db/mediaFiles'
-import { createOffering } from '~/server/db/offering'
+import { createOffering } from '~/server/db/offerings'
 import { uploadToCloudinary } from '~/server/utils/cloudinary'
 
 type TOfferingCreation = Partial<

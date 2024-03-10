@@ -16,13 +16,18 @@ export default () => {
 			form.append('logo', data.mediaFiles.logo)
 		}
 
-		return useFetchApi('/api/offering', {
+		return useFetchApi('/api/offerings', {
 			method: 'POST',
 			body: form,
 		})
 	}
 
+	const getOfferings = () => {
+		return useFetch('/api/offerings')
+	}
+
 	return {
 		createOffering,
+		getOfferings,
 	}
 }
