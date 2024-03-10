@@ -3,9 +3,11 @@ import { prisma } from '.'
 export interface IMediaFile {
 	url: string
 	providerPublicId: string
-	logoStudioId?: string
-	bannerStudioId?: string
+	bannerStudioId?: string | null
+	logoStudioId?: string | null
 	userId?: string
+	logoOfferingId?: string | null
+	bannerOfferingId?: string | null
 }
 
 export const createMediaFile = (mediaFile: IMediaFile) => {
