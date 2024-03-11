@@ -9,7 +9,6 @@ export default defineEventHandler(async () => {
 					logo: true,
 				},
 			},
-			logo: true,
 			banners: true,
 		},
 	})
