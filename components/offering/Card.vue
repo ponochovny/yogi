@@ -6,15 +6,22 @@
 				:src="offering.banners[0].url"
 				:alt="offering.name"
 				:title="offering.name"
-				class="w-full h-full object-cover object-center"
+				class="w-full h-full object-cover object-center rounded-2xl"
 			/>
 		</NuxtLink>
-		<div class="min-h-32 bg-white px-4 py-3 rounded-2xl -mt-4 w-[95%] mx-auto">
+		<div
+			class="relative min-h-32 bg-white px-4 py-3 rounded-2xl -mt-4 w-[95%] mx-auto"
+		>
 			<div class="flex gap-1 text-sm mb-1">
-				<span class="text-xs font-semibold">
-					{{ offering.activity }}
-				</span>
-				<span>|</span>
+				<div class="flex gap-1 text-xs font-semibold">
+					<span
+						class="text-green-700"
+						:class="activityColorClass(offering.activity)"
+					>
+						{{ offering.activity }}
+					</span>
+					<span> • </span>
+				</div>
 				<div class="flex flex-wrap">
 					<span
 						v-for="cat of offering.categories"
@@ -70,4 +77,16 @@ interface IProps {
 	offering: IOffering
 }
 const props = defineProps<IProps>()
+
+function activityColorClass(activity: string) {
+	if (activity.toLowerCase() === 'class') {
+		return 'text-blue-700'
+	}
+	if (activity.toLowerCase() === 'event') {
+		return 'text-red-400'
+	}
+	if (activity.toLowerCase() === 'appointment') {
+		return 'text-yellow-500'
+	}
+}
 </script>
