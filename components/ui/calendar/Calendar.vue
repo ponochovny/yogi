@@ -27,7 +27,7 @@ interface SimpleDateParts {
 }
 
 defineOptions({
-  inheritAttrs: false,
+	inheritAttrs: false,
 })
 const props = withDefaults(defineProps< {
   modelValue?: string | number | Date | DatePickerModel
@@ -35,15 +35,15 @@ const props = withDefaults(defineProps< {
   columns?: number
   type?: 'single' | 'range'
 }>(), {
-  type: 'single',
-  columns: 1,
+	type: 'single',
+	columns: 1,
 })
 const emits = defineEmits<{
   (e: 'update:modelValue', payload: typeof props.modelValue): void
 }>()
 
 const modelValue = useVModel(props, 'modelValue', emits, {
-  passive: true,
+	passive: true,
 })
 
 const datePicker = ref<InstanceType<typeof DatePicker>>()
@@ -51,65 +51,65 @@ const datePicker = ref<InstanceType<typeof DatePicker>>()
 const calendarRef = computed<InstanceType<typeof Calendar>>(() => datePicker.value.calendarRef)
 
 function handleNav(direction: 'prev' | 'next') {
-  if (!calendarRef.value)
-    return
+	if (!calendarRef.value)
+		return
 
-  if (direction === 'prev')
-    calendarRef.value.movePrev()
-  else calendarRef.value.moveNext()
+	if (direction === 'prev')
+		calendarRef.value.movePrev()
+	else calendarRef.value.moveNext()
 }
 
 onMounted(async () => {
-  await nextTick()
-  if (modelValue.value instanceof Date && calendarRef.value)
-    calendarRef.value.focusDate(modelValue.value)
+	await nextTick()
+	if (modelValue.value instanceof Date && calendarRef.value)
+		calendarRef.value.focusDate(modelValue.value)
 })
 
 const $slots = useSlots()
 const vCalendarSlots = computed(() => {
-  return Object.keys($slots)
-    .filter(name => isVCalendarSlot(name))
-    .reduce((obj: Record<string, any>, key: string) => {
-      obj[key] = $slots[key]
-      return obj
-    }, {})
+	return Object.keys($slots)
+		.filter(name => isVCalendarSlot(name))
+		.reduce((obj: Record<string, any>, key: string) => {
+			obj[key] = $slots[key]
+			return obj
+		}, {})
 })
 </script>
 
 <template>
-  <div class="relative">
-    <div v-if="$attrs.mode !== 'time'" class="absolute flex justify-between w-full px-4 top-3 z-[1]">
-      <button :class="cn(buttonVariants({ variant: 'outline' }), 'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100')" @click="handleNav('prev')">
-        <ChevronLeft class="w-4 h-4" />
-      </button>
-      <button :class="cn(buttonVariants({ variant: 'outline' }), 'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100')" @click="handleNav('next')">
-        <ChevronRight class="w-4 h-4" />
-      </button>
-    </div>
+	<div class="relative">
+		<div v-if="$attrs.mode !== 'time'" class="absolute flex justify-between w-full px-4 top-3 z-[1]">
+			<button :class="cn(buttonVariants({ variant: 'outline' }), 'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100')" @click="handleNav('prev')">
+				<ChevronLeft class="w-4 h-4" />
+			</button>
+			<button :class="cn(buttonVariants({ variant: 'outline' }), 'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100')" @click="handleNav('next')">
+				<ChevronRight class="w-4 h-4" />
+			</button>
+		</div>
 
-    <DatePicker
-      ref="datePicker"
-      v-bind="$attrs"
-      v-model="modelValue"
-      :model-modifiers="modelModifiers"
-      class="calendar"
-      trim-weeks
-      :transition="'none'"
-      :columns="columns"
-    >
-      <template v-for="(_, slot) of vCalendarSlots" #[slot]="scope">
-        <slot :name="slot" v-bind="scope" />
-      </template>
+		<DatePicker
+			ref="datePicker"
+			v-bind="$attrs"
+			v-model="modelValue"
+			:model-modifiers="modelModifiers"
+			class="calendar"
+			trim-weeks
+			:transition="'none'"
+			:columns="columns"
+		>
+			<template v-for="(_, slot) of vCalendarSlots" #[slot]="scope">
+				<slot :name="slot" v-bind="scope" />
+			</template>
 
-      <template #nav-prev-button>
-        <ChevronLeft />
-      </template>
+			<template #nav-prev-button>
+				<ChevronLeft />
+			</template>
 
-      <template #nav-next-button>
-        <ChevronRight />
-      </template>
-    </DatePicker>
-  </div>
+			<template #nav-next-button>
+				<ChevronRight />
+			</template>
+		</DatePicker>
+	</div>
 </template>
 
 <style lang="css">

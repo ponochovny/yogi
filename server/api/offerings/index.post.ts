@@ -60,22 +60,26 @@ export default defineEventHandler(async (event) => {
 
 	const offering = await createOffering(offeringData)
 
-	const filePromises = Object.keys(files).map(async (key) => {
-		const file = files[key][0]
+	const filePromises = Object.keys(files[`fileToUpload[]`]).map(async (key) => {
+		const file = files[`fileToUpload[]`][key]
 
 		const cloudinaryResource = await uploadToCloudinary(file.filepath)
+
+		console.log('file upload', key)
 
 		return createMediaFile({
 			url: cloudinaryResource.secure_url,
 			providerPublicId: cloudinaryResource.public_id,
-			logoOfferingId: key === 'logo' ? offering.id : null,
-			bannerOfferingId: key === 'banner' ? offering.id : null,
+			bannerOfferingId: offering.id,
 		})
 	})
 
 	await Promise.all(filePromises)
 
 	return {
+		// data: offeringData,
+		// mediaFiles: files,
+		// filePromises,
 		data: offering,
 		status: 'Success!',
 	}

@@ -126,9 +126,7 @@ model MediaFile {
 
   // Offering
   bannerOfferingId String?   @db.ObjectId
-  offeringLogo     Offering? @relation(name: "offeringLogo", fields: [bannerOfferingId], references: [id])
-  logoOfferingId   String?   @db.ObjectId
-  offeringBanner   Offering? @relation(name: "offeringBanners", fields: [logoOfferingId], references: [id])
+  offeringBanner   Offering? @relation(name: "offeringBanners", fields: [bannerOfferingId], references: [id])
 }
 
 model Offering {
@@ -143,7 +141,6 @@ model Offering {
   is_private  Boolean
   types       String[]
   categories  String[]
-  logo        MediaFile[] @relation("offeringLogo")
   banners     MediaFile[] @relation("offeringBanners")
   location    String[]
   timezone    String

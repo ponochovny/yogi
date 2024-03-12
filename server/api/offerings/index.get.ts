@@ -4,8 +4,11 @@ import { offeringTransformer } from '~/server/transformers/offering'
 export default defineEventHandler(async () => {
 	const offerings = await getOfferings({
 		include: {
-			studio: true,
-			logo: true,
+			studio: {
+				include: {
+					logo: true,
+				},
+			},
 			banners: true,
 		},
 	})

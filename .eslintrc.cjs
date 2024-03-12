@@ -15,5 +15,6 @@ module.exports = {
 		'vue/attribute-hyphenation': 'off',
 		'vue/no-unused-vars': 'off',
 		'no-async-promise-executor': 'off',
+		'vue/no-template-shadow': 'off',
 	},
 }

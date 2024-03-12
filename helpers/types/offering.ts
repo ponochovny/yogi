@@ -16,7 +16,11 @@ export interface IOffering {
 	is_private: boolean
 	types: string[]
 	categories: string[]
-	media: Media[]
+
+	// Media
+	// media: Media[]
+	banners: any[]
+
 	studio: IStudio
 	location: string[]
 	timezone: string

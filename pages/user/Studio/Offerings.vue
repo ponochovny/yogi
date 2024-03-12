@@ -69,6 +69,12 @@
 					field="tzId"
 					value-prop="tzId"
 				/>
+				<FileUploadCustom
+					label="Banners"
+					@files="setBannersFiles"
+					v-if="showBannersUploader"
+				/>
+
 				<Button @click="createOfferingHandler" class="self-start">
 					<span class="text-white font-semibold">Create</span>
 				</Button>
@@ -81,6 +87,7 @@
 import { defineComponent } from 'vue'
 import timezones from '~/helpers/timeZones.json'
 import _data from '~/helpers/offeringAttributes.json'
+import { toast } from 'vue-sonner'
 
 export default defineComponent({
 	name: 'UserStudioSettings',
@@ -93,6 +100,7 @@ const studioId = useStudioSelected()
 const _timezones = timezones
 const _categories = _data.categories
 const _types = _data.types
+const showBannersUploader = ref(true)
 
 const formData = reactive<any>({
 	name: '',
@@ -109,12 +117,51 @@ const formData = reactive<any>({
 	timezone: _timezones[0].tzId,
 })
 
+function resetFormData() {
+	formData.name = ''
+	formData.start = new Date()
+	formData.end = new Date()
+	formData.activity = 'Class'
+	formData.duration = ''
+	formData.description = ''
+	formData.spots = ''
+	formData.is_private = false
+	formData.categories = []
+	formData.types = []
+	formData.location = ''
+	formData.timezone = _timezones[0].tzId
+}
+
 onBeforeMount(() => !studioId.value && navigateTo('/user/studio'))
 
 function createOfferingHandler() {
 	createOffering({
 		...formData,
+		banners: bannersFiles.value,
 		studioId: studioId.value,
 	})
+		.then(() => {
+			// TODO: clear form fields
+
+			resetFormData()
+
+			showBannersUploader.value = false
+			setTimeout(() => {
+				showBannersUploader.value = true
+			}, 500)
+			bannersFiles.value = []
+
+			toast.success('Offering has been added')
+		})
+		.catch((error) => {
+			console.log(error)
+			toast.error(error)
+		})
+}
+
+// Media
+const bannersFiles = ref<any[]>([])
+function setBannersFiles(files: any) {
+	bannersFiles.value = [...files]
 }
 </script>

@@ -1,19 +1,21 @@
+import type { IOffering } from '~/helpers/types/offering'
+
 interface IData {
-	mediaFiles?: any
+	banners: any[]
 }
 
 export default () => {
 	const createOffering = (data: IData) => {
 		const form = new FormData()
 
-		const { mediaFiles, ...rest } = data
+		const { banners, ...rest } = data
 
 		Object.keys(rest).map((key: string) => {
 			// @ts-ignore
 			form.append(key, data[key])
 		})
-		if (data.mediaFiles.logo) {
-			form.append('logo', data.mediaFiles.logo)
+		for (const banner of banners) {
+			form.append('fileToUpload[]', banner)
 		}
 
 		return useFetchApi('/api/offerings', {
@@ -23,7 +25,7 @@ export default () => {
 	}
 
 	const getOfferings = () => {
-		return useFetch('/api/offerings')
+		return useFetch<{ data: IOffering[] }>('/api/offerings')
 	}
 
 	return {
