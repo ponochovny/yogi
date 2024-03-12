@@ -2,7 +2,6 @@
 import { format } from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-vue-next'
 
-import { ref } from 'vue'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -19,37 +18,38 @@ interface IProps {
 
 const props = defineProps<IProps>()
 const emit = defineEmits(['update:model-value'])
-
-const date = ref<Date>()
-
-watch(date, (val) => emit('update:model-value', val))
 </script>
 
 <template>
 	<Popover>
 		<PopoverTrigger as-child>
 			<div class="flex flex-col gap-1 w-full">
-				<span v-if="props.label" class="text-sm font-bold text-gray-700">{{
-					props.label
-				}}</span>
+				<span v-if="props.label" class="text-sm font-bold text-gray-700">
+					{{ props.label }}
+				</span>
 				<Button
 					:variant="'outline'"
 					:class="
 						cn(
 							'w-full justify-start text-left font-normal',
 							'border-gray-300 rounded-md shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-300 focus:ring-opacity-50 hover:bg-transparent',
-							!date && 'text-muted-foreground'
+							!modelValue && 'text-muted-foreground'
 						)
 					"
 					size="default"
 				>
 					<CalendarIcon class="mr-2 h-4 w-4" />
-					<span>{{ date ? format(date, 'PPP') : 'Pick a date' }}</span>
+					<span>
+						{{ modelValue ? format(modelValue, 'PPP') : 'Pick a date' }}
+					</span>
 				</Button>
 			</div>
 		</PopoverTrigger>
 		<PopoverContent class="w-auto p-0">
-			<Calendar v-model="date" />
+			<Calendar
+				:model-value="modelValue"
+				@update:model-value="emit('update:model-value', $event)"
+			/>
 		</PopoverContent>
 	</Popover>
 </template>
