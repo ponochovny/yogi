@@ -1,14 +1,14 @@
 <template>
 	<div class="w-full">
 		<label>
-			<span v-if="props.label" class="text-sm font-bold text-gray-700">
-				{{ props.label }}
+			<span v-if="label" class="text-sm font-bold text-gray-700">
+				{{ label }}
 			</span>
 			<Multiselect
-				:mode="props.mode"
-				:value="props.modelValue"
+				:mode="mode"
+				:value="modelValue"
 				@update:model-value="emit('update:model-value', $event)"
-				:options="props.options"
+				:options="options"
 				:classes="{
 					container: 'multiselect !border-gray-300 !mt-1 !rounded-md',
 					containerOpen:
@@ -20,14 +20,22 @@
 					optionSelectedPointed: 'bg-orange-400/10',
 					search: 'multiselect-search focus:ring-0',
 					dropdown: 'multiselect-dropdown scrollbar',
+					tagsSearch:
+						'multiselect-tags-search !ring-0 !border-b-2 !border-solid !border-transparent focus:!border-orange-400',
+					tag: 'multiselect-tag !bg-orange-400',
 				}"
-				:searchable="props.searchable"
-				:value-prop="props.valueProp"
-				:label="props.field"
-				:canClear="props.canClear"
-				:canDeselect="props.canDeselect"
+				:placeholder="placeholder"
+				:searchable="searchable"
+				:value-prop="valueProp"
+				:label="field"
+				:canClear="canClear"
+				:canDeselect="canDeselect"
 				:hideSelected="false"
-				:closeOnSelect="mode === 'multiple' ? false : true"
+				:closeOnSelect="mode === 'multiple' || mode === 'tags' ? false : true"
+				:object="object"
+				:resolveOnLoad="resolveOnLoad"
+				:delay="delay"
+				:minChars="minChars"
 			>
 				<template #option="{ option, isPointed, isSelected, search }: any">
 					<div class="flex gap-2">
@@ -36,7 +44,27 @@
 							class="w-4"
 							:class="{ 'text-orange-400': isSelected }"
 						/>
-						<span>{{ props.field ? option[props.field] : option.value }}</span>
+						<span>{{ field ? option[field] : option.value }}</span>
+					</div>
+				</template>
+				<template v-slot:tag="{ option, handleTagRemove, disabled }: any">
+					<div
+						class="multiselect-tag is-user !bg-orange-400 !py-1"
+						:class="{
+							'is-disabled': disabled,
+						}"
+					>
+						<div class="flex gap-1 items-center">
+							<img :src="option.profileImage" class="w-6 h-6 rounded-full" />
+							<span>{{ option.name }}</span>
+						</div>
+						<span
+							v-if="!disabled"
+							class="multiselect-tag-remove"
+							@click="handleTagRemove(option, $event)"
+						>
+							<span class="multiselect-tag-remove-icon"></span>
+						</span>
 					</div>
 				</template>
 			</Multiselect>
@@ -61,16 +89,27 @@ interface IProps {
 	label?: string
 	field?: string
 	valueProp?: string
-	options?: any[]
+	options?: object | Function | any[]
 	canClear?: boolean
 	canDeselect?: boolean
 	searchable?: boolean
+	object?: boolean
+	// closeOnSelect?: boolean
+	placeholder?: string
+	resolveOnLoad?: boolean
+	delay?: number
+	minChars?: number
 }
 const props = withDefaults(defineProps<IProps>(), {
 	mode: 'single',
 	canClear: false,
 	canDeselect: false,
 	searchable: false,
+	object: false,
+	// closeOnSelect: true,
+	resolveOnLoad: true,
+	delay: -1,
+	minChars: 0,
 })
 const emit = defineEmits(['update:model-value'])
 </script>
