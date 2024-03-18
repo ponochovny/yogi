@@ -36,6 +36,7 @@
 				:resolveOnLoad="resolveOnLoad"
 				:delay="delay"
 				:minChars="minChars"
+				:openDirection="openDirection"
 			>
 				<template #option="{ option, isPointed, isSelected, search }: any">
 					<div class="flex gap-2">
@@ -99,6 +100,7 @@ interface IProps {
 	resolveOnLoad?: boolean
 	delay?: number
 	minChars?: number
+	openDirection?: 'bottom' | 'top'
 }
 const props = withDefaults(defineProps<IProps>(), {
 	mode: 'single',
@@ -110,6 +112,7 @@ const props = withDefaults(defineProps<IProps>(), {
 	resolveOnLoad: true,
 	delay: -1,
 	minChars: 0,
+	openDirection: 'bottom',
 })
 const emit = defineEmits(['update:model-value'])
 </script>

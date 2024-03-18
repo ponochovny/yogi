@@ -63,6 +63,7 @@
 			:resolve-on-load="false"
 			:delay="1500"
 			:min-chars="1"
+			openDirection="top"
 		/>
 		<input
 			type="file"
