@@ -4,7 +4,7 @@ export const attachPractitionerToOffering = (data: {
 	userId: string
 	offeringId: string
 }) => {
-	return prisma.practitionerStudio.create({
+	return prisma.practitioner.create({
 		data: {
 			...data,
 		},
@@ -14,7 +14,7 @@ export const attachPractitionerToStudio = (data: {
 	userId: string
 	studioId: string
 }) => {
-	return prisma.practitionerStudio.create({
+	return prisma.practitioner.create({
 		data: {
 			...data,
 		},

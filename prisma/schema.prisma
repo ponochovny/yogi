@@ -30,7 +30,7 @@ model User {
   // avatars   MediaFile[] @relation("UserMediaFiles")
 
   // Practice
-  practicingIn PractitionerStudio[]
+  practicingIn Practitioner[]
 
   // Bookings
   // Memberships
@@ -79,7 +79,7 @@ model Studio {
   offerings Offering[]
 
   // Practitioners
-  practitioners PractitionerStudio[]
+  practitioners Practitioner[]
 
   // ownerId String @db.ObjectId
   // owner User @relation(fields: [ownerId], references: [id])
@@ -104,7 +104,7 @@ model Studio {
   updatedAt DateTime @updatedAt
 }
 
-model PractitionerStudio {
+model Practitioner {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
   userId     String    @db.ObjectId
   studioId   String?   @db.ObjectId
@@ -170,7 +170,7 @@ model Offering {
   studioId String @db.ObjectId
 
   // Practitioners
-  practitioners PractitionerStudio[]
+  practitioners Practitioner[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
