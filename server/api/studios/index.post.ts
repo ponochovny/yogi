@@ -1,6 +1,7 @@
 import formidable from 'formidable'
 import type { IStudio } from '~/helpers/types/studio'
 import { createMediaFile, type IMediaFile } from '~/server/db/mediaFiles'
+import { attachPractitionerToStudio } from '~/server/db/practitioners'
 import { createStudio } from '~/server/db/studio'
 import { uploadToCloudinary } from '~/server/utils/cloudinary'
 
@@ -52,6 +53,19 @@ export default defineEventHandler(async (event) => {
 
 	const studio = await createStudio(studioData)
 
+	// Practitioners
+	const practitionerPromises = fields[`practitioners[]`].map(
+		async (userId: string) => {
+			return attachPractitionerToStudio({
+				userId,
+				studioId: studio.id,
+			})
+		}
+	)
+
+	await Promise.all(practitionerPromises)
+
+	// Media files
 	const filePromises = Object.keys(files).map(async (key) => {
 		const file = files[key][0]
 

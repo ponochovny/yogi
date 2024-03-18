@@ -50,6 +50,20 @@
 		<!-- <Yselect label="Tags" /> -->
 		<Textarea v-model="formData.bio" label="Bio" />
 		<Textarea v-model="formData.mission" label="Mission" />
+		<Yselect
+			mode="tags"
+			v-model="formData.practitioners"
+			label="Practitioners"
+			:options="practitionersOptions"
+			object
+			placeholder="Select practitioners"
+			searchable
+			field="name"
+			value-prop="name"
+			:resolve-on-load="false"
+			:delay="1500"
+			:min-chars="1"
+		/>
 		<input
 			type="file"
 			ref="imageInput"
@@ -102,6 +116,7 @@ const isButtonDisabled = computed(() => {
 			bio: formData.bio,
 			mission: formData.mission,
 			logo: logoImageUrl.value,
+			practitioners: formData.practitioners,
 		}
 		const studioData = {
 			name: props.studio.name,
@@ -113,6 +128,13 @@ const isButtonDisabled = computed(() => {
 			bio: props.studio.bio,
 			mission: props.studio.mission,
 			logo: props.studio.logo.length ? props.studio.logo[0].url || '' : '',
+			practitioners: props.studio.practitioners.map((el) => ({
+				name: el.name,
+				profileImage: el.profileImage,
+				_id: {
+					$oid: el.id,
+				},
+			})),
 		}
 		const isEqualState = isEqual(currentFields, studioData)
 
@@ -139,6 +161,13 @@ const formData = reactive<{
 	types: string[]
 	bio: string
 	mission: string
+	practitioners: {
+		name: string
+		profileImage: string
+		_id: {
+			$oid: string
+		}
+	}[]
 }>({
 	name: '',
 	location: '',
@@ -148,6 +177,7 @@ const formData = reactive<{
 	types: [],
 	bio: '',
 	mission: '',
+	practitioners: [],
 })
 
 watch(
@@ -176,6 +206,13 @@ onBeforeMount(() => {
 		logoImageUrl.value = props.studio.logo.length
 			? props.studio.logo[0].url
 			: ''
+		formData.practitioners = props.studio.practitioners.map((el) => ({
+			_id: {
+				$oid: el.id,
+			},
+			name: el.name || '',
+			profileImage: el.profileImage || '',
+		}))
 	}
 })
 
@@ -245,5 +282,22 @@ async function createStudioHandler() {
 	} finally {
 		loading.value = false
 	}
+}
+
+// Practitioners
+async function loadUsers(query?: string) {
+	if (!query?.trim()) return Promise.resolve([])
+
+	const res = await $fetch<{ data: any }>('/api/users/search', {
+		method: 'POST',
+		body: {
+			search: query.trim(),
+		},
+	})
+	if (!res) return []
+	return res.data
+}
+const practitionersOptions = async (query: string) => {
+	return await loadUsers(query)
 }
 </script>

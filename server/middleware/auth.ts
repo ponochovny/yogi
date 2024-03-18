@@ -5,8 +5,8 @@ import { getUserById } from '../db/users'
 export default defineEventHandler(async (event) => {
 	const endpoints = [
 		'/api/auth/user',
-		'/api/studio',
-		'/api/studio/update',
+		'/api/studios',
+		'/api/studios/update',
 		'/api/offering',
 	]
 

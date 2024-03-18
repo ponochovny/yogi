@@ -1,6 +1,7 @@
 import type { IUser } from '~/server/types'
 import useFetchApi from './useFetchApi'
 import { jwtDecode } from 'jwt-decode'
+import type { IStudio } from '~/helpers/types/studio'
 
 export default () => {
 	const useAuthToken = () => useState('auth_token')
@@ -8,8 +9,8 @@ export default () => {
 		useState<IUser | unknown>('auth_user')
 	const useAuthLoading = () => useState('auth_loading', () => true)
 	const useAuthInitLoading = () => useState('auth_init_loading', () => true)
-	const useStudioSelected = (): Ref<string | null> =>
-		useState<string | null>('auth_studio_selected', () => null)
+	const useStudioSelected = (): Ref<IStudio | null> =>
+		useState<IStudio | null>('auth_studio_selected', () => null)
 
 	const setToken = (newToken: string) => {
 		const authToken = useAuthToken()
@@ -72,6 +73,7 @@ export default () => {
 		return new Promise(async (resolve, reject) => {
 			try {
 				setIsAuthLoading(true)
+				// @ts-ignore
 				const data: { user: IUser; access_token: string } = await $fetch(
 					'/api/auth/login',
 					{

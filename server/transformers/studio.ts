@@ -1,3 +1,4 @@
+import type { IUser } from '../types'
 import { mediaFileTransformer } from './mediaFiles'
 import { userTransformer } from './user'
 
@@ -15,5 +16,8 @@ export const studioTransformer = (studio: any) => {
 				? Array.of(studio.banner.pop()).map(mediaFileTransformer)
 				: [],
 		owner: userTransformer(studio.owner),
+		practitioners: studio.practitioners.map((data: { user: IUser }) =>
+			userTransformer(data.user)
+		),
 	}
 }

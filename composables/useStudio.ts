@@ -12,6 +12,13 @@ interface IData {
 	mediaFiles: {
 		logo: any
 	}
+	practitioners: {
+		name: string
+		profileImage: string
+		_id: {
+			$oid: string
+		}
+	}[]
 }
 
 export default () => {
@@ -36,7 +43,7 @@ export default () => {
 	const updateStudio = (data: IData, studioId: string) => {
 		const form = new FormData()
 
-		const { mediaFiles, ...rest } = data
+		const { mediaFiles, practitioners, ...rest } = data
 
 		form.append('studio_id', studioId)
 
@@ -44,6 +51,9 @@ export default () => {
 			// @ts-ignore
 			form.append(key, data[key])
 		})
+		for (const practitioner of practitioners) {
+			form.append('practitioners[]', practitioner._id.$oid)
+		}
 		if (data.mediaFiles.logo) {
 			form.append('logo', data.mediaFiles.logo)
 		}

@@ -7,6 +7,11 @@ export default defineEventHandler(async (event) => {
 			owner: true,
 			logo: true,
 			banner: true,
+			practitioners: {
+				include: {
+					user: true,
+				},
+			},
 		},
 	})
 

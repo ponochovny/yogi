@@ -16,7 +16,7 @@
 							</span>
 						</AccordionTrigger>
 						<AccordionContent>
-							<Button class="mb-2" @click="gotoStudioSettings(studio.id)">
+							<Button class="mb-2" @click="gotoStudioSettings(studio)">
 								<span class="text-white font-semibold">Settings</span>
 							</Button>
 							<StudioCreation
@@ -70,11 +70,11 @@ onBeforeMount(async () => {
 	await loadStudios()
 })
 
-function gotoStudioSettings(id: string) {
+function gotoStudioSettings(studioData: IStudio) {
 	const { useStudioSelected } = useAuth()
 	const studioId = useStudioSelected()
 
-	studioId.value = id
+	studioId.value = studioData
 	navigateTo(`/user/studio/offerings`)
 }
 </script>

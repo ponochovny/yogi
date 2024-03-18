@@ -22,4 +22,7 @@ export interface IStudio {
 	// Owner
 	owner: IUser
 	ownerId: string
+
+	// Practitioners
+	practitioners: IUser[]
 }
