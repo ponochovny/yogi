@@ -1,9 +1,8 @@
 <template>
 	<div>
 		<NuxtLink to="/" class="block h-32 bg-gray-200 rounded-2xl">
-			<img
-				v-if="offering.banners && offering.banners[0]?.url"
-				:src="offering.banners[0].url"
+			<NuxtImg
+				:src="getImageUrl"
 				:alt="offering.name"
 				:title="offering.name"
 				class="w-full h-full object-cover object-center rounded-2xl"
@@ -89,4 +88,12 @@ function activityColorClass(activity: string) {
 		return 'text-yellow-500'
 	}
 }
+
+const getImageUrl = computed<string>(() => {
+	if (props.offering.banners && props.offering.banners[0]) {
+		return props.offering.banners[0].url
+	}
+
+	return 'img/banner-placeholder2.jpeg'
+})
 </script>

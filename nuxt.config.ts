@@ -6,6 +6,7 @@ export default defineNuxtConfig({
 		'shadcn-nuxt',
 		'nuxt-lodash',
 		'nuxt-primevue',
+		'@nuxt/image',
 	],
 
 	primevue: {
