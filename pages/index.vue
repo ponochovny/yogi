@@ -9,9 +9,9 @@
 		<MainContainer contentClass="py-6">
 			<!-- Search block -->
 			<div
-				class="my-6 rounded-xl border px-10 py-8 flex items-center justify-center border-gray-400"
+				class="flex flex-col gap-2 my-6 rounded-xl border px-10 py-8 items-center justify-center border-gray-400"
 			>
-				Search
+				<div>Search</div>
 			</div>
 			<!-- Slider with categories which link to search page -->
 			<div class="grid grid-cols-4 gap-4">

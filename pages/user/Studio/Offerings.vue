@@ -69,6 +69,23 @@
 					field="tzId"
 					value-prop="tzId"
 				/>
+
+				<!-- PRACTITIONERS SELECT -->
+				<Yselect
+					mode="tags"
+					v-model="formData.practitioners"
+					label="Practitioners"
+					:options="practitionersOptions"
+					object
+					placeholder="Select practitioners"
+					searchable
+					field="name"
+					value-prop="name"
+					:resolve-on-load="false"
+					:delay="1500"
+					:min-chars="1"
+				/>
+
 				<FileUploadCustom
 					label="Banners"
 					@files="setBannersFiles"
@@ -96,7 +113,7 @@ export default defineComponent({
 <script lang="ts" setup>
 const { createOffering } = useOffering()
 const { useStudioSelected } = useAuth()
-const studioId = useStudioSelected()
+const studioSelected = useStudioSelected()
 const _timezones = timezones
 const _categories = _data.categories
 const _types = _data.types
@@ -115,6 +132,7 @@ const formData = reactive<any>({
 	types: [],
 	location: '',
 	timezone: _timezones[0].tzId,
+	practitioners: [],
 })
 
 function resetFormData() {
@@ -130,15 +148,20 @@ function resetFormData() {
 	formData.types = []
 	formData.location = ''
 	formData.timezone = _timezones[0].tzId
+	formData.practitioners = []
 }
 
-onBeforeMount(() => !studioId.value && navigateTo('/user/studio'))
+onBeforeMount(() => !studioSelected.value && navigateTo('/user/studio'))
 
 function createOfferingHandler() {
+	console.log(formData)
+	if (!studioSelected.value)
+		return toast.error('Some error occurred. Reload the page')
+
 	createOffering({
 		...formData,
 		banners: bannersFiles.value,
-		studioId: studioId.value,
+		studioId: studioSelected.value?.id,
 	})
 		.then(() => {
 			// TODO: clear form fields
@@ -163,5 +186,22 @@ function createOfferingHandler() {
 const bannersFiles = ref<any[]>([])
 function setBannersFiles(files: any) {
 	bannersFiles.value = [...files]
+}
+
+// Practitioners
+async function loadUsers(query?: string) {
+	if (!query?.trim()) return Promise.resolve([])
+
+	const res = await $fetch<{ data: any }>('/api/users/search', {
+		method: 'POST',
+		body: {
+			search: query.trim(),
+		},
+	})
+	if (!res) return []
+	return res.data
+}
+const practitionersOptions = async (query: string) => {
+	return await loadUsers(query)
 }
 </script>

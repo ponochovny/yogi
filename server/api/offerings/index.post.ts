@@ -2,6 +2,7 @@ import formidable from 'formidable'
 import type { IOffering } from '~/helpers/types/offering'
 import { createMediaFile } from '~/server/db/mediaFiles'
 import { createOffering } from '~/server/db/offerings'
+import { attachPractitionerToOffering } from '~/server/db/practitioners'
 import { uploadToCloudinary } from '~/server/utils/cloudinary'
 
 type TOfferingCreation = Partial<
@@ -40,6 +41,8 @@ export default defineEventHandler(async (event) => {
 		files: any
 	}
 
+	const studioId = fields.studioId[0]
+
 	const offeringData: TOfferingCreation = {
 		name: fields.name[0],
 		activity: fields.activity[0],
@@ -55,31 +58,43 @@ export default defineEventHandler(async (event) => {
 		timezone: fields.timezone[0],
 
 		// owner
-		studioId: fields.studioId[0],
+		studioId,
 	}
 
 	const offering = await createOffering(offeringData)
 
-	const filePromises = Object.keys(files[`fileToUpload[]`]).map(async (key) => {
-		const file = files[`fileToUpload[]`][key]
+	// Practitioners
+	const practitionerPromises = fields[`practitioners[]`].map(
+		async (userId: string) => {
+			return attachPractitionerToOffering({
+				userId,
+				offeringId: offering.id,
+			})
+		}
+	)
 
-		const cloudinaryResource = await uploadToCloudinary(file.filepath)
+	await Promise.all(practitionerPromises)
 
-		console.log('file upload', key)
+	// Media files (Banner)
+	if (files[`fileToUpload[]`]) {
+		const filePromises = Object.keys(files[`fileToUpload[]`]).map(
+			async (key) => {
+				const file = files[`fileToUpload[]`][key]
 
-		return createMediaFile({
-			url: cloudinaryResource.secure_url,
-			providerPublicId: cloudinaryResource.public_id,
-			bannerOfferingId: offering.id,
-		})
-	})
+				const cloudinaryResource = await uploadToCloudinary(file.filepath)
 
-	await Promise.all(filePromises)
+				return createMediaFile({
+					url: cloudinaryResource.secure_url,
+					providerPublicId: cloudinaryResource.public_id,
+					bannerOfferingId: offering.id,
+				})
+			}
+		)
+
+		await Promise.all(filePromises)
+	}
 
 	return {
-		// data: offeringData,
-		// mediaFiles: files,
-		// filePromises,
 		data: offering,
 		status: 'Success!',
 	}
