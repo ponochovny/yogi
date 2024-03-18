@@ -23,6 +23,18 @@ export const getUserByEmail = (email: string) => {
 	})
 }
 
+export const getUsersByString = (string: string) => {
+	return prisma.user.findRaw({
+		filter: {
+			// $or: [
+			// 	{ email: { $regex: string } },
+			// 	{ name: { $regex: string, $options: 'i' } },
+			// ],
+			name: { $regex: string, $options: 'i' },
+		},
+	})
+}
+
 export const getUserById = (id: string) => {
 	return prisma.user.findUnique({
 		where: {

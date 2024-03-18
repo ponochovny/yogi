@@ -6,3 +6,18 @@ export const userTransformer = (user: IUser) => {
 		...rest,
 	}
 }
+
+export const userSearchTransformer = (user: IUser) => {
+	const {
+		password,
+		createdAt,
+		updatedAt,
+		interestsCategory,
+		interestsType,
+		email,
+		...rest
+	} = user
+	return {
+		...rest,
+	}
+}
