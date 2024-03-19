@@ -28,7 +28,7 @@
 							v-for="type of _data.types"
 							:key="type.name"
 							class="px-4 py-2 rounded-full border"
-							:class="[updatedData.types.find((el: string) => el === type.name) ? 'bg-orange-300 !text-white':'bg-white']"
+							:class="[updatedData.types.find((el: string) => el === type.name) ? 'bg-orange-400 !text-white':'bg-white']"
 							@click="setUpdatedData('types', type.name)"
 						>
 							{{ type.name }}
