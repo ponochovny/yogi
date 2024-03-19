@@ -73,3 +73,16 @@ export const getStudios = (
 		...params,
 	})
 }
+
+export const getStudioBySlug = (
+	slug: string,
+	params: Prisma.StudioFindUniqueArgs<DefaultArgs>
+) => {
+	return prisma.studio.findUnique({
+		...params,
+		where: {
+			...params?.where,
+			slug,
+		},
+	})
+}

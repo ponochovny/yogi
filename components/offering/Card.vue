@@ -45,7 +45,10 @@
 			<div class="text-sm mb-1">
 				{{ offering.location ? offering.location[0] : '' }}
 			</div>
-			<NuxtLink to="/" class="flex gap-1 items-center">
+			<NuxtLink
+				:to="'studio/' + offering.studio.slug"
+				class="flex gap-1 items-center"
+			>
 				<img
 					v-if="offering.studio.logo?.length"
 					:src="offering.studio.logo[0].url"
@@ -62,7 +65,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { format } from 'date-fns'
 import type { IOffering } from '~/helpers/types/offering'
 import { dateString } from '~/lib/utils'
 import { activityColorClass } from '~/helpers'
