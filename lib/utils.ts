@@ -10,7 +10,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const generateSlug = (title: string) => {
 	const baseSlug = slugify(title, { lower: true, strict: true })
-	const hash = hashSum(title).slice(0, 8)
+	const hash = hashSum(title + new Date().toString()).slice(0, 8)
 	return `${baseSlug}-${hash}`
 }
 

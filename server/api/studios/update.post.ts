@@ -1,7 +1,10 @@
 import formidable from 'formidable'
 import type { IStudio } from '~/helpers/types/studio'
 import { createMediaFile } from '~/server/db/mediaFiles'
-import { attachPractitionerToStudio } from '~/server/db/practitioners'
+import {
+	attachPractitionerToStudio,
+	getPractitionerByStudioID,
+} from '~/server/db/practitioners'
 import { updateStudio } from '~/server/db/studio'
 import { uploadToCloudinary } from '~/server/utils/cloudinary'
 
@@ -23,10 +26,8 @@ export default defineEventHandler(async (event) => {
 
 	const studioData: Pick<
 		IStudio,
-		| 'banner'
 		| 'bio'
 		| 'currency'
-		| 'logo'
 		| 'mission'
 		| 'name'
 		| 'timezone'
@@ -39,13 +40,11 @@ export default defineEventHandler(async (event) => {
 		location: [fields.location[0]],
 		timezone: fields.timezone[0],
 		currency: fields.currency[0],
-		categories: [fields.categories[0]],
-		types: [fields.types[0]],
+		categories: fields.categories[0].split(','),
+		types: fields.types[0].split(','),
 		// tags: [fields.tags[0]],
 		bio: fields.bio[0],
 		mission: fields.mission[0],
-		logo: [],
-		banner: '',
 
 		// owner
 		ownerId: userId,
@@ -57,6 +56,12 @@ export default defineEventHandler(async (event) => {
 	// TODO: handle update
 	const practitionerPromises = Object.keys(fields['practitioners[]']).map(
 		async (key: string) => {
+			const exist = await getPractitionerByStudioID(
+				fields['practitioners[]'][key],
+				studio.id
+			)
+			if (exist) return Promise.resolve()
+
 			return attachPractitionerToStudio({
 				userId: fields['practitioners[]'][key],
 				studioId: studio.id,

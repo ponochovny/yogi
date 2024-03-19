@@ -34,3 +34,12 @@ export const getPractitionersByStudioID = (
 		},
 	})
 }
+
+export const getPractitionerByStudioID = (pracId: string, studioId: string) => {
+	return prisma.practitioner.findFirst({
+		where: {
+			userId: pracId,
+			studioId,
+		},
+	})
+}

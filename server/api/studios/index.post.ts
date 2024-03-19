@@ -24,14 +24,10 @@ export default defineEventHandler(async (event) => {
 
 	const slug = generateSlug(fields.name[0])
 
-	console.log('slug', slug)
-
 	const studioData: Pick<
 		IStudio,
-		| 'banner'
 		| 'bio'
 		| 'currency'
-		| 'logo'
 		| 'mission'
 		| 'name'
 		| 'slug'
@@ -51,8 +47,6 @@ export default defineEventHandler(async (event) => {
 		// tags: [fields.tags[0]],
 		bio: fields.bio[0],
 		mission: fields.mission[0],
-		logo: [],
-		banner: '',
 
 		// owner
 		ownerId: userId,
@@ -61,10 +55,10 @@ export default defineEventHandler(async (event) => {
 	const studio = await createStudio(studioData)
 
 	// Practitioners
-	const practitionerPromises = fields[`practitioners`].map(
+	const practitionerPromises = Object.keys(fields[`practitioners[]`]).map(
 		async (key: string) => {
 			return attachPractitionerToStudio({
-				userId: fields[`practitioners`][key],
+				userId: fields[`practitioners[]`][key],
 				studioId: studio.id,
 			})
 		}

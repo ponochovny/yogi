@@ -23,12 +23,15 @@ export default () => {
 	const createStudio = (data: IData) => {
 		const form = new FormData()
 
-		const { mediaFiles, ...rest } = data
+		const { mediaFiles, practitioners, ...rest } = data
 
 		Object.keys(rest).map((key: string) => {
 			// @ts-ignore
 			form.append(key, data[key])
 		})
+		for (const practitioner of practitioners) {
+			form.append('practitioners[]', practitioner.id)
+		}
 		if (data.mediaFiles.logo) {
 			form.append('logo', data.mediaFiles.logo)
 		}
