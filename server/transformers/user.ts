@@ -37,6 +37,8 @@ export const userSearchTransformer = (user: IUser & { _id: any }) => {
 }
 
 export const ownerTransformer = (user: IUser & { _id: any }) => {
+	if (!user) return {}
+
 	const {
 		password,
 		createdAt,
