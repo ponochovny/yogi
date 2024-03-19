@@ -81,9 +81,6 @@
 					searchable
 					field="name"
 					value-prop="name"
-					:resolve-on-load="false"
-					:delay="1500"
-					:min-chars="1"
 				/>
 
 				<FileUploadCustom
@@ -104,6 +101,7 @@
 import { defineComponent } from 'vue'
 import timezones from '~/helpers/timeZones.json'
 import _data from '~/helpers/offeringAttributes.json'
+import _randomOfferingData from '~/helpers/randomOfferingData.json'
 import { toast } from 'vue-sonner'
 
 export default defineComponent({
@@ -117,10 +115,11 @@ const studioSelected = useStudioSelected()
 const _timezones = timezones
 const _categories = _data.categories
 const _types = _data.types
+const randomNames = _randomOfferingData.names
 const showBannersUploader = ref(true)
 
 const formData = reactive<any>({
-	name: '',
+	name: randomNames[Math.floor(Math.random() * randomNames.length)],
 	start: new Date(),
 	end: new Date(),
 	activity: 'Class',
@@ -154,7 +153,6 @@ function resetFormData() {
 onBeforeMount(() => !studioSelected.value && navigateTo('/user/studio'))
 
 function createOfferingHandler() {
-	console.log(formData)
 	if (!studioSelected.value)
 		return toast.error('Some error occurred. Reload the page')
 
@@ -189,19 +187,15 @@ function setBannersFiles(files: any) {
 }
 
 // Practitioners
-async function loadUsers(query?: string) {
-	if (!query?.trim()) return Promise.resolve([])
-
-	const res = await $fetch<{ data: any }>('/api/users/search', {
+const practitionersOptions = ref<any[]>([])
+onMounted(async () => {
+	useFetchApi('/api/studios/practitioners', {
 		method: 'POST',
 		body: {
-			search: query.trim(),
+			studio_id: studioSelected.value?.id,
 		},
+	}).then(({ data }: any) => {
+		practitionersOptions.value = [...data]
 	})
-	if (!res) return []
-	return res.data
-}
-const practitionersOptions = async (query: string) => {
-	return await loadUsers(query)
-}
+})
 </script>

@@ -1,6 +1,9 @@
 <template>
 	<div>
-		<NuxtLink to="/" class="block h-32 bg-gray-200 rounded-2xl">
+		<NuxtLink
+			:to="`/offering/${offering.slug}`"
+			class="block h-32 bg-gray-200 rounded-2xl"
+		>
 			<NuxtImg
 				:src="getImageUrl"
 				:alt="offering.name"
@@ -32,17 +35,12 @@
 				</div>
 			</div>
 			<div class="mb-1">
-				<NuxtLink to="/">
+				<NuxtLink :to="`/offering/${offering.slug}`">
 					<span class="font-semibold">{{ offering.name }}</span>
 				</NuxtLink>
 			</div>
 			<div class="text-sm font-semibold text-gray-500 mb-1">
-				{{
-					`${format(new Date(offering.start), 'MMM dd')} - ${format(
-						new Date(offering.end),
-						'MMM dd'
-					)}`
-				}}
+				{{ dateString(offering.start, offering.end) }}
 			</div>
 			<div class="text-sm mb-1">
 				{{ offering.location ? offering.location[0] : '' }}
@@ -66,6 +64,8 @@
 import { defineComponent } from 'vue'
 import { format } from 'date-fns'
 import type { IOffering } from '~/helpers/types/offering'
+import { dateString } from '~/lib/utils'
+import { activityColorClass } from '~/helpers'
 
 export default defineComponent({
 	name: 'OfferingCard',
@@ -76,18 +76,6 @@ interface IProps {
 	offering: IOffering
 }
 const props = defineProps<IProps>()
-
-function activityColorClass(activity: string) {
-	if (activity.toLowerCase() === 'class') {
-		return 'text-blue-700'
-	}
-	if (activity.toLowerCase() === 'event') {
-		return 'text-red-400'
-	}
-	if (activity.toLowerCase() === 'appointment') {
-		return 'text-yellow-500'
-	}
-}
 
 const getImageUrl = computed<string>(() => {
 	if (props.offering.banners && props.offering.banners[0]) {

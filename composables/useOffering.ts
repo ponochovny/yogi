@@ -3,7 +3,7 @@ import type { IOffering } from '~/helpers/types/offering'
 interface IData {
 	banners: any[]
 	practitioners: {
-		_id: { $oid: string }
+		id: string
 		name: string
 		profileImage: string
 	}[]
@@ -23,7 +23,7 @@ export default () => {
 			form.append('fileToUpload[]', banner)
 		}
 		for (const practitioner of practitioners) {
-			form.append('practitioners[]', practitioner._id.$oid)
+			form.append('practitioners[]', practitioner.id)
 		}
 
 		return useFetchApi('/api/offerings', {

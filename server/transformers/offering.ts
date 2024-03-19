@@ -1,6 +1,7 @@
 import type { IUser } from '../types'
 import { mediaFileTransformer } from './mediaFiles'
-import { userTransformer } from './user'
+import { studioTransformer } from './studio'
+import { practitionerTransformer } from './user'
 
 // TODO: offering type
 export const offeringTransformer = (offering: any) => {
@@ -11,7 +12,8 @@ export const offeringTransformer = (offering: any) => {
 				? offering.banners.map(mediaFileTransformer)
 				: [],
 		practitioners: offering.practitioners.map((item: { user: IUser }) =>
-			userTransformer(item.user)
+			practitionerTransformer(item.user)
 		),
+		studio: studioTransformer(offering.studio),
 	}
 }

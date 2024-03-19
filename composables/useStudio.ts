@@ -15,9 +15,7 @@ interface IData {
 	practitioners: {
 		name: string
 		profileImage: string
-		_id: {
-			$oid: string
-		}
+		id: string
 	}[]
 }
 
@@ -52,7 +50,7 @@ export default () => {
 			form.append(key, data[key])
 		})
 		for (const practitioner of practitioners) {
-			form.append('practitioners[]', practitioner._id.$oid)
+			form.append('practitioners[]', practitioner.id)
 		}
 		if (data.mediaFiles.logo) {
 			form.append('logo', data.mediaFiles.logo)

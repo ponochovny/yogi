@@ -1,8 +1,10 @@
+import type { IUser } from '~/server/types'
 import type { Media } from '.'
 import type { IStudio } from './studio'
 
 export interface IOffering {
 	id: number
+	slug: string
 	activity: 'appointment' | 'class' | 'event'
 	name: string
 	start: Date
@@ -27,7 +29,7 @@ export interface IOffering {
 	/**
 	 * many-to-many relations
 	 */
-	// practitioners: IUser[]
+	practitioners: IUser[]
 	// tickets: Ticket[]
 	// status: 'active' | 'draft'
 	// venue: 'offline' | 'online'

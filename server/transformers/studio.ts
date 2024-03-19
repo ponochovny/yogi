@@ -1,6 +1,7 @@
+/* eslint-disable indent */
 import type { IUser } from '../types'
 import { mediaFileTransformer } from './mediaFiles'
-import { userTransformer } from './user'
+import { ownerTransformer, practitionerTransformer } from './user'
 
 // TODO: set studio type
 export const studioTransformer = (studio: any) => {
@@ -15,9 +16,12 @@ export const studioTransformer = (studio: any) => {
 			studio.banner && studio.banner.length
 				? Array.of(studio.banner.pop()).map(mediaFileTransformer)
 				: [],
-		owner: userTransformer(studio.owner),
-		practitioners: studio.practitioners.map((data: { user: IUser }) =>
-			userTransformer(data.user)
-		),
+		owner: ownerTransformer(studio.owner),
+		practitioners: studio.practitioners
+			? studio.practitioners.map(
+					(data: { user: IUser }) => practitionerTransformer(data.user)
+					// eslint-disable-next-line no-mixed-spaces-and-tabs
+			  )
+			: [],
 	}
 }

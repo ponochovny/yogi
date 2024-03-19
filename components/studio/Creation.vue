@@ -63,6 +63,7 @@
 			:resolve-on-load="false"
 			:delay="1500"
 			:min-chars="1"
+			openDirection="top"
 		/>
 		<input
 			type="file"
@@ -86,6 +87,7 @@ import currencies from '~/helpers/currencies.json'
 import _data from '~/helpers/offeringAttributes.json'
 import type { IStudio } from '~/helpers/types/studio'
 import { toast } from 'vue-sonner'
+import _randomStudioData from '~/helpers/randomStudioData.json'
 
 export default defineComponent({
 	name: 'Creation',
@@ -131,9 +133,7 @@ const isButtonDisabled = computed(() => {
 			practitioners: props.studio.practitioners.map((el) => ({
 				name: el.name,
 				profileImage: el.profileImage,
-				_id: {
-					$oid: el.id,
-				},
+				id: el.id,
 			})),
 		}
 		const isEqualState = isEqual(currentFields, studioData)
@@ -151,6 +151,7 @@ const _timezones = timezones
 const _currencies = currencies
 const _categories = _data.categories
 const _types = _data.types
+const randomNames = _randomStudioData.names
 
 const formData = reactive<{
 	name: string
@@ -164,12 +165,10 @@ const formData = reactive<{
 	practitioners: {
 		name: string
 		profileImage: string
-		_id: {
-			$oid: string
-		}
+		id: string
 	}[]
 }>({
-	name: '',
+	name: randomNames[Math.floor(Math.random() * randomNames.length)],
 	location: '',
 	timezone: _timezones[0].tzId,
 	currency: _currencies[0].code,
@@ -207,9 +206,7 @@ onBeforeMount(() => {
 			? props.studio.logo[0].url
 			: ''
 		formData.practitioners = props.studio.practitioners.map((el) => ({
-			_id: {
-				$oid: el.id,
-			},
+			id: el.id,
 			name: el.name || '',
 			profileImage: el.profileImage || '',
 		}))

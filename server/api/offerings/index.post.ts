@@ -1,5 +1,6 @@
 import formidable from 'formidable'
 import type { IOffering } from '~/helpers/types/offering'
+import { generateSlug } from '~/lib/utils'
 import { createMediaFile } from '~/server/db/mediaFiles'
 import { createOffering } from '~/server/db/offerings'
 import { attachPractitionerToOffering } from '~/server/db/practitioners'
@@ -9,6 +10,7 @@ type TOfferingCreation = Partial<
 	Pick<
 		IOffering,
 		| 'name'
+		| 'slug'
 		| 'activity'
 		| 'start'
 		| 'end'
@@ -45,6 +47,7 @@ export default defineEventHandler(async (event) => {
 
 	const offeringData: TOfferingCreation = {
 		name: fields.name[0],
+		slug: generateSlug(fields.name[0]),
 		activity: fields.activity[0],
 		start: new Date(fields.start[0]),
 		end: new Date(fields.end[0]),
