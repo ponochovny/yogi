@@ -1,5 +1,5 @@
 import { getUsersByString } from '~/server/db/users'
-import { userSearchTransformer } from '~/server/transformers/user'
+import { userSearchTransformerRaw } from '~/server/transformers/user'
 
 export default defineEventHandler(async (event) => {
 	const { search } = await readBody(event)
@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
 
 	return {
 		// @ts-ignore
-		data: users.map((user) => userSearchTransformer(user)),
+		data: users.map((user) => userSearchTransformerRaw(user)),
 		status: 'Success!',
 	}
 })

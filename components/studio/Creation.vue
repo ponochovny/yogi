@@ -132,9 +132,7 @@ const isButtonDisabled = computed(() => {
 			practitioners: props.studio.practitioners.map((el) => ({
 				name: el.name,
 				profileImage: el.profileImage,
-				_id: {
-					$oid: el.id,
-				},
+				id: el.id,
 			})),
 		}
 		const isEqualState = isEqual(currentFields, studioData)
@@ -165,9 +163,7 @@ const formData = reactive<{
 	practitioners: {
 		name: string
 		profileImage: string
-		_id: {
-			$oid: string
-		}
+		id: string
 	}[]
 }>({
 	name: '',
@@ -208,9 +204,7 @@ onBeforeMount(() => {
 			? props.studio.logo[0].url
 			: ''
 		formData.practitioners = props.studio.practitioners.map((el) => ({
-			_id: {
-				$oid: el.id,
-			},
+			id: el.id,
 			name: el.name || '',
 			profileImage: el.profileImage || '',
 		}))
