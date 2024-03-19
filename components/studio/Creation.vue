@@ -87,6 +87,7 @@ import currencies from '~/helpers/currencies.json'
 import _data from '~/helpers/offeringAttributes.json'
 import type { IStudio } from '~/helpers/types/studio'
 import { toast } from 'vue-sonner'
+import _randomStudioData from '~/helpers/randomStudioData.json'
 
 export default defineComponent({
 	name: 'Creation',
@@ -150,6 +151,7 @@ const _timezones = timezones
 const _currencies = currencies
 const _categories = _data.categories
 const _types = _data.types
+const randomNames = _randomStudioData.names
 
 const formData = reactive<{
 	name: string
@@ -166,7 +168,7 @@ const formData = reactive<{
 		id: string
 	}[]
 }>({
-	name: '',
+	name: randomNames[Math.floor(Math.random() * randomNames.length)],
 	location: '',
 	timezone: _timezones[0].tzId,
 	currency: _currencies[0].code,

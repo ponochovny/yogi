@@ -101,6 +101,7 @@
 import { defineComponent } from 'vue'
 import timezones from '~/helpers/timeZones.json'
 import _data from '~/helpers/offeringAttributes.json'
+import _randomOfferingData from '~/helpers/randomOfferingData.json'
 import { toast } from 'vue-sonner'
 
 export default defineComponent({
@@ -114,10 +115,11 @@ const studioSelected = useStudioSelected()
 const _timezones = timezones
 const _categories = _data.categories
 const _types = _data.types
+const randomNames = _randomOfferingData.names
 const showBannersUploader = ref(true)
 
 const formData = reactive<any>({
-	name: '',
+	name: randomNames[Math.floor(Math.random() * randomNames.length)],
 	start: new Date(),
 	end: new Date(),
 	activity: 'Class',
