@@ -2,6 +2,7 @@ import type { IUser } from '~/server/types'
 
 export interface IStudio {
 	id: string
+	slug: string
 	name: string
 	location: string[]
 	timezone: string

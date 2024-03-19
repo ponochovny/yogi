@@ -1,5 +1,6 @@
 import formidable from 'formidable'
 import type { IStudio } from '~/helpers/types/studio'
+import { generateSlug } from '~/lib/utils'
 import { createMediaFile, type IMediaFile } from '~/server/db/mediaFiles'
 import { attachPractitionerToStudio } from '~/server/db/practitioners'
 import { createStudio } from '~/server/db/studio'
@@ -21,6 +22,10 @@ export default defineEventHandler(async (event) => {
 
 	const userId = event.context.auth.user.id
 
+	const slug = generateSlug(fields.name[0])
+
+	console.log('slug', slug)
+
 	const studioData: Pick<
 		IStudio,
 		| 'banner'
@@ -29,6 +34,7 @@ export default defineEventHandler(async (event) => {
 		| 'logo'
 		| 'mission'
 		| 'name'
+		| 'slug'
 		| 'timezone'
 		| 'ownerId'
 		| 'categories'
@@ -36,6 +42,7 @@ export default defineEventHandler(async (event) => {
 		| 'location'
 	> = {
 		name: fields.name[0],
+		slug,
 		location: [fields.location[0]],
 		timezone: fields.timezone[0],
 		currency: fields.currency[0],
@@ -54,10 +61,10 @@ export default defineEventHandler(async (event) => {
 	const studio = await createStudio(studioData)
 
 	// Practitioners
-	const practitionerPromises = fields[`practitioners[]`].map(
-		async (userId: string) => {
+	const practitionerPromises = fields[`practitioners`].map(
+		async (key: string) => {
 			return attachPractitionerToStudio({
-				userId,
+				userId: fields[`practitioners`][key],
 				studioId: studio.id,
 			})
 		}

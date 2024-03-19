@@ -10,6 +10,7 @@ export const createStudio = (
 		| 'currency'
 		| 'mission'
 		| 'name'
+		| 'slug'
 		| 'timezone'
 		| 'ownerId'
 		| 'categories'
@@ -20,6 +21,7 @@ export const createStudio = (
 	return prisma.studio.create({
 		data: {
 			bio: studioData.bio,
+			slug: studioData.slug,
 			currency: studioData.currency,
 			mission: studioData.mission,
 			name: studioData.name,

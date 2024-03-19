@@ -51,6 +51,7 @@ model RefreshToken {
 
 model Studio {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  slug       String   @unique
   name       String
   location   String[]
   timezone   Json
@@ -151,6 +152,7 @@ model MediaFile {
 
 model Offering {
   id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String      @unique
   activity    String
   name        String
   start       DateTime

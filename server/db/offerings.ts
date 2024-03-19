@@ -15,3 +15,16 @@ export const getOfferings = (
 ) => {
 	return prisma.offering.findMany({ ...params })
 }
+
+export const getOfferingBySlug = (
+	slug: string,
+	params: Prisma.OfferingFindUniqueArgs<DefaultArgs>
+) => {
+	return prisma.offering.findUnique({
+		...params,
+		where: {
+			...params?.where,
+			slug,
+		},
+	})
+}
