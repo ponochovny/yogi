@@ -48,7 +48,7 @@
 						<span>{{ field ? option[field] : option.value }}</span>
 					</div>
 				</template>
-				<template v-slot:tag="{ option, handleTagRemove, disabled }: any">
+				<template #tag="{ option, handleTagRemove, disabled }: any">
 					<div
 						class="multiselect-tag is-user !bg-orange-400 !py-1"
 						:class="{
