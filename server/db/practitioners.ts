@@ -1,4 +1,6 @@
 import { prisma } from '.'
+import type { Prisma } from '@prisma/client'
+import type { DefaultArgs } from '@prisma/client/runtime/library'
 
 export const attachPractitionerToOffering = (data: {
 	userId: string
@@ -17,6 +19,18 @@ export const attachPractitionerToStudio = (data: {
 	return prisma.practitioner.create({
 		data: {
 			...data,
+		},
+	})
+}
+export const getPractitionersByStudioID = (
+	studioId: string,
+	params?: Prisma.PractitionerFindManyArgs<DefaultArgs>
+) => {
+	return prisma.practitioner.findMany({
+		...params,
+		where: {
+			...params?.where,
+			studioId,
 		},
 	})
 }
