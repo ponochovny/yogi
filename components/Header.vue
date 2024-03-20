@@ -57,7 +57,8 @@
 								:src="user.profileImage || ''"
 								:alt="user.name || ''"
 								width="36"
-								class="rounded-full"
+								height="36"
+								class="rounded-full w-9 h-9 object-cover"
 							/>
 							<span class="font-semibold">
 								{{ user?.email }}

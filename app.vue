@@ -3,6 +3,7 @@
 		<Transition>
 			<LoadingPage v-if="isAuthInitLoading" />
 		</Transition>
+		<NuxtLoadingIndicator color="rgb(251 146 60)" />
 		<NuxtLayout>
 			<NuxtPage />
 		</NuxtLayout>
