@@ -1,28 +1,21 @@
 <template>
 	<div class="flex flex-col gap-3">
-		<span class="font-bold">Logo</span>
-		<div
-			@click="handleLogoChange"
-			class="self-start cursor-pointer hover:opacity-75 transition-opacity duration-200 ease-in"
-		>
-			<img
-				v-if="logoImageUrl"
-				:src="logoImageUrl"
-				alt="Studio logo"
-				class="object-cover object-center w-36 h-36 rounded-full"
-			/>
-			<div v-else class="w-36 h-36 rounded-full bg-slate-100"></div>
-		</div>
-		<Input v-model="formData.name" label="Studio name" />
-		<Input v-model="formData.location" label="Studio location" />
-		<Yselect
-			v-model="formData.timezone"
-			label="Timezone"
-			:options="_timezones"
-			searchable
-			field="tzId"
-			value-prop="tzId"
+		<LogoFile
+			v-model:selectedFileLogo="selectedFileLogo"
+			v-model:logoImageUrl="logoImageUrl"
 		/>
+		<Input v-model="formData.name" label="Studio name" />
+		<div class="flex gap-2">
+			<Input v-model="formData.location" label="Studio location" />
+			<Yselect
+				v-model="formData.timezone"
+				label="Timezone"
+				:options="_timezones"
+				searchable
+				field="tzId"
+				value-prop="tzId"
+			/>
+		</div>
 		<Yselect
 			v-model="formData.currency"
 			label="Currency"
@@ -30,22 +23,24 @@
 			field="name"
 			value-prop="code"
 		/>
-		<Yselect
-			v-model="formData.categories"
-			label="Categories"
-			:options="_categories"
-			field="name"
-			value-prop="name"
-			mode="multiple"
-		/>
-		<Yselect
-			v-model="formData.types"
-			label="Types"
-			:options="_types"
-			field="name"
-			value-prop="name"
-			mode="multiple"
-		/>
+		<div class="flex gap-2">
+			<Yselect
+				v-model="formData.categories"
+				label="Categories"
+				:options="_categories"
+				field="name"
+				value-prop="name"
+				mode="multiple"
+			/>
+			<Yselect
+				v-model="formData.types"
+				label="Types"
+				:options="_types"
+				field="name"
+				value-prop="name"
+				mode="multiple"
+			/>
+		</div>
 		<!-- TODO: tags -->
 		<!-- <Yselect label="Tags" /> -->
 		<Textarea v-model="formData.bio" label="Bio" />
@@ -64,13 +59,6 @@
 			:delay="1500"
 			:min-chars="1"
 			openDirection="top"
-		/>
-		<input
-			type="file"
-			ref="imageInput"
-			hidden
-			accept="image/png, image/gif, image/jpeg"
-			@change="handleImageChange"
 		/>
 		<Button @click="handleForm" class="self-start" :disabled="isButtonDisabled">
 			<span class="font-semibold text-white">{{
@@ -144,7 +132,6 @@ const isButtonDisabled = computed(() => {
 })
 
 const { createStudio, updateStudio } = useStudio()
-const imageInput = ref()
 const selectedFileLogo = ref(null)
 const logoImageUrl = ref<string | null>(null)
 const _timezones = timezones
@@ -168,7 +155,7 @@ const formData = reactive<{
 		id: string
 	}[]
 }>({
-	name: randomNames[Math.floor(Math.random() * randomNames.length)],
+	name: '',
 	location: '',
 	timezone: _timezones[0].tzId,
 	currency: _currencies[0].code,
@@ -190,6 +177,11 @@ watch(
 	}
 )
 
+onMounted(() => {
+	if (!(props.studio && props.updateData)) {
+		formData.name = randomNames[Math.floor(Math.random() * randomNames.length)]
+	}
+})
 onBeforeMount(() => {
 	if (props.studio && props.updateData) {
 		formData.name = props.studio.name
@@ -212,24 +204,6 @@ onBeforeMount(() => {
 		}))
 	}
 })
-
-function handleLogoChange() {
-	imageInput.value.click()
-}
-
-// TODO: event type
-function handleImageChange(event: any) {
-	const file = event.target.files[0]
-
-	selectedFileLogo.value = file
-
-	const reader = new FileReader()
-
-	reader.onload = (event: any) => {
-		logoImageUrl.value = event.target.result
-	}
-	reader.readAsDataURL(file)
-}
 
 function handleForm() {
 	if (props.updateData) {
