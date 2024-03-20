@@ -8,67 +8,77 @@
 					label="Offering name"
 					placeholder="Offering name"
 				/>
-				<Datepicker label="Start" v-model="formData.start" />
-				<Datepicker label="End" v-model="formData.end" />
+				<div class="flex gap-2">
+					<Datepicker label="Start" v-model="formData.start" />
+					<Datepicker label="End" v-model="formData.end" />
+				</div>
 				<Yselect
 					v-model="formData.activity"
 					label="Activity type"
 					:options="['Class', 'Event', 'Appointment']"
 				/>
-				<Input
-					v-model="formData.duration"
-					label="Offering duration"
-					placeholder="Offering duration"
-					type="number"
-				/>
+
+				<div class="flex gap-2">
+					<Input
+						v-model="formData.duration"
+						label="Offering duration"
+						placeholder="Offering duration"
+						type="number"
+					/>
+					<Input
+						v-model="formData.spots"
+						label="Offering spots"
+						placeholder="Offering spots"
+						type="number"
+					/>
+					<div class="flex items-end space-x-2 pb-3">
+						<Switch
+							id="airplane-mode"
+							:checked="formData.is_private"
+							@update:checked="formData.is_private = $event"
+						/>
+						<label for="airplane-mode">Private</label>
+					</div>
+				</div>
+
 				<Textarea
 					v-model="formData.description"
 					label="Offering description"
 					placeholder="Offering description"
 				/>
-				<Input
-					v-model="formData.spots"
-					label="Offering spots"
-					placeholder="Offering spots"
-					type="number"
-				/>
-				<div class="flex items-center space-x-2">
-					<Switch
-						id="airplane-mode"
-						:checked="formData.is_private"
-						@update:checked="formData.is_private = $event"
+				<div class="flex gap-2">
+					<Yselect
+						v-model="formData.categories"
+						label="Categories"
+						:options="_categories"
+						field="name"
+						value-prop="name"
+						mode="multiple"
 					/>
-					<label for="airplane-mode">Private</label>
+					<Yselect
+						v-model="formData.types"
+						label="Types"
+						:options="_types"
+						field="name"
+						value-prop="name"
+						mode="multiple"
+					/>
 				</div>
-				<Yselect
-					v-model="formData.categories"
-					label="Categories"
-					:options="_categories"
-					field="name"
-					value-prop="name"
-					mode="multiple"
-				/>
-				<Yselect
-					v-model="formData.types"
-					label="Types"
-					:options="_types"
-					field="name"
-					value-prop="name"
-					mode="multiple"
-				/>
-				<Input
-					v-model="formData.location"
-					label="Offering location"
-					placeholder="Offering location"
-				/>
-				<Yselect
-					v-model="formData.timezone"
-					label="Timezone"
-					:options="_timezones"
-					searchable
-					field="tzId"
-					value-prop="tzId"
-				/>
+				<div class="flex gap-2">
+					<Input
+						v-model="formData.location"
+						label="Offering location"
+						placeholder="Offering location"
+					/>
+					<Yselect
+						v-model="formData.timezone"
+						label="Timezone"
+						:options="_timezones"
+						searchable
+						field="tzId"
+						value-prop="tzId"
+					/>
+				</div>
 
 				<!-- PRACTITIONERS SELECT -->
 				<Yselect

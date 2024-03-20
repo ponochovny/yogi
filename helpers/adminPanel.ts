@@ -23,18 +23,24 @@ export const userMenu = [
 		link: '/user/studio',
 	},
 ]
-export const userOfferingSettingsMenu = [
-	{
-		name: 'Back',
-		icon: ChevronLeftIcon,
-		link: '/user/studio',
-	},
-	{
-		name: 'Offerings',
-		icon: BookOpenIcon,
-		link: '/user/studio/offerings',
-	},
-]
+export const userOfferingSettingsMenu = computed(() => {
+	const { useStudioSelected } = useAuth()
+	const route = useRoute()
+	const studioSelected = useStudioSelected()
+	const id = studioSelected.value?.id || route.params?.id || ''
+	return [
+		{
+			name: 'Back',
+			icon: ChevronLeftIcon,
+			link: '/user/studio',
+		},
+		{
+			name: 'Offerings',
+			icon: BookOpenIcon,
+			link: `/user/studio/${id}/offerings`,
+		},
+	]
+})
 
 export const categories = [
 	'Flow Arts',

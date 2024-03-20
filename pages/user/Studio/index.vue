@@ -1,9 +1,34 @@
 <template>
 	<NuxtLayout name="user-admin">
-		<div v-if="loading || studios.length > 0" class="max-w-[600px]">
-			<h1 class="pt-8 text-2xl font-bold mb-6">Studios list</h1>
-			<div v-if="loading">Loading...</div>
-			<div v-else class="flex flex-col gap-1">
+		<div class="max-w-[600px]">
+			<div class="flex gap-4">
+				<button
+					v-if="studios.length > 0"
+					@click="tab = 'list'"
+					type="button"
+					class="pt-8 text-2xl font-bold mb-6"
+					:class="{
+						'text-orange-500 underline underline-offset-4': tab === 'list',
+					}"
+				>
+					Studios list
+				</button>
+				<button
+					@click="tab = 'create'"
+					type="button"
+					class="pt-8 text-2xl font-bold mb-6"
+					:class="{
+						'text-orange-500 underline underline-offset-4': tab === 'create',
+					}"
+				>
+					Create studio
+				</button>
+			</div>
+			<div
+				v-if="studios.length > 0"
+				v-show="tab === 'list'"
+				class="flex flex-col gap-1"
+			>
 				<Accordion type="single" collapsible defaultValue="item-0">
 					<AccordionItem
 						v-for="(studio, index) of studios"
@@ -16,8 +41,12 @@
 							</span>
 						</AccordionTrigger>
 						<AccordionContent>
-							<Button class="mb-2" @click="gotoStudioSettings(studio)">
-								<span class="text-white font-semibold">Settings</span>
+							<Button
+								class="mb-2"
+								@click="gotoStudioSettings(studio)"
+								btnSize="sm"
+							>
+								<Cog6ToothIcon class="text-white w-6 py-2" />
 							</Button>
 							<StudioCreation
 								:studio="studio"
@@ -30,8 +59,7 @@
 				</Accordion>
 			</div>
 		</div>
-		<div class="max-w-[600px]">
-			<h1 class="pt-8 text-2xl font-bold mb-6">Create studio</h1>
+		<div class="max-w-[600px]" v-show="tab === 'create'">
 			<div class="flex flex-col gap-8">
 				<StudioCreation @updated="loadStudios" />
 			</div>
@@ -42,6 +70,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import type { IStudio } from '~/helpers/types/studio'
+import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
 
 export default defineComponent({
 	name: 'Studio',
@@ -52,6 +81,7 @@ definePageMeta({
 	middleware: ['user'],
 })
 const loading = ref(true)
+const tab = ref<'create' | 'list'>('create')
 const studios = ref<IStudio[]>([])
 const { getStudios } = useStudio()
 
@@ -75,6 +105,6 @@ function gotoStudioSettings(studioData: IStudio) {
 	const studioId = useStudioSelected()
 
 	studioId.value = studioData
-	navigateTo(`/user/studio/offerings`)
+	navigateTo(`/user/studio/${studioData.id}/offerings`)
 }
 </script>
