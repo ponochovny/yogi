@@ -58,7 +58,11 @@ export default defineEventHandler(async (event) => {
 	})
 
 	// Update profile in db with userId
-	const updatedUser = await updateProfile(userId, { name, email })
+	const updatedUser = await updateProfile(userId, {
+		name,
+		email,
+		profileImage: cloudinaryResource.secure_url,
+	})
 
 	return {
 		user: userTransformer(updatedUser),

@@ -40,15 +40,12 @@ export const getUserById = (id: string) => {
 		where: {
 			id,
 		},
-		include: {
-			avatars: true,
-		},
 	})
 }
 
 export const updateProfile = (
 	userId: string,
-	newData: Pick<IUser, 'name' | 'email'>
+	newData: Pick<IUser, 'name' | 'email' | 'profileImage'>
 ) => {
 	return prisma.user.update({
 		where: {
@@ -56,9 +53,6 @@ export const updateProfile = (
 		},
 		data: {
 			...newData,
-		},
-		include: {
-			avatars: true,
 		},
 	})
 }
