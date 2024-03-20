@@ -15,3 +15,11 @@ export const createMediaFile = (mediaFile: IMediaFile) => {
 		data: mediaFile,
 	})
 }
+
+export const deleteManyMediaFileByUserID = (userId: string) => {
+	return prisma.mediaFile.deleteMany({
+		where: {
+			userId,
+		},
+	})
+}

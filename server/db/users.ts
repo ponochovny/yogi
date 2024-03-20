@@ -40,6 +40,9 @@ export const getUserById = (id: string) => {
 		where: {
 			id,
 		},
+		include: {
+			avatars: true,
+		},
 	})
 }
 
@@ -53,6 +56,9 @@ export const updateProfile = (
 		},
 		data: {
 			...newData,
+		},
+		include: {
+			avatars: true,
 		},
 	})
 }

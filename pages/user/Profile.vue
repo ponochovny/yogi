@@ -3,16 +3,10 @@
 		<div class="max-w-[600px]">
 			<h1 class="pt-8 text-2xl font-bold mb-6">Edit profile</h1>
 			<div class="flex flex-col gap-3">
-				<div class="flex flex-col gap-2">
-					<span class="text-sm font-bold text-gray-700">Photo</span>
-					<img
-						:src="user?.profileImage || ''"
-						:alt="user?.name || ''"
-						width="100"
-						height="100"
-						class="rounded-full"
-					/>
-				</div>
+				<LogoFile
+					v-model:selectedFileLogo="selectedFileAvatar"
+					v-model:logoImageUrl="avatarUrl"
+				/>
 				<Input
 					v-model="data.email"
 					label="Your e-mail"
@@ -47,6 +41,9 @@ definePageMeta({
 })
 const { useAuthUser, updateProfile } = useAuth()
 
+const selectedFileAvatar = ref<any>(null)
+const avatarUrl = ref<string | null>(null)
+
 const user = useAuthUser() as Ref<IUser>
 const actionButtonDisabled = computed(() => {
 	if (!user.value) return true
@@ -55,7 +52,8 @@ const actionButtonDisabled = computed(() => {
 		name: user.value?.name || '',
 		email: user.value?.email || '',
 	}
-	return isEqual(obj1, obj2)
+	const isAvatarChanged = avatarUrl.value !== user.value?.profileImage
+	return isEqual(obj1, obj2) && !isAvatarChanged
 })
 
 const data = reactive({
@@ -63,7 +61,10 @@ const data = reactive({
 	email: '',
 })
 
-setData(user.value)
+onMounted(() => {
+	setData(user.value)
+	avatarUrl.value = user.value?.profileImage || ''
+})
 
 watch(user, (val) => {
 	if (val) setData(val)
@@ -73,17 +74,23 @@ function setData(val: any) {
 	if (val) {
 		data.name = val.name || ''
 		data.email = val.email
+		avatarUrl.value = user.value?.profileImage || ''
 	}
 }
 
 function handleUpdateProfile() {
-	updateProfile(data)
+	updateProfile({
+		...data,
+		mediaFiles: {
+			avatar: selectedFileAvatar.value,
+		},
+	})
 		.then(() => {
 			toast.success('Data has been updated')
 		})
 		.catch((error) => {
 			setData(user.value)
-			toast.error(error.data.statusMessage)
+			toast.error(error?.data?.statusMessage || 'Error occurred')
 		})
 }
 </script>

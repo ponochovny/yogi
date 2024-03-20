@@ -7,6 +7,8 @@ export interface IUser {
 	interestsCategory: string[]
 	interestsType: string[]
 
+	avatars: { url: string; id: string }[]
+
 	createdAt: Date
 	updatedAt: Date
 }

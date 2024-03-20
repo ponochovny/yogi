@@ -149,31 +149,38 @@ export default () => {
 		})
 	}
 
-	const updateProfile = (
+	const updateProfile = async (
 		newData: Partial<
 			Pick<IUser, 'name' | 'email' | 'interestsCategory' | 'interestsType'>
-		>
+		> & { mediaFiles?: { avatar: any } }
 	) => {
-		return new Promise(async (resolve, reject) => {
-			// TODO: set type
-			const authUser = useAuthUser() as Ref<IUser>
+		// TODO: set type
+		const authUser = useAuthUser() as Ref<IUser>
 
-			try {
-				// TODO: set type
-				const data = await useFetchApi<any>('/api/auth/updateProfile', {
-					method: 'POST',
-					body: {
-						...newData,
-						userId: authUser.value?.id || '',
-					},
-				})
+		const form = new FormData()
 
-				setUser(data.user)
-				resolve(true)
-			} catch (error) {
-				reject(error)
-			}
+		const { mediaFiles, ...rest } = newData
+
+		form.append('userId', authUser.value.id)
+
+		Object.keys(rest).map((key: string) => {
+			// @ts-ignore
+			form.append(key, rest[key])
 		})
+		if (mediaFiles?.avatar) {
+			form.append('avatar', mediaFiles.avatar)
+		}
+
+		try {
+			const res = await useFetchApi<any>('/api/auth/updateProfile', {
+				method: 'POST',
+				body: form,
+			})
+
+			setUser(res.user)
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
 	const reRefreshAccessToken = () => {
