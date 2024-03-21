@@ -4,8 +4,8 @@
 			<h1 class="pt-8 text-2xl font-bold mb-6">Edit profile</h1>
 			<div class="flex flex-col gap-3">
 				<LogoFile
-					v-model:selectedFileLogo="selectedFileAvatar"
-					v-model:logoImageUrl="avatarUrl"
+					v-model:selectedFile="selectedFileAvatar"
+					v-model:imageUrl="avatarUrl"
 				/>
 				<Input
 					v-model="data.email"

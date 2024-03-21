@@ -1,13 +1,13 @@
 <template>
 	<div class="flex flex-col gap-1">
-		<span class="text-sm font-bold text-gray-700">Logo</span>
+		<span class="text-sm font-bold text-gray-700">{{ label }}</span>
 		<div
 			@click="handleLogoChange"
 			class="self-start cursor-pointer hover:opacity-75 transition-opacity duration-200 ease-in"
 		>
 			<img
-				v-if="logoImageUrl"
-				:src="logoImageUrl"
+				v-if="imageUrl"
+				:src="imageUrl"
 				alt="Studio logo"
 				class="object-cover object-center w-36 h-36 rounded-full"
 			/>
@@ -38,11 +38,12 @@ export default defineComponent({
 </script>
 <script lang="ts" setup>
 interface IProps {
-	logoImageUrl: string | null
-	selectedFileLogo: any
+	label?: string
+	imageUrl: string | null
+	selectedFile: any
 }
 const props = defineProps<IProps>()
-const emit = defineEmits(['update:logoImageUrl', 'update:selectedFileLogo'])
+const emit = defineEmits(['update:imageUrl', 'update:selectedFile'])
 
 const imageInput = ref()
 
@@ -54,14 +55,12 @@ function handleLogoChange() {
 function handleImageChange(event: any) {
 	const file = event.target.files[0]
 
-	// selectedFileLogo.value = file
-	emit('update:selectedFileLogo', file)
+	emit('update:selectedFile', file)
 
 	const reader = new FileReader()
 
 	reader.onload = (event: any) => {
-		// logoImageUrl.value = event.target.result
-		emit('update:logoImageUrl', event.target.result)
+		emit('update:imageUrl', event.target.result)
 	}
 	reader.readAsDataURL(file)
 }

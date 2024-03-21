@@ -61,22 +61,24 @@
 
 				<div class="flex flex-col gap-6">
 					<div class="font-semibold text-lg">Practitioners</div>
-					<div
-						class="flex gap-4 items-center"
-						v-for="practitioner of studio.practitioners"
-						:key="practitioner.id"
-					>
-						<NuxtImg
-							:src="practitioner.profileImage || ''"
-							:alt="practitioner.name || ''"
-							:title="practitioner.name"
-							class="w-12 rounded-full"
-						/>
-						<NuxtLink to="/">
-							<span class="font-semibold">
-								{{ practitioner.name }}
-							</span>
-						</NuxtLink>
+					<div class="flex gap-4 flex-wrap">
+						<div
+							class="flex gap-4 items-center"
+							v-for="practitioner of studio.practitioners"
+							:key="practitioner.id"
+						>
+							<NuxtImg
+								:src="practitioner.profileImage || ''"
+								:alt="practitioner.name || ''"
+								:title="practitioner.name"
+								class="w-12 rounded-full"
+							/>
+							<NuxtLink to="/">
+								<span class="font-semibold">
+									{{ practitioner.name }}
+								</span>
+							</NuxtLink>
+						</div>
 					</div>
 				</div>
 

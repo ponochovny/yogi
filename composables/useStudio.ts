@@ -11,6 +11,7 @@ interface IData {
 	mission: string
 	mediaFiles: {
 		logo: any
+		banner: any
 	}
 	practitioners: {
 		name: string
@@ -35,6 +36,9 @@ export default () => {
 		if (data.mediaFiles.logo) {
 			form.append('logo', data.mediaFiles.logo)
 		}
+		if (data.mediaFiles.banner) {
+			form.append('banner', data.mediaFiles.banner)
+		}
 
 		return useFetchApi('/api/studios', {
 			method: 'POST',
@@ -57,6 +61,9 @@ export default () => {
 		}
 		if (data.mediaFiles.logo) {
 			form.append('logo', data.mediaFiles.logo)
+		}
+		if (data.mediaFiles.banner) {
+			form.append('banner', data.mediaFiles.banner)
 		}
 
 		return useFetchApi('/api/studios/update', {

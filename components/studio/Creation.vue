@@ -1,8 +1,14 @@
 <template>
 	<div class="flex flex-col gap-3">
 		<LogoFile
-			v-model:selectedFileLogo="selectedFileLogo"
-			v-model:logoImageUrl="logoImageUrl"
+			label="Logo"
+			v-model:selectedFile="selectedFileLogo"
+			v-model:imageUrl="logoImageUrl"
+		/>
+		<LogoFile
+			label="Banner"
+			v-model:selectedFile="selectedFileBanner"
+			v-model:imageUrl="bannerImageUrl"
 		/>
 		<Input v-model="formData.name" label="Studio name" />
 		<div class="flex gap-2">
@@ -61,9 +67,9 @@
 			openDirection="top"
 		/>
 		<Button @click="handleForm" class="self-start" :disabled="isButtonDisabled">
-			<span class="font-semibold text-white">{{
-				updateData ? 'Update' : 'Create'
-			}}</span>
+			<span class="font-semibold text-white">
+				{{ updateData ? 'Update' : 'Create' }}
+			</span>
 		</Button>
 	</div>
 </template>
@@ -106,6 +112,7 @@ const isButtonDisabled = computed(() => {
 			bio: formData.bio,
 			mission: formData.mission,
 			logo: logoImageUrl.value,
+			banner: bannerImageUrl.value,
 			practitioners: formData.practitioners,
 		}
 		const studioData = {
@@ -118,6 +125,9 @@ const isButtonDisabled = computed(() => {
 			bio: props.studio.bio,
 			mission: props.studio.mission,
 			logo: props.studio.logo.length ? props.studio.logo[0].url || '' : '',
+			banner: props.studio.banner.length
+				? props.studio.banner[0].url || ''
+				: '',
 			practitioners: props.studio.practitioners.map((el) => ({
 				name: el.name,
 				profileImage: el.profileImage,
@@ -134,6 +144,8 @@ const isButtonDisabled = computed(() => {
 const { createStudio, updateStudio } = useStudio()
 const selectedFileLogo = ref(null)
 const logoImageUrl = ref<string | null>(null)
+const selectedFileBanner = ref(null)
+const bannerImageUrl = ref<string | null>(null)
 const _timezones = timezones
 const _currencies = currencies
 const _categories = _data.categories
@@ -221,7 +233,7 @@ async function updateStudioHandler() {
 				...formData,
 				mediaFiles: {
 					logo: selectedFileLogo.value,
-					// banner: selectedFileBanner.value
+					banner: selectedFileBanner.value,
 				},
 			},
 			props.studio?.id as string
@@ -241,7 +253,7 @@ async function createStudioHandler() {
 			...formData,
 			mediaFiles: {
 				logo: selectedFileLogo.value,
-				// banner: selectedFileBanner.value
+				banner: selectedFileBanner.value,
 			},
 		})
 		emit('updated')
