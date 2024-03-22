@@ -20,6 +20,9 @@ export const getUserByEmail = (email: string) => {
 		where: {
 			email,
 		},
+		include: {
+			avatars: true,
+		},
 	})
 }
 
