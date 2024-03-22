@@ -19,6 +19,16 @@ export default defineEventHandler(async (event) => {
 		where: {},
 	})
 
+	if (!studio) {
+		return sendError(
+			event,
+			createError({
+				statusCode: 400,
+				statusMessage: 'Slug is incorrect',
+			})
+		)
+	}
+
 	return {
 		data: studioTransformer(studio),
 		status: 'Success!',
