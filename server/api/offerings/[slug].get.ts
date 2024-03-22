@@ -1,6 +1,3 @@
-// import { getOfferings } from '~/server/db/offerings'
-// import { offeringTransformer } from '~/server/transformers/offering'
-
 import { getOfferingBySlug } from '~/server/db/offerings'
 import { offeringTransformer } from '~/server/transformers/offering'
 
@@ -25,25 +22,18 @@ export default defineEventHandler(async (event) => {
 		// @ts-ignore
 		where: {},
 	})
-	// const test = event.context.params
-	// const offerings = await getOfferings({
-	// 	include: {
-	// 		studio: {
-	// 			include: {
-	// 				logo: true,
-	// 			},
-	// 		},
-	// 		banners: true,
-	// 		practitioners: {
-	// 			include: {
-	// 				user: true,
-	// 			},
-	// 		},
-	// 	},
-	// })
+
+	if (!offering) {
+		return sendError(
+			event,
+			createError({
+				statusCode: 400,
+				statusMessage: 'Slug is incorrect',
+			})
+		)
+	}
 
 	return {
-		// data: offerings.map((offering) => offeringTransformer(offering)),
 		data: offeringTransformer(offering),
 		status: 'Success!',
 	}

@@ -2,6 +2,7 @@ import type { IUser } from '../types'
 
 export const userTransformer = (user: IUser) => {
 	const { password, createdAt, updatedAt, avatars, ...rest } = user
+	const lastAvatar = avatars ? avatars[avatars.length - 1] : { url: '' }
 	return {
 		...rest,
 	}
