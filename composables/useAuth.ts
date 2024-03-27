@@ -5,8 +5,8 @@ import type { IStudio } from '~/helpers/types/studio'
 
 export default () => {
 	const useAuthToken = () => useState('auth_token')
-	const useAuthUser = (): Ref<IUser | unknown> =>
-		useState<IUser | unknown>('auth_user')
+	const useAuthUser = (): Ref<IUser | null> =>
+		useState<IUser | null>('auth_user')
 	const useAuthLoading = () => useState('auth_loading', () => true)
 	const useAuthInitLoading = () => useState('auth_init_loading', () => true)
 	const useStudioSelected = (): Ref<IStudio | null> =>
