@@ -26,7 +26,7 @@
 						</div>
 					</div>
 				</SelectTrigger>
-				<SelectContent>
+				<SelectContent class="mt-2 rounded-2xl border-0 shadow-md p-1.5">
 					<SelectItem
 						v-for="currency of _currencies"
 						:key="currency.code"
@@ -52,7 +52,9 @@
 			<template v-else>
 				<Popover>
 					<PopoverTrigger>
-						<div class="flex items-center gap-2">
+						<div
+							class="flex items-center gap-4 p-2 pr-3 rounded-full bg-white shadow-md"
+						>
 							<img
 								:src="user.profileImage || ''"
 								:alt="user.name || ''"
@@ -61,19 +63,17 @@
 								class="rounded-full w-9 h-9 object-cover"
 							/>
 							<span class="font-semibold">
-								{{ user?.email }}
+								{{ user?.name || user?.email }}
 							</span>
 						</div>
 					</PopoverTrigger>
 					<PopoverContent
 						align="end"
 						:arrowPadding="0"
-						class="mt-2 max-w-[200px]"
+						class="mt-2 max-w-[200px] rounded-2xl border-0 shadow-md"
 					>
 						<div class="flex flex-col gap-2 w-full">
-							<NuxtLink to="/user/profile">
-								<button>My Profile</button>
-							</NuxtLink>
+							<NuxtLink to="/user/profile"> My Profile </NuxtLink>
 
 							<button @click="logout" class="text-left">Logout</button>
 						</div>

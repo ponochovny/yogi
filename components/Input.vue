@@ -1,14 +1,15 @@
 <template>
 	<div class="w-full">
 		<label>
-			<span v-if="props.label" class="text-sm font-bold text-gray-700">{{
-				props.label
-			}}</span>
+			<span v-if="label" class="text-sm font-bold text-gray-700">
+				{{ label }}
+			</span>
 			<input
-				:placeholder="props.placeholder"
-				:name="props.name"
-				:type="props.type"
-				:value="props.modelValue"
+				:id="id ? id : undefined"
+				:placeholder="placeholder"
+				:name="name"
+				:type="type"
+				:value="modelValue"
 				@input="(event: any) => emits('update:modelValue', event.target.value)"
 				class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-300 focus:ring-opacity-50"
 			/>
@@ -32,12 +33,15 @@ interface IProps {
 	label?: string | null
 	placeholder?: string
 	type?: string
+	id?: string
 }
-const props = withDefaults(defineProps<IProps>(), {
+
+withDefaults(defineProps<IProps>(), {
 	name: '',
 	label: null,
 	placeholder: '',
 	type: 'text',
 	autocomplete: false,
+	id: '',
 })
 </script>
