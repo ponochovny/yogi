@@ -23,14 +23,14 @@ export interface IOffering {
 	// media: Media[]
 	banners: any[]
 
-	studio: IStudio
+	studio?: IStudio
 	location: string[]
 	timezone: string
 	/**
 	 * many-to-many relations
 	 */
 	practitioners: IUser[]
-	// tickets: Ticket[]
+	tickets: ITicket[]
 	// status: 'active' | 'draft'
 	// venue: 'offline' | 'online'
 	// tags: string[]
@@ -38,15 +38,44 @@ export interface IOffering {
 	// dates: {start: Date; end: Date}[]
 }
 
-// export interface Ticket {
-//   id: number
-//   name: string
-//   description: string
-//   price: number
-//   currency: string
-//   fee: number
-/**
- * Mandatory 1-1 relation
- */
-//   offering: IOffering
-// }
+export interface ITicket {
+	id: string
+	name: string
+	description: string
+	price: number
+	currency: string
+	// fee: number
+	/**
+	 * Mandatory 1-1 relation
+	 */
+	offering?: IOffering
+	offeringId: string
+	purchase?: any[]
+}
+
+export interface IOfferingCreation {
+	name: string
+	description: string
+	activity: string
+	slug: string
+	categories: string[]
+	types: string[]
+	duration: number
+	is_private: boolean
+	spots: number
+	timezone: string
+	tickets: {
+		name: string
+		description: string
+		price: string
+		currency: string
+	}[]
+	start: Date
+	end: Date
+	banners: File[]
+	practitioners: {
+		id: string
+	}[]
+	location: string[]
+	studioId: string
+}
