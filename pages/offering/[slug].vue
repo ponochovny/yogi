@@ -43,7 +43,7 @@
 					:src="offeringData.data.banners[0].url"
 					:alt="offeringData.data.name"
 					:title="offeringData.data.name"
-					class="object-cover w-full"
+					class="object-cover w-full h-full"
 				/>
 			</div>
 			<div
@@ -125,8 +125,11 @@
 							/>
 							<div class="flex flex-col">
 								<p>{{ ticket.name }}</p>
+								<p class="text-xs">{{ ticket.description }}</p>
 								<span class="font-semibold text-lg">
-									{{ ticket.currency + ' ' + ticket.price }}
+									{{
+										currencySymbolByCode(ticket.currency) + '' + ticket.price
+									}}
 								</span>
 							</div>
 						</div>
@@ -134,7 +137,7 @@
 					<div class="text-rose-500">
 						{{ error && !selectedTicket ? error : '' }}
 					</div>
-					<Button @click="handleCheckout(offeringData.data.tickets[0].id, 1)">
+					<Button @click="handleCheckout(selectedTicket, 1)">
 						<span class="font-semibold mx-auto">Checkout</span>
 					</Button>
 				</div>
@@ -145,7 +148,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { activityColorClass } from '~/helpers'
+import { activityColorClass, currencySymbolByCode } from '~/helpers'
 import type { IOffering } from '~/helpers/types/offering'
 import { CalendarIcon, MapPinIcon, TicketIcon } from '@heroicons/vue/24/outline'
 import { dateString } from '~/lib/utils'

@@ -1,3 +1,5 @@
+import currencies from '~/helpers/currencies.json'
+
 export function activityColorClass(activity: string) {
 	if (activity.toLowerCase() === 'class') {
 		return 'text-blue-700'
@@ -22,4 +24,11 @@ export function convertPriceStringToNumber(priceStr: string): number {
 		cents = _cents.substring(0, 2)
 	}
 	return parseInt(dollars + cents, 10)
+}
+
+export const currencySymbolByCode = (code: string): string => {
+	return (
+		currencies.find((el) => el.code.toLowerCase() === code.toLowerCase())
+			?.symbol || ''
+	)
 }
