@@ -36,6 +36,7 @@ model User {
   // Memberships
   // Purchase history
   // Waitlist
+  purchases Purchase[]
 }
 
 model RefreshToken {
@@ -176,4 +177,34 @@ model Offering {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  tickets   Ticket[]
+}
+
+model Ticket {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  price       Int
+  currency    String
+
+  offeringId String   @db.ObjectId
+  offering   Offering @relation(fields: [offeringId], references: [id])
+
+  status String
+
+  purchase Purchase[]
+}
+
+model Purchase {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId String? @db.ObjectId
+  user   User?   @relation(fields: [userId], references: [id])
+
+  ticketId String @db.ObjectId
+  ticket   Ticket @relation(fields: [ticketId], references: [id])
+
+  paymentId    String  @unique
+  receiptEmail String
+  userName     String?
 }

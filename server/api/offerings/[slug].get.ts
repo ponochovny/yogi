@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
 					user: true,
 				},
 			},
+			tickets: true,
 		},
 		// @ts-ignore
 		where: {},

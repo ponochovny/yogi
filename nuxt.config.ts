@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-	// devtools: { enabled: true }
+	devtools: { enabled: false },
 	modules: [
 		'@nuxtjs/tailwindcss',
 		'shadcn-nuxt',
@@ -15,16 +15,8 @@ export default defineNuxtConfig({
 		},
 	},
 
-	// @ts-ignore
 	shadcn: {
-		/**
-		 * Prefix for all the imported component
-		 */
 		prefix: '',
-		/**
-		 * Directory that the component lives in.
-		 * @default "./components/ui"
-		 */
 		componentDir: './components/ui',
 	},
 
@@ -39,6 +31,13 @@ export default defineNuxtConfig({
 		cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME,
 		cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
 		cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
+		// Stripe
+		stripeSecretKey: process.env.STRIPE_SECRET_KEY,
+		stripeEndpointSecret: process.env.ENDPOINT_SECRET,
+		public: {
+			appDomain: process.env.APP_DOMAIN,
+			stripePublicKey: process.env.STRIPE_PUBLISHABLE_KEY,
+		},
 	},
 
 	app: {

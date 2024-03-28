@@ -5,16 +5,16 @@
 				<div class="flex gap-1 text-sm">
 					<div class="flex gap-1 text-xs font-semibold">
 						<span
-							class="text-green-700"
-							:class="activityColorClass(offeringData?.data.activity)"
+							class="text-green-700 capitalize"
+							:class="activityColorClass(offeringData.data.activity)"
 						>
-							{{ offeringData?.data.activity }}
+							{{ offeringData.data.activity }}
 						</span>
 						<span> • </span>
 					</div>
 					<div class="flex flex-wrap">
 						<span
-							v-for="cat of offeringData?.data.categories"
+							v-for="cat of offeringData.data.categories"
 							:key="cat"
 							class="text-xs mr-1"
 						>
@@ -22,27 +22,27 @@
 						</span>
 					</div>
 				</div>
-				<div class="text-3xl font-semibold">{{ offeringData?.data.name }}</div>
+				<div class="text-3xl font-semibold">{{ offeringData.data.name }}</div>
 				<div class="flex gap-4 items-center">
 					<div class="flex gap-2 items-center">
 						<CalendarIcon class="w-5 text-orange-500 stroke-1.5" />
-						<span class="font-semibold text-sm">
-							{{ dateString(offeringData?.data.start, offeringData?.data.end) }}
+						<span class="font-semibold text-sm text-gray-600">
+							{{ dateString(offeringData.data.start, offeringData.data.end) }}
 						</span>
 					</div>
 					<div class="flex gap-2 items-center">
 						<MapPinIcon class="w-5 text-orange-500 stroke-1.5" />
 						<span class="font-semibold text-sm">
-							{{ offeringData?.data.location[0] }}
+							{{ offeringData.data.location[0] }}
 						</span>
 					</div>
 				</div>
 			</div>
 			<div class="h-[450px] overflow-hidden rounded-3xl">
 				<NuxtImg
-					:src="offeringData?.data.banners[0].url"
-					:alt="offeringData?.data.name"
-					:title="offeringData?.data.name"
+					:src="offeringData.data.banners[0].url"
+					:alt="offeringData.data.name"
+					:title="offeringData.data.name"
 					class="object-cover w-full"
 				/>
 			</div>
@@ -52,24 +52,24 @@
 				<div class="flex flex-col gap-10 w-[calc(100%_-_400px)]">
 					<div class="flex flex-col gap-6">
 						<div class="font-semibold text-lg">
-							{{ 'About ' + offeringData?.data.name }}
+							{{ 'About ' + offeringData.data.name }}
 						</div>
 						<div class="whitespace-pre-line leading-7">
-							{{ offeringData?.data.description }}
+							{{ offeringData.data.description }}
 						</div>
 					</div>
 					<div class="flex flex-col gap-6">
 						<div class="font-semibold text-lg">Host</div>
 						<div class="flex gap-4 items-center">
 							<NuxtImg
-								:src="offeringData?.data.studio.logo[0].url || ''"
-								:alt="offeringData?.data.studio.name || ''"
-								:title="offeringData?.data.studio.name"
+								:src="offeringData.data.studio?.logo[0].url || ''"
+								:alt="offeringData.data.studio?.name || ''"
+								:title="offeringData.data.studio?.name"
 								class="w-20 rounded-full"
 							/>
 							<NuxtLink to="/">
 								<span class="font-semibold text-lg">
-									{{ offeringData?.data.studio.name }}
+									{{ offeringData.data.studio?.name }}
 								</span>
 							</NuxtLink>
 						</div>
@@ -78,7 +78,7 @@
 						<div class="font-semibold text-lg">Practitioners</div>
 						<div
 							class="flex gap-4 items-center"
-							v-for="practitioner of offeringData?.data.practitioners"
+							v-for="practitioner of offeringData.data.practitioners"
 							:key="practitioner.id"
 						>
 							<NuxtImg
@@ -97,13 +97,47 @@
 					<div class="flex flex-col gap-6">
 						<div class="font-semibold text-lg">Location</div>
 						<div class="border rounded-xl p-6 font-semibold">
-							{{ offeringData?.data.location[0] }}
+							{{ offeringData.data.location[0] }}
 						</div>
 					</div>
 				</div>
-				<!-- <div class="bg-red-200/20 rounded-xl p-10 w-[400px] self-start">
-				Sidebar
-			</div> -->
+				<div
+					v-if="offeringData.data.tickets.length"
+					class="bg-red-200/20 rounded-xl p-10 w-[400px] self-start flex flex-col gap-4"
+				>
+					<button
+						v-for="ticket of offeringData.data.tickets"
+						:key="ticket.id"
+						@click="selectedTicket = ticket.id"
+					>
+						<div
+							class="flex gap-4 px-2 py-1 border rounded-lg border-gray-400 text-left text-black transition-colors"
+							:class="{
+								'hover:bg-orange-200/20 hover:border-orange-400/50 pl-7':
+									selectedTicket !== ticket.id,
+								'bg-orange-200/20 border-orange-400/50':
+									selectedTicket === ticket.id,
+							}"
+						>
+							<TicketIcon
+								v-if="selectedTicket === ticket.id"
+								class="w-10 text-gray-700 stroke-1"
+							/>
+							<div class="flex flex-col">
+								<p>{{ ticket.name }}</p>
+								<span class="font-semibold text-lg">
+									{{ ticket.currency + ' ' + ticket.price }}
+								</span>
+							</div>
+						</div>
+					</button>
+					<div class="text-rose-500">
+						{{ error && !selectedTicket ? error : '' }}
+					</div>
+					<Button @click="handleCheckout(offeringData.data.tickets[0].id, 1)">
+						<span class="font-semibold mx-auto">Checkout</span>
+					</Button>
+				</div>
 			</div>
 		</template>
 	</MainContainer>
@@ -113,7 +147,7 @@
 import { defineComponent } from 'vue'
 import { activityColorClass } from '~/helpers'
 import type { IOffering } from '~/helpers/types/offering'
-import { CalendarIcon, MapPinIcon } from '@heroicons/vue/24/outline'
+import { CalendarIcon, MapPinIcon, TicketIcon } from '@heroicons/vue/24/outline'
 import { dateString } from '~/lib/utils'
 
 export default defineComponent({
@@ -122,7 +156,20 @@ export default defineComponent({
 </script>
 <script lang="ts" setup>
 const route = useRoute()
+const router = useRouter()
+const error = ref('')
+
 const { data: offeringData } = await useFetch<{ data: IOffering }>(
 	`/api/offerings/${route.params.slug}`
 )
+
+const selectedTicket = ref('')
+
+function handleCheckout(ticketId: string, count: number) {
+	if (!selectedTicket.value) {
+		error.value = 'Please select a ticket'
+		return
+	}
+	router.push(`/checkout?count=${count}&ticketId=${ticketId}`)
+}
 </script>

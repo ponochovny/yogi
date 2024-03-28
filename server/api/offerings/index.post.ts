@@ -1,29 +1,12 @@
 import formidable from 'formidable'
-import type { IOffering } from '~/helpers/types/offering'
+import { convertPriceStringToNumber } from '~/helpers'
+import type { IOfferingCreation } from '~/helpers/types/offering'
 import { generateSlug } from '~/lib/utils'
 import { createMediaFile } from '~/server/db/mediaFiles'
 import { createOffering } from '~/server/db/offerings'
 import { attachPractitionerToOffering } from '~/server/db/practitioners'
+import { createTicket } from '~/server/db/tickets'
 import { uploadToCloudinary } from '~/server/utils/cloudinary'
-
-type TOfferingCreation = Partial<
-	Pick<
-		IOffering,
-		| 'name'
-		| 'slug'
-		| 'activity'
-		| 'start'
-		| 'end'
-		| 'duration'
-		| 'description'
-		| 'spots'
-		| 'is_private'
-		| 'types'
-		| 'categories'
-		| 'location'
-		| 'timezone'
-	> & { studioId: string }
->
 
 export default defineEventHandler(async (event) => {
 	const form = formidable({})
@@ -45,7 +28,10 @@ export default defineEventHandler(async (event) => {
 
 	const studioId = fields.studioId[0]
 
-	const offeringData: TOfferingCreation = {
+	const offeringData: Omit<
+		IOfferingCreation,
+		'practitioners' | 'banners' | 'tickets'
+	> = {
 		name: fields.name[0],
 		slug: generateSlug(fields.name[0]),
 		activity: fields.activity[0],
@@ -96,6 +82,24 @@ export default defineEventHandler(async (event) => {
 
 		await Promise.all(filePromises)
 	}
+
+	// Tickets
+	const ticketPromises = []
+	for (const ticket of fields['tickets[]']) {
+		const _ticket = JSON.parse(ticket)
+
+		ticketPromises.push(
+			createTicket({
+				name: _ticket.name as string,
+				description: _ticket.description as string,
+				price: convertPriceStringToNumber(_ticket.price),
+				currency: _ticket.currency as string,
+				offeringId: offering.id,
+				status: 'active', // TODO: ticket status
+			})
+		)
+	}
+	await Promise.all(ticketPromises)
 
 	return {
 		data: offering,

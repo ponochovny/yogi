@@ -17,7 +17,7 @@
 			<div class="flex gap-1 text-sm mb-1">
 				<div class="flex gap-1 text-xs font-semibold">
 					<span
-						class="text-green-700"
+						class="text-green-700 capitalize"
 						:class="activityColorClass(offering.activity)"
 					>
 						{{ offering.activity }}
@@ -46,17 +46,17 @@
 				{{ offering.location ? offering.location[0] : '' }}
 			</div>
 			<NuxtLink
-				:to="'studio/' + offering.studio.slug"
+				:to="'studio/' + offering.studio?.slug"
 				class="flex gap-1 items-center"
 			>
 				<img
-					v-if="offering.studio.logo?.length"
-					:src="offering.studio.logo[0].url"
+					v-if="offering.studio?.logo?.length"
+					:src="offering.studio?.logo[0].url"
 					alt=""
 					class="w-8 h-8 rounded-full object-cover object-center"
 				/>
 				<span class="text-sm font-semibold">
-					{{ offering.studio.name }}
+					{{ offering.studio?.name }}
 				</span>
 			</NuxtLink>
 		</div>
