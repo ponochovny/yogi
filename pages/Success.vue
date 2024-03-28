@@ -1,14 +1,20 @@
 <template>
 	<MainContainer>
-		<!-- TODO: Add confetti -->
+		<!-- TODO: Add confetti <if (purchase)> -->
 		<div class="py-10 flex flex-col gap-10 items-center">
 			<div class="flex flex-col gap-1">
-				<p class="font-semibold text-3xl text-center">Successful purchase!</p>
+				<p class="font-semibold text-3xl text-center">
+					{{ purchase ? 'Successful purchase!' : 'Payment in progress...' }}
+				</p>
 				<p
-					v-if="purchase?.data.receiptEmail"
+					v-if="purchase?.data.receiptEmail || !purchase"
 					class="text-center text-xs text-gray-600"
 				>
-					Purchase information has been sent to the provided email
+					{{
+						purchase && purchase?.data.receiptEmail
+							? 'Purchase information has been sent to the provided email'
+							: 'Reload this page to get updates'
+					}}
 				</p>
 			</div>
 			<div
@@ -42,6 +48,10 @@
 					<span class="font-semibold text-sm">
 						{{ purchase?.data.ticket.offering.location[0] }}
 					</span>
+					<div class="flex items-center gap-2 text-orange-500">
+						<TicketIcon class="w-7 stroke-1" />
+						<span class="font-semibold">{{ purchase?.data.ticket.name }}</span>
+					</div>
 				</div>
 			</div>
 			<div v-if="purchase" class="flex gap-2 items-center">
@@ -58,6 +68,7 @@
 import { defineComponent } from 'vue'
 import { activityColorClass } from '~/helpers'
 import { dateString } from '~/lib/utils'
+import { TicketIcon } from '@heroicons/vue/24/outline'
 
 export default defineComponent({
 	name: 'SuccessPage',
