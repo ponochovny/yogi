@@ -22,3 +22,8 @@ export const dateString = (start: string | Date, end: string | Date) => {
 
 	return `${startConverted} - ${endConverted}`
 }
+
+export const absoluteUrl = (path: string): string => {
+	const config = useRuntimeConfig()
+	return `${config.public.appDomain}${path}`
+}

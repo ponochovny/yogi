@@ -10,11 +10,14 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "ts": "npx nuxi typecheck --noEmit"
+    "ts": "npx nuxi typecheck --noEmit",
+    "stripe:listen": "stripe listen --forward-to localhost:3000/api/stripe/webhook",
+    "stripe:trigger": "stripe trigger payment_intent.succeeded"
   },
   "dependencies": {
     "@heroicons/vue": "^2.1.1",
     "@prisma/client": "^5.10.2",
+    "@stripe/stripe-js": "^3.0.10",
     "@tailwindcss/forms": "^0.5.7",
     "@vueform/multiselect": "^2.6.6",
     "@vueuse/core": "^10.9.0",
@@ -31,6 +34,7 @@
     "nuxt": "^3.10.3",
     "radix-vue": "^1.4.9",
     "slugify": "^1.6.6",
+    "stripe": "^14.22.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "url-pattern": "^1.0.3",
