@@ -36,8 +36,13 @@ export default () => {
 		return useFetch<{ data: IOffering[] }>('/api/offerings')
 	}
 
+	const getOfferingsByStudioId = (id: string) => {
+		return useFetch<{ data: IOffering[] }>('/api/offerings/byStudio/' + id)
+	}
+
 	return {
 		createOffering,
 		getOfferings,
+		getOfferingsByStudioId,
 	}
 }

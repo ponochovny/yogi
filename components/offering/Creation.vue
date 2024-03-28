@@ -28,7 +28,7 @@
 				placeholder="Offering spots"
 				type="number"
 			/>
-			<div class="flex items-end space-x-2 pb-3">
+			<div class="flex space-x-2 pb-3 self-end items-center">
 				<Switch
 					id="airplane-mode"
 					:checked="formData.is_private"
@@ -90,7 +90,20 @@
 			value-prop="name"
 		/>
 
-		<OfferingTicketsList label="Tickets" :tickets="formData.tickets" />
+		<OfferingTicketsList
+			label="Tickets"
+			:tickets="formData.tickets"
+			@remove="removeTicket"
+		/>
+
+		<Button
+			variant="primaryOutline"
+			btnSize="md2"
+			@click="addEmptyTicket"
+			class="self-start"
+		>
+			<span>+ Add more</span>
+		</Button>
 
 		<!-- @files="setBannersFiles" -->
 		<FileUploadCustom
@@ -111,7 +124,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import timezones from '~/helpers/timeZones.json'
-import currencies from '~/helpers/currencies.json'
 import _data from '~/helpers/offeringAttributes.json'
 import { toast } from 'vue-sonner'
 import type { IOffering, ITicket } from '~/helpers/types/offering'
@@ -266,6 +278,12 @@ function resetFormData() {
 		},
 	]
 }
+const emptyTicket = {
+	name: '',
+	description: '',
+	price: '',
+	currency: 'usd',
+}
 
 watch(
 	() => props.offering,
@@ -308,12 +326,7 @@ onBeforeMount(() => {
 		}[]
 
 		const isTicketsExist = !!props.offering.tickets?.length
-		const emptyTicket = {
-			name: '',
-			description: '',
-			price: '',
-			currency: 'usd',
-		}
+
 		const transformedTicket = (ticket: ITicket) => {
 			return {
 				...ticket,
@@ -325,6 +338,13 @@ onBeforeMount(() => {
 			: [{ ...emptyTicket }]
 	}
 })
+
+function addEmptyTicket() {
+	formData.tickets.push({ ...emptyTicket })
+}
+function removeTicket(idx: any) {
+	formData.tickets.splice(idx, 1)
+}
 
 function handleForm() {
 	if (props.updateData) {

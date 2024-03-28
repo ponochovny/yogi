@@ -79,13 +79,16 @@ export default defineComponent({
 </script>
 <script lang="ts" setup>
 const loading = ref(true)
+const route = useRoute()
+const { id: studioId } = route.params
 const tab = ref<'create' | 'list'>('create')
 const offerings = ref<IOffering[]>([])
-const { getOfferings } = useOffering()
+const { getOfferingsByStudioId } = useOffering()
 
 async function loadOfferings() {
+	if (!studioId || !isString(studioId)) return
 	try {
-		const { data: offeringsRes } = await getOfferings()
+		const { data: offeringsRes } = await getOfferingsByStudioId(studioId)
 		offerings.value = offeringsRes.value?.data || []
 	} catch (error) {
 		console.log(error)

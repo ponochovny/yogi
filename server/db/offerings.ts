@@ -28,3 +28,13 @@ export const getOfferingBySlug = (
 		},
 	})
 }
+export const getOfferingsByStudioId = (
+	params: Prisma.OfferingFindUniqueArgs<DefaultArgs>
+) => {
+	return prisma.offering.findMany({
+		...params,
+		where: {
+			...params?.where,
+		},
+	})
+}

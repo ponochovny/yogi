@@ -9,7 +9,11 @@
 				v-if="imageUrl"
 				:src="imageUrl"
 				alt="Studio logo"
-				class="object-cover object-center w-36 h-36 rounded-full"
+				class="object-cover object-center"
+				:class="{
+					'w-36 h-36 rounded-full': variant === 'rounded',
+					'w-36 h-20 rounded-xl': variant === 'banner',
+				}"
 			/>
 			<div
 				v-else
@@ -41,8 +45,11 @@ interface IProps {
 	label?: string
 	imageUrl: string | null
 	selectedFile: any
+	variant?: 'rounded' | 'banner'
 }
-const props = defineProps<IProps>()
+const props = withDefaults(defineProps<IProps>(), {
+	variant: 'rounded',
+})
 const emit = defineEmits(['update:imageUrl', 'update:selectedFile'])
 
 const imageInput = ref()

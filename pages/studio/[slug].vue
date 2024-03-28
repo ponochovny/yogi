@@ -10,7 +10,7 @@
 					:src="studioData.data.banner[0].url"
 					:alt="studioData.data.name"
 					:title="studioData.data.name"
-					class="object-cover w-full"
+					class="object-cover object-center w-full h-full"
 				/>
 			</div>
 			<div
@@ -23,7 +23,7 @@
 						:src="studioData.data.logo[0].url"
 						:alt="studioData.data.name"
 						:title="studioData.data.name"
-						class="w-full object-cover rounded-full border-gray-200 border"
+						class="object-cover rounded-full border-gray-200 border object-center w-full h-full"
 					/>
 				</div>
 				<div class="flex gap-8 flex-col w-[calc(100%_-_400px)]">

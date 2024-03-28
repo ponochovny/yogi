@@ -7,6 +7,7 @@
 		/>
 		<LogoFile
 			label="Banner"
+			variant="banner"
 			v-model:selectedFile="selectedFileBanner"
 			v-model:imageUrl="bannerImageUrl"
 		/>
@@ -184,6 +185,7 @@ watch(
 		if (!val) return
 
 		logoImageUrl.value = val.logo.length ? val.logo[0].url : ''
+		bannerImageUrl.value = val.banner.length ? val.banner[0].url : ''
 
 		loading.value = false
 	}
@@ -208,6 +210,9 @@ onBeforeMount(() => {
 		formData.mission = props.studio.mission
 		logoImageUrl.value = props.studio.logo.length
 			? props.studio.logo[0].url
+			: ''
+		bannerImageUrl.value = props.studio.banner.length
+			? props.studio.banner[0].url
 			: ''
 		formData.practitioners = props.studio.practitioners.map((el) => ({
 			id: el.id,

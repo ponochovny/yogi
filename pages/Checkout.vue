@@ -45,9 +45,11 @@
 								>
 									{{ data?.data.offering.activity }}
 								</span>
-								<span class="font-semibold">{{
-									data?.data.offering.name
-								}}</span>
+								<NuxtLink :to="'/offering/' + data?.data.offering.slug">
+									<span class="font-semibold">
+										{{ data?.data.offering.name }}
+									</span>
+								</NuxtLink>
 								<span class="font-semibold text-sm text-gray-600">
 									{{
 										dateString(
@@ -69,7 +71,11 @@
 						<div class="flex justify-between">
 							<span>{{ count }}x {{ data?.data.name }}</span>
 							<span class="font-semibold">
-								{{ `${data?.data.currency} ${data?.data.price}` }}
+								{{
+									`${currencySymbolByCode(data?.data.currency || '')}${
+										data?.data.price
+									}`
+								}}
 							</span>
 						</div>
 						<hr />
@@ -77,7 +83,11 @@
 							<p class="font-semibold">Total</p>
 							<p>
 								<span class="font-semibold">
-									{{ `${data?.data.currency} ${data?.data.price}` }}
+									{{
+										`${currencySymbolByCode(data?.data.currency || '')}${
+											data?.data.price
+										}`
+									}}
 								</span>
 							</p>
 						</div>
@@ -103,7 +113,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { activityColorClass, convertPriceStringToNumber } from '~/helpers'
+import {
+	activityColorClass,
+	convertPriceStringToNumber,
+	currencySymbolByCode,
+} from '~/helpers'
 import { dateString } from '~/lib/utils'
 
 export default defineComponent({
