@@ -3,8 +3,16 @@ module.exports = {
 	extends: ['@nuxt/eslint-config'],
 	rules: {
 		'@typescript-eslint/no-unused-vars': 'off',
-		'vue/html-indent': ['error', 'tab'], // enforce tabs in template
-		indent: ['error', 'tab'], // enforce tabs in script and js files
+		'vue/html-indent': ['error', 'tab'],
+		indent: [
+			'error',
+			'tab',
+			{
+				SwitchCase: 1,
+				ignoredNodes: ['ConditionalExpression'],
+			},
+		],
+		'no-case-declarations': 'off',
 		'vue/max-attributes-per-line': 'off',
 		'vue/multi-word-component-names': 'off',
 		'vue/attributes-order': 'off',
