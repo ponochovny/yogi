@@ -55,16 +55,17 @@ export default defineEventHandler(async (event) => {
 	const studio = await createStudio(studioData)
 
 	// Practitioners
-	const practitionerPromises = Object.keys(fields[`practitioners[]`]).map(
-		async (key: string) => {
-			return attachPractitionerToStudio({
-				userId: fields[`practitioners[]`][key],
-				studioId: studio.id,
-			})
-		}
-	)
-
-	await Promise.all(practitionerPromises)
+	if (fields[`practitioners[]`]) {
+		const practitionerPromises = Object.keys(fields[`practitioners[]`]).map(
+			async (key: string) => {
+				return attachPractitionerToStudio({
+					userId: fields[`practitioners[]`][key],
+					studioId: studio.id,
+				})
+			}
+		)
+		await Promise.all(practitionerPromises)
+	}
 
 	// Media files
 	const filePromises = Object.keys(files).map(async (key) => {

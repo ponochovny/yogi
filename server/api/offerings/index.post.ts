@@ -53,16 +53,18 @@ export default defineEventHandler(async (event) => {
 	const offering = await createOffering(offeringData)
 
 	// Practitioners
-	const practitionerPromises = fields[`practitioners[]`].map(
-		async (userId: string) => {
-			return attachPractitionerToOffering({
-				userId,
-				offeringId: offering.id,
-			})
-		}
-	)
+	if (fields[`practitioners[]`]) {
+		const practitionerPromises = fields[`practitioners[]`].map(
+			async (userId: string) => {
+				return attachPractitionerToOffering({
+					userId,
+					offeringId: offering.id,
+				})
+			}
+		)
 
-	await Promise.all(practitionerPromises)
+		await Promise.all(practitionerPromises)
+	}
 
 	// Media files (Banner)
 	if (files[`fileToUpload[]`]) {
