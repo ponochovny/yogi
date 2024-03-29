@@ -34,6 +34,21 @@ export const getPractitionersByStudioID = (
 		},
 	})
 }
+export const getPractitionerById = (
+	params: Prisma.PractitionerFindUniqueArgs<DefaultArgs>
+) => {
+	return prisma.practitioner.findUnique(params)
+}
+export const getPractitionerByUserId = (
+	params: Prisma.PractitionerFindFirstArgs<DefaultArgs>
+) => {
+	return prisma.practitioner.findFirst(params)
+}
+export const getPractitionersByUserId = (
+	params: Prisma.PractitionerFindManyArgs<DefaultArgs>
+) => {
+	return prisma.practitioner.findMany(params)
+}
 
 export const getPractitionerByStudioID = (pracId: string, studioId: string) => {
 	return prisma.practitioner.findFirst({
