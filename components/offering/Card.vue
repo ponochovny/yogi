@@ -17,8 +17,13 @@
 			<div class="flex gap-1 text-sm mb-1">
 				<div class="flex gap-1 text-xs font-semibold">
 					<span
-						class="text-green-700 capitalize"
-						:class="activityColorClass(offering.activity)"
+						class="capitalize font-bold"
+						:class="{
+							'text-blue-500': offering.activity.toLowerCase() === 'class',
+							'text-red-400': offering.activity.toLowerCase() === 'event',
+							'text-yellow-500':
+								offering.activity.toLowerCase() === 'appointment',
+						}"
 					>
 						{{ offering.activity }}
 					</span>
@@ -67,7 +72,6 @@
 import { defineComponent } from 'vue'
 import type { IOffering } from '~/helpers/types/offering'
 import { dateString } from '~/lib/utils'
-import { activityColorClass } from '~/helpers'
 
 export default defineComponent({
 	name: 'OfferingCard',

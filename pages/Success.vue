@@ -27,8 +27,18 @@
 				/>
 				<div class="flex flex-col">
 					<span
-						class="text-green-700 capitalize font-semibold text-sm"
-						:class="activityColorClass(purchase?.data.ticket.offering.activity)"
+						class="capitalize font-bold text-sm"
+						:class="{
+							'text-blue-500':
+								purchase?.data.ticket.offering.activity.toLowerCase() ===
+								'class',
+							'text-red-400':
+								purchase?.data.ticket.offering.activity.toLowerCase() ===
+								'event',
+							'text-yellow-500':
+								purchase?.data.ticket.offering.activity.toLowerCase() ===
+								'appointment',
+						}"
 					>
 						{{ purchase?.data.ticket.offering.activity }}
 					</span>
@@ -66,7 +76,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { activityColorClass } from '~/helpers'
 import { dateString } from '~/lib/utils'
 import { TicketIcon } from '@heroicons/vue/24/outline'
 

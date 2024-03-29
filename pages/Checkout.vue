@@ -40,8 +40,16 @@
 							/>
 							<div class="flex flex-col">
 								<span
-									class="text-green-700 capitalize font-semibold text-sm"
-									:class="activityColorClass(data?.data.offering.activity)"
+									class="capitalize font-bold text-sm"
+									:class="{
+										'text-blue-500':
+											data?.data.offering.activity.toLowerCase() === 'class',
+										'text-red-400':
+											data?.data.offering.activity.toLowerCase() === 'event',
+										'text-yellow-500':
+											data?.data.offering.activity.toLowerCase() ===
+											'appointment',
+									}"
 								>
 									{{ data?.data.offering.activity }}
 								</span>
@@ -113,11 +121,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import {
-	activityColorClass,
-	convertPriceStringToNumber,
-	currencySymbolByCode,
-} from '~/helpers'
+import { convertPriceStringToNumber, currencySymbolByCode } from '~/helpers'
 import { dateString } from '~/lib/utils'
 
 export default defineComponent({

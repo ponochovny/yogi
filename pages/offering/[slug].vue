@@ -5,8 +5,15 @@
 				<div class="flex gap-1 text-sm">
 					<div class="flex gap-1 text-xs font-semibold">
 						<span
-							class="text-green-700 capitalize"
-							:class="activityColorClass(offeringData.data.activity)"
+							class="capitalize font-bold"
+							:class="{
+								'text-blue-500':
+									offeringData.data.activity.toLowerCase() === 'class',
+								'text-red-400':
+									offeringData.data.activity.toLowerCase() === 'event',
+								'text-yellow-500':
+									offeringData.data.activity.toLowerCase() === 'appointment',
+							}"
 						>
 							{{ offeringData.data.activity }}
 						</span>
@@ -40,17 +47,24 @@
 			</div>
 			<div class="h-[450px] overflow-hidden rounded-3xl">
 				<NuxtImg
-					:src="offeringData.data.banners[0].url"
+					:src="
+						offeringData.data.banners.length
+							? offeringData.data.banners[0].url
+							: 'img/banner-placeholder2.jpeg'
+					"
 					:alt="offeringData.data.name"
 					:title="offeringData.data.name"
 					class="object-cover w-full h-full"
+					:class="{
+						'opacity-70': !offeringData.data.banners.length,
+					}"
 				/>
 			</div>
 			<div
 				class="relative bg-white rounded-3xl -mt-20 mx-auto w-[99%] px-16 py-20 flex gap-8"
 			>
 				<div class="flex flex-col gap-10 w-[calc(100%_-_400px)]">
-					<div class="flex flex-col gap-6">
+					<div v-if="offeringData.data.description" class="flex flex-col gap-6">
 						<div class="font-semibold text-lg">
 							{{ 'About ' + offeringData.data.name }}
 						</div>
@@ -65,7 +79,7 @@
 								:src="offeringData.data.studio?.logo[0].url || ''"
 								:alt="offeringData.data.studio?.name || ''"
 								:title="offeringData.data.studio?.name"
-								class="w-20 rounded-full"
+								class="w-20 h-20 rounded-full object-cover object-center"
 							/>
 							<NuxtLink to="/">
 								<span class="font-semibold text-lg">
@@ -74,7 +88,10 @@
 							</NuxtLink>
 						</div>
 					</div>
-					<div class="flex flex-col gap-6">
+					<div
+						v-if="offeringData.data.practitioners.length"
+						class="flex flex-col gap-6"
+					>
 						<div class="font-semibold text-lg">Practitioners</div>
 						<div
 							class="flex gap-4 items-center"
@@ -148,7 +165,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { activityColorClass, currencySymbolByCode } from '~/helpers'
+import { currencySymbolByCode } from '~/helpers'
 import type { IOffering } from '~/helpers/types/offering'
 import { CalendarIcon, MapPinIcon, TicketIcon } from '@heroicons/vue/24/outline'
 import { dateString } from '~/lib/utils'
