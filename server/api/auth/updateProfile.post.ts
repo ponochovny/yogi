@@ -24,7 +24,15 @@ export default defineEventHandler(async (event) => {
 
 	const email = fields['email'][0]
 	const name = fields['name'][0]
+	const bio = fields['bio'][0]
 	const userId = fields['userId'][0]
+
+	const newData: {
+		name?: string
+		email?: string
+		bio?: string
+		profileImage?: string
+	} = {}
 
 	if (email) {
 		if (!email || !name) {
@@ -44,25 +52,33 @@ export default defineEventHandler(async (event) => {
 		}
 	}
 
+	// Update main data
+	newData.name = name
+	newData.email = email
+	newData.bio = bio
+
 	// Update avatar
-	const avatar = files['avatar'][0]
+	let cloudinaryResource: ICloudinaryResource
+	if (files['avatar']) {
+		const avatar = files['avatar'][0]
 
-	const cloudinaryResource = await uploadToCloudinary(avatar.filepath)
+		cloudinaryResource = await uploadToCloudinary(avatar.filepath)
 
-	await deleteManyMediaFileByUserID(userId)
+		await deleteManyMediaFileByUserID(userId)
 
-	await createMediaFile({
-		url: cloudinaryResource.secure_url,
-		providerPublicId: cloudinaryResource.public_id,
-		userId,
-	})
+		await createMediaFile({
+			url: cloudinaryResource.secure_url,
+			providerPublicId: cloudinaryResource.public_id,
+			userId,
+		})
+
+		if (cloudinaryResource) {
+			newData.profileImage = cloudinaryResource.secure_url
+		}
+	}
 
 	// Update profile in db with userId
-	const updatedUser = await updateProfile(userId, {
-		name,
-		email,
-		profileImage: cloudinaryResource.secure_url,
-	})
+	const updatedUser = await updateProfile(userId, { ...newData })
 
 	return {
 		user: userTransformer(updatedUser),

@@ -14,6 +14,7 @@
 					type="email"
 				/>
 				<Input v-model="data.name" label="Your name" placeholder="Your name" />
+				<Textarea v-model="data.bio" label="Your bio" placeholder="Your bio" />
 				<Button
 					class="self-start"
 					@click="handleUpdateProfile"
@@ -51,6 +52,7 @@ const actionButtonDisabled = computed(() => {
 	const obj2 = {
 		name: user.value?.name || '',
 		email: user.value?.email || '',
+		bio: user.value?.bio || '',
 	}
 	const isAvatarChanged = avatarUrl.value !== user.value?.profileImage
 	return isEqual(obj1, obj2) && !isAvatarChanged
@@ -59,6 +61,7 @@ const actionButtonDisabled = computed(() => {
 const data = reactive({
 	name: '',
 	email: '',
+	bio: '',
 })
 
 onMounted(() => {
@@ -74,6 +77,7 @@ function setData(val: any) {
 	if (val) {
 		data.name = val.name || ''
 		data.email = val.email
+		data.bio = val.bio || ''
 		avatarUrl.value = user.value?.profileImage || ''
 	}
 }
