@@ -11,7 +11,7 @@ export interface IStudio {
 	types: string[]
 
 	// Media files
-	logo: { url: string }[]
+	logo: { url: string }
 	banner: { url: string }[]
 
 	// TODO: add tag interface

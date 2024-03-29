@@ -55,8 +55,8 @@
 				class="flex gap-1 items-center"
 			>
 				<img
-					v-if="offering.studio?.logo?.length"
-					:src="offering.studio?.logo[0].url"
+					v-if="offering.studio?.logo"
+					:src="offering.studio?.logo.url"
 					alt=""
 					class="w-8 h-8 rounded-full object-cover object-center"
 				/>
