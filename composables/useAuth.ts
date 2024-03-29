@@ -151,7 +151,10 @@ export default () => {
 
 	const updateProfile = async (
 		newData: Partial<
-			Pick<IUser, 'name' | 'email' | 'interestsCategory' | 'interestsType'>
+			Pick<
+				IUser,
+				'name' | 'email' | 'bio' | 'interestsCategory' | 'interestsType'
+			>
 		> & { mediaFiles?: { avatar: any } }
 	) => {
 		// TODO: set type
@@ -178,8 +181,10 @@ export default () => {
 			})
 
 			setUser(res.user)
+			return res.user
 		} catch (error) {
 			console.log(error)
+			throw new Error((error as Error).message)
 		}
 	}
 

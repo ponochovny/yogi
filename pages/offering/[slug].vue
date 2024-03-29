@@ -76,7 +76,7 @@
 						<div class="font-semibold text-lg">Host</div>
 						<div class="flex gap-4 items-center">
 							<NuxtImg
-								:src="offeringData.data.studio?.logo[0].url || ''"
+								:src="offeringData.data.studio?.logo.url || ''"
 								:alt="offeringData.data.studio?.name || ''"
 								:title="offeringData.data.studio?.name"
 								class="w-20 h-20 rounded-full object-cover object-center"
@@ -104,7 +104,7 @@
 								:title="practitioner.name"
 								class="w-12 rounded-full"
 							/>
-							<NuxtLink to="/">
+							<NuxtLink :to="'/practitioner/' + practitioner.id">
 								<span class="font-semibold">
 									{{ practitioner.name }}
 								</span>

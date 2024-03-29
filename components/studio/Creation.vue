@@ -125,7 +125,7 @@ const isButtonDisabled = computed(() => {
 			types: props.studio.types,
 			bio: props.studio.bio,
 			mission: props.studio.mission,
-			logo: props.studio.logo.length ? props.studio.logo[0].url || '' : '',
+			logo: props.studio.logo ? props.studio.logo.url || '' : '',
 			banner: props.studio.banner.length
 				? props.studio.banner[0].url || ''
 				: '',
@@ -184,7 +184,7 @@ watch(
 	(val) => {
 		if (!val) return
 
-		logoImageUrl.value = val.logo.length ? val.logo[0].url : ''
+		logoImageUrl.value = val.logo ? val.logo.url : ''
 		bannerImageUrl.value = val.banner.length ? val.banner[0].url : ''
 
 		loading.value = false
@@ -208,9 +208,7 @@ onBeforeMount(() => {
 		formData.types = props.studio.types
 		formData.bio = props.studio.bio
 		formData.mission = props.studio.mission
-		logoImageUrl.value = props.studio.logo.length
-			? props.studio.logo[0].url
-			: ''
+		logoImageUrl.value = props.studio.logo ? props.studio.logo.url : ''
 		bannerImageUrl.value = props.studio.banner.length
 			? props.studio.banner[0].url
 			: ''
