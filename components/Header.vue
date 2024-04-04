@@ -61,7 +61,7 @@
 						<span class="text-base font-bold text-white">Sign up</span>
 					</Button>
 				</NuxtLink>
-				<NuxtLink to="/auth?t=login" class="font-semibold">Log in</NuxtLink>
+				<NuxtLink :to="loginLink()" class="font-semibold">Log in</NuxtLink>
 			</template>
 			<template v-else>
 				<Popover>
@@ -120,10 +120,16 @@ withDefaults(defineProps<IProps>(), {
 	links: true,
 	variant: 'default',
 })
+const route = useRoute()
 const { useAuthUser, useAuthLoading, logout } = useAuth()
 const isAuthLoading = useAuthLoading()
 const user = useAuthUser() as Ref<IUser>
 const _currencies = currencies
 
 const currencySelected = ref(_currencies[0].code)
+
+function loginLink() {
+	// @ts-ignore
+	return '/auth?t=login' + '&redirect=' + route.href.substring(1)
+}
 </script>
