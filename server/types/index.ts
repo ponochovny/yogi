@@ -4,6 +4,7 @@ export interface IUser {
 	password: string
 	name: string | null
 	profileImage: string | null
+	bio: string | null
 	interestsCategory: string[]
 	interestsType: string[]
 

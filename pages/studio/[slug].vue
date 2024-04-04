@@ -20,7 +20,7 @@
 					class="absolute w-44 h-44 -top-20 left-24 border-4 border-white rounded-full"
 				>
 					<NuxtImg
-						:src="studioData.data.logo[0].url"
+						:src="studioData.data.logo.url"
 						:alt="studioData.data.name"
 						:title="studioData.data.name"
 						class="object-cover rounded-full border-gray-200 border object-center w-full h-full"
