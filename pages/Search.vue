@@ -1,7 +1,7 @@
 <template>
-	<MainContainer>
-		<div>Search Page</div>
-	</MainContainer>
+	<SearchContainer>
+		<div class="py-10 px-6">Search Page</div>
+	</SearchContainer>
 </template>
 
 <script lang="ts">
