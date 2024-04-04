@@ -9,6 +9,16 @@ export const createOffering = (offeringData: any) => {
 		},
 	})
 }
+export const updateOffering = (offeringData: any, offeringId: string) => {
+	return prisma.offering.update({
+		where: {
+			id: offeringId,
+		},
+		data: {
+			...offeringData,
+		},
+	})
+}
 
 export const getOfferings = (
 	params: Prisma.OfferingFindManyArgs<DefaultArgs> = {}
