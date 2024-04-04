@@ -187,10 +187,7 @@ const emit = defineEmits(['updated'])
 // 	return false
 // })
 
-const {
-	createOffering,
-	// updateOffering
-} = useOffering()
+const { createOffering, updateOffering } = useOffering()
 const route = useRoute()
 // const selectedFileLogo = ref(null)
 // const logoImageUrl = ref<string | null>(null)
@@ -230,6 +227,8 @@ const formData = reactive<{
 		description: string
 		price: string
 		currency: string
+		status: 'active' | 'inactive' | string
+		id?: string
 	}[]
 }>({
 	name: '',
@@ -251,6 +250,7 @@ const formData = reactive<{
 			description: '',
 			price: '',
 			currency: 'usd',
+			status: 'active',
 		},
 	],
 })
@@ -275,6 +275,7 @@ function resetFormData() {
 			description: '',
 			price: '',
 			currency: 'usd',
+			status: 'active',
 		},
 	]
 }
@@ -283,6 +284,7 @@ const emptyTicket = {
 	description: '',
 	price: '',
 	currency: 'usd',
+	status: 'active',
 }
 
 watch(
@@ -348,17 +350,77 @@ function removeTicket(idx: any) {
 
 function handleForm() {
 	if (props.updateData) {
-		// TODO: add update offering method
-		// updateOfferingHandler()
-		alert('Update')
+		updateOfferingHandler()
 	} else {
 		createOfferingHandler()
 	}
 }
 
+function getDifference(oldArray: string[], newArray: string[]) {
+	return oldArray.filter((x) => !newArray.includes(x))
+}
+
+async function updateOfferingHandler() {
+	if (!props.offering?.id) return
+
+	const oldPracs = props.offering.practitioners.map((el) => el.id)
+	const updatedPracs = formData.practitioners.map((el) => el.id)
+	const practitionersRemove = getDifference(oldPracs, updatedPracs)
+	const newPracs = updatedPracs.filter(
+		(el) => !oldPracs.some((_el) => _el === el)
+	)
+
+	const oldTickets = props.offering.tickets.map((el) => el.id)
+	const updatedTickets = formData.tickets.map((el) => el?.id || '')
+	const newTickets = formData.tickets.filter((el) => !el.id)
+	const ticketsRemove = getDifference(oldTickets, updatedTickets)
+
+	const deepCloned = useCloneDeep({
+		...formData,
+		name: formData.name === props.offering.name ? '' : formData.name,
+		activity: formData.activity.toLowerCase() as
+			| 'appointment'
+			| 'class'
+			| 'event',
+		location: [formData.location],
+		duration: +formData.duration,
+		spots: +formData.spots,
+		start: new Date(formData.start),
+		end: new Date(formData.end),
+		banners: bannersFiles.value,
+		studioId: isArray(studioId)
+			? (studioId[0] as string)
+			: (studioId as string),
+		tickets: newTickets,
+		ticketsRemove,
+		practitioners: newPracs,
+		practitionersRemove,
+	})
+	updateOffering(deepCloned, props.offering.id)
+		.then(() => {
+			emit('updated')
+			toast.success(
+				`Offering data has been updated. ${
+					practitionersRemove.length
+						? practitionersRemove.length + ' practitioner(s) removed.'
+						: ''
+				} ${
+					ticketsRemove.length
+						? ticketsRemove.length + ' ticket(s) set inactive.'
+						: ''
+				}`
+			)
+		})
+		.catch((error: any) => {
+			console.log(error)
+			toast.error('Error ocurred')
+		})
+}
+
 async function createOfferingHandler() {
 	const deepCloned = useCloneDeep({
 		...formData,
+		practitioners: formData.practitioners.map((el) => el.id),
 		activity: formData.activity.toLowerCase() as
 			| 'appointment'
 			| 'class'

@@ -21,6 +21,24 @@ export const createTicket = (data: {
 		},
 	})
 
+export const updateTicket = (
+	data: Partial<{
+		name: string
+		description: string
+		price: number
+		currency: string
+		offeringId: string
+		status: 'active' | 'inactive'
+	}>,
+	ticketId: string
+) =>
+	prisma.ticket.update({
+		where: {
+			id: ticketId,
+		},
+		data,
+	})
+
 export const getTicketById = (
 	id: string,
 	params: Prisma.TicketFindUniqueArgs<DefaultArgs> = { where: { id } }

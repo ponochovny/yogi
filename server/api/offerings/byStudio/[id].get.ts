@@ -4,8 +4,6 @@ import { offeringTransformer } from '~/server/transformers/offering'
 export default defineEventHandler(async (event) => {
 	const { id } = getRouterParams(event)
 
-	console.log('id', id)
-
 	const offerings = await getOfferingsByStudioId({
 		include: {
 			studio: {
@@ -19,6 +17,7 @@ export default defineEventHandler(async (event) => {
 					user: true,
 				},
 			},
+			tickets: true,
 		},
 		// @ts-ignore
 		where: {
@@ -37,7 +36,7 @@ export default defineEventHandler(async (event) => {
 	}
 
 	return {
-		data: offerings.map(offeringTransformer),
+		data: offerings.map((offering) => offeringTransformer(offering)),
 		status: 'Success!',
 	}
 })

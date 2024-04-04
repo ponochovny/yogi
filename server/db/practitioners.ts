@@ -34,7 +34,6 @@ export const getPractitionersByStudioID = (
 		},
 	})
 }
-
 export const getPractitionerByStudioID = (pracId: string, studioId: string) => {
 	return prisma.practitioner.findFirst({
 		where: {
@@ -42,4 +41,9 @@ export const getPractitionerByStudioID = (pracId: string, studioId: string) => {
 			studioId,
 		},
 	})
+}
+export const removePractitioner = (
+	params: Prisma.PractitionerDeleteManyArgs<DefaultArgs>
+) => {
+	return prisma.practitioner.deleteMany(params)
 }

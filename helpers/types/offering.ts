@@ -3,7 +3,7 @@ import type { Media } from '.'
 import type { IStudio } from './studio'
 
 export interface IOffering {
-	id: number
+	id: string
 	slug: string
 	activity: 'appointment' | 'class' | 'event'
 	name: string
@@ -44,6 +44,7 @@ export interface ITicket {
 	description: string
 	price: number
 	currency: string
+	status: 'active' | 'inactive'
 	// fee: number
 	/**
 	 * Mandatory 1-1 relation
@@ -73,9 +74,12 @@ export interface IOfferingCreation {
 	start: Date
 	end: Date
 	banners: File[]
-	practitioners: {
-		id: string
-	}[]
+	practitioners: string[]
 	location: string[]
 	studioId: string
+}
+
+export interface IOfferingUpdate extends IOfferingCreation {
+	practitionersRemove: string[]
+	ticketsRemove: string[]
 }
