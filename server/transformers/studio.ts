@@ -5,12 +5,14 @@ import { ownerTransformer, practitionerTransformer } from './user'
 
 // TODO: set studio type
 export const studioTransformer = (studio: any) => {
+	if (!studio) return null
+
 	const { createdAt, updatedAt, ownerId, ...rest } = studio
 	return {
 		...rest,
 		logo:
 			studio.logo && studio.logo.length
-				? Array.of(studio.logo.pop()).map(mediaFileTransformer)
+				? Array.of(studio.logo.pop()).map(mediaFileTransformer)[0]
 				: [],
 		banner:
 			studio.banner && studio.banner.length

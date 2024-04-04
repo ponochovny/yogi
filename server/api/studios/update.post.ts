@@ -57,22 +57,23 @@ export default defineEventHandler(async (event) => {
 
 	// Practitioners
 	// TODO: handle update
-	const practitionerPromises = Object.keys(fields['practitioners[]']).map(
-		async (key: string) => {
-			const exist = await getPractitionerByStudioID(
-				fields['practitioners[]'][key as any],
-				studio.id
-			)
-			if (exist) return Promise.resolve()
+	if (fields['practitioners[]']) {
+		const practitionerPromises = Object.keys(fields['practitioners[]']).map(
+			async (key: string) => {
+				const exist = await getPractitionerByStudioID(
+					fields['practitioners[]'][key as any],
+					studio.id
+				)
+				if (exist) return Promise.resolve()
 
-			return attachPractitionerToStudio({
-				userId: fields['practitioners[]'][key as any],
-				studioId: studio.id,
-			})
-		}
-	)
-
-	await Promise.all(practitionerPromises)
+				return attachPractitionerToStudio({
+					userId: fields['practitioners[]'][key as any],
+					studioId: studio.id,
+				})
+			}
+		)
+		await Promise.all(practitionerPromises)
+	}
 
 	// Media files
 	const filePromises = Object.keys(files).map(async (key) => {

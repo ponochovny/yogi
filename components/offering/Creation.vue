@@ -170,7 +170,7 @@ const emit = defineEmits(['updated'])
 // 			types: props.studio.types,
 // 			bio: props.studio.bio,
 // 			mission: props.studio.mission,
-// 			logo: props.studio.logo.length ? props.studio.logo[0].url || '' : '',
+// 			logo: props.studio.logo.length ? props.studio.logo.url || '' : '',
 // 			banner: props.studio.banner.length
 // 				? props.studio.banner[0].url || ''
 // 				: '',

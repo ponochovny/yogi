@@ -48,7 +48,7 @@ export const getUserById = (id: string) => {
 
 export const updateProfile = (
 	userId: string,
-	newData: Pick<IUser, 'name' | 'email' | 'profileImage'>
+	newData: Partial<Pick<IUser, 'name' | 'email' | 'bio' | 'profileImage'>>
 ) => {
 	return prisma.user.update({
 		where: {
