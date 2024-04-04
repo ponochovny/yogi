@@ -1,5 +1,5 @@
 <template>
-	<div class="w-full">
+	<div class="w-full" :class="cn(props.class)">
 		<label>
 			<span v-if="label" class="text-sm font-bold text-gray-700">
 				{{ label }}
@@ -13,7 +13,7 @@
 				:value="modelValue"
 				@input="(event: any) => emits('update:modelValue', event.target.value)"
 				class="block w-full border-gray-300 rounded-md shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-300 focus:ring-opacity-50"
-				:class="cn(props.class)"
+				:class="cn(props.inputClass)"
 			/>
 		</label>
 	</div>
@@ -38,6 +38,7 @@ interface IProps {
 	type?: string
 	id?: string
 	class?: any
+	inputClass?: any
 }
 
 const props = withDefaults(defineProps<IProps>(), {

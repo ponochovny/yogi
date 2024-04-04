@@ -88,7 +88,10 @@ export default () => {
 	}
 
 	const getOfferingsByStudioId = (id: string) => {
-		return useFetch<{ data: IOffering[] }>('/api/offerings/byStudio/' + id)
+		return useFetch<{ data: IOffering[]; refresh: any }>(
+			'/api/offerings/byStudio/' + id,
+			{ immediate: false }
+		)
 	}
 
 	const removePractitioners = (pracIds: string[], offeringId: string) => {
