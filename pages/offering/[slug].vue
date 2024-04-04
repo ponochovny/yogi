@@ -43,6 +43,12 @@
 							{{ offeringData.data.location[0] }}
 						</span>
 					</div>
+					<div class="flex gap-2 items-center">
+						<ClockIcon class="w-5 text-orange-500 stroke-1.5" />
+						<span class="font-semibold text-sm">
+							{{ offeringData.data.duration + 'min.' }}
+						</span>
+					</div>
 				</div>
 			</div>
 			<div class="h-[450px] overflow-hidden rounded-3xl">
@@ -167,7 +173,12 @@
 import { defineComponent } from 'vue'
 import { currencySymbolByCode } from '~/helpers'
 import type { IOffering } from '~/helpers/types/offering'
-import { CalendarIcon, MapPinIcon, TicketIcon } from '@heroicons/vue/24/outline'
+import {
+	CalendarIcon,
+	MapPinIcon,
+	TicketIcon,
+	ClockIcon,
+} from '@heroicons/vue/24/outline'
 import { dateString } from '~/lib/utils'
 
 export default defineComponent({

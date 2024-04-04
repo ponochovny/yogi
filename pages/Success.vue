@@ -64,10 +64,12 @@
 					</div>
 				</div>
 			</div>
-			<div v-if="purchase" class="flex gap-2 items-center">
-				<span class="font-semibold">Purchase id:</span>
+			<div v-if="payment_intent" class="flex gap-2 items-center">
+				<span class="font-semibold">
+					{{ purchase ? 'Purchase' : 'Payment' }} id:
+				</span>
 				<span class="bg-gray-200 border-gray-300 border p-2 py-1 rounded-md">
-					<pre>{{ purchase.data.paymentId }}</pre>
+					<pre>{{ payment_intent }}</pre>
 				</span>
 			</div>
 		</div>

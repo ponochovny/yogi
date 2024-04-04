@@ -1,5 +1,10 @@
 import { prisma } from '.'
 
+export const getRefreshToken = (token: string) =>
+	prisma.refreshToken.findUnique({
+		where: { token },
+	})
+
 export const createRefreshToken = (refreshToken: {
 	token: string
 	userId: string

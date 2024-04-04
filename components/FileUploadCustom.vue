@@ -4,11 +4,14 @@
 			{{ props.label }}
 		</span>
 
-		<div v-if="uploaded?.length" class="border rounded-xl p-3 mb-2">
+		<div
+			v-if="uploaded?.length"
+			class="flex gap-x-2 gap-y-2 flex-wrap border rounded-xl p-3 mb-2"
+		>
 			<div
 				v-for="(fileUrl, index) of uploaded as any[]"
 				:key="fileUrl"
-				class="relative w-24 h-24 shadow-lg border rounded-md mb-2"
+				class="relative w-24 h-24 shadow-lg border rounded-md"
 			>
 				<img
 					role="presentation"
@@ -61,12 +64,12 @@
 				>
 					<div
 						v-if="contentFiles.length > 0"
-						class="py-2 flex gap-2 flex-wrap justify-content-center p-3 border rounded-xl text-gray-500"
+						class="pt-2 pb-3 flex gap-x-2 flex-wrap justify-content-center p-3 border rounded-xl text-gray-500 gap-y-2"
 					>
 						<div
 							v-for="(file, index) of contentFiles as any[]"
 							:key="file.name + file.type + file.size"
-							class="relative w-24 h-24 shadow-lg border rounded-md mb-2"
+							class="relative w-24 h-24 shadow-lg border rounded-md"
 						>
 							<img
 								role="presentation"

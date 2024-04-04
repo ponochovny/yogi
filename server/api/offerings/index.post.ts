@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
 
 	// TODO: set fields types
 	const { fields, files } = formExtracted as {
-		fields: any & { studioId: string }
+		fields: { [key: string]: string[] } & { studioId: string }
 		files: any
 	}
 

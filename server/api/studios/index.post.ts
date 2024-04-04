@@ -18,7 +18,10 @@ export default defineEventHandler(async (event) => {
 		})
 	})
 
-	const { fields, files } = formExtracted as { fields: any; files: any }
+	const { fields, files } = formExtracted as {
+		fields: { [key: string]: string[] }
+		files: any
+	}
 
 	const userId = event.context.auth.user.id
 
@@ -59,7 +62,7 @@ export default defineEventHandler(async (event) => {
 		const practitionerPromises = Object.keys(fields[`practitioners[]`]).map(
 			async (key: string) => {
 				return attachPractitionerToStudio({
-					userId: fields[`practitioners[]`][key],
+					userId: fields[`practitioners[]`][key as any],
 					studioId: studio.id,
 				})
 			}

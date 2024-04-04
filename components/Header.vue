@@ -53,7 +53,7 @@
 				<Popover>
 					<PopoverTrigger>
 						<div
-							class="flex items-center gap-4 p-2 pr-3 rounded-full bg-white shadow-md"
+							class="flex items-center gap-4 p-2 pr-3 rounded-full bg-white !text-black shadow-md hover:bg-orange-600 hover:!text-white transition-colors duration-500"
 						>
 							<img
 								:src="user.profileImage || ''"

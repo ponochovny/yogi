@@ -3,7 +3,7 @@ import { getUserByEmail } from '../../db/users'
 import { generateTokens, sendRefreshToken } from '~/server/utils/jwt'
 import type { IUser } from '~/server/types'
 import { userTransformer } from '~/server/transformers/user'
-import { createRefreshToken } from '~/server/db/refreshTokens'
+import { createRefreshToken, getRefreshToken } from '~/server/db/refreshTokens'
 
 export default defineEventHandler(async (event) => {
 	const body = await readBody(event)
@@ -48,11 +48,15 @@ export default defineEventHandler(async (event) => {
 	// Refresh token
 	const { accessToken, refreshToken } = generateTokens(user)
 
-	// Save it inside db
-	await createRefreshToken({
-		token: refreshToken,
-		userId: user.id,
-	})
+	const isRTExists = await getRefreshToken(refreshToken)
+
+	if (!isRTExists) {
+		// Save it inside db
+		await createRefreshToken({
+			token: refreshToken,
+			userId: user.id,
+		})
+	}
 
 	// Add http only cookie
 	sendRefreshToken(event, refreshToken)

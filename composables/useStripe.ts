@@ -85,7 +85,7 @@ export default (
 					amount: paymentData.amount,
 					currency: paymentData.currency,
 					ticket_id,
-					user_id: authUser.value ? authUser.value.id : null,
+					user_id: authUser.value ? authUser.value.id : undefined,
 					user_name: name ? name : null,
 				},
 			})
@@ -103,10 +103,10 @@ export default (
 			if (error.type === 'card_error' || error.type === 'validation_error') {
 				router.push('/error')
 			} else {
-				console.log('great', error)
+				console.log('Error', error)
 			}
 		} catch (error) {
-			console.log('error', error)
+			console.log('Error', error)
 			router.push('/error')
 		} finally {
 			loading.value = false

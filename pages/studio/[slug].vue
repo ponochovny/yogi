@@ -28,24 +28,28 @@
 				</div>
 				<div class="flex gap-8 flex-col w-[calc(100%_-_400px)]">
 					<div class="flex flex-col gap-4">
-						<div class="flex gap-1 text-sm">
-							<div class="flex gap-1 text-xs font-semibold">
+						<div class="flex gap-1 text-sm items-center">
+							<div class="flex gap-1 text-xs font-semibold flex-wrap">
 								<span
 									class="text-rose-500 uppercase"
-									v-for="type of studioData.data.types"
+									v-for="(type, idx) of studioData.data.types"
 									:key="type"
 								>
-									{{ type }}
+									{{ type
+									}}{{ idx === studioData.data.types.length - 1 ? '' : ',' }}
 								</span>
-								<span> • </span>
 							</div>
+							<span> • </span>
 							<div class="flex flex-wrap">
 								<span
-									v-for="cat of studioData.data.categories"
+									v-for="(cat, idx) of studioData.data.categories"
 									:key="cat"
 									class="text-xs mr-1"
 								>
-									{{ cat }}
+									{{ cat
+									}}{{
+										idx === studioData.data.categories.length - 1 ? '' : ','
+									}}
 								</span>
 							</div>
 						</div>
@@ -78,7 +82,7 @@
 									:title="practitioner.name"
 									class="w-12 rounded-full"
 								/>
-								<NuxtLink to="/">
+								<NuxtLink :to="'/practitioner/' + practitioner.id">
 									<span class="font-semibold">
 										{{ practitioner.name }}
 									</span>

@@ -35,7 +35,7 @@
 					<div v-if="data" class="bg-white rounded-xl py-4 px-6">
 						<div class="flex gap-3">
 							<img
-								:src="data?.data.offering.banner[0]"
+								:src="offeringBanner()"
 								class="w-24 h-16 rounded-xl object-cover object-center"
 							/>
 							<div class="flex flex-col">
@@ -66,9 +66,9 @@
 										)
 									}}
 								</span>
-								<span class="font-semibold text-sm">{{
-									data?.data.offering.location[0]
-								}}</span>
+								<span class="font-semibold text-sm">
+									{{ data?.data.offering.location[0] }}
+								</span>
 							</div>
 						</div>
 					</div>
@@ -173,4 +173,10 @@ watch(user, (val) => {
 
 onMounted(() => injectStripe())
 // < TESTING STRIPE <
+
+function offeringBanner() {
+	const dataBanner = data.value?.data?.offering.banner[0]
+	const noBanner = 'img/banner-placeholder2.jpeg'
+	return dataBanner || noBanner
+}
 </script>

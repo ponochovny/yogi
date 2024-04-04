@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
 	})
 	//@ts-ignore
 	const { fields, files } = formExtracted as {
-		fields: any & { studioId: string }
+		fields: { [key: string]: string[] } & { studioId: string }
 		files: any
 	}
 

@@ -34,6 +34,7 @@ definePageMeta({
 const mode = ref<'login' | 'register'>('login')
 
 const route = useRoute()
+const router = useRouter()
 
 onMounted(() => {
 	if (route?.query?.t === 'register') mode.value = 'register'
@@ -43,9 +44,9 @@ function setMode(event: any) {
 	mode.value = event
 
 	if (event === 'login') {
-		useRouter().replace({ path: '/auth' })
+		router.replace({ path: '/auth' })
 	} else {
-		useRouter().push({
+		router.push({
 			path: '/auth',
 			query: {
 				t: 'register',
