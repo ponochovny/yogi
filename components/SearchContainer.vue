@@ -1,6 +1,6 @@
 <template>
 	<div class="relative" :class="cn(props.class)">
-		<Header :links="false" mode="white">
+		<Header :links="false" variant="white">
 			<template #left>
 				<MainSearch variant="secondary" class="ml-24" />
 			</template>
