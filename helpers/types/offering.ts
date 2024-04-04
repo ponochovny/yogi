@@ -44,7 +44,7 @@ export interface ITicket {
 	description: string
 	price: number
 	currency: string
-	status: 'active' | 'inactive'
+	status: 'active' | 'inactive' | string
 	// fee: number
 	/**
 	 * Mandatory 1-1 relation
