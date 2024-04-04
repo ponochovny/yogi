@@ -2,7 +2,7 @@ import currencies from '~/helpers/currencies.json'
 
 export function activityColorClass(activity: string) {
 	if (activity.toLowerCase() === 'class') {
-		return 'text-blue-500'
+		return 'text-cyan-700'
 	}
 	if (activity.toLowerCase() === 'event') {
 		return 'text-red-400'

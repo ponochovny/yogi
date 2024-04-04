@@ -7,7 +7,7 @@
 						<span
 							class="capitalize font-bold"
 							:class="{
-								'text-blue-500':
+								'text-cyan-700':
 									offeringData.data.activity.toLowerCase() === 'class',
 								'text-red-400':
 									offeringData.data.activity.toLowerCase() === 'event',

@@ -19,7 +19,7 @@
 					<span
 						class="capitalize font-bold"
 						:class="{
-							'text-blue-500': offering.activity.toLowerCase() === 'class',
+							'text-cyan-700': offering.activity.toLowerCase() === 'class',
 							'text-red-400': offering.activity.toLowerCase() === 'event',
 							'text-yellow-500':
 								offering.activity.toLowerCase() === 'appointment',

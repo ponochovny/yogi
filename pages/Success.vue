@@ -29,7 +29,7 @@
 					<span
 						class="capitalize font-bold text-sm"
 						:class="{
-							'text-blue-500':
+							'text-cyan-700':
 								purchase?.data.ticket.offering.activity.toLowerCase() ===
 								'class',
 							'text-red-400':
