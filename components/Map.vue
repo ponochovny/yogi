@@ -167,6 +167,7 @@
 				<Button btnSize="sm" @click="_theme = 0">Theme 1</Button>
 				<Button btnSize="sm" @click="_theme = 1">Theme 2</Button>
 				<Button btnSize="sm" @click="_theme = 2">Theme 3</Button>
+				<Button btnSize="sm" @click="_theme = 3">Theme 4</Button>
 			</div>
 		</l-control>
 	</l-map>
@@ -361,6 +362,14 @@ const tiles = ref([
 	},
 	{
 		url: 'https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.jpg',
+		attrs:
+			'&copy; CNES, Distribution Airbus DS, © Airbus DS, © PlanetObserver (Contains Copernicus Data) | &copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+		subdomains: 'abcd',
+		maxZoom: 20,
+		minZoom: 0,
+	},
+	{
+		url: 'https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.jpg?api_key=79e5d829-f0f4-4d44-8698-54f19b6f3038',
 		attrs:
 			'&copy; CNES, Distribution Airbus DS, © Airbus DS, © PlanetObserver (Contains Copernicus Data) | &copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 		subdomains: 'abcd',
