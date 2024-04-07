@@ -9,7 +9,7 @@
 		:maxZoom="maxZoom"
 		:minZoom="minZoom"
 	>
-		<l-tile-layer
+		<!-- <l-tile-layer
 			v-if="_theme === 1"
 			url="https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.jpg"
 			:minZoom="0"
@@ -31,7 +31,8 @@
 			url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 			layer-type="base"
 			name="OpenStreetMap"
-		/>
+		/> -->
+
 		<!--  -->
 		<!-- <l-tile-layer
 					url="https://tiles.stadiamaps.com/tiles/stamen_toner_lines/{z}/{x}/{y}{r}.png"
@@ -48,11 +49,11 @@
 					:minZoom="0"
 					:maxZoom="18"
 				/> -->
-		<l-tile-layer
+		<!-- <l-tile-layer
 			url="https://tiles.stadiamaps.com/tiles/stamen_toner_labels/{z}/{x}/{y}{r}.png"
 			:minZoom="0"
 			:maxZoom="20"
-		/>
+		/> -->
 
 		<!-- MARKERS -->
 		<!-- <l-marker
