@@ -9,17 +9,28 @@
 		:maxZoom="maxZoom"
 		:minZoom="minZoom"
 	>
-		<l-tile-layer
+		<template v-for="(tile, idx) of tiles" :key="tile.url">
+			<l-tile-layer
+				v-if="_theme === idx"
+				:url="tile.url"
+				:attribution="tile.attrs || undefined"
+				:minZoom="tile.minZoom || 0"
+				:maxZoom="tile.maxZoom || 20"
+			/>
+		</template>
+		<!-- <l-tile-layer
 			url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
 			:attribution="attr"
 			:minZoom="0"
 			:maxZoom="19"
-		/>
+		/> -->
 		<!-- <l-tile-layer
 			v-if="_theme === 1"
 			url="https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.jpg"
 			:minZoom="0"
 			:maxZoom="20"
+				attribution= '&copy; CNES, Distribution Airbus DS, © Airbus DS, © PlanetObserver (Contains Copernicus Data) | &copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+
 		/>
 		<l-tile-layer
 			v-if="_theme === 2"
@@ -150,6 +161,14 @@
 				</div>
 			</div>
 		</l-control> -->
+
+		<l-control position="bottomleft">
+			<div class="flex gap-1 pb-4">
+				<Button btnSize="sm" @click="_theme = 0">Theme 1</Button>
+				<Button btnSize="sm" @click="_theme = 1">Theme 2</Button>
+				<Button btnSize="sm" @click="_theme = 2">Theme 3</Button>
+			</div>
+		</l-control>
 	</l-map>
 </template>
 
@@ -163,7 +182,7 @@ import {
 	// LTooltip,
 	LIcon,
 	LPopup,
-	// LControl,
+	LControl,
 } from '@vue-leaflet/vue-leaflet'
 import { MapPinIcon } from '@heroicons/vue/24/solid'
 // import { coordinatesToDMS } from '~/helpers'
@@ -324,6 +343,31 @@ function coordsClicked() {
 	searchResults.value = []
 	setTimeout(() => emit('coordsClicked'), 0)
 }
+
+// tiles
+const tiles = ref([
+	{
+		url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png',
+		attrs:
+			'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+		subdomains: 'abcd',
+		maxZoom: 20,
+		minZoom: 0,
+	},
+	{
+		url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+		attrs:
+			'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+	},
+	{
+		url: 'https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.jpg',
+		attrs:
+			'&copy; CNES, Distribution Airbus DS, © Airbus DS, © PlanetObserver (Contains Copernicus Data) | &copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+		subdomains: 'abcd',
+		maxZoom: 20,
+		minZoom: 0,
+	},
+])
 
 defineExpose({ acceptFeature })
 </script>
