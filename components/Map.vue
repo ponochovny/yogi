@@ -9,6 +9,12 @@
 		:maxZoom="maxZoom"
 		:minZoom="minZoom"
 	>
+		<l-tile-layer
+			url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+			:attribution="attr"
+			:minZoom="0"
+			:maxZoom="19"
+		/>
 		<!-- <l-tile-layer
 			v-if="_theme === 1"
 			url="https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.jpg"
@@ -192,6 +198,11 @@ const emit = defineEmits([
 	'singleMarkerClick',
 	'coordsClicked',
 ])
+
+// temp
+const attr = ref(
+	'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+)
 
 const show = ref(false)
 const _zoom = ref(14)
