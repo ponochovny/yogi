@@ -9,18 +9,21 @@
 		:maxZoom="maxZoom"
 		:minZoom="minZoom"
 	>
-		<template v-for="(tile, idx) of tiles" :key="tile.url">
-			<l-tile-layer
-				v-if="_theme === idx"
-				:url="tile.url"
-				:attribution="tile.attrs || undefined"
-				:minZoom="tile.minZoom || 0"
-				:maxZoom="tile.maxZoom || 20"
-			/>
-		</template>
+		<l-control position="bottomleft">
+			<div class="flex gap-1 pb-4">
+				<Button btnSize="sm" @click="_theme = 0">Theme 1</Button>
+				<Button btnSize="sm" @click="_theme = 1">Theme 2</Button>
+				<Button btnSize="sm" @click="_theme = 2">Theme 3</Button>
+			</div>
+		</l-control>
+		<l-tile-layer
+			:url="tiles[_theme].url"
+			:attribution="tiles[_theme].attrs || ''"
+			:minZoom="tiles[_theme].minZoom || 0"
+			:maxZoom="tiles[_theme].maxZoom || 20"
+		/>
 		<!-- <l-tile-layer
 			url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-			:attribution="attr"
 			:minZoom="0"
 			:maxZoom="19"
 		/> -->
@@ -72,38 +75,15 @@
 			:maxZoom="20"
 		/> -->
 
-		<!-- MARKERS -->
-		<!-- <l-marker
-			v-for="marker of markers"
-			:key="marker.coords[0]"
-			:lat-lng="marker.coords"
-		>
-			<l-popup :options="{ offset: [-12, 10] }" className="bg-red-300">
-				Hello!
-			</l-popup>
-			<l-tooltip class="test" :options="{ offset: [12, -10] }">
-				test
-			</l-tooltip>
-			<l-icon
-				:icon-size="[24, 24]"
-				:icon-anchor="[14, 23]"
-				:popup-anchor="[12, -24]"
-				class-name="bg-none"
-			>
-				<div class="w-6 h-6">
-					<MapPinIcon
-						class="w-6 text-orange-600 shadow-lg stroke-[0.5px] stroke-black"
-					/>
-				</div>
-			</l-icon>
-		</l-marker> -->
-
 		<!-- SINGLE MARKER -->
 		<l-marker
 			v-if="singleMarker"
 			:lat-lng="singleMarker"
 			@click="emit('singleMarkerClick')"
 		>
+			<!-- <l-tooltip class="test" :options="{ offset: [14, -16] }">
+				{{ singleMarker[0].toFixed(6) + ',' + singleMarker[1].toFixed(6) }}
+			</l-tooltip> -->
 			<l-popup
 				v-if="!search && singleMarker"
 				:options="{ offset: [-18, 10] }"
@@ -113,9 +93,6 @@
 					{{ singleMarker[0].toFixed(6) + ',' + singleMarker[1].toFixed(6) }}
 				</button>
 			</l-popup>
-			<!-- <l-tooltip class="test" :options="{ offset: [14, -16] }">
-				{{ singleMarker[0].toFixed(6) + ',' + singleMarker[1].toFixed(6) }}
-			</l-tooltip> -->
 			<l-icon
 				:icon-size="[40, 40]"
 				:icon-anchor="[19, 40]"
@@ -129,47 +106,6 @@
 				</div>
 			</l-icon>
 		</l-marker>
-		<!-- <l-control position="topleft">
-			<div class="flex flex-col gap-2 max-w-96">
-				<Input
-					v-model="search"
-					@update:model-value="throttleSearch"
-					placeholder="Search address"
-				/>
-				<div
-					v-show="searchResults.length && isOpenList"
-					class="flex flex-col bg-white gap-y-1 px-3 py-3 rounded-md"
-				>
-					<button
-						v-for="(place, idx) of searchResults"
-						:key="idx"
-						@click="
-							addOtherMarker(
-								[place.center[1], place.center[0]],
-								place.id.split('.')[0]
-							)
-						"
-						class="hover:bg-gray-100 rounded-md px-2 py-2 text-left text-sm flex gap-2 items-center"
-					>
-						<img
-							v-if="place.id.split('.')[0] === 'country'"
-							:src="findFlagByCountryName(place.text)"
-							class="w-8 object-contain"
-						/>
-						<span>{{ place?.place_name || '' }}</span>
-					</button>
-				</div>
-			</div>
-		</l-control> -->
-
-		<l-control position="bottomleft">
-			<div class="flex gap-1 pb-4">
-				<Button btnSize="sm" @click="_theme = 0">Theme 1</Button>
-				<Button btnSize="sm" @click="_theme = 1">Theme 2</Button>
-				<Button btnSize="sm" @click="_theme = 2">Theme 3</Button>
-				<Button btnSize="sm" @click="_theme = 3">Theme 4</Button>
-			</div>
-		</l-control>
 	</l-map>
 </template>
 
@@ -186,8 +122,6 @@ import {
 	LControl,
 } from '@vue-leaflet/vue-leaflet'
 import { MapPinIcon } from '@heroicons/vue/24/solid'
-// import { coordinatesToDMS } from '~/helpers'
-// import { findFlagByCountryName } from '~/helpers'
 
 type TCoords = [number, number]
 
@@ -218,11 +152,6 @@ const emit = defineEmits([
 	'singleMarkerClick',
 	'coordsClicked',
 ])
-
-// temp
-const attr = ref(
-	'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-)
 
 const show = ref(false)
 const _zoom = ref(14)
@@ -293,7 +222,7 @@ function acceptFeature(coords: TCoords, type: string, place_name: string) {
 	emit('replaceSearch', place_name)
 }
 
-const { search: _search, searchResults, featuresByCoords } = useMyMap()
+const { search: _search, searchResults, featuresByCoords, tiles } = useMyMap()
 
 watch(
 	() => props.search,
@@ -337,46 +266,12 @@ function coordsClicked() {
 		+singleMarker.value[1].toFixed(6),
 	]
 
-	// const string = coordinatesToDMS(coords[0], coords[1])
 	const string = `${coords[0].toFixed(6)},${coords[1].toFixed(6)}`
 	isFeatureSelected.value = true
 	emit('replaceSearch', string)
 	searchResults.value = []
 	setTimeout(() => emit('coordsClicked'), 0)
 }
-
-// tiles
-const tiles = ref([
-	{
-		url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png',
-		attrs:
-			'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-		subdomains: 'abcd',
-		maxZoom: 20,
-		minZoom: 0,
-	},
-	{
-		url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-		attrs:
-			'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-	},
-	{
-		url: 'https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.jpg',
-		attrs:
-			'&copy; CNES, Distribution Airbus DS, © Airbus DS, © PlanetObserver (Contains Copernicus Data) | &copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-		subdomains: 'abcd',
-		maxZoom: 20,
-		minZoom: 0,
-	},
-	{
-		url: 'https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.jpg?api_key=79e5d829-f0f4-4d44-8698-54f19b6f3038',
-		attrs:
-			'&copy; CNES, Distribution Airbus DS, © Airbus DS, © PlanetObserver (Contains Copernicus Data) | &copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-		subdomains: 'abcd',
-		maxZoom: 20,
-		minZoom: 0,
-	},
-])
 
 defineExpose({ acceptFeature })
 </script>
