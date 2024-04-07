@@ -24,5 +24,6 @@ module.exports = {
 		'vue/no-unused-vars': 'off',
 		'no-async-promise-executor': 'off',
 		'vue/no-template-shadow': 'off',
+		'vue/v-on-event-hyphenation': 'off',
 	},
 }
