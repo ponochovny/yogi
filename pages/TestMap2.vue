@@ -16,13 +16,7 @@
 						<button
 							v-for="(place, idx) of features"
 							:key="idx"
-							@click="
-								_acceptFeature(
-									[place.center[1], place.center[0]],
-									place.id.split('.')[0],
-									place.place_name
-								)
-							"
+							@click="_acceptFeature(place)"
 							class="hover:bg-gray-100 rounded-md px-2 py-2 text-left text-sm flex gap-2 items-center"
 						>
 							<img
@@ -50,16 +44,23 @@
 						:center="[41.892055023, 12.485961]"
 						v-model:search="search"
 						@features="updateFeatures"
-						@replaceSearch="replaceSearch"
+						@replaceSearch="search = $event"
 						@singleMarkerClick="isOpenList = true"
 						@coordsClicked="isOpenList = false"
+						allowMarkerCreation
 					/>
 				</div>
-				<!-- <div class="flex flex-col gap-1 w-[440px]">
-					<div v-for="(place, idx) of features" :key="idx">
+				<!-- TEMP > -->
+				<div class="flex flex-col gap-1 w-[440px]">
+					<div
+						v-for="(place, idx) of features"
+						:key="idx"
+						@click="_acceptFeature(place)"
+					>
 						{{ place?.place_name || '' }}
 					</div>
-				</div> -->
+				</div>
+				<!-- TEMP < -->
 			</div>
 		</div>
 	</div>
@@ -80,19 +81,23 @@ const map = ref<any>(null)
 const search = ref('')
 const features = ref<any[]>([])
 function updateFeatures(data: any) {
-	console.log('updateFeatures', data)
 	features.value = data
 	isOpenList.value = true
 }
-function replaceSearch(string: string) {
-	console.log('replaceSearch', string)
-	search.value = string
-}
 //
 const isOpenList = ref(false)
-function _acceptFeature(coords: TCoords, type: string, place_name: string) {
-	//
+function _acceptFeature(placeData: {
+	id: string
+	center: TCoords
+	place_name: string
+}) {
 	if (!map.value) return
+
+	const { place_name, center, id } = placeData
+
+	const coords = [center[1], center[0]]
+	const type = id.split('.')[0]
+
 	map.value.acceptFeature(coords, type, place_name)
 }
 </script>

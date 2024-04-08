@@ -1,4 +1,5 @@
 import { identifyInputMapType } from '~/helpers'
+import type { IFeature } from '~/helpers/types/map'
 
 export default () => {
 	const tiles = ref([
@@ -40,7 +41,7 @@ export default () => {
 		}
 	)
 
-	const searchResults = ref<any[]>([])
+	const searchResults = ref<IFeature[]>([])
 
 	async function featuresByCoords(coords: [number, number]) {
 		const _coords = encodeURIComponent(`${coords[1]},${coords[0]}`)
