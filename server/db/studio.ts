@@ -15,8 +15,7 @@ export const createStudio = (
 		| 'ownerId'
 		| 'categories'
 		| 'types'
-		| 'location'
-	>
+	> & { location: string }
 ) => {
 	return prisma.studio.create({
 		data: {
@@ -44,8 +43,7 @@ export const updateStudio = (
 		| 'ownerId'
 		| 'categories'
 		| 'types'
-		| 'location'
-	>,
+	> & { location: string },
 	studioId: string
 ) => {
 	return prisma.studio.update({

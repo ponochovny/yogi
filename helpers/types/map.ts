@@ -1,21 +1,21 @@
-export type TCoords = [number, number]
 export type TMarker = {
 	name: string
-	coords: TCoords
+	coords: number[]
 }
 
 export interface IFeature {
 	id: string
-	type: string
-	place_type: string[]
-	relevance: number
-	properties: IProperties
-	text: string
+	type?: string
+	place_type?: string[]
+	relevance?: number
+	properties?: IProperties
+	text?: string
 	place_name: string
-	center: TCoords
-	geometry: IGeometry
-	address: string
-	context: IContext[]
+	//** lng-lat */
+	center: number[]
+	geometry?: IGeometry
+	address?: string
+	context?: IContext[]
 }
 
 interface IProperties {
@@ -25,7 +25,7 @@ interface IProperties {
 
 interface IGeometry {
 	type: string
-	coordinates: TCoords
+	coordinates: number[]
 }
 
 interface IContext {

@@ -43,7 +43,7 @@ export default () => {
 
 	const searchResults = ref<IFeature[]>([])
 
-	async function featuresByCoords(coords: [number, number]) {
+	async function featuresByCoords(coords: number[]) {
 		const _coords = encodeURIComponent(`${coords[1]},${coords[0]}`)
 		const res = await $fetch<any>('/api/map/search?coords=' + _coords)
 		searchResults.value = res.data?.features || []

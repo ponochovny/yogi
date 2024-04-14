@@ -37,10 +37,9 @@ export default defineEventHandler(async (event) => {
 		| 'ownerId'
 		| 'categories'
 		| 'types'
-		| 'location'
-	> = {
+	> & { location: string } = {
 		name: fields.name[0],
-		location: [fields.location[0]],
+		location: fields.location[0],
 		timezone: fields.timezone[0],
 		currency: fields.currency[0],
 		categories: fields.categories[0].split(','),

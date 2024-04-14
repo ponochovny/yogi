@@ -1,10 +1,11 @@
 import type { IUser } from '~/server/types'
+import type { TMarker } from './map'
 
 export interface IStudio {
 	id: string
 	slug: string
 	name: string
-	location: string[]
+	location: TMarker | null
 	timezone: string
 	currency: string
 	categories: string[]
