@@ -1,5 +1,19 @@
 <template>
 	<div class="flex flex-col items-center justify-center h-screen gap-4">
+		<div class="w-[400px] flex flex-col gap-1">
+			<Input v-model="search" />
+			<Yselect
+				ref="selectComponent"
+				class="w-full"
+				mode="single"
+				v-model="selected"
+				field="place_name"
+				valueProp="id"
+				object
+				:options="features"
+				placeholder="Find place on the map"
+			/>
+		</div>
 		<div class="flex gap-4 items-start">
 			<div class="w-[920px] h-[400px]">
 				<Map2
@@ -7,10 +21,15 @@
 					v-model:search="search"
 					:zoom="3"
 					allowMarkerCreation
+					searchable
 					@features="setFeatures"
+					@featureSelected="featureSelected"
+					@markerRemoved="selected = null"
 				/>
 			</div>
-			<div class="flex flex-col gap-1 bg-white rounded-lg p-4 w-[400px]">
+			<div
+				class="flex flex-col gap-1 bg-white rounded-lg p-4 w-[400px] shadow-md border border-gray-300"
+			>
 				<p v-if="!features.length" class="text-gray-500 text-center">
 					Place a marker...
 				</p>
@@ -29,7 +48,6 @@
 				</button>
 			</div>
 		</div>
-		<div>Search: {{ search }}</div>
 	</div>
 </template>
 
@@ -43,18 +61,30 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
+const selectComponent = ref<any>(null)
 const map = ref<any>(null)
 const search = ref('')
 const features = ref<IFeature[]>([])
 
-function setFeatures(data: any[]) {
+function setFeatures(data: IFeature[]) {
 	features.value = data
+
+	if (data.length) {
+		selectComponent.value?.open()
+	} else {
+		selectComponent.value?.close()
+	}
 }
 
 function selectFeature(data: IFeature) {
 	if (!map.value) return
 
 	map.value.selectFeature(data)
+}
+
+const selected = ref<any>(null)
+function featureSelected(feature: IFeature) {
+	selected.value = feature
 }
 
 // function _acceptFeature(placeData: {
