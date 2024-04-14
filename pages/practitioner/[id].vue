@@ -25,7 +25,7 @@
 							<div class="flex gap-1 text-gray-600">
 								<MapPinIcon class="w-6 stroke-1" />
 								<span class="font-semibold">
-									{{ practitioner.data.studios[0].location[0] }}
+									{{ practitioner.data.studios[0].location?.name }}
 								</span>
 							</div>
 						</div>
