@@ -7,7 +7,7 @@
 						<span
 							class="capitalize font-bold"
 							:class="{
-								'text-blue-500':
+								'text-blue-500/90':
 									offeringData.data.activity.toLowerCase() === 'class',
 								'text-red-400':
 									offeringData.data.activity.toLowerCase() === 'event',
@@ -135,7 +135,7 @@
 								v-if="offeringData.data.location?.name"
 								class="w-full h-[300px] rounded-t-xl overflow-hidden"
 							>
-								<Map2
+								<Map
 									:zoom="14"
 									:center="offeringData.data.location.coords"
 									:markers="[offeringData.data.location]"

@@ -103,7 +103,7 @@
 			/>
 		</div>
 		<div v-if="isShowMap" class="w-full h-[400px]">
-			<Map2
+			<Map
 				ref="map"
 				allowMarkerCreation
 				searchable

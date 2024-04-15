@@ -3,7 +3,7 @@ import flags from '~/helpers/flagsList.json'
 
 export function activityColorClass(activity: string) {
 	if (activity.toLowerCase() === 'class') {
-		return 'text-blue-500'
+		return 'text-blue-500/90'
 	}
 	if (activity.toLowerCase() === 'event') {
 		return 'text-red-400'

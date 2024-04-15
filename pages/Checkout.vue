@@ -42,7 +42,7 @@
 								<span
 									class="capitalize font-bold text-sm"
 									:class="{
-										'text-blue-500':
+										'text-blue-500/90':
 											data?.data.offering.activity.toLowerCase() === 'class',
 										'text-red-400':
 											data?.data.offering.activity.toLowerCase() === 'event',

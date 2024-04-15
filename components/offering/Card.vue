@@ -19,7 +19,7 @@
 					<span
 						class="capitalize font-bold"
 						:class="{
-							'text-blue-500': offering.activity.toLowerCase() === 'class',
+							'text-blue-500/90': offering.activity.toLowerCase() === 'class',
 							'text-red-400': offering.activity.toLowerCase() === 'event',
 							'text-yellow-500':
 								offering.activity.toLowerCase() === 'appointment',
@@ -47,8 +47,8 @@
 			<div class="text-sm font-semibold text-gray-500 mb-1">
 				{{ dateString(offering.start, offering.end) }}
 			</div>
-			<div class="text-sm mb-1">
-				{{ offering.location ? offering.location.name : '' }}
+			<div class="text-sm mb-1 truncate" :title="offering.location?.name || ''">
+				{{ offering.location?.name || '' }}
 			</div>
 			<NuxtLink
 				:to="'studio/' + offering.studio?.slug"

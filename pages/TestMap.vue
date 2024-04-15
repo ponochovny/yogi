@@ -16,7 +16,7 @@
 		</div>
 		<div class="flex gap-4 items-start">
 			<div class="w-[920px] h-[400px]">
-				<Map2
+				<Map
 					ref="map"
 					v-model:search="search"
 					:zoom="3"
