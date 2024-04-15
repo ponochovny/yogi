@@ -71,6 +71,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import type { IOffering } from '~/helpers/types/offering'
 
 export default defineComponent({
 	name: 'UserOfferingSettings',
