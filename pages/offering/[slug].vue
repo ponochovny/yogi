@@ -92,7 +92,7 @@
 								:title="offeringData.data.studio?.name"
 								class="w-20 h-20 rounded-full object-cover object-center"
 							/>
-							<NuxtLink to="/">
+							<NuxtLink :to="`/studio/${offeringData.data.studio?.slug || ''}`">
 								<span class="font-semibold text-lg">
 									{{ offeringData.data.studio?.name }}
 								</span>
