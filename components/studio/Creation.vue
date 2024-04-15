@@ -196,7 +196,6 @@ const _currencies = currencies
 const _categories = _data.categories
 const _types = _data.types
 const randomNames = _randomStudioData.names
-const isShowMap = ref(false)
 
 const formData = reactive<{
 	name: string
@@ -224,6 +223,18 @@ const formData = reactive<{
 	practitioners: [],
 })
 
+function resetForm() {
+	formData.name = ''
+	formData.location = null
+	formData.timezone = _timezones[0].tzId
+	formData.currency = _currencies[0].code
+	formData.categories = []
+	formData.types = []
+	formData.bio = ''
+	formData.mission = ''
+	formData.practitioners = []
+}
+
 watch(
 	() => props.studio,
 	(val) => {
@@ -231,8 +242,6 @@ watch(
 
 		logoImageUrl.value = val.logo ? val.logo.url : ''
 		bannerImageUrl.value = val.banner.length ? val.banner[0].url : ''
-
-		loading.value = false
 	}
 )
 
@@ -272,6 +281,90 @@ onBeforeMount(() => {
 	}
 })
 
+// Practitioners
+async function loadUsers(query?: string) {
+	if (!query?.trim()) return Promise.resolve([])
+
+	const res = await $fetch<{ data: any }>('/api/users/search', {
+		method: 'POST',
+		body: {
+			search: query.trim(),
+		},
+	})
+	if (!res) return []
+	return res.data
+}
+const practitionersOptions = async (query: string) => {
+	return await loadUsers(query)
+}
+
+// LOCATION >
+const isShowMap = ref(false)
+const map = ref<any>(null)
+const selectComponent = ref<any>(null)
+const features = ref<IFeature[]>([])
+function setFeatures(data: IFeature[]) {
+	features.value = data
+
+	if (data.length) {
+		// selectComponent.value?.open()
+	} else {
+		selectComponent.value?.close()
+	}
+}
+function featureSelected(feature: IFeature) {
+	formData.location = feature
+}
+function getMarkers(): TMarker | undefined {
+	if (formData.location) {
+		const formDataMarker = {
+			coords: [formData.location?.center[1], formData.location?.center[0]],
+			name: formData.location?.place_name,
+		}
+		return { ...formDataMarker }
+	}
+	if (props.studio?.location) {
+		return props.studio.location
+	}
+	return
+}
+function getCenter(): number[] {
+	if (formData.location) {
+		return [formData.location.center[1], formData.location.center[0]]
+	}
+	if (props.studio?.location) {
+		return [...props.studio.location.coords]
+	}
+	return [0, 0]
+}
+function resetMarker(mapRerender?: boolean) {
+	if (props.studio) {
+		formData.location = {
+			center:
+				[
+					props.studio.location?.coords[1] || 0,
+					props.studio.location?.coords[0] || 0,
+				] || [],
+			id: props.studio.location?.name || '',
+			place_name: props.studio.location?.name || '',
+		}
+	}
+	if (isShowMap.value && mapRerender) {
+		isShowMap.value = false
+		setTimeout(() => {
+			isShowMap.value = true
+		}, 0)
+	}
+}
+function markerRemoved() {
+	if (props.updateData) {
+		resetMarker()
+	} else {
+		formData.location = null
+	}
+}
+// LOCATION <
+
 function handleForm() {
 	if (props.updateData) {
 		updateStudioHandler()
@@ -303,6 +396,8 @@ async function updateStudioHandler() {
 	} catch (error) {
 		console.log(error)
 		toast.error('Error ocurred')
+	} finally {
+		loading.value = false
 	}
 }
 async function createStudioHandler() {
@@ -321,6 +416,7 @@ async function createStudioHandler() {
 				banner: selectedFileBanner.value,
 			},
 		})
+		resetForm()
 		emit('updated')
 		toast.success('Studio has been created successfully')
 		// TODO: reset fields
@@ -331,90 +427,4 @@ async function createStudioHandler() {
 		loading.value = false
 	}
 }
-
-function getMarkers(): TMarker | undefined {
-	if (formData.location) {
-		const formDataMarker = {
-			coords: [formData.location?.center[1], formData.location?.center[0]],
-			name: formData.location?.place_name,
-		}
-		return { ...formDataMarker }
-	}
-	if (props.studio?.location) {
-		return props.studio.location
-	}
-	return
-}
-function getCenter(): number[] {
-	if (formData.location) {
-		return [formData.location.center[1], formData.location.center[0]]
-	}
-	if (props.studio?.location) {
-		return [...props.studio.location.coords]
-	}
-	return [0, 0]
-}
-
-function resetMarker(mapRerender?: boolean) {
-	if (props.studio) {
-		formData.location = {
-			center:
-				[
-					props.studio.location?.coords[1] || 0,
-					props.studio.location?.coords[0] || 0,
-				] || [],
-			id: props.studio.location?.name || '',
-			place_name: props.studio.location?.name || '',
-		}
-	}
-	if (isShowMap.value && mapRerender) {
-		isShowMap.value = false
-		setTimeout(() => {
-			isShowMap.value = true
-		}, 0)
-	}
-}
-
-function markerRemoved() {
-	if (props.updateData) {
-		resetMarker()
-	} else {
-		formData.location = null
-	}
-}
-
-// Practitioners
-async function loadUsers(query?: string) {
-	if (!query?.trim()) return Promise.resolve([])
-
-	const res = await $fetch<{ data: any }>('/api/users/search', {
-		method: 'POST',
-		body: {
-			search: query.trim(),
-		},
-	})
-	if (!res) return []
-	return res.data
-}
-const practitionersOptions = async (query: string) => {
-	return await loadUsers(query)
-}
-
-// LOCATION >
-const map = ref<any>(null)
-const selectComponent = ref<any>(null)
-const features = ref<IFeature[]>([])
-function setFeatures(data: IFeature[]) {
-	features.value = data
-
-	if (data.length) {
-		// selectComponent.value?.open()
-	} else {
-		selectComponent.value?.close()
-	}
-}
-function featureSelected(feature: IFeature) {
-	formData.location = feature
-}
-// LOCATION <
 </script>

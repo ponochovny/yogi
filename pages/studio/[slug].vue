@@ -119,10 +119,10 @@
 						>
 							<div
 								v-if="studioData.data.location?.name"
-								class="w-full h-[300px] rounded-xl overflow-hidden"
+								class="w-full h-[300px] rounded-t-xl overflow-hidden"
 							>
 								<Map2
-									:zoom="18"
+									:zoom="14"
 									:center="studioData.data.location.coords"
 									:markers="[studioData.data.location]"
 								/>
