@@ -56,7 +56,7 @@
 						}}
 					</span>
 					<span class="font-semibold text-sm">
-						{{ purchase?.data.ticket.offering.location[0] }}
+						{{ purchase?.data.ticket.offering.location?.name }}
 					</span>
 					<div class="flex items-center gap-2 text-orange-500">
 						<TicketIcon class="w-7 stroke-1" />

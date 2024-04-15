@@ -46,8 +46,11 @@ export default defineEventHandler(async (event) => {
 	}
 
 	const offeringData: Partial<
-		Omit<IOfferingCreation, 'practitioners' | 'banners' | 'tickets'>
-	> = {
+		Omit<
+			IOfferingCreation,
+			'practitioners' | 'banners' | 'tickets' | 'location'
+		>
+	> & { location: string } = {
 		...(fields.name[0] && { name: fields.name[0] }),
 		...(fields.name[0] && { slug: generateSlug(fields.name[0]) }),
 		activity: fields.activity[0],
@@ -59,7 +62,7 @@ export default defineEventHandler(async (event) => {
 		is_private: fields.is_private[0] === 'true',
 		types: fields.types[0].split(','),
 		categories: fields.categories[0].split(','),
-		location: [fields.location[0]],
+		location: fields.location[0],
 		timezone: fields.timezone[0],
 	}
 
@@ -131,22 +134,24 @@ export default defineEventHandler(async (event) => {
 	}
 
 	// Tickets
-	const ticketPromises = []
-	for (const ticket of fields['tickets[]']) {
-		const _ticket = JSON.parse(ticket)
+	if (fields['tickets[]'] && typeof fields['tickets[]'] === 'string') {
+		const ticketPromises = []
+		for (const ticket of JSON.parse(fields['tickets[]'])) {
+			const _ticket = JSON.parse(ticket)
 
-		ticketPromises.push(
-			createTicket({
-				name: _ticket.name as string,
-				description: _ticket.description as string,
-				price: convertPriceStringToNumber(_ticket.price),
-				currency: _ticket.currency as string,
-				offeringId,
-				status: 'active', // TODO: ticket status
-			})
-		)
+			ticketPromises.push(
+				createTicket({
+					name: _ticket.name as string,
+					description: _ticket.description as string,
+					price: convertPriceStringToNumber(_ticket.price),
+					currency: _ticket.currency as string,
+					offeringId,
+					status: 'active', // TODO: ticket status
+				})
+			)
+		}
+		await Promise.all(ticketPromises)
 	}
-	await Promise.all(ticketPromises)
 
 	return {
 		data: updatedOffering,

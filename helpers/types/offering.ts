@@ -1,6 +1,7 @@
 import type { IUser } from '~/server/types'
 import type { Media } from '.'
 import type { IStudio } from './studio'
+import type { TMarker } from './map'
 
 export interface IOffering {
 	id: string
@@ -24,7 +25,7 @@ export interface IOffering {
 	banners: any[]
 
 	studio?: IStudio
-	location: string[]
+	location: TMarker | null
 	timezone: string
 	/**
 	 * many-to-many relations
@@ -75,7 +76,7 @@ export interface IOfferingCreation {
 	end: Date
 	banners: File[]
 	practitioners: string[]
-	location: string[]
+	location: TMarker | null
 	studioId: string
 }
 

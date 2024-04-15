@@ -67,7 +67,7 @@
 									}}
 								</span>
 								<span class="font-semibold text-sm">
-									{{ data?.data.offering.location[0] }}
+									{{ data?.data.offering.location?.name }}
 								</span>
 							</div>
 						</div>

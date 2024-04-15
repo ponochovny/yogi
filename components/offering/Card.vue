@@ -48,7 +48,7 @@
 				{{ dateString(offering.start, offering.end) }}
 			</div>
 			<div class="text-sm mb-1">
-				{{ offering.location ? offering.location[0] : '' }}
+				{{ offering.location ? offering.location.name : '' }}
 			</div>
 			<NuxtLink
 				:to="'studio/' + offering.studio?.slug"

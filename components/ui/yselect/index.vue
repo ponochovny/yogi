@@ -5,6 +5,7 @@
 				{{ label }}
 			</span>
 			<Multiselect
+				ref="componentRef"
 				:mode="mode"
 				:value="modelValue"
 				@update:model-value="emit('update:model-value', $event)"
@@ -115,5 +116,15 @@ const props = withDefaults(defineProps<IProps>(), {
 	openDirection: 'bottom',
 })
 const emit = defineEmits(['update:model-value'])
+
+const componentRef = ref<any>(null)
+function open() {
+	componentRef.value?.open()
+}
+function close() {
+	componentRef.value?.close()
+}
+
+defineExpose({ open, close })
 </script>
 <style src="@vueform/multiselect/themes/default.css"></style>

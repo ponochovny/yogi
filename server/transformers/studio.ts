@@ -8,6 +8,9 @@ export const studioTransformer = (studio: any) => {
 	if (!studio) return null
 
 	const { createdAt, updatedAt, ownerId, ...rest } = studio
+
+	const parsedLocation = JSON.parse(JSON.stringify(studio.location))
+
 	return {
 		...rest,
 		logo:
@@ -25,5 +28,9 @@ export const studioTransformer = (studio: any) => {
 					// eslint-disable-next-line no-mixed-spaces-and-tabs
 			  )
 			: [],
+		location:
+			typeof parsedLocation === 'string'
+				? JSON.parse(parsedLocation)
+				: parsedLocation,
 	}
 }

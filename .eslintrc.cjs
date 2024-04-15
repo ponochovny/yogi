@@ -3,7 +3,7 @@ module.exports = {
 	extends: ['@nuxt/eslint-config'],
 	rules: {
 		'@typescript-eslint/no-unused-vars': 'off',
-		'vue/html-indent': ['error', 'tab'],
+		'vue/html-indent': ['warn', 'tab'],
 		indent: [
 			'error',
 			'tab',
@@ -24,5 +24,6 @@ module.exports = {
 		'vue/no-unused-vars': 'off',
 		'no-async-promise-executor': 'off',
 		'vue/no-template-shadow': 'off',
+		'vue/v-on-event-hyphenation': 'off',
 	},
 }
