@@ -19,7 +19,9 @@
 				<div
 					class="absolute w-44 h-44 -top-20 left-24 border-4 border-white rounded-full"
 				>
+					<!-- TODO: if no logo -->
 					<NuxtImg
+						v-if="studioData.data.logo.url"
 						:src="studioData.data.logo.url"
 						:alt="studioData.data.name"
 						:title="studioData.data.name"
@@ -56,19 +58,27 @@
 						<div class="text-3xl font-semibold">{{ studioData.data.name }}</div>
 						<div class="flex gap-2 items-center">
 							<MapPinIcon class="w-5 stroke-1.5" />
-							<span class="font-semibold text-sm">
-								{{ studioData.data.location[0] }}
-							</span>
+							<a
+								:href="`https://www.google.com/maps/place/${studioData.data.location?.name}`"
+								target="_blank"
+							>
+								<span class="font-semibold text-sm">
+									{{ studioData.data.location?.name }}
+								</span>
+							</a>
 						</div>
 					</div>
-					<div class="flex flex-col gap-6">
+					<div v-if="studioData.data.bio" class="flex flex-col gap-6">
 						<div class="font-semibold text-lg">About</div>
 						<div class="whitespace-pre-line leading-7">
 							{{ studioData.data.bio }}
 						</div>
 					</div>
 
-					<div class="flex flex-col gap-6">
+					<div
+						v-if="studioData.data.practitioners.length"
+						class="flex flex-col gap-6"
+					>
 						<div class="font-semibold text-lg">Practitioners</div>
 						<div class="flex gap-4 flex-wrap">
 							<div
@@ -91,7 +101,7 @@
 						</div>
 					</div>
 
-					<div class="flex flex-col gap-6">
+					<div v-if="studioData.data.mission" class="flex flex-col gap-6">
 						<div class="font-semibold text-lg">Mission</div>
 						<div class="whitespace-pre-line leading-7">
 							{{ studioData.data.mission }}
@@ -100,8 +110,34 @@
 
 					<div class="flex flex-col gap-6">
 						<div class="font-semibold text-lg">Location</div>
-						<div class="border rounded-xl p-6 font-semibold">
-							{{ studioData.data.location[0] }}
+						<div
+							class="border rounded-xl font-semibold flex flex-col"
+							:class="{
+								'p-6': !studioData.data.location?.name,
+								'pb-6': studioData.data.location?.name,
+							}"
+						>
+							<div
+								v-if="studioData.data.location?.name"
+								class="w-full h-[300px] rounded-t-xl overflow-hidden"
+							>
+								<Map
+									:zoom="14"
+									:center="studioData.data.location.coords"
+									:markers="[studioData.data.location]"
+								/>
+							</div>
+							<a
+								:href="`https://www.google.com/maps/place/${studioData.data.location?.name}`"
+								target="_blank"
+								:class="{ 'px-6 pt-3': studioData.data.location?.name }"
+							>
+								<span>
+									{{
+										studioData.data.location?.name || studioData.data.location
+									}}
+								</span>
+							</a>
 						</div>
 					</div>
 				</div>

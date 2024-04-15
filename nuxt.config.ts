@@ -38,6 +38,8 @@ export default defineNuxtConfig({
 			appDomain: process.env.APP_DOMAIN,
 			stripePublicKey: process.env.STRIPE_PUBLISHABLE_KEY,
 		},
+		// Mapbox
+		mapboxPublicApi: process.env.MAPBOX_PUBLIC_API,
 	},
 
 	app: {

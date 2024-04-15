@@ -42,7 +42,7 @@
 								<span
 									class="capitalize font-bold text-sm"
 									:class="{
-										'text-cyan-700':
+										'text-blue-500/90':
 											data?.data.offering.activity.toLowerCase() === 'class',
 										'text-red-400':
 											data?.data.offering.activity.toLowerCase() === 'event',
@@ -67,7 +67,7 @@
 									}}
 								</span>
 								<span class="font-semibold text-sm">
-									{{ data?.data.offering.location[0] }}
+									{{ data?.data.offering.location?.name }}
 								</span>
 							</div>
 						</div>

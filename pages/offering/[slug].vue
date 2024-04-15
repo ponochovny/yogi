@@ -7,7 +7,7 @@
 						<span
 							class="capitalize font-bold"
 							:class="{
-								'text-cyan-700':
+								'text-blue-500/90':
 									offeringData.data.activity.toLowerCase() === 'class',
 								'text-red-400':
 									offeringData.data.activity.toLowerCase() === 'event',
@@ -37,12 +37,17 @@
 							{{ dateString(offeringData.data.start, offeringData.data.end) }}
 						</span>
 					</div>
-					<div class="flex gap-2 items-center">
+					<a
+						:href="`https://www.google.com/maps/place/${offeringData.data.location?.name}`"
+						target="_blank"
+						class="flex gap-2 items-center"
+					>
 						<MapPinIcon class="w-5 text-orange-500 stroke-1.5" />
 						<span class="font-semibold text-sm">
-							{{ offeringData.data.location[0] }}
+							{{ offeringData.data.location?.name }}
 						</span>
-					</div>
+					</a>
+
 					<div class="flex gap-2 items-center">
 						<ClockIcon class="w-5 text-orange-500 stroke-1.5" />
 						<span class="font-semibold text-sm">
@@ -87,7 +92,7 @@
 								:title="offeringData.data.studio?.name"
 								class="w-20 h-20 rounded-full object-cover object-center"
 							/>
-							<NuxtLink to="/">
+							<NuxtLink :to="`/studio/${offeringData.data.studio?.slug || ''}`">
 								<span class="font-semibold text-lg">
 									{{ offeringData.data.studio?.name }}
 								</span>
@@ -119,8 +124,35 @@
 					</div>
 					<div class="flex flex-col gap-6">
 						<div class="font-semibold text-lg">Location</div>
-						<div class="border rounded-xl p-6 font-semibold">
-							{{ offeringData.data.location[0] }}
+						<div
+							class="border rounded-xl font-semibold flex flex-col"
+							:class="{
+								'p-6': !offeringData.data.location?.name,
+								'pb-6': offeringData.data.location?.name,
+							}"
+						>
+							<div
+								v-if="offeringData.data.location?.name"
+								class="w-full h-[300px] rounded-t-xl overflow-hidden"
+							>
+								<Map
+									:zoom="14"
+									:center="offeringData.data.location.coords"
+									:markers="[offeringData.data.location]"
+								/>
+							</div>
+							<a
+								:href="`https://www.google.com/maps/place/${offeringData.data.location?.name}`"
+								target="_blank"
+								:class="{ 'px-6 pt-3': offeringData.data.location?.name }"
+							>
+								<span>
+									{{
+										offeringData.data.location?.name ||
+										offeringData.data.location
+									}}
+								</span>
+							</a>
 						</div>
 					</div>
 				</div>

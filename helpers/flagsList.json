@@ -1,0 +1,1172 @@
+[
+	{
+			"country": "Afghanistan",
+			"code": "AF",
+			"fullCode": "AFG",
+			"img": "https://www.worldometers.info//img/flags/small/tn_af-flag.gif"
+	},
+	{
+			"country": "Albania",
+			"code": "AL",
+			"fullCode": "ALB",
+			"img": "https://www.worldometers.info//img/flags/small/tn_al-flag.gif"
+	},
+	{
+			"country": "Algeria",
+			"code": "DZ",
+			"fullCode": "DZA",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ag-flag.gif"
+	},
+	{
+			"country": "Andorra",
+			"code": "AD",
+			"fullCode": "AND",
+			"img": "https://www.worldometers.info//img/flags/small/tn_an-flag.gif"
+	},
+	{
+			"country": "Angola",
+			"code": "AO",
+			"fullCode": "AGO",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ao-flag.gif"
+	},
+	{
+			"country": "Antigua and Barbuda",
+			"code": "AG",
+			"fullCode": "ATG",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ac-flag.gif"
+	},
+	{
+			"country": "Argentina",
+			"code": "AR",
+			"fullCode": "ARG",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ar-flag.gif"
+	},
+	{
+			"country": "Armenia",
+			"code": "AM",
+			"fullCode": "ARM",
+			"img": "https://www.worldometers.info//img/flags/small/tn_am-flag.gif"
+	},
+	{
+			"country": "Australia",
+			"code": "AU",
+			"fullCode": "AUS",
+			"img": "https://www.worldometers.info//img/flags/small/tn_as-flag.gif"
+	},
+	{
+			"country": "Austria",
+			"code": "AT",
+			"fullCode": "AUT",
+			"img": "https://www.worldometers.info//img/flags/small/tn_au-flag.gif"
+	},
+	{
+			"country": "Azerbaijan",
+			"code": "AZ",
+			"fullCode": "AZE",
+			"img": "https://www.worldometers.info//img/flags/small/tn_aj-flag.gif"
+	},
+	{
+			"country": "Bahamas (the)",
+			"code": "BS",
+			"fullCode": "BHS",
+			"img": "https://www.worldometers.info//img/flags/small/tn_bf-flag.gif"
+	},
+	{
+			"country": "Bahrain",
+			"code": "BH",
+			"fullCode": "BHR",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ba-flag.gif"
+	},
+	{
+			"country": "Bangladesh",
+			"code": "BD",
+			"fullCode": "BGD",
+			"img": "https://www.worldometers.info//img/flags/small/tn_bg-flag.gif"
+	},
+	{
+			"country": "Barbados",
+			"code": "BB",
+			"fullCode": "BRB",
+			"img": "https://www.worldometers.info//img/flags/small/tn_bb-flag.gif"
+	},
+	{
+			"country": "Belarus",
+			"code": "BY",
+			"fullCode": "BLR",
+			"img": "https://www.worldometers.info//img/flags/small/tn_bo-flag.gif"
+	},
+	{
+			"country": "Belgium",
+			"code": "BE",
+			"fullCode": "BEL",
+			"img": "https://www.worldometers.info//img/flags/small/tn_be-flag.gif"
+	},
+	{
+			"country": "Belize",
+			"code": "BZ",
+			"fullCode": "BLZ",
+			"img": "https://www.worldometers.info//img/flags/small/tn_bh-flag.gif"
+	},
+	{
+			"country": "Benin",
+			"code": "BJ",
+			"fullCode": "BEN",
+			"img": "https://www.worldometers.info//img/flags/small/tn_bn-flag.gif"
+	},
+	{
+			"country": "Bhutan",
+			"code": "BT",
+			"fullCode": "BTN",
+			"img": "https://www.worldometers.info//img/flags/small/tn_bt-flag.gif"
+	},
+	{
+			"country": "Bolivia (Plurinational State of)",
+			"code": "BO",
+			"fullCode": "BOL",
+			"img": "https://www.worldometers.info//img/flags/small/tn_bl-flag.gif"
+	},
+	{
+			"country": "Bosnia and Herzegovina",
+			"code": "BA",
+			"fullCode": "BIH",
+			"img": "https://www.worldometers.info//img/flags/small/tn_bk-flag.gif"
+	},
+	{
+			"country": "Botswana",
+			"code": "BW",
+			"fullCode": "BWA",
+			"img": "https://www.worldometers.info//img/flags/small/tn_bc-flag.gif"
+	},
+	{
+			"country": "Brazil",
+			"code": "BR",
+			"fullCode": "BRA",
+			"img": "https://www.worldometers.info//img/flags/small/tn_br-flag.gif"
+	},
+	{
+			"country": "Brunei Darussalam",
+			"code": "BN",
+			"fullCode": "BRN",
+			"img": "https://www.worldometers.info//img/flags/small/tn_bx-flag.gif"
+	},
+	{
+			"country": "Bulgaria",
+			"code": "BG",
+			"fullCode": "BGR",
+			"img": "https://www.worldometers.info//img/flags/small/tn_bu-flag.gif"
+	},
+	{
+			"country": "Burkina Faso",
+			"code": "BF",
+			"fullCode": "BFA",
+			"img": "https://www.worldometers.info//img/flags/small/tn_uv-flag.gif"
+	},
+	{
+			"country": "Burundi",
+			"code": "BI",
+			"fullCode": "BDI",
+			"img": "https://www.worldometers.info//img/flags/small/tn_by-flag.gif"
+	},
+	{
+			"country": "Cabo Verde",
+			"code": "CV",
+			"fullCode": "CPV",
+			"img": "https://www.worldometers.info//img/flags/small/tn_cv-flag.gif"
+	},
+	{
+			"country": "Cambodia",
+			"code": "KH",
+			"fullCode": "KHM",
+			"img": "https://www.worldometers.info//img/flags/small/tn_cb-flag.gif"
+	},
+	{
+			"country": "Cameroon",
+			"code": "CM",
+			"fullCode": "CMR",
+			"img": "https://www.worldometers.info//img/flags/small/tn_cm-flag.gif"
+	},
+	{
+			"country": "Canada",
+			"code": "CA",
+			"fullCode": "CAN",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ca-flag.gif"
+	},
+	{
+			"country": "Central African Republic (the)",
+			"code": "CF",
+			"fullCode": "CAF",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ct-flag.gif"
+	},
+	{
+			"country": "Chad",
+			"code": "TD",
+			"fullCode": "TCD",
+			"img": "https://www.worldometers.info//img/flags/small/tn_cd-flag.gif"
+	},
+	{
+			"country": "Chile",
+			"code": "CL",
+			"fullCode": "CHL",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ci-flag.gif"
+	},
+	{
+			"country": "China",
+			"code": "CN",
+			"fullCode": "CHN",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ch-flag.gif"
+	},
+	{
+			"country": "Colombia",
+			"code": "CO",
+			"fullCode": "COL",
+			"img": "https://www.worldometers.info//img/flags/small/tn_co-flag.gif"
+	},
+	{
+			"country": "Comoros (the)",
+			"code": "KM",
+			"fullCode": "COM",
+			"img": "https://www.worldometers.info//img/flags/small/tn_cn-flag.gif"
+	},
+	{
+			"country": "Congo (the Democratic Republic of the)",
+			"code": "CD",
+			"fullCode": "COD",
+			"img": "https://www.worldometers.info//img/flags/small/tn_congo-flag.gif"
+	},
+	{
+			"country": "Congo (the)",
+			"code": "CG",
+			"fullCode": "COG",
+			"img": "https://www.worldometers.info//img/flags/small/tn_cg-flag.gif"
+	},
+	{
+			"country": "Costa Rica",
+			"code": "CR",
+			"fullCode": "CRI",
+			"img": "https://www.worldometers.info//img/flags/small/tn_cs-flag.gif"
+	},
+	{
+			"country": "Côte d'Ivoire",
+			"code": "CI",
+			"fullCode": "CIV",
+			"img": "https://www.worldometers.info//img/flags/small/tn_iv-flag.gif"
+	},
+	{
+			"country": "Croatia",
+			"code": "HR",
+			"fullCode": "HRV",
+			"img": "https://www.worldometers.info//img/flags/small/tn_hr-flag.gif"
+	},
+	{
+			"country": "Cuba",
+			"code": "CU",
+			"fullCode": "CUB",
+			"img": "https://www.worldometers.info//img/flags/small/tn_cu-flag.gif"
+	},
+	{
+			"country": "Cyprus",
+			"code": "CY",
+			"fullCode": "CYP",
+			"img": "https://www.worldometers.info//img/flags/small/tn_cy-flag.gif"
+	},
+	{
+			"country": "Czechia",
+			"code": "CZ",
+			"fullCode": "CZE",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ez-flag.gif"
+	},
+	{
+			"country": "Denmark",
+			"code": "DK",
+			"fullCode": "DNK",
+			"img": "https://www.worldometers.info//img/flags/small/tn_da-flag.gif"
+	},
+	{
+			"country": "Djibouti",
+			"code": "DJ",
+			"fullCode": "DJI",
+			"img": "https://www.worldometers.info//img/flags/small/tn_dj-flag.gif"
+	},
+	{
+			"country": "Dominica",
+			"code": "DM",
+			"fullCode": "DMA",
+			"img": "https://www.worldometers.info//img/flags/small/tn_do-flag.gif"
+	},
+	{
+			"country": "Dominican Republic (the)",
+			"code": "DO",
+			"fullCode": "DOM",
+			"img": "https://www.worldometers.info//img/flags/small/tn_dr-flag.gif"
+	},
+	{
+			"country": "Ecuador",
+			"code": "EC",
+			"fullCode": "ECU",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ec-flag.gif"
+	},
+	{
+			"country": "Egypt",
+			"code": "EG",
+			"fullCode": "EGY",
+			"img": "https://www.worldometers.info//img/flags/small/tn_eg-flag.gif"
+	},
+	{
+			"country": "El Salvador",
+			"code": "SV",
+			"fullCode": "SLV",
+			"img": "https://www.worldometers.info//img/flags/small/tn_es-flag.gif"
+	},
+	{
+			"country": "Equatorial Guinea",
+			"code": "GQ",
+			"fullCode": "GNQ",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ek-flag.gif"
+	},
+	{
+			"country": "Eritrea",
+			"code": "ER",
+			"fullCode": "ERI",
+			"img": "https://www.worldometers.info//img/flags/small/tn_er-flag.gif"
+	},
+	{
+			"country": "Estonia",
+			"code": "EE",
+			"fullCode": "EST",
+			"img": "https://www.worldometers.info//img/flags/small/tn_en-flag.gif"
+	},
+	{
+			"country": "Eswatini",
+			"code": "SZ",
+			"fullCode": "SWZ",
+			"img": "https://www.worldometers.info//img/flags/small/tn_wz-flag.gif"
+	},
+	{
+			"country": "Ethiopia",
+			"code": "ET",
+			"fullCode": "ETH",
+			"img": "https://www.worldometers.info//img/flags/small/tn_et-flag.gif"
+	},
+	{
+			"country": "Fiji",
+			"code": "FJ",
+			"fullCode": "FJI",
+			"img": "https://www.worldometers.info//img/flags/small/tn_fj-flag.gif"
+	},
+	{
+			"country": "Finland",
+			"code": "FI",
+			"fullCode": "FIN",
+			"img": "https://www.worldometers.info//img/flags/small/tn_fi-flag.gif"
+	},
+	{
+			"country": "France",
+			"code": "FR",
+			"fullCode": "FRA",
+			"img": "https://www.worldometers.info//img/flags/small/tn_fr-flag.gif"
+	},
+	{
+			"country": "Gabon",
+			"code": "GA",
+			"fullCode": "GAB",
+			"img": "https://www.worldometers.info//img/flags/small/tn_gb-flag.gif"
+	},
+	{
+			"country": "Gambia (the)",
+			"code": "GM",
+			"fullCode": "GMB",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ga-flag.gif"
+	},
+	{
+			"country": "Georgia",
+			"code": "GE",
+			"fullCode": "GEO",
+			"img": "https://www.worldometers.info//img/flags/small/tn_gg-flag.gif"
+	},
+	{
+			"country": "Germany",
+			"code": "DE",
+			"fullCode": "DEU",
+			"img": "https://www.worldometers.info//img/flags/small/tn_gm-flag.gif"
+	},
+	{
+			"country": "Ghana",
+			"code": "GH",
+			"fullCode": "GHA",
+			"img": "https://www.worldometers.info//img/flags/small/tn_gh-flag.gif"
+	},
+	{
+			"country": "Greece",
+			"code": "GR",
+			"fullCode": "GRC",
+			"img": "https://www.worldometers.info//img/flags/small/tn_gr-flag.gif"
+	},
+	{
+			"country": "Grenada",
+			"code": "GD",
+			"fullCode": "GRD",
+			"img": "https://www.worldometers.info//img/flags/small/tn_gj-flag.gif"
+	},
+	{
+			"country": "Guatemala",
+			"code": "GT",
+			"fullCode": "GTM",
+			"img": "https://www.worldometers.info//img/flags/small/tn_gt-flag.gif"
+	},
+	{
+			"country": "Guinea",
+			"code": "GN",
+			"fullCode": "GIN",
+			"img": "https://www.worldometers.info//img/flags/small/tn_gv-flag.gif"
+	},
+	{
+			"country": "Guinea-Bissau",
+			"code": "GW",
+			"fullCode": "GNB",
+			"img": "https://www.worldometers.info//img/flags/small/tn_pu-flag.gif"
+	},
+	{
+			"country": "Guyana",
+			"code": "GY",
+			"fullCode": "GUY",
+			"img": "https://www.worldometers.info//img/flags/small/tn_gy-flag.gif"
+	},
+	{
+			"country": "Haiti",
+			"code": "HT",
+			"fullCode": "HTI",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ha-flag.gif"
+	},
+	{
+			"country": "Holy See (the)",
+			"code": "VA",
+			"fullCode": "VAT",
+			"img": "https://www.worldometers.info//img/flags/small/tn_vt-flag.gif"
+	},
+	{
+			"country": "Honduras",
+			"code": "HN",
+			"fullCode": "HND",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ho-flag.gif"
+	},
+	{
+			"country": "Hungary",
+			"code": "HU",
+			"fullCode": "HUN",
+			"img": "https://www.worldometers.info//img/flags/small/tn_hu-flag.gif"
+	},
+	{
+			"country": "Iceland",
+			"code": "IS",
+			"fullCode": "ISL",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ic-flag.gif"
+	},
+	{
+			"country": "India",
+			"code": "IN",
+			"fullCode": "IND",
+			"img": "https://www.worldometers.info//img/flags/small/tn_in-flag.gif"
+	},
+	{
+			"country": "Indonesia",
+			"code": "ID",
+			"fullCode": "IDN",
+			"img": "https://www.worldometers.info//img/flags/small/tn_id-flag.gif"
+	},
+	{
+			"country": "Iran (Islamic Republic of)",
+			"code": "IR",
+			"fullCode": "IRN",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ir-flag.gif"
+	},
+	{
+			"country": "Iraq",
+			"code": "IQ",
+			"fullCode": "IRQ",
+			"img": "https://www.worldometers.info//img/flags/small/tn_iz-flag.gif"
+	},
+	{
+			"country": "Ireland",
+			"code": "IE",
+			"fullCode": "IRL",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ei-flag.gif"
+	},
+	{
+			"country": "Israel",
+			"code": "IL",
+			"fullCode": "ISR",
+			"img": "https://www.worldometers.info//img/flags/small/tn_is-flag.gif"
+	},
+	{
+			"country": "Italy",
+			"code": "IT",
+			"fullCode": "ITA",
+			"img": "https://www.worldometers.info//img/flags/small/tn_it-flag.gif"
+	},
+	{
+			"country": "Jamaica",
+			"code": "JM",
+			"fullCode": "JAM",
+			"img": "https://www.worldometers.info//img/flags/small/tn_jm-flag.gif"
+	},
+	{
+			"country": "Japan",
+			"code": "JP",
+			"fullCode": "JPN",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ja-flag.gif"
+	},
+	{
+			"country": "Jordan",
+			"code": "JO",
+			"fullCode": "JOR",
+			"img": "https://www.worldometers.info//img/flags/small/tn_jo-flag.gif"
+	},
+	{
+			"country": "Kazakhstan",
+			"code": "KZ",
+			"fullCode": "KAZ",
+			"img": "https://www.worldometers.info//img/flags/small/tn_kz-flag.gif"
+	},
+	{
+			"country": "Kenya",
+			"code": "KE",
+			"fullCode": "KEN",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ke-flag.gif"
+	},
+	{
+			"country": "Kiribati",
+			"code": "KI",
+			"fullCode": "KIR",
+			"img": "https://www.worldometers.info//img/flags/small/tn_kr-flag.gif"
+	},
+	{
+			"country": "Korea (the Democratic People's Republic of)",
+			"code": "KP",
+			"fullCode": "PRK",
+			"img": "https://www.worldometers.info//img/flags/small/tn_kn-flag.gif"
+	},
+	{
+			"country": "Korea (the Republic of)",
+			"code": "KR",
+			"fullCode": "KOR",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ks-flag.gif"
+	},
+	{
+			"country": "Kuwait",
+			"code": "KW",
+			"fullCode": "KWT",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ku-flag.gif"
+	},
+	{
+			"country": "Kyrgyzstan",
+			"code": "KG",
+			"fullCode": "KGZ",
+			"img": "https://www.worldometers.info//img/flags/small/tn_kg-flag.gif"
+	},
+	{
+			"country": "Lao People's Democratic Republic (the)",
+			"code": "LA",
+			"fullCode": "LAO",
+			"img": "https://www.worldometers.info//img/flags/small/tn_la-flag.gif"
+	},
+	{
+			"country": "Latvia",
+			"code": "LV",
+			"fullCode": "LVA",
+			"img": "https://www.worldometers.info//img/flags/small/tn_lg-flag.gif"
+	},
+	{
+			"country": "Lebanon",
+			"code": "LB",
+			"fullCode": "LBN",
+			"img": "https://www.worldometers.info//img/flags/small/tn_le-flag.gif"
+	},
+	{
+			"country": "Lesotho",
+			"code": "LS",
+			"fullCode": "LSO",
+			"img": "https://www.worldometers.info//img/flags/small/tn_lt-flag.gif"
+	},
+	{
+			"country": "Liberia",
+			"code": "LR",
+			"fullCode": "LBR",
+			"img": "https://www.worldometers.info//img/flags/small/tn_li-flag.gif"
+	},
+	{
+			"country": "Libya",
+			"code": "LY",
+			"fullCode": "LBY",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ly-flag.gif"
+	},
+	{
+			"country": "Liechtenstein",
+			"code": "LI",
+			"fullCode": "LIE",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ls-flag.gif"
+	},
+	{
+			"country": "Lithuania",
+			"code": "LT",
+			"fullCode": "LTU",
+			"img": "https://www.worldometers.info//img/flags/small/tn_lh-flag.gif"
+	},
+	{
+			"country": "Luxembourg",
+			"code": "LU",
+			"fullCode": "LUX",
+			"img": "https://www.worldometers.info//img/flags/small/tn_lu-flag.gif"
+	},
+	{
+			"country": "Madagascar",
+			"code": "MG",
+			"fullCode": "MDG",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ma-flag.gif"
+	},
+	{
+			"country": "Malawi",
+			"code": "MW",
+			"fullCode": "MWI",
+			"img": "https://www.worldometers.info//img/flags/small/tn_mi-flag.gif"
+	},
+	{
+			"country": "Malaysia",
+			"code": "MY",
+			"fullCode": "MYS",
+			"img": "https://www.worldometers.info//img/flags/small/tn_my-flag.gif"
+	},
+	{
+			"country": "Maldives",
+			"code": "MV",
+			"fullCode": "MDV",
+			"img": "https://www.worldometers.info//img/flags/small/tn_mv-flag.gif"
+	},
+	{
+			"country": "Mali",
+			"code": "ML",
+			"fullCode": "MLI",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ml-flag.gif"
+	},
+	{
+			"country": "Malta",
+			"code": "MT",
+			"fullCode": "MLT",
+			"img": "https://www.worldometers.info//img/flags/small/tn_mt-flag.gif"
+	},
+	{
+			"country": "Marshall Islands (the)",
+			"code": "MH",
+			"fullCode": "MHL",
+			"img": "https://www.worldometers.info//img/flags/small/tn_rm-flag.gif"
+	},
+	{
+			"country": "Mauritania",
+			"code": "MR",
+			"fullCode": "MRT",
+			"img": "https://www.worldometers.info//img/flags/small/tn_mr-flag.gif"
+	},
+	{
+			"country": "Mauritius",
+			"code": "MU",
+			"fullCode": "MUS",
+			"img": "https://www.worldometers.info//img/flags/small/tn_mp-flag.gif"
+	},
+	{
+			"country": "Mexico",
+			"code": "MX",
+			"fullCode": "MEX",
+			"img": "https://www.worldometers.info//img/flags/small/tn_mx-flag.gif"
+	},
+	{
+			"country": "Micronesia (Federated States of)",
+			"code": "FM",
+			"fullCode": "FSM",
+			"img": "https://www.worldometers.info//img/flags/small/tn_fm-flag.gif"
+	},
+	{
+			"country": "Moldova (the Republic of)",
+			"code": "MD",
+			"fullCode": "MDA",
+			"img": "https://www.worldometers.info//img/flags/small/tn_md-flag.gif"
+	},
+	{
+			"country": "Monaco",
+			"code": "MC",
+			"fullCode": "MCO",
+			"img": "https://www.worldometers.info//img/flags/small/tn_mn-flag.gif"
+	},
+	{
+			"country": "Mongolia",
+			"code": "MN",
+			"fullCode": "MNG",
+			"img": "https://www.worldometers.info//img/flags/small/tn_mg-flag.gif"
+	},
+	{
+			"country": "Montenegro",
+			"code": "ME",
+			"fullCode": "MNE",
+			"img": "https://www.worldometers.info//img/flags/small/tn_mj-flag.gif"
+	},
+	{
+			"country": "Morocco",
+			"code": "MA",
+			"fullCode": "MAR",
+			"img": "https://www.worldometers.info//img/flags/small/tn_mo-flag.gif"
+	},
+	{
+			"country": "Mozambique",
+			"code": "MZ",
+			"fullCode": "MOZ",
+			"img": "https://www.worldometers.info//img/flags/small/tn_mz-flag.gif"
+	},
+	{
+			"country": "Myanmar",
+			"code": "MM",
+			"fullCode": "MMR",
+			"img": "https://www.worldometers.info//img/flags/small/tn_bm-flag.gif"
+	},
+	{
+			"country": "Namibia",
+			"code": "NA",
+			"fullCode": "NAM",
+			"img": "https://www.worldometers.info//img/flags/small/tn_wa-flag.gif"
+	},
+	{
+			"country": "Nauru",
+			"code": "NR",
+			"fullCode": "NRU",
+			"img": "https://www.worldometers.info//img/flags/small/tn_nr-flag.gif"
+	},
+	{
+			"country": "Nepal",
+			"code": "NP",
+			"fullCode": "NPL",
+			"img": "https://www.worldometers.info//img/flags/small/tn_np-flag.gif"
+	},
+	{
+			"country": "Netherlands (the)",
+			"code": "NL",
+			"fullCode": "NLD",
+			"img": "https://www.worldometers.info//img/flags/small/tn_nl-flag.gif"
+	},
+	{
+			"country": "New Zealand",
+			"code": "NZ",
+			"fullCode": "NZL",
+			"img": "https://www.worldometers.info//img/flags/small/tn_nz-flag.gif"
+	},
+	{
+			"country": "Nicaragua",
+			"code": "NI",
+			"fullCode": "NIC",
+			"img": "https://www.worldometers.info//img/flags/small/tn_nu-flag.gif"
+	},
+	{
+			"country": "Niger (the)",
+			"code": "NE",
+			"fullCode": "NER",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ng-flag.gif"
+	},
+	{
+			"country": "Nigeria",
+			"code": "NG",
+			"fullCode": "NGA",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ni-flag.gif"
+	},
+	{
+			"country": "Norway",
+			"code": "NO",
+			"fullCode": "NOR",
+			"img": "https://www.worldometers.info//img/flags/small/tn_no-flag.gif"
+	},
+	{
+			"country": "Oman",
+			"code": "OM",
+			"fullCode": "OMN",
+			"img": "https://www.worldometers.info//img/flags/small/tn_mu-flag.gif"
+	},
+	{
+			"country": "Pakistan",
+			"code": "PK",
+			"fullCode": "PAK",
+			"img": "https://www.worldometers.info//img/flags/small/tn_pk-flag.gif"
+	},
+	{
+			"country": "Palau",
+			"code": "PW",
+			"fullCode": "PLW",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ps-flag.gif"
+	},
+	{
+			"country": "Palestine, State of",
+			"code": "PS",
+			"fullCode": "PSE",
+			"img": "https://www.worldometers.info//img/flags/small/tn_palestine-flag.gif"
+	},
+	{
+			"country": "Panama",
+			"code": "PA",
+			"fullCode": "PAN",
+			"img": "https://www.worldometers.info//img/flags/small/tn_pm-flag.gif"
+	},
+	{
+			"country": "Papua New Guinea",
+			"code": "PG",
+			"fullCode": "PNG",
+			"img": "https://www.worldometers.info//img/flags/small/tn_pp-flag.gif"
+	},
+	{
+			"country": "Paraguay",
+			"code": "PY",
+			"fullCode": "PRY",
+			"img": "https://www.worldometers.info//img/flags/small/tn_pa-flag.gif"
+	},
+	{
+			"country": "Peru",
+			"code": "PE",
+			"fullCode": "PER",
+			"img": "https://www.worldometers.info//img/flags/small/tn_pe-flag.gif"
+	},
+	{
+			"country": "Philippines (the)",
+			"code": "PH",
+			"fullCode": "PHL",
+			"img": "https://www.worldometers.info//img/flags/small/tn_rp-flag.gif"
+	},
+	{
+			"country": "Poland",
+			"code": "PL",
+			"fullCode": "POL",
+			"img": "https://www.worldometers.info//img/flags/small/tn_pl-flag.gif"
+	},
+	{
+			"country": "Portugal",
+			"code": "PT",
+			"fullCode": "PRT",
+			"img": "https://www.worldometers.info//img/flags/small/tn_po-flag.gif"
+	},
+	{
+			"country": "Qatar",
+			"code": "QA",
+			"fullCode": "QAT",
+			"img": "https://www.worldometers.info//img/flags/small/tn_qa-flag.gif"
+	},
+	{
+			"country": "Republic of North Macedonia",
+			"code": "MK",
+			"fullCode": "MKD",
+			"img": "https://www.worldometers.info//img/flags/small/tn_mk-flag.gif"
+	},
+	{
+			"country": "Romania",
+			"code": "RO",
+			"fullCode": "ROU",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ro-flag.gif"
+	},
+	{
+			"country": "Russian Federation (the)",
+			"code": "RU",
+			"fullCode": "RUS",
+			"img": "https://www.worldometers.info//img/flags/small/tn_rs-flag.gif"
+	},
+	{
+			"country": "Rwanda",
+			"code": "RW",
+			"fullCode": "RWA",
+			"img": "https://www.worldometers.info//img/flags/small/tn_rw-flag.gif"
+	},
+	{
+			"country": "Saint Kitts and Nevis",
+			"code": "KN",
+			"fullCode": "KNA",
+			"img": "https://www.worldometers.info//img/flags/small/tn_sc-flag.gif"
+	},
+	{
+			"country": "Saint Lucia",
+			"code": "LC",
+			"fullCode": "LCA",
+			"img": "https://www.worldometers.info//img/flags/small/tn_st-flag.gif"
+	},
+	{
+			"country": "Saint Vincent and the Grenadines",
+			"code": "VC",
+			"fullCode": "VCT",
+			"img": "https://www.worldometers.info//img/flags/small/tn_vc-flag.gif"
+	},
+	{
+			"country": "Samoa",
+			"code": "WS",
+			"fullCode": "WSM",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ws-flag.gif"
+	},
+	{
+			"country": "San Marino",
+			"code": "SM",
+			"fullCode": "SMR",
+			"img": "https://www.worldometers.info//img/flags/small/tn_sm-flag.gif"
+	},
+	{
+			"country": "Sao Tome and Principe",
+			"code": "ST",
+			"fullCode": "STP",
+			"img": "https://www.worldometers.info//img/flags/small/tn_tp-flag.gif"
+	},
+	{
+			"country": "Saudi Arabia",
+			"code": "SA",
+			"fullCode": "SAU",
+			"img": "https://www.worldometers.info//img/flags/small/tn_sa-flag.gif"
+	},
+	{
+			"country": "Senegal",
+			"code": "SN",
+			"fullCode": "SEN",
+			"img": "https://www.worldometers.info//img/flags/small/tn_sg-flag.gif"
+	},
+	{
+			"country": "Serbia",
+			"code": "RS",
+			"fullCode": "SRB",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ri-flag.gif"
+	},
+	{
+			"country": "Seychelles",
+			"code": "SC",
+			"fullCode": "SYC",
+			"img": "https://www.worldometers.info//img/flags/small/tn_se-flag.gif"
+	},
+	{
+			"country": "Sierra Leone",
+			"code": "SL",
+			"fullCode": "SLE",
+			"img": "https://www.worldometers.info//img/flags/small/tn_sl-flag.gif"
+	},
+	{
+			"country": "Singapore",
+			"code": "SG",
+			"fullCode": "SGP",
+			"img": "https://www.worldometers.info//img/flags/small/tn_sn-flag.gif"
+	},
+	{
+			"country": "Slovakia",
+			"code": "SK",
+			"fullCode": "SVK",
+			"img": "https://www.worldometers.info//img/flags/small/tn_lo-flag.gif"
+	},
+	{
+			"country": "Slovenia",
+			"code": "SI",
+			"fullCode": "SVN",
+			"img": "https://www.worldometers.info//img/flags/small/tn_si-flag.gif"
+	},
+	{
+			"country": "Solomon Islands",
+			"code": "SB",
+			"fullCode": "SLB",
+			"img": "https://www.worldometers.info//img/flags/small/tn_bp-flag.gif"
+	},
+	{
+			"country": "Somalia",
+			"code": "SO",
+			"fullCode": "SOM",
+			"img": "https://www.worldometers.info//img/flags/small/tn_so-flag.gif"
+	},
+	{
+			"country": "South Africa",
+			"code": "ZA",
+			"fullCode": "ZAF",
+			"img": "https://www.worldometers.info//img/flags/small/tn_sf-flag.gif"
+	},
+	{
+			"country": "South Sudan",
+			"code": "SS",
+			"fullCode": "SSD",
+			"img": "https://www.worldometers.info//img/flags/small/tn_od-flag.gif"
+	},
+	{
+			"country": "Spain",
+			"code": "ES",
+			"fullCode": "ESP",
+			"img": "https://www.worldometers.info//img/flags/small/tn_sp-flag.gif"
+	},
+	{
+			"country": "Sri Lanka",
+			"code": "LK",
+			"fullCode": "LKA",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ce-flag.gif"
+	},
+	{
+			"country": "Sudan (the)",
+			"code": "SD",
+			"fullCode": "SDN",
+			"img": "https://www.worldometers.info//img/flags/small/tn_su-flag.gif"
+	},
+	{
+			"country": "Suriname",
+			"code": "SR",
+			"fullCode": "SUR",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ns-flag.gif"
+	},
+	{
+			"country": "Sweden",
+			"code": "SE",
+			"fullCode": "SWE",
+			"img": "https://www.worldometers.info//img/flags/small/tn_sw-flag.gif"
+	},
+	{
+			"country": "Switzerland",
+			"code": "CH",
+			"fullCode": "CHE",
+			"img": "https://www.worldometers.info//img/flags/small/tn_sz-flag.gif"
+	},
+	{
+			"country": "Syrian Arab Republic",
+			"code": "SY",
+			"fullCode": "SYR",
+			"img": "https://www.worldometers.info//img/flags/small/tn_sy-flag.gif"
+	},
+	{
+			"country": "Tajikistan",
+			"code": "TJ",
+			"fullCode": "TJK",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ti-flag.gif"
+	},
+	{
+			"country": "Tanzania, United Republic of",
+			"code": "TZ",
+			"fullCode": "TZA",
+			"img": "https://www.worldometers.info//img/flags/small/tn_tz-flag.gif"
+	},
+	{
+			"country": "Thailand",
+			"code": "TH",
+			"fullCode": "THA",
+			"img": "https://www.worldometers.info//img/flags/small/tn_th-flag.gif"
+	},
+	{
+			"country": "Timor-Leste",
+			"code": "TL",
+			"fullCode": "TLS",
+			"img": "https://www.worldometers.info//img/flags/small/tn_tt-flag.gif"
+	},
+	{
+			"country": "Togo",
+			"code": "TG",
+			"fullCode": "TGO",
+			"img": "https://www.worldometers.info//img/flags/small/tn_to-flag.gif"
+	},
+	{
+			"country": "Tonga",
+			"code": "TO",
+			"fullCode": "TON",
+			"img": "https://www.worldometers.info//img/flags/small/tn_tn-flag.gif"
+	},
+	{
+			"country": "Trinidad and Tobago",
+			"code": "TT",
+			"fullCode": "TTO",
+			"img": "https://www.worldometers.info//img/flags/small/tn_td-flag.gif"
+	},
+	{
+			"country": "Tunisia",
+			"code": "TN",
+			"fullCode": "TUN",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ts-flag.gif"
+	},
+	{
+			"country": "Turkey",
+			"code": "TR",
+			"fullCode": "TUR",
+			"img": "https://www.worldometers.info//img/flags/small/tn_tu-flag.gif"
+	},
+	{
+			"country": "Turkmenistan",
+			"code": "TM",
+			"fullCode": "TKM",
+			"img": "https://www.worldometers.info//img/flags/small/tn_tx-flag.gif"
+	},
+	{
+			"country": "Tuvalu",
+			"code": "TV",
+			"fullCode": "TUV",
+			"img": "https://www.worldometers.info//img/flags/small/tn_tv-flag.gif"
+	},
+	{
+			"country": "Uganda",
+			"code": "UG",
+			"fullCode": "UGA",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ug-flag.gif"
+	},
+	{
+			"country": "Ukraine",
+			"code": "UA",
+			"fullCode": "UKR",
+			"img": "https://www.worldometers.info//img/flags/small/tn_up-flag.gif"
+	},
+	{
+			"country": "United Arab Emirates (the)",
+			"code": "AE",
+			"fullCode": "ARE",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ae-flag.gif"
+	},
+	{
+			"country": "United Kingdom of Great Britain and Northern Ireland (the)",
+			"code": "GB",
+			"fullCode": "GBR",
+			"img": "https://www.worldometers.info//img/flags/small/tn_uk-flag.gif"
+	},
+	{
+			"country": "United States of America (the)",
+			"code": "US",
+			"fullCode": "USA",
+			"img": "https://www.worldometers.info//img/flags/small/tn_us-flag.gif"
+	},
+	{
+			"country": "Uruguay",
+			"code": "UY",
+			"fullCode": "URY",
+			"img": "https://www.worldometers.info//img/flags/small/tn_uy-flag.gif"
+	},
+	{
+			"country": "Uzbekistan",
+			"code": "UZ",
+			"fullCode": "UZB",
+			"img": "https://www.worldometers.info//img/flags/small/tn_uz-flag.gif"
+	},
+	{
+			"country": "Vanuatu",
+			"code": "VU",
+			"fullCode": "VUT",
+			"img": "https://www.worldometers.info//img/flags/small/tn_nh-flag.gif"
+	},
+	{
+			"country": "Venezuela (Bolivarian Republic of)",
+			"code": "VE",
+			"fullCode": "VEN",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ve-flag.gif"
+	},
+	{
+			"country": "Viet Nam",
+			"code": "VN",
+			"fullCode": "VNM",
+			"img": "https://www.worldometers.info//img/flags/small/tn_vm-flag.gif"
+	},
+	{
+			"country": "Yemen",
+			"code": "YE",
+			"fullCode": "YEM",
+			"img": "https://www.worldometers.info//img/flags/small/tn_ym-flag.gif"
+	},
+	{
+			"country": "Zambia",
+			"code": "ZM",
+			"fullCode": "ZMB",
+			"img": "https://www.worldometers.info//img/flags/small/tn_za-flag.gif"
+	},
+	{
+			"country": "Zimbabwe",
+			"code": "ZW",
+			"fullCode": "ZWE",
+			"img": "https://www.worldometers.info//img/flags/small/tn_zi-flag.gif"
+	}
+]

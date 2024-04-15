@@ -3,7 +3,7 @@
 		<div class="max-w-[600px]">
 			<div class="flex gap-4">
 				<button
-					v-if="offerings && offerings?.data.length > 0"
+					v-if="offeringsRes && offeringsRes.data?.length > 0"
 					@click="tab = 'list'"
 					type="button"
 					class="pt-8 text-2xl font-bold mb-6 transition-colors"
@@ -27,13 +27,13 @@
 				</button>
 			</div>
 			<div
-				v-if="offerings && offerings.data?.length > 0"
+				v-if="offeringsRes?.data && offeringsRes.data.length > 0"
 				v-show="tab === 'list'"
 				class="flex flex-col gap-1"
 			>
 				<Accordion type="single" collapsible defaultValue="item-0">
 					<AccordionItem
-						v-for="(offering, index) of offerings.data"
+						v-for="(offering, index) of offeringsRes.data"
 						:key="offering.id"
 						:value="`item-${index}`"
 					>
@@ -83,11 +83,15 @@ const { id: studioId } = route.params
 const tab = ref<'create' | 'list'>('create')
 const { getOfferingsByStudioId } = useOffering()
 
-if (!studioId || !isString(studioId)) router.push('/')
+if (!studioId || !isString(studioId)) {
+	router.push('/')
+}
 
-const { data: offerings, refresh } = await getOfferingsByStudioId(
-	!studioId || !isString(studioId) ? '' : studioId
-)
+const { data: offeringsRes, refresh } = await getOfferingsByStudioId<{
+	data: IOffering[]
+	refresh: () => void
+	// eslint-disable-next-line indent
+}>(!studioId || !isString(studioId) ? '' : studioId, { immediate: false })
 
 onMounted(() => refresh())
 </script>

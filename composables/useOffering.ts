@@ -48,6 +48,7 @@ export default () => {
 			practitionersRemove,
 			tickets,
 			ticketsRemove,
+			location,
 			...rest
 		} = data
 
@@ -77,6 +78,10 @@ export default () => {
 			form.append('ticketsRemove[]', ticketId)
 		}
 
+		if (location) {
+			form.append('location', JSON.stringify(location))
+		}
+
 		return useFetchApi('/api/offerings/update?id=' + offeringId, {
 			method: 'PUT',
 			body: form,
@@ -87,11 +92,11 @@ export default () => {
 		return useFetch<{ data: IOffering[] }>('/api/offerings')
 	}
 
-	const getOfferingsByStudioId = (id: string) => {
-		return useFetch<{ data: IOffering[]; refresh: any }>(
-			'/api/offerings/byStudio/' + id,
-			{ immediate: false }
-		)
+	const getOfferingsByStudioId = <T>(
+		id: string,
+		options?: { immediate: boolean }
+	) => {
+		return useFetch<T>('/api/offerings/byStudio/' + id, { ...options })
 	}
 
 	const removePractitioners = (pracIds: string[], offeringId: string) => {

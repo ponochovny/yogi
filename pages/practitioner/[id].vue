@@ -22,11 +22,22 @@
 									</span>
 								</NuxtLink>
 							</div>
-							<div class="flex gap-1 text-gray-600">
+							<div class="flex gap-1 text-gray-600 items-start">
 								<MapPinIcon class="w-6 stroke-1" />
-								<span class="font-semibold">
-									{{ practitioner.data.studios[0].location[0] }}
-								</span>
+								<div class="flex flex-col gap-1">
+									<a
+										v-for="studio of practitioner.data.studios"
+										:key="studio.id"
+										:href="`https://www.google.com/maps/place/${
+											studio.location?.name || ''
+										}`"
+										target="_blank"
+									>
+										<span class="font-semibold">
+											{{ studio.location?.name }}
+										</span>
+									</a>
+								</div>
 							</div>
 						</div>
 					</div>

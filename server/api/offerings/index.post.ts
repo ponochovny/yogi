@@ -30,8 +30,8 @@ export default defineEventHandler(async (event) => {
 
 	const offeringData: Omit<
 		IOfferingCreation,
-		'practitioners' | 'banners' | 'tickets'
-	> = {
+		'practitioners' | 'banners' | 'tickets' | 'location'
+	> & { location: string } = {
 		name: fields.name[0],
 		slug: generateSlug(fields.name[0]),
 		activity: fields.activity[0],
@@ -43,7 +43,7 @@ export default defineEventHandler(async (event) => {
 		is_private: fields.is_private[0] === 'true',
 		types: fields.types[0].split(','),
 		categories: fields.categories[0].split(','),
-		location: [fields.location[0]],
+		location: fields.location[0],
 		timezone: fields.timezone[0],
 
 		// owner

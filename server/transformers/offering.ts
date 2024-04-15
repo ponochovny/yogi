@@ -11,6 +11,8 @@ import { practitionerTransformer } from './user'
 export const offeringTransformer = (offering: any, isTicketsFull?: boolean) => {
 	if (!offering) return null
 
+	const parsedLocation = JSON.parse(JSON.stringify(offering.location))
+
 	return {
 		...offering,
 		banners:
@@ -31,5 +33,9 @@ export const offeringTransformer = (offering: any, isTicketsFull?: boolean) => {
 					)
 			: [],
 		studio: studioTransformer(offering.studio),
+		location:
+			typeof parsedLocation === 'string'
+				? JSON.parse(parsedLocation)
+				: parsedLocation,
 	}
 }
