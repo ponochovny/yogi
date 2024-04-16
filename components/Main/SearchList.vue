@@ -1,0 +1,132 @@
+<template>
+	<div class="flex flex-col gap-2">
+		<template v-if="data">
+			<div v-show="data.offerings.length" class="flex flex-col gap-2`">
+				<span class="text-gray-400 font-semibold text-xs px-2 mb-1">
+					Offerings
+				</span>
+				<button
+					v-for="offering of data.offerings"
+					:key="offering.id"
+					class="flex gap-3 hover:bg-gray-100/60 transition-colors text-left px-3 py-1.5 rounded-lg"
+					@click="goTo(`/offering/${offering.slug}`)"
+				>
+					<img
+						:src="offering.banners ? offering.banners[0].url : ''"
+						class="w-8 h-6 rounded-md object-cover object-center mt-1"
+					/>
+					<div class="flex flex-col gap-0">
+						<p
+							class="capitalize font-bold text-xs"
+							:class="{
+								'text-blue-500/90': offering.activity.toLowerCase() === 'class',
+								'text-red-400': offering.activity.toLowerCase() === 'event',
+								'text-yellow-500':
+									offering.activity.toLowerCase() === 'appointment',
+							}"
+						>
+							{{ offering.activity }}
+						</p>
+						<p class="font-semibold text-sm text-black">{{ offering.name }}</p>
+						<div class="flex gap-1 text-xs">
+							<div class="font-semibold text-gray-500 mb-1 text-nowrap">
+								{{ dateString(offering.start, offering.end) }}
+							</div>
+							<span v-if="offering.location?.name" class="text-black">•</span>
+							<div
+								class="mb-1 truncate text-gray-600 font-semibold"
+								:title="offering.location?.name || ''"
+							>
+								{{
+									offering.location?.name
+										? offering.location?.name.split(' ').slice(-2).join(' ')
+										: ''
+								}}
+							</div>
+						</div>
+					</div>
+				</button>
+			</div>
+			<div v-show="data.studios.length" class="flex flex-col gap-2`">
+				<span class="text-gray-400 font-semibold text-xs px-2 mb-1">
+					Studios
+				</span>
+				<button
+					v-for="studio of data.studios"
+					:key="studio.id"
+					class="flex gap-3 hover:bg-gray-100/60 transition-colors text-left px-3 py-1.5 rounded-lg"
+					@click="goTo(`/studio/${studio.slug}`)"
+				>
+					<img
+						v-if="studio.logo.url"
+						:src="studio.logo.url || ''"
+						class="w-8 h-8 rounded-full object-cover object-center mt-1"
+					/>
+					<div v-else class="w-8 h-8 rounded-full bg-gray-100"></div>
+					<div class="flex flex-col gap-0">
+						<p class="font-semibold text-sm text-black">{{ studio.name }}</p>
+						<div class="flex gap-1 text-xs">
+							<div
+								class="mb-1 truncate text-gray-600 font-semibold"
+								:title="studio.location?.name || ''"
+							>
+								{{
+									studio.location?.name
+										? studio.location?.name.split(' ').slice(-2).join(' ')
+										: ''
+								}}
+							</div>
+						</div>
+					</div>
+				</button>
+			</div>
+			<div v-show="data.practitioners.length" class="flex flex-col gap-2`">
+				<span class="text-gray-400 font-semibold text-xs px-2 mb-1">
+					Practitioners
+				</span>
+				<button
+					v-for="practitioner of data.practitioners"
+					:key="practitioner.id"
+					class="flex gap-3 hover:bg-gray-100/60 transition-colors text-left px-3 py-1.5 rounded-lg items-center"
+					@click="goTo(`/practitioner/${practitioner.id}`)"
+				>
+					<img
+						v-if="practitioner.profileImage"
+						:src="practitioner.profileImage || ''"
+						class="w-8 h-8 rounded-full object-cover object-center mt-1"
+					/>
+					<div v-else class="w-8 h-8 rounded-full bg-gray-100"></div>
+					<div class="flex flex-col gap-0 items-center">
+						<p class="font-semibold text-sm text-black">
+							{{ practitioner.name }}
+						</p>
+					</div>
+				</button>
+			</div>
+		</template>
+
+		<LoadingIcon v-else-if="loading" class="fill-orange-600 mx-auto" />
+	</div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+import type { IGlobalSearch } from '~/helpers/types/search'
+import { dateString } from '~/lib/utils'
+
+export default defineComponent({
+	name: 'SearchList',
+})
+</script>
+<script lang="ts" setup>
+interface IProps {
+	loading?: boolean
+	data: IGlobalSearch | null
+}
+defineProps<IProps>()
+const router = useRouter()
+
+function goTo(val: string) {
+	router.push(val)
+}
+</script>

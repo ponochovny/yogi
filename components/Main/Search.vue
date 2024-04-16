@@ -8,7 +8,7 @@
 						'rounded-tl-2xl rounded-bl-none rounded-r-none': isLocationOpen,
 						'rounded-l-2xl rounded-r-none': !isLocationOpen,
 						'gap-2 w-[300px] py-2 px-4 bg-white': variant === 'default',
-						'gap-1 w-[230px] py-1 px-2 bg-gray-100/80': variant === 'secondary',
+						'gap-1 w-[250px] py-1 px-2 bg-gray-100/80': variant === 'secondary',
 					}"
 				>
 					<MapPinIcon
@@ -32,13 +32,33 @@
 			<PopoverContent
 				:align="'start'"
 				:arrowPadding="0"
+				:avoidCollisions="false"
+				side="bottom"
+				:trapFocus="false"
+				@openAutoFocus.prevent
 				class="-mt-1 rounded-b-2xl rounded-t-none border-0"
 				:class="{
 					'w-[300px] shadow-sm': variant === 'default',
-					'w-[230px] shadow-lg': variant === 'secondary',
+					'w-[250px] shadow-lg': variant === 'secondary',
 				}"
 			>
-				<div class="flex flex-col gap-2 w-full">content</div>
+				<div class="flex flex-col gap-2 w-full">
+					<button
+						class="text-left flex gap-4 items-center"
+						@click="handleCurrentLocationOption"
+					>
+						<MapIcon class="w-5 stroke-1" />
+						<span>Use my current location</span>
+						<LoadingIcon v-if="locationFetching" class="fill-orange-600" />
+					</button>
+					<button
+						class="text-left flex gap-4 items-center"
+						@click="locationString = 'Online'"
+					>
+						<VideoCameraIcon class="w-5 stroke-1" />
+						<span>Online</span>
+					</button>
+				</div>
 			</PopoverContent>
 		</Popover>
 
@@ -60,7 +80,8 @@
 					/>
 					<Input
 						ref="searchInput"
-						v-model="searchString"
+						@input="globalSearchDebounce"
+						:modelValue="searchString"
 						placeholder="Search"
 						:inputClass="{
 							'border-none !shadow-none ring-0': true,
@@ -70,15 +91,25 @@
 				</div>
 			</PopoverTrigger>
 			<PopoverContent
+				v-if="variant !== 'secondary'"
 				:align="'start'"
 				:arrowPadding="0"
-				class="-mt-1 rounded-b-2xl rounded-t-none border-0"
+				:avoidCollisions="false"
+				side="bottom"
+				:trapFocus="false"
+				@openAutoFocus.prevent
+				class="-mt-1 rounded-b-2xl rounded-t-none border-0 p-1 py-3 max-h-[484px] overflow-y-auto"
 				:class="{
 					'w-[400px] shadow-sm': variant === 'default',
-					'w-[250px] shadow-lg': variant === 'secondary',
+					// 'w-[250px] shadow-lg': variant === 'secondary',
 				}"
 			>
-				<div class="flex flex-col gap-2 w-full">content</div>
+				<div class="flex flex-col gap-2 w-full">
+					<MainSearchList
+						:loading="searchResultsFetching"
+						:data="searchResults"
+					/>
+				</div>
 			</PopoverContent>
 		</Popover>
 		<Button
@@ -97,7 +128,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { MapPinIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+import { toast } from 'vue-sonner'
+import {
+	MapPinIcon,
+	MagnifyingGlassIcon,
+	MapIcon,
+	VideoCameraIcon,
+} from '@heroicons/vue/24/outline'
+import type { IGlobalSearch } from '~/helpers/types/search'
 
 export default defineComponent({
 	name: 'MainSearch',
@@ -110,6 +148,7 @@ interface IProps {
 withDefaults(defineProps<IProps>(), {
 	variant: 'default',
 })
+const route = useRoute()
 const router = useRouter()
 const locationString = ref('')
 const searchString = ref('')
@@ -123,17 +162,97 @@ function openLocationEvent(val: boolean) {
 		locationInput.value?.focus()
 	}
 }
-function openSearchEvent(val: boolean) {
-	isSearchOpen.value = val
-	if (val) {
-		searchInput.value?.focus()
-	}
-}
 function onSubmit() {
 	const params = new URLSearchParams({
 		location: locationString.value,
 		search: searchString.value,
 	}).toString()
 	router.push('/search?' + params)
+}
+onMounted(() => {
+	const { query } = route
+	if (query.location && typeof query.location === 'string') {
+		locationString.value = query.location
+	}
+	if (query.search && typeof query.search === 'string') {
+		searchString.value = query.search
+	}
+})
+
+const { fetchFeaturesByCoords } = useMyMap()
+const locationFetching = ref(false)
+const feature = ref<any>(null)
+async function handleCurrentLocationOption() {
+	const success = async (position: any) => {
+		const latitude = position.coords.latitude
+		const longitude = position.coords.longitude
+
+		// Do something with the position
+		const res: any = await fetchFeaturesByCoords([latitude, longitude])
+
+		const cityCountryFeature = res.data.features.find((el: any) =>
+			el.place_type.includes('region')
+		)
+
+		const { center, place_name } = cityCountryFeature
+
+		const _feature = {
+			coords: [center[1], center[0]],
+			place_name: place_name,
+		}
+
+		feature.value = _feature
+
+		locationString.value = place_name
+		locationFetching.value = false
+	}
+
+	const error = (err: any) => {
+		console.log(err)
+		locationFetching.value = false
+		toast.error('Error ocurred')
+	}
+
+	if (feature.value) {
+		const { place_name } = feature.value
+		locationString.value = place_name
+	} else {
+		locationFetching.value = true
+		// This will open permission popup
+		navigator.geolocation.getCurrentPosition(success, error, {
+			enableHighAccuracy: false,
+			maximumAge: Infinity,
+		})
+	}
+}
+
+const { globalSearch } = useSearch()
+const searchResults = ref<IGlobalSearch | null>(null)
+const searchResultsFetching = ref(false)
+async function globalSearchHandler(val: string) {
+	searchResultsFetching.value = true
+	const { data } = await globalSearch(val)
+	console.log(data)
+	searchResults.value = data
+	searchResultsFetching.value = false
+}
+const globalSearchDebounce = useDebounce(async (e: any) => {
+	if (!e?.target) return
+
+	await globalSearchHandler(e.target.value)
+
+	searchString.value = e.target.value
+}, 1000)
+
+function openSearchEvent(val: boolean) {
+	if (val && !searchString.value && !searchResults.value) {
+		globalSearchHandler('')
+	}
+	isSearchOpen.value = val
+	if (val) {
+		setTimeout(() => {
+			searchInput.value?.focus()
+		}, 0)
+	}
 }
 </script>
