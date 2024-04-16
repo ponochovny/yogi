@@ -54,23 +54,27 @@ export default defineEventHandler(async (event) => {
 			},
 			take: 5,
 		})
+		const pracs = [
+			...(
+				practitionersList as unknown as {
+					id: string
+					userId: string
+					studioId: string
+					offeringId: string
+					user: IUser
+				}[]
+			).map((practitioner) => practitionerTransformer(practitioner.user)),
+		]
+		const uniquePractitionersList = [
+			...new Map(pracs.map((item: any) => [item.id, item])).values(),
+		]
 
 		const fullList = {
 			offerings: [
 				...offeringsList.map((offering) => offeringTransformer(offering)),
 			],
 			studios: [...studiosList.map((studio) => studioTransformer(studio))],
-			practitioners: [
-				...(
-					practitionersList as unknown as {
-						id: string
-						userId: string
-						studioId: string
-						offeringId: string
-						user: IUser
-					}[]
-				).map((practitioner) => practitionerTransformer(practitioner.user)),
-			],
+			practitioners: [...uniquePractitionersList],
 		}
 
 		return {
