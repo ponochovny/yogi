@@ -33,9 +33,8 @@
 				:align="'start'"
 				:arrowPadding="0"
 				:avoidCollisions="false"
-				side="bottom"
-				:trapFocus="false"
 				@openAutoFocus.prevent
+				side="bottom"
 				class="-mt-1 rounded-b-2xl rounded-t-none border-0"
 				:class="{
 					'w-[300px] shadow-sm': variant === 'default',
@@ -62,7 +61,7 @@
 			</PopoverContent>
 		</Popover>
 
-		<Popover @update:open="openSearchEvent">
+		<Popover @update:open="openSearchEvent" :open="isSearchOpen">
 			<PopoverTrigger as="div">
 				<div
 					class="shadow-sm flex items-center rounded-none"
@@ -80,6 +79,8 @@
 					/>
 					<Input
 						ref="searchInput"
+						@click="searchInputClick"
+						@focus="searchInputFocus"
 						@input="globalSearchDebounce"
 						:modelValue="searchString"
 						placeholder="Search"
@@ -95,9 +96,8 @@
 				:align="'start'"
 				:arrowPadding="0"
 				:avoidCollisions="false"
-				side="bottom"
-				:trapFocus="false"
 				@openAutoFocus.prevent
+				side="bottom"
 				class="-mt-1 rounded-b-2xl rounded-t-none border-0 p-1 py-3 max-h-[484px] overflow-y-auto"
 				:class="{
 					'w-[400px] shadow-sm': variant === 'default',
@@ -152,8 +152,8 @@ const route = useRoute()
 const router = useRouter()
 const locationString = ref('')
 const searchString = ref('')
-const locationInput = ref<any>(null)
-const searchInput = ref<any>(null)
+const locationInput = ref<HTMLInputElement | null>(null)
+const searchInput = ref<HTMLInputElement | null>(null)
 const isLocationOpen = ref(false)
 const isSearchOpen = ref(false)
 function openLocationEvent(val: boolean) {
@@ -226,13 +226,24 @@ async function handleCurrentLocationOption() {
 	}
 }
 
+function searchInputClick(e: any) {
+	if (isSearchOpen.value) {
+		e.stopPropagation()
+	}
+}
+function searchInputFocus() {
+	if (!searchString.value && !searchResults.value) {
+		globalSearchHandler('')
+	}
+	isSearchOpen.value = true
+}
+
 const { globalSearch } = useSearch()
 const searchResults = ref<IGlobalSearch | null>(null)
 const searchResultsFetching = ref(false)
 async function globalSearchHandler(val: string) {
 	searchResultsFetching.value = true
 	const { data } = await globalSearch(val)
-	console.log(data)
 	searchResults.value = data
 	searchResultsFetching.value = false
 }
@@ -245,14 +256,11 @@ const globalSearchDebounce = useDebounce(async (e: any) => {
 }, 1000)
 
 function openSearchEvent(val: boolean) {
-	if (val && !searchString.value && !searchResults.value) {
-		globalSearchHandler('')
+	if (val) {
+		searchInput.value?.focus()
+		searchInputFocus()
+		return
 	}
 	isSearchOpen.value = val
-	if (val) {
-		setTimeout(() => {
-			searchInput.value?.focus()
-		}, 0)
-	}
 }
 </script>

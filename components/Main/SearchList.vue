@@ -1,5 +1,24 @@
 <template>
 	<div class="flex flex-col gap-2">
+		<div class="relative">
+			<LoadingIcon
+				v-if="loading"
+				class="fill-orange-600 mx-auto absolute left-1/2 -translate-x-1/2 -top-3"
+			/>
+		</div>
+
+		<div
+			v-if="
+				data &&
+				!data.offerings.length &&
+				!data.studios.length &&
+				!data.practitioners.length
+			"
+			class="text-gray-500 font-semibold text-center text-xs"
+		>
+			Unfortunately, there is no result
+		</div>
+
 		<template v-if="data">
 			<div v-show="data.offerings.length" class="flex flex-col gap-2`">
 				<span class="text-gray-400 font-semibold text-xs px-2 mb-1">
@@ -12,7 +31,7 @@
 					@click="goTo(`/offering/${offering.slug}`)"
 				>
 					<img
-						:src="offering.banners ? offering.banners[0].url : ''"
+						:src="getImageUrl(offering)"
 						class="w-8 h-6 rounded-md object-cover object-center mt-1"
 					/>
 					<div class="flex flex-col gap-0">
@@ -104,8 +123,6 @@
 				</button>
 			</div>
 		</template>
-
-		<LoadingIcon v-else-if="loading" class="fill-orange-600 mx-auto" />
 	</div>
 </template>
 
@@ -128,5 +145,12 @@ const router = useRouter()
 
 function goTo(val: string) {
 	router.push(val)
+}
+const getImageUrl = (offering: any) => {
+	if (offering.banners && offering.banners[0]) {
+		return offering.banners[0].url
+	}
+
+	return 'img/banner-placeholder2.jpeg'
 }
 </script>
