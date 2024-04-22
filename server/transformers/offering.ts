@@ -6,12 +6,32 @@ import { mediaFileTransformer } from './mediaFiles'
 import { studioTransformer } from './studio'
 import { ticketTransformer } from './ticket'
 import { practitionerTransformer } from './user'
+import type { TMarker } from '~/helpers/types/map'
 
 // TODO: offering type
 export const offeringTransformer = (offering: any, isTicketsFull?: boolean) => {
 	if (!offering) return null
 
-	const parsedLocation = JSON.parse(JSON.stringify(offering.location))
+	let location: TMarker = {
+		name: offering.location,
+		coords: [0, 0],
+	}
+
+	async function parseLocation() {
+		try {
+			const t = JSON.parse(offering.location)
+			location = t
+		} catch (error) {
+			console.log(
+				'error parsing location',
+				'=>',
+				offering.name,
+				'=>',
+				offering.location
+			)
+		}
+	}
+	parseLocation()
 
 	return {
 		...offering,
@@ -33,9 +53,6 @@ export const offeringTransformer = (offering: any, isTicketsFull?: boolean) => {
 					)
 			: [],
 		studio: studioTransformer(offering.studio),
-		location:
-			typeof parsedLocation === 'string'
-				? JSON.parse(parsedLocation)
-				: parsedLocation,
+		location,
 	}
 }

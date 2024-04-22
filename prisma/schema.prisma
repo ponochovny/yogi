@@ -55,9 +55,9 @@ model Studio {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   slug       String   @unique
   name       String
-  location   Json?
-  timezone   Json
-  currency   Json
+  location   String?
+  timezone   String
+  currency   String
   categories String[]
   types      String[]
 
@@ -166,7 +166,7 @@ model Offering {
   types       String[]
   categories  String[]
   banners     MediaFile[] @relation("offeringBanners")
-  location    Json?
+  location    String?
   timezone    String
 
   // studio
