@@ -22,6 +22,13 @@ export const attachPractitionerToStudio = (data: {
 		},
 	})
 }
+export const getPractitioners = (
+	params?: Prisma.PractitionerFindManyArgs<DefaultArgs>
+) => {
+	return prisma.practitioner.findMany({
+		...params,
+	})
+}
 export const getPractitionersByStudioID = (
 	studioId: string,
 	params?: Prisma.PractitionerFindManyArgs<DefaultArgs>

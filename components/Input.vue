@@ -6,12 +6,13 @@
 			</span>
 			<input
 				ref="input"
+				@focus="emit('focus')"
 				:id="id ? id : undefined"
 				:placeholder="placeholder"
 				:name="name"
 				:type="type"
 				:value="modelValue"
-				@input="(event: any) => emits('update:modelValue', event.target.value)"
+				@input="(event: any) => emit('update:modelValue', event.target.value)"
 				class="block w-full border-gray-300 rounded-md shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-300 focus:ring-opacity-50"
 				:class="cn(props.inputClass)"
 			/>
@@ -28,7 +29,7 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
-const emits = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'focus'])
 
 interface IProps {
 	name?: string

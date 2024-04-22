@@ -48,17 +48,30 @@ export default () => {
 
 	const searchResults = ref<IFeature[]>([])
 
-	async function featuresByCoords(coords: number[]) {
+	function fetchFeaturesByCoords(coords: number[]) {
 		const _coords = encodeURIComponent(`${coords[1]},${coords[0]}`)
-		const res = await $fetch<any>('/api/map/search?coords=' + _coords)
+		return $fetch<any>('/api/map/search?coords=' + _coords)
+	}
+	function fetchFeaturesByText(val: any) {
+		const text = encodeURIComponent(val)
+		return $fetch<any>('/api/map/search?text=' + text)
+	}
+
+	async function featuresByCoords(coords: number[]) {
+		const res = await fetchFeaturesByCoords(coords)
 		searchResults.value = res.data?.features || []
 	}
 
 	const featuresByText = useDebounce(async function (val: any) {
-		const text = encodeURIComponent(val)
-		const res = await $fetch<any>('/api/map/search?text=' + text)
+		const res = await fetchFeaturesByText(val)
 		searchResults.value = res.data?.features || []
 	}, 1000)
 
-	return { search, tiles, searchResults, featuresByCoords }
+	return {
+		search,
+		tiles,
+		searchResults,
+		featuresByCoords,
+		fetchFeaturesByCoords,
+	}
 }
