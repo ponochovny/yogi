@@ -6,7 +6,7 @@
 			</template>
 		</Header>
 
-		<SearchFilters />
+		<SearchFilters @update="emit('update', $event)" />
 
 		<div :class="cn(props.contentClass)">
 			<slot />
@@ -30,4 +30,5 @@ interface IProps {
 	contentClass?: string
 }
 const props = defineProps<IProps>()
+const emit = defineEmits(['update'])
 </script>

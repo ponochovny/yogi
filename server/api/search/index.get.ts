@@ -1,15 +1,24 @@
-import type { IOffering } from '~/helpers/types/offering'
 import { getOfferings } from '~/server/db/offerings'
-import { getPractitioners } from '~/server/db/practitioners'
-import { getStudios } from '~/server/db/studio'
 import { offeringTransformer } from '~/server/transformers/offering'
-import { studioTransformer } from '~/server/transformers/studio'
-import { practitionerTransformer } from '~/server/transformers/user'
-import type { IUser } from '~/server/types'
+
+const PAGE_COUNT_DEFAULT = 1
+const PER_PAGE_DEFAULT = 20
+const TYPES_QUERY_DEFAULT: string[] = []
+const CATEGORIES_DEFAULT: string[] = []
+const DATE_START_DEFAULT = null
+const DATE_END_DEFAULT = null
 
 export default defineEventHandler(async (event) => {
 	const query = getQuery(event)
-	const { name } = query
+	const {
+		name,
+		page: PAGE_COUNT = PAGE_COUNT_DEFAULT,
+		count: PER_PAGE = PER_PAGE_DEFAULT,
+		types: TYPES_QUERY = TYPES_QUERY_DEFAULT,
+		categories: CATEGORIES_QUERY = CATEGORIES_DEFAULT,
+		date_start: DATE_START = DATE_START_DEFAULT,
+		date_end: DATE_END = DATE_END_DEFAULT,
+	} = query
 
 	if (typeof name !== 'string') {
 		throw createError({ status: 400, statusMessage: 'Query is incorrect' })
@@ -26,59 +35,16 @@ export default defineEventHandler(async (event) => {
 					mode: 'insensitive',
 				},
 			},
-			take: 5,
 		})
-		const studiosList = await getStudios({
-			include: {
-				logo: true,
-			},
-			where: {
-				name: {
-					contains: name,
-					mode: 'insensitive',
-				},
-			},
-			take: 5,
-		})
-		const practitionersList = await getPractitioners({
-			include: {
-				user: true,
-			},
-			where: {
-				user: {
-					name: {
-						contains: name,
-						mode: 'insensitive',
-					},
-				},
-			},
-			take: 5,
-		})
-		const pracs = [
-			...(
-				practitionersList as unknown as {
-					id: string
-					userId: string
-					studioId: string
-					offeringId: string
-					user: IUser
-				}[]
-			).map((practitioner) => practitionerTransformer(practitioner.user)),
-		]
-		const uniquePractitionersList = [
-			...new Map(pracs.map((item: any) => [item.id, item])).values(),
-		]
 
-		const fullList = {
-			offerings: [
-				...offeringsList.map((offering) => offeringTransformer(offering)),
-			],
-			studios: [...studiosList.map((studio) => studioTransformer(studio))],
-			practitioners: [...uniquePractitionersList],
-		}
+		const filteredOfferings = offeringsList
+			.filter((offering) => {
+				return true
+			})
+			.map((offering) => offeringTransformer(offering))
 
 		return {
-			data: fullList,
+			data: filteredOfferings,
 			status: 'Success!',
 		}
 	} catch (error) {

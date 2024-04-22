@@ -9,6 +9,7 @@
 				:mode="mode"
 				:value="modelValue"
 				@update:model-value="emit('update:model-value', $event)"
+				@close="emit('close')"
 				:options="options"
 				:classes="{
 					container: 'multiselect !border-gray-300 !mt-1 !rounded-md',
@@ -115,7 +116,7 @@ const props = withDefaults(defineProps<IProps>(), {
 	minChars: 0,
 	openDirection: 'bottom',
 })
-const emit = defineEmits(['update:model-value'])
+const emit = defineEmits(['update:model-value', 'close'])
 
 const componentRef = ref<any>(null)
 function open() {

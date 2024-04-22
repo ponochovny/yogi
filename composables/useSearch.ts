@@ -1,11 +1,16 @@
-import type { IGlobalSearch } from '~/helpers/types/search'
+import type { ISearchData, IShortSearchData } from '~/helpers/types/search'
 
 export default () => {
 	const globalSearch = (val?: string) => {
 		return $fetch<{
-			data: IGlobalSearch
+			data: ISearchData
 		}>('/api/search?name=' + (val ? val : ''))
 	}
+	const shortSearch = (val?: string) => {
+		return $fetch<{
+			data: IShortSearchData
+		}>('/api/search/short?name=' + (val ? val : ''))
+	}
 
-	return { globalSearch }
+	return { globalSearch, shortSearch }
 }

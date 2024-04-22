@@ -51,11 +51,23 @@ model RefreshToken {
   userId String @db.ObjectId
 }
 
+model Practitioner {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String    @db.ObjectId
+  studioId   String?   @db.ObjectId
+  offeringId String?   @db.ObjectId
+  user       User      @relation(fields: [userId], references: [id])
+  studio     Studio?   @relation(fields: [studioId], references: [id])
+  offering   Offering? @relation(fields: [offeringId], references: [id])
+
+  @@unique([userId, studioId, offeringId])
+}
+
 model Studio {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   slug       String   @unique
   name       String
-  location   String?
+  location   String
   timezone   String
   currency   String
   categories String[]
@@ -107,24 +119,33 @@ model Studio {
   updatedAt DateTime @updatedAt
 }
 
-model Practitioner {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  userId     String    @db.ObjectId
-  studioId   String?   @db.ObjectId
-  offeringId String?   @db.ObjectId
-  user       User      @relation(fields: [userId], references: [id])
-  studio     Studio?   @relation(fields: [studioId], references: [id])
-  offering   Offering? @relation(fields: [offeringId], references: [id])
+model Offering {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String      @unique
+  activity    String
+  name        String
+  start       DateTime
+  end         DateTime
+  duration    Int
+  description String
+  spots       Int
+  is_private  Boolean
+  types       String[]
+  categories  String[]
+  banners     MediaFile[] @relation("offeringBanners")
+  location    String
+  timezone    String
 
-  @@unique([userId, studioId, offeringId])
-}
+  // studio
+  studio   Studio @relation(fields: [studioId], references: [id])
+  studioId String @db.ObjectId
 
-model Tag {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
+  // Practitioners
+  practitioners Practitioner[]
 
-  studio   Studio? @relation(fields: [studioId], references: [id])
-  studioId String? @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tickets   Ticket[]
 }
 
 model MediaFile {
@@ -150,35 +171,6 @@ model MediaFile {
   // Offering
   bannerOfferingId String?   @db.ObjectId
   offeringBanner   Offering? @relation(name: "offeringBanners", fields: [bannerOfferingId], references: [id])
-}
-
-model Offering {
-  id          String      @id @default(auto()) @map("_id") @db.ObjectId
-  slug        String      @unique
-  activity    String
-  name        String
-  start       DateTime
-  end         DateTime
-  duration    Int
-  description String
-  spots       Int
-  is_private  Boolean
-  types       String[]
-  categories  String[]
-  banners     MediaFile[] @relation("offeringBanners")
-  location    String?
-  timezone    String
-
-  // studio
-  studio   Studio @relation(fields: [studioId], references: [id])
-  studioId String @db.ObjectId
-
-  // Practitioners
-  practitioners Practitioner[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  tickets   Ticket[]
 }
 
 model Ticket {
@@ -209,3 +201,23 @@ model Purchase {
   receiptEmail String
   userName     String?
 }
+
+model Tag {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+
+  studio   Studio? @relation(fields: [studioId], references: [id])
+  studioId String? @db.ObjectId
+}
+
+// model Location {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+
+//   coords Int[]
+//   name   String
+
+//   studio     Studio?   @relation(fields: [studioId], references: [id])
+//   offering   Offering? @relation(fields: [offeringId], references: [id])
+//   studioId   String?   @db.ObjectId
+//   offeringId String?   @db.ObjectId
+// }

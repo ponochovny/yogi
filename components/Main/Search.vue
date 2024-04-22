@@ -135,7 +135,7 @@ import {
 	MapIcon,
 	VideoCameraIcon,
 } from '@heroicons/vue/24/outline'
-import type { IGlobalSearch } from '~/helpers/types/search'
+import type { IShortSearchData } from '~/helpers/types/search'
 
 export default defineComponent({
 	name: 'MainSearch',
@@ -233,24 +233,24 @@ function searchInputClick(e: any) {
 }
 function searchInputFocus() {
 	if (!searchString.value && !searchResults.value) {
-		globalSearchHandler('')
+		shortSearchHandler('')
 	}
 	isSearchOpen.value = true
 }
 
-const { globalSearch } = useSearch()
-const searchResults = ref<IGlobalSearch | null>(null)
+const { shortSearch } = useSearch()
+const searchResults = ref<IShortSearchData | null>(null)
 const searchResultsFetching = ref(false)
-async function globalSearchHandler(val: string) {
+async function shortSearchHandler(val: string) {
 	searchResultsFetching.value = true
-	const { data } = await globalSearch(val)
+	const { data } = await shortSearch(val)
 	searchResults.value = data
 	searchResultsFetching.value = false
 }
 const globalSearchDebounce = useDebounce(async (e: any) => {
 	if (!e?.target) return
 
-	await globalSearchHandler(e.target.value)
+	await shortSearchHandler(e.target.value)
 
 	searchString.value = e.target.value
 }, 1000)
