@@ -1,6 +1,7 @@
 import type { TTicket, TTicketOffering } from '~/helpers/types/ticket'
 import type { ITicketResponse } from '../types/ticket'
 import type { IOfferingResponse } from '../types/offering'
+import { currencySymbolByCode } from '~/helpers'
 
 function convertNumberToPriceString(number: number): string {
 	return (number / 100).toFixed(2)
@@ -21,7 +22,10 @@ export const ticketTransformer = (ticket: ITicketResponse): TTicket => {
 	}
 	return {
 		...rest,
-		price: convertNumberToPriceString(+rest.price),
+		price_int: rest.price,
+		price:
+			currencySymbolByCode(rest.currency) +
+			convertNumberToPriceString(+rest.price),
 		offering: offering ? ticketOffering(offering) : undefined,
 	}
 }

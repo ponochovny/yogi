@@ -1,7 +1,13 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
+/* eslint-disable indent */
 import type { TDataType } from '~/helpers/types/search'
 import { getOfferings } from '~/server/db/offerings'
 import { getPractitioners } from '~/server/db/practitioners'
 import { getStudios } from '~/server/db/studio'
+import {
+	getLowestAndHighestTicketPrice,
+	getLowestAndHighestTicketPriceByOffering,
+} from '~/server/helpers/offering'
 import { offeringTransformer } from '~/server/transformers/offering'
 import { studioTransformer } from '~/server/transformers/studio'
 import { practitionerTransformer } from '~/server/transformers/user'
@@ -26,6 +32,8 @@ export default defineEventHandler(async (event) => {
 		categories?: string[]
 		date_start?: string
 		date_end?: string
+		price_from?: string
+		price_to?: string
 	}
 	const {
 		name = '',
@@ -38,10 +46,16 @@ export default defineEventHandler(async (event) => {
 		date_end: DATE_END = DATE_END_DEFAULT,
 	} = query
 
+	const page_meta = {
+		page: +PAGE_COUNT,
+		count: PAGE_COUNT * PER_PAGE,
+	}
+
 	if (ACTIVITY_TYPE === 'Offerings') {
 		const offerings = await getOfferings<IOfferingResponse[]>({
 			include: {
 				banners: true,
+				tickets: true,
 			},
 			where: {
 				name: {
@@ -52,13 +66,50 @@ export default defineEventHandler(async (event) => {
 		})
 		const filteredOfferings = offerings
 			.filter((offering) => {
-				return true
+				const byTypes = TYPES_QUERY.length
+					? offering.types.some((type) => TYPES_QUERY.includes(type))
+					: true
+				const byCategories = CATEGORIES_QUERY.length
+					? offering.categories.some((category) =>
+							CATEGORIES_QUERY.includes(category)
+					  )
+					: true
+
+				const isNoDates = !(DATE_START && DATE_END)
+				const offeringStart = offering.start.valueOf()
+				const filterStart = new Date(DATE_START as string)
+					.setHours(0, 0, 0)
+					.valueOf()
+				const offeringEnd = offering.end.valueOf()
+				const filterEnd = new Date(DATE_END as string)
+					.setHours(23, 59, 59, 999)
+					.valueOf()
+
+				const isOfferingWithinRange =
+					offeringStart <= filterEnd && offeringEnd >= filterStart
+
+				const byDates = isNoDates ? true : isOfferingWithinRange
+
+				const { minPrice, maxPrice } =
+					getLowestAndHighestTicketPriceByOffering(offering)
+				const byPrice = !(query.price_from && query.price_to)
+					? true
+					: minPrice <= +query.price_to && maxPrice >= +query.price_from
+
+				return byTypes && byCategories && byDates && byPrice
 			})
 			.map((offering) => offeringTransformer(offering))
 
+		const { minPrice, maxPrice } =
+			getLowestAndHighestTicketPrice(filteredOfferings)
+
 		return {
-			data: filteredOfferings,
-			offerings,
+			data: filteredOfferings.slice(PAGE_COUNT - 1, PAGE_COUNT * PER_PAGE),
+			meta: {
+				...page_meta,
+				minPrice,
+				maxPrice,
+			},
 			status: 'Success!',
 		}
 	}
@@ -84,8 +135,12 @@ export default defineEventHandler(async (event) => {
 		})) as unknown as IStudioResponse[]
 
 		return {
-			data: studios.map((studio) => studioTransformer(studio)),
-			studios,
+			data: studios
+				.map((studio) => studioTransformer(studio))
+				.slice(PAGE_COUNT - 1, PAGE_COUNT * PER_PAGE),
+			meta: {
+				...page_meta,
+			},
 			status: 'Success!',
 		}
 	}
@@ -116,8 +171,13 @@ export default defineEventHandler(async (event) => {
 		]
 
 		return {
-			data: uniquePractitionersList,
-			practitioners,
+			data: uniquePractitionersList.slice(
+				PAGE_COUNT - 1,
+				PAGE_COUNT * PER_PAGE
+			),
+			meta: {
+				...page_meta,
+			},
 			status: 'Success!',
 		}
 	}

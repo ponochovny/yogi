@@ -18,6 +18,10 @@ export interface ISearchParams {
 		start?: Date
 		end?: Date
 	}
+	page: number
+	count: number
+	price_from?: number
+	price_to?: number
 }
 
 export interface ISearchData {}

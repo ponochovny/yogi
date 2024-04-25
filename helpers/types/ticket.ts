@@ -4,6 +4,7 @@ export type TTicket = Omit<
 	ITicketResponse,
 	'price' | 'offering' | 'offeringId'
 > & {
+	price_int: number
 	price: string
 	offering?: TTicketOffering
 }

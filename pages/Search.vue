@@ -55,6 +55,8 @@ const filters = reactive<ISearchParams>({
 		start: undefined,
 		end: undefined,
 	},
+	page: 1,
+	count: 20,
 })
 function resetSearchResults() {
 	searchResults.value = []
@@ -62,11 +64,17 @@ function resetSearchResults() {
 
 function updated(data: any) {
 	if (JSON.stringify(data) !== JSON.stringify(filters) || isInitialLoad.value) {
+		if (data.activityType !== filters.activityType) {
+			resetSearchResults()
+		}
 		filters.activityType = data.activityType
 		filters.categories = data.categories
 		filters.types = data.types
+		filters.date.start = data.date.start
+		filters.date.end = data.date.end
+		filters.price_from = data.price_from
+		filters.price_to = data.price_to
 
-		resetSearchResults()
 		fetch()
 	}
 	if (isInitialLoad.value) isInitialLoad.value = false
@@ -77,6 +85,12 @@ function fetch() {
 	$fetch<{ data: TOffering[] }>(
 		'/api/search?' +
 			new URLSearchParams({
+				...(filters.count && { count: filters.count.toString() }),
+				...(filters.page && { page: filters.page.toString() }),
+				...(filters.price_from && {
+					price_from: filters.price_from.toString(),
+				}),
+				...(filters.price_to && { price_to: filters.price_to.toString() }),
 				...(filters.activityType && { activityType: filters.activityType }),
 				...(filters.categories.length && {
 					categories: filters.categories.join(','),
