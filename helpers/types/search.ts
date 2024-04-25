@@ -11,7 +11,7 @@ export interface IShortSearchData {
 
 export type TDataType = (typeof DATA_TYPES)[number]
 export interface ISearchParams {
-	activeType: TDataType
+	activityType: TDataType
 	categories: string[]
 	types: string[]
 	date: {

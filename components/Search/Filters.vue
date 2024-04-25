@@ -8,7 +8,8 @@
 				@click="setActivityType(dataType)"
 				class="py-2 font-semibold relative after:h-[3px] after:w-[15px] after:bg-orange-500 after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-[12px] after:opacity-0"
 				:class="{
-					'after:opacity-100 text-orange-600': formData.activeType === dataType,
+					'after:opacity-100 text-orange-600':
+						formData.activityType === dataType,
 				}"
 			>
 				{{ dataType }}
@@ -102,7 +103,7 @@ const router = useRouter()
 const _categories = _data.categories
 const _types = _data.types
 const formData = reactive<ISearchParams>({
-	activeType: DATA_TYPES[0],
+	activityType: DATA_TYPES[0],
 	categories: [],
 	types: [],
 	date: {
@@ -156,8 +157,8 @@ function clearDate() {
 
 onMounted(() => {
 	const { query } = route
-	formData.activeType =
-		(query.activeType?.toString() as TDataType) || DATA_TYPES[0]
+	formData.activityType =
+		(query.activityType?.toString() as TDataType) || DATA_TYPES[0]
 	formData.types =
 		query.types
 			?.toString()
@@ -182,23 +183,18 @@ onMounted(() => {
 
 watch(formData, (val) => {
 	const obj = {
-		...route.query,
-		...(val.activeType && { activeType: val.activeType }),
+		...(val.activityType && { activityType: val.activityType }),
 		...(val.categories.length && { categories: val.categories.join(',') }),
 		...(val.types.length && { types: val.types.join(',') }),
 		...(val.date.start && { start: format(val.date.start, 'yyyy-MM-dd') }),
 		...(val.date.end && { end: format(val.date.end, 'yyyy-MM-dd') }),
-	}
-	if (!val.date.start) {
-		delete obj.start
-		delete obj.end
 	}
 	const params = new URLSearchParams({ ...obj }).toString()
 	router.push('/search?' + params)
 })
 
 function setActivityType(type: TDataType) {
-	formData.activeType = type
+	formData.activityType = type
 	update()
 }
 

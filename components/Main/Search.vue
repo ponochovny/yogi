@@ -164,6 +164,7 @@ function openLocationEvent(val: boolean) {
 }
 function onSubmit() {
 	const params = new URLSearchParams({
+		...route.query,
 		location: locationString.value,
 		search: searchString.value,
 	}).toString()

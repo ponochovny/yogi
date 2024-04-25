@@ -6,7 +6,11 @@
 			</template>
 		</Header>
 
-		<SearchFilters @update="emit('update', $event)" />
+		<SearchFilters
+			@update="emit('update', $event)"
+			class="transition-opacity"
+			:class="{ 'opacity-60 pointer-events-none': loading }"
+		/>
 
 		<div :class="cn(props.contentClass)">
 			<slot />
@@ -28,6 +32,7 @@ export default defineComponent({
 interface IProps {
 	class?: string
 	contentClass?: string
+	loading?: boolean
 }
 const props = defineProps<IProps>()
 const emit = defineEmits(['update'])
