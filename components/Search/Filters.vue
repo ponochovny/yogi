@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-white px-6 py-3 border-t shadow-lg flex gap-8">
+	<div class="bg-white px-6 py-3 border-t shadow-lg flex gap-8 h-16">
 		<!-- DATA TYPES FILTER -->
 		<div class="flex gap-4">
 			<button
@@ -17,7 +17,7 @@
 		</div>
 
 		<!-- FILTERS: TYPES, CATEGORIES, DATE, PRICE -->
-		<div class="flex gap-2">
+		<div v-if="isOfferings" class="flex gap-2">
 			<Yselect
 				@close="update"
 				placeholder="Types"
@@ -110,7 +110,12 @@ const formData = reactive<ISearchParams>({
 		start: undefined,
 		end: undefined,
 	},
+	page: 1,
+	count: 20,
+	// price_from: 6000,
+	// price_to: 6200,
 })
+const isOfferings = computed(() => route.query.activityType === 'Offerings')
 const dateRange = ref<Date[] | Date | undefined>()
 function formattedDate() {
 	const dStart = formData.date.start
