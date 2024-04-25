@@ -100,7 +100,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import type { IUser } from '~/server/types'
+import type { TUser } from '~/server/types'
 import currencies from '~/helpers/currencies.json'
 import { BanknotesIcon } from '@heroicons/vue/24/outline'
 
@@ -123,7 +123,7 @@ withDefaults(defineProps<IProps>(), {
 const route = useRoute()
 const { useAuthUser, useAuthLoading, logout } = useAuth()
 const isAuthLoading = useAuthLoading()
-const user = useAuthUser() as Ref<IUser>
+const user = useAuthUser() as Ref<TUser>
 const _currencies = currencies
 
 const currencySelected = ref(_currencies[0].code)

@@ -4,7 +4,9 @@ import { getStudios } from '~/server/db/studio'
 import { offeringTransformer } from '~/server/transformers/offering'
 import { studioTransformer } from '~/server/transformers/studio'
 import { practitionerTransformer } from '~/server/transformers/user'
-import type { IUser } from '~/server/types'
+import type { IPractitionerResponse } from '~/server/types'
+import type { IOfferingResponse } from '~/server/types/offering'
+import type { IStudioResponse } from '~/server/types/studio'
 
 export default defineEventHandler(async (event) => {
 	const query = getQuery(event)
@@ -15,7 +17,7 @@ export default defineEventHandler(async (event) => {
 	}
 
 	try {
-		const offeringsList = await getOfferings({
+		const offeringsList = await getOfferings<IOfferingResponse[]>({
 			include: {
 				banners: true,
 			},
@@ -27,7 +29,7 @@ export default defineEventHandler(async (event) => {
 			},
 			take: 5,
 		})
-		const studiosList = await getStudios({
+		const studiosList = (await getStudios({
 			include: {
 				logo: true,
 			},
@@ -38,8 +40,8 @@ export default defineEventHandler(async (event) => {
 				},
 			},
 			take: 5,
-		})
-		const practitionersList = await getPractitioners({
+		})) as unknown as IStudioResponse[]
+		const practitionersList = await getPractitioners<IPractitionerResponse[]>({
 			include: {
 				user: true,
 			},
@@ -54,15 +56,9 @@ export default defineEventHandler(async (event) => {
 			take: 5,
 		})
 		const pracs = [
-			...(
-				practitionersList as unknown as {
-					id: string
-					userId: string
-					studioId: string
-					offeringId: string
-					user: IUser
-				}[]
-			).map((practitioner) => practitionerTransformer(practitioner.user)),
+			...practitionersList.map((practitioner) =>
+				practitionerTransformer(practitioner.user)
+			),
 		]
 		const uniquePractitionersList = [
 			...new Map(pracs.map((item: any) => [item.id, item])).values(),

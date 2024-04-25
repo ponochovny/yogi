@@ -43,31 +43,31 @@
 									class="capitalize font-bold text-sm"
 									:class="{
 										'text-blue-500/90':
-											data?.data.offering.activity.toLowerCase() === 'class',
+											data?.data.offering?.activity.toLowerCase() === 'class',
 										'text-red-400':
-											data?.data.offering.activity.toLowerCase() === 'event',
+											data?.data.offering?.activity.toLowerCase() === 'event',
 										'text-yellow-500':
-											data?.data.offering.activity.toLowerCase() ===
+											data?.data.offering?.activity.toLowerCase() ===
 											'appointment',
 									}"
 								>
-									{{ data?.data.offering.activity }}
+									{{ data?.data.offering?.activity }}
 								</span>
-								<NuxtLink :to="'/offering/' + data?.data.offering.slug">
+								<NuxtLink :to="'/offering/' + data?.data.offering?.slug">
 									<span class="font-semibold">
-										{{ data?.data.offering.name }}
+										{{ data?.data.offering?.name }}
 									</span>
 								</NuxtLink>
 								<span class="font-semibold text-sm text-gray-600">
 									{{
 										dateString(
-											data?.data.offering.start,
-											data?.data.offering.end
+											data?.data.offering?.start || '',
+											data?.data.offering?.end || ''
 										)
 									}}
 								</span>
 								<span class="font-semibold text-sm">
-									{{ data?.data.offering.location?.name }}
+									{{ data?.data.offering?.location }}
 								</span>
 							</div>
 						</div>
@@ -123,6 +123,7 @@
 import { defineComponent } from 'vue'
 import { convertPriceStringToNumber, currencySymbolByCode } from '~/helpers'
 import { dateString } from '~/lib/utils'
+import type { ITicketResponse } from '~/server/types/ticket'
 
 export default defineComponent({
 	name: 'CheckoutPage',
@@ -133,14 +134,16 @@ const route = useRoute()
 const router = useRouter()
 const { count, ticketId } = route.query
 
-const { data } = await useFetch(`/api/ticket/${ticketId}`)
+const { data } = await useFetch<{ data: ITicketResponse }>(
+	`/api/ticket/${ticketId}`
+)
 
 if (!data) {
 	router.push('/')
 }
 
 const _data = reactive({
-	amount: convertPriceStringToNumber(data.value?.data.price || ''),
+	amount: convertPriceStringToNumber(data.value?.data.price.toString() || ''),
 	currency: data.value?.data.currency || '',
 })
 
@@ -175,7 +178,7 @@ onMounted(() => injectStripe())
 // < TESTING STRIPE <
 
 function offeringBanner() {
-	const dataBanner = data.value?.data?.offering.banner[0]
+	const dataBanner = data.value?.data?.offering?.banners[0].url || ''
 	const noBanner = 'img/banner-placeholder2.jpeg'
 	return dataBanner || noBanner
 }

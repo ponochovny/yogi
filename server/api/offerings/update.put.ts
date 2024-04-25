@@ -1,8 +1,8 @@
 import formidable from 'formidable'
 import { convertPriceStringToNumber } from '~/helpers'
 import type {
-	IOfferingCreation,
-	IOfferingUpdate,
+	IOfferingCreateData,
+	IOfferingUpdateData,
 } from '~/helpers/types/offering'
 import { generateSlug } from '~/lib/utils'
 import { createMediaFile } from '~/server/db/mediaFiles'
@@ -11,7 +11,7 @@ import { removePractitioner } from '~/server/db/practitioners'
 import { attachPractitionerToOffering } from '~/server/db/practitioners'
 import { createTicket, updateTicket } from '~/server/db/tickets'
 
-interface IOfferingUpdateForm extends IOfferingUpdate {
+interface IOfferingUpdateDataForm extends IOfferingUpdateData {
 	'practitioners[]': string[]
 	'practitionersRemove[]': string[]
 	'tickets[]': string[]
@@ -39,7 +39,7 @@ export default defineEventHandler(async (event) => {
 
 	// TODO: set fields types
 	const { fields, files } = formExtracted as {
-		fields: { [key in keyof IOfferingUpdateForm]: string[] } & {
+		fields: { [key in keyof IOfferingUpdateDataForm]: string[] } & {
 			studioId: string
 		}
 		files: any
@@ -47,7 +47,7 @@ export default defineEventHandler(async (event) => {
 
 	const offeringData: Partial<
 		Omit<
-			IOfferingCreation,
+			IOfferingCreateData,
 			'practitioners' | 'banners' | 'tickets' | 'location'
 		>
 	> & { location: string } = {

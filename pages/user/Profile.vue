@@ -30,7 +30,7 @@
 <script lang="ts">
 import { defineComponent, watch } from 'vue'
 import { toast } from 'vue-sonner'
-import type { IUser } from '~/server/types'
+import type { TUser } from '~/server/types'
 
 export default defineComponent({
 	name: 'ProfilePage',
@@ -45,7 +45,7 @@ const { useAuthUser, updateProfile } = useAuth()
 const selectedFileAvatar = ref<any>(null)
 const avatarUrl = ref<string | null>(null)
 
-const user = useAuthUser() as Ref<IUser>
+const user = useAuthUser() as Ref<TUser>
 const actionButtonDisabled = computed(() => {
 	if (!user.value) return true
 	const obj1 = { ...data }

@@ -1,11 +1,11 @@
 import type {
-	IOffering,
-	IOfferingCreation,
-	IOfferingUpdate,
+	IOfferingCreateData,
+	IOfferingUpdateData,
+	TOffering,
 } from '~/helpers/types/offering'
 
 export default () => {
-	const createOffering = (data: Omit<IOfferingCreation, 'slug'>) => {
+	const createOffering = (data: Omit<IOfferingCreateData, 'slug'>) => {
 		const form = new FormData()
 
 		const { banners, practitioners, tickets, ...rest } = data
@@ -37,7 +37,7 @@ export default () => {
 	}
 
 	const updateOffering = (
-		data: Omit<IOfferingUpdate, 'slug'>,
+		data: Omit<IOfferingUpdateData, 'slug'>,
 		offeringId: string
 	) => {
 		const form = new FormData()
@@ -89,7 +89,7 @@ export default () => {
 	}
 
 	const getOfferings = () => {
-		return useFetch<{ data: IOffering[] }>('/api/offerings')
+		return useFetch<{ data: TOffering[] }>('/api/offerings')
 	}
 
 	const getOfferingsByStudioId = <T>(

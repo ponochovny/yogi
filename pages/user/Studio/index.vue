@@ -69,7 +69,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import type { IStudio } from '~/helpers/types/studio'
+import type { TStudio } from '~/helpers/types/studio'
 import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
 
 export default defineComponent({
@@ -82,7 +82,7 @@ definePageMeta({
 })
 const loading = ref(true)
 const tab = ref<'create' | 'list'>('create')
-const studios = ref<IStudio[]>([])
+const studios = ref<TStudio[]>([])
 const { getStudios } = useStudio()
 
 async function loadStudios() {
@@ -100,7 +100,7 @@ onBeforeMount(async () => {
 	await loadStudios()
 })
 
-function gotoStudioSettings(studioData: IStudio) {
+function gotoStudioSettings(studioData: TStudio) {
 	const { useStudioSelected } = useAuth()
 	const studioId = useStudioSelected()
 

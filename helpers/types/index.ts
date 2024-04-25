@@ -1,4 +1,4 @@
-export interface Media {
-	id: number
+export type TMediaFile = {
+	// id: string
 	url: string
 }

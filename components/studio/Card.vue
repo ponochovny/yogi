@@ -44,7 +44,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import type { IStudio } from '~/helpers/types/studio'
+import type { TStudio } from '~/helpers/types/studio'
 
 export default defineComponent({
 	name: 'StudioCard',
@@ -52,7 +52,7 @@ export default defineComponent({
 </script>
 <script lang="ts" setup>
 interface IProps {
-	studio: IStudio
+	studio: TStudio
 }
 const props = defineProps<IProps>()
 

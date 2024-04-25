@@ -1,15 +1,21 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable indent */
-import type { ITicket } from '~/helpers/types/offering'
-import type { IUser } from '../types'
+import type { TOffering } from '~/helpers/types/offering'
+import type { IUserResponse } from '../types'
+import type { IOfferingResponse } from '../types/offering'
 import { mediaFileTransformer } from './mediaFiles'
 import { studioTransformer } from './studio'
 import { ticketTransformer } from './ticket'
 import { practitionerTransformer } from './user'
 import type { TMarker } from '~/helpers/types/map'
+import type { TTicket } from '~/helpers/types/ticket'
+import type { IStudioResponse } from '../types/studio'
 
 // TODO: offering type
-export const offeringTransformer = (offering: any, isTicketsFull?: boolean) => {
+export const offeringTransformer = (
+	offering: IOfferingResponse,
+	isTicketsFull?: boolean
+): TOffering | null => {
 	if (!offering) return null
 
 	let location: TMarker = {
@@ -40,19 +46,19 @@ export const offeringTransformer = (offering: any, isTicketsFull?: boolean) => {
 				? offering.banners.map(mediaFileTransformer)
 				: [],
 		practitioners: offering.practitioners
-			? offering.practitioners.map((item: { user: IUser }) =>
+			? offering.practitioners.map((item: { user: IUserResponse }) =>
 					practitionerTransformer(item.user)
 			  )
-			: undefined,
+			: [],
 		tickets: offering.tickets
 			? offering.tickets
 					.sort((a: any, b: any) => b.price - a.price)
 					.map(ticketTransformer)
-					.filter((ticket: ITicket) =>
+					.filter((ticket: TTicket) =>
 						isTicketsFull ? true : ticket.status === 'active'
 					)
 			: [],
-		studio: studioTransformer(offering.studio),
+		studio: studioTransformer(offering.studio as IStudioResponse),
 		location,
 	}
 }

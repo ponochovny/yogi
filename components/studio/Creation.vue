@@ -122,7 +122,7 @@ import { defineComponent } from 'vue'
 import timezones from '~/helpers/timeZones.json'
 import currencies from '~/helpers/currencies.json'
 import _data from '~/helpers/offeringAttributes.json'
-import type { IStudio } from '~/helpers/types/studio'
+import type { TStudio } from '~/helpers/types/studio'
 import { toast } from 'vue-sonner'
 import _randomStudioData from '~/helpers/randomStudioData.json'
 import type { IFeature, TMarker } from '~/helpers/types/map'
@@ -135,7 +135,7 @@ export default defineComponent({
 <script lang="ts" setup>
 interface IProps {
 	updateData?: boolean
-	studio?: IStudio
+	studio?: TStudio
 }
 const props = withDefaults(defineProps<IProps>(), {
 	updateData: false,

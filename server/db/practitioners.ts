@@ -22,12 +22,12 @@ export const attachPractitionerToStudio = (data: {
 		},
 	})
 }
-export const getPractitioners = (
+export const getPractitioners = <T>(
 	params?: Prisma.PractitionerFindManyArgs<DefaultArgs>
-) => {
+): Promise<T> => {
 	return prisma.practitioner.findMany({
 		...params,
-	})
+	}) as Promise<T>
 }
 export const getPractitionersByStudioID = (
 	studioId: string,

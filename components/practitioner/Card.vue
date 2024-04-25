@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import type { IUser } from '~/server/types'
+import type { TPractitioner } from '~/server/types'
 
 export default defineComponent({
 	name: 'PractitionerCard',
@@ -31,7 +31,7 @@ export default defineComponent({
 </script>
 <script lang="ts" setup>
 interface IProps {
-	practitioner: IUser
+	practitioner: TPractitioner
 }
 const props = defineProps<IProps>()
 

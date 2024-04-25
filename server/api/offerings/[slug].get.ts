@@ -1,10 +1,11 @@
 import { getOfferingBySlug } from '~/server/db/offerings'
 import { offeringTransformer } from '~/server/transformers/offering'
+import type { IOfferingResponse } from '~/server/types/offering'
 
 export default defineEventHandler(async (event) => {
 	const { slug } = getRouterParams(event)
 
-	const offering = await getOfferingBySlug(slug, {
+	const offering = await getOfferingBySlug<IOfferingResponse | null>(slug, {
 		include: {
 			studio: {
 				include: {

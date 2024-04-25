@@ -128,7 +128,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import type { IGlobalSearch } from '~/helpers/types/search'
+import type { IShortSearchData } from '~/helpers/types/search'
 import { dateString } from '~/lib/utils'
 
 export default defineComponent({
@@ -138,7 +138,7 @@ export default defineComponent({
 <script lang="ts" setup>
 interface IProps {
 	loading?: boolean
-	data: IGlobalSearch | null
+	data: IShortSearchData | null
 }
 defineProps<IProps>()
 const router = useRouter()

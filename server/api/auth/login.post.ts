@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 import { getUserByEmail } from '../../db/users'
 import { generateTokens, sendRefreshToken } from '~/server/utils/jwt'
-import type { IUser } from '~/server/types'
+import type { IUserResponse } from '~/server/types'
 import { userTransformer } from '~/server/transformers/user'
 import { createRefreshToken, getRefreshToken } from '~/server/db/refreshTokens'
 
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
 	}
 
 	// Is the user registered
-	const user: IUser | null = await getUserByEmail(email)
+	const user: IUserResponse | null = await getUserByEmail(email)
 
 	if (!user) {
 		return sendError(

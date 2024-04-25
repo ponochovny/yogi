@@ -5,7 +5,9 @@ import { getStudios } from '~/server/db/studio'
 import { offeringTransformer } from '~/server/transformers/offering'
 import { studioTransformer } from '~/server/transformers/studio'
 import { practitionerTransformer } from '~/server/transformers/user'
-import type { IUser } from '~/server/types'
+import type { IPractitionerResponse } from '~/server/types'
+import type { IOfferingResponse } from '~/server/types/offering'
+import type { IStudioResponse } from '~/server/types/studio'
 
 const PAGE_COUNT_DEFAULT = 1
 const PER_PAGE_DEFAULT = 20
@@ -37,7 +39,7 @@ export default defineEventHandler(async (event) => {
 	} = query
 
 	if (ACTIVITY_TYPE === 'Offerings') {
-		const offerings = await getOfferings({
+		const offerings = await getOfferings<IOfferingResponse[]>({
 			include: {
 				banners: true,
 			},
@@ -56,12 +58,13 @@ export default defineEventHandler(async (event) => {
 
 		return {
 			data: filteredOfferings,
+			offerings,
 			status: 'Success!',
 		}
 	}
 
 	if (ACTIVITY_TYPE === 'Studio & Event Hosts') {
-		const studios = await getStudios({
+		const studios = (await getStudios({
 			include: {
 				owner: true,
 				logo: true,
@@ -78,16 +81,19 @@ export default defineEventHandler(async (event) => {
 					mode: 'insensitive',
 				},
 			},
-		})
+		})) as unknown as IStudioResponse[]
 
 		return {
 			data: studios.map((studio) => studioTransformer(studio)),
+			studios,
 			status: 'Success!',
 		}
 	}
 
 	if (ACTIVITY_TYPE === 'Practitioners') {
-		const practitioners = await getPractitioners({
+		const practitioners = await getPractitioners<
+			Promise<IPractitionerResponse[]>
+		>({
 			include: {
 				user: true,
 			},
@@ -101,15 +107,9 @@ export default defineEventHandler(async (event) => {
 			},
 		})
 		const pracs = [
-			...(
-				practitioners as unknown as {
-					id: string
-					userId: string
-					studioId: string
-					offeringId: string
-					user: IUser
-				}[]
-			).map((practitioner) => practitionerTransformer(practitioner.user)),
+			...practitioners.map((practitioner) =>
+				practitionerTransformer(practitioner.user)
+			),
 		]
 		const uniquePractitionersList = [
 			...new Map(pracs.map((item: any) => [item.id, item])).values(),
@@ -117,6 +117,7 @@ export default defineEventHandler(async (event) => {
 
 		return {
 			data: uniquePractitionersList,
+			practitioners,
 			status: 'Success!',
 		}
 	}

@@ -6,21 +6,21 @@
 			>
 				<template v-if="filters.activityType === 'Offerings'">
 					<OfferingCard
-						v-for="offering of (searchResults as IOffering[])"
+						v-for="offering of (searchResults as TOffering[])"
 						:key="offering?.id"
 						:offering="offering"
 					/>
 				</template>
 				<template v-if="filters.activityType === 'Studio & Event Hosts'">
 					<StudioCard
-						v-for="studio of (searchResults as IStudio[])"
+						v-for="studio of (searchResults as TStudio[])"
 						:key="studio?.id"
 						:studio="studio"
 					/>
 				</template>
 				<template v-if="filters.activityType === 'Practitioners'">
 					<PractitionerCard
-						v-for="practitioner of (searchResults as IUser[])"
+						v-for="practitioner of (searchResults as TUser[])"
 						:key="practitioner?.id"
 						:practitioner="practitioner"
 					/>
@@ -35,9 +35,9 @@ import { defineComponent } from 'vue'
 import { DATA_TYPES } from '~/helpers/constants'
 import type { ISearchParams } from '~/helpers/types/search'
 import { format } from 'date-fns'
-import type { IOffering } from '~/helpers/types/offering'
-import type { IStudio } from '~/helpers/types/studio'
-import type { IUser } from '~/server/types'
+import type { TStudio } from '~/helpers/types/studio'
+import type { TUser } from '~/server/types'
+import type { TOffering } from '~/helpers/types/offering'
 
 export default defineComponent({
 	name: 'SearchPage',
@@ -45,7 +45,7 @@ export default defineComponent({
 </script>
 <script lang="ts" setup>
 const loading = ref(false)
-const searchResults = ref<IOffering[] | IStudio[] | IUser[]>([])
+const searchResults = ref<TOffering[] | TStudio[] | TUser[]>([])
 const isInitialLoad = ref(true)
 const filters = reactive<ISearchParams>({
 	activityType: DATA_TYPES[0],
@@ -74,7 +74,7 @@ function updated(data: any) {
 
 function fetch() {
 	loading.value = true
-	$fetch<{ data: IOffering[] }>(
+	$fetch<{ data: TOffering[] }>(
 		'/api/search?' +
 			new URLSearchParams({
 				...(filters.activityType && { activityType: filters.activityType }),

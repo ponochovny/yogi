@@ -1,4 +1,4 @@
-import type { IUser } from '~/server/types'
+import type { IUserResponse } from '~/server/types'
 import { createUser } from '../../db/users'
 import { userTransformer } from '~/server/transformers/user'
 import { createRefreshToken } from '~/server/db/refreshTokens'
@@ -22,13 +22,15 @@ export default defineEventHandler(async (event) => {
 		)
 	}
 
-	const userData: Pick<IUser, 'name' | 'email' | 'password' | 'profileImage'> =
-		{
-			name,
-			email,
-			password,
-			profileImage: 'https://picsum.photos/200/200',
-		}
+	const userData: Pick<
+		IUserResponse,
+		'name' | 'email' | 'password' | 'profileImage'
+	> = {
+		name,
+		email,
+		password,
+		profileImage: 'https://picsum.photos/200/200',
+	}
 
 	const user = await createUser(userData)
 
