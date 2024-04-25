@@ -47,10 +47,14 @@
 							{{ practitioner.data.bio }}
 						</div>
 					</div>
-					<Button class="self-start">Tip {{ practitioner.data.name }}</Button>
+					<Button disabled class="self-start">
+						Tip {{ practitioner.data.name }}
+					</Button>
 				</div>
 				<div class="pt-20">
-					<Button>Book private appointment {{ practitioner.data.name }}</Button>
+					<Button disabled>
+						Book private appointment {{ practitioner.data.name }}
+					</Button>
 				</div>
 			</div>
 		</div>
