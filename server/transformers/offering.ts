@@ -15,9 +15,8 @@ import type { IStudioResponse } from '../types/studio'
 export const offeringTransformer = (
 	offering: IOfferingResponse,
 	isTicketsFull?: boolean
-): TOffering | null => {
-	if (!offering) return null
-
+): TOffering => {
+	const { createdAt, updatedAt, ...rest } = offering
 	let location: TMarker = {
 		name: offering.location,
 		coords: [0, 0],
@@ -40,7 +39,7 @@ export const offeringTransformer = (
 	parseLocation()
 
 	return {
-		...offering,
+		...rest,
 		banners:
 			offering.banners && offering.banners.length
 				? offering.banners.map(mediaFileTransformer)
@@ -58,7 +57,9 @@ export const offeringTransformer = (
 						isTicketsFull ? true : ticket.status === 'active'
 					)
 			: [],
-		studio: studioTransformer(offering.studio as IStudioResponse),
+		studio: offering.studio
+			? studioTransformer(offering.studio as IStudioResponse)
+			: undefined,
 		location,
 	}
 }

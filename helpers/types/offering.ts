@@ -36,9 +36,15 @@ export interface IOfferingUpdateData extends IOfferingCreateData {
 
 export type TOffering = Omit<
 	IOfferingResponse,
-	'banners' | 'practitioners' | 'studio' | 'location' | 'tickets'
+	| 'createdAt'
+	| 'updatedAt'
+	| 'banners'
+	| 'practitioners'
+	| 'studio'
+	| 'location'
+	| 'tickets'
 > & {
-	studio: TStudio
+	studio?: TStudio
 	banners: { url: string }[]
 	practitioners: TPractitioner[]
 	location: TMarker
