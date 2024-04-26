@@ -102,6 +102,7 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
+const route = useRoute()
 const loading = ref(false)
 const searchResults = ref<TOffering[] | TStudio[] | TUser[]>([])
 const isInitialLoad = ref(true)
@@ -126,22 +127,50 @@ const isShowPagination = computed(() => {
 })
 
 function updated(data: any) {
-	const { page, count, total, ...rest } = filters
-	if (JSON.stringify(data) !== JSON.stringify(rest) || isInitialLoad.value) {
+	if (data.search || data.location) {
+		if (
+			JSON.stringify({ location: filters.location, search: filters.search }) !==
+			JSON.stringify(data)
+		) {
+			filters.search = data.search
+			filters.location = data.location
+
+			fetch()
+
+			return
+		}
+		return
+	} else {
+		filters.search = undefined
+		filters.location = undefined
+	}
+
+	const {
+		page,
+		count,
+		total,
+		search: _search,
+		location: _location,
+		...restFilters
+	} = filters
+	const { search, location, ...restData } = data
+	if (
+		JSON.stringify(restData) !== JSON.stringify(restFilters) ||
+		isInitialLoad.value
+	) {
 		if (data.activityType !== filters.activityType) {
 			resetSearchResults()
 		}
 		filters.activityType = data.activityType
 		filters.categories = data.categories
 		filters.types = data.types
-		filters.date.start = data.date.start
-		filters.date.end = data.date.end
+		filters.date.start = data.date?.start
+		filters.date.end = data.date?.end
 		filters.price_from = data.price_from
 		filters.price_to = data.price_to
 
 		fetch()
 	}
-	if (isInitialLoad.value) isInitialLoad.value = false
 }
 
 function fetch() {
@@ -149,31 +178,46 @@ function fetch() {
 
 	const priceFromCheck = isNumber(filters.price_from) && filters.price_from >= 0
 
+	const searchObj = {
+		...(route.query.search && { search: route.query.search.toString() }),
+		...(route.query.location && {
+			location: route.query.location.toString(),
+		}),
+	}
+	const searchObjFilters = {
+		...(filters.search && { search: filters.search }),
+		...(filters.location && {
+			location: filters.location,
+		}),
+	}
+
+	const obj = {
+		...(isInitialLoad.value && { ...searchObj }),
+		...(!isInitialLoad.value && { ...searchObjFilters }),
+		...(filters.count && { count: filters.count.toString() }),
+		...(filters.page && { page: filters.page.toString() }),
+		...(priceFromCheck && {
+			price_from: filters.price_from?.toString(),
+		}),
+		...(filters.price_to && { price_to: filters.price_to.toString() }),
+		...(filters.activityType && { activityType: filters.activityType }),
+		...(filters.categories?.length && {
+			categories: filters.categories.join(','),
+		}),
+		...(filters.types?.length && { types: filters.types.join(',') }),
+		...(filters.date?.start && {
+			date_start: format(filters.date.start, 'yyyy-MM-dd'),
+		}),
+		...(filters.date?.end && {
+			date_end: format(filters.date.end, 'yyyy-MM-dd'),
+		}),
+	}
+	if (isInitialLoad.value) isInitialLoad.value = false
+
 	$fetch<{
 		data: TOffering[]
 		meta: { total: number; min_price: number; max_price: number }
-	}>(
-		'/api/search?' +
-			new URLSearchParams({
-				...(filters.count && { count: filters.count.toString() }),
-				...(filters.page && { page: filters.page.toString() }),
-				...(priceFromCheck && {
-					price_from: filters.price_from?.toString(),
-				}),
-				...(filters.price_to && { price_to: filters.price_to.toString() }),
-				...(filters.activityType && { activityType: filters.activityType }),
-				...(filters.categories.length && {
-					categories: filters.categories.join(','),
-				}),
-				...(filters.types.length && { types: filters.types.join(',') }),
-				...(filters.date.start && {
-					date_start: format(filters.date.start, 'yyyy-MM-dd'),
-				}),
-				...(filters.date.end && {
-					date_end: format(filters.date.end, 'yyyy-MM-dd'),
-				}),
-			}).toString()
-	)
+	}>('/api/search?' + new URLSearchParams(obj).toString())
 		.then(({ data, meta }) => {
 			searchResults.value = data
 			filters.total = meta.total

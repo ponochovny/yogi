@@ -2,7 +2,11 @@
 	<div class="relative" :class="cn(props.class)">
 		<Header :links="false" variant="white">
 			<template #left>
-				<MainSearch variant="secondary" class="ml-24" />
+				<MainSearch
+					variant="secondary"
+					class="ml-24"
+					@update="emit('update', $event)"
+				/>
 			</template>
 		</Header>
 

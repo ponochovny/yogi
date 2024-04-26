@@ -23,6 +23,8 @@ export interface ISearchParams {
 	price_from?: number
 	price_to?: number
 	total?: number
+	search?: string
+	location?: string
 }
 
 export interface ISearchData {}

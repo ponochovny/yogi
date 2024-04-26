@@ -24,7 +24,8 @@ const DATE_END_DEFAULT = null
 
 export default defineEventHandler(async (event) => {
 	const query = getQuery(event) as {
-		name?: string
+		search?: string
+		location?: string
 		page?: number
 		count?: number
 		activityType?: TDataType
@@ -34,10 +35,12 @@ export default defineEventHandler(async (event) => {
 		date_end?: string
 		price_from?: string
 		price_to?: string
-		// take?: string
+		take?: string
 	}
 	const {
-		name = '',
+		take,
+		search = '',
+		location = '',
 		activityType: ACTIVITY_TYPE,
 		page: PAGE_COUNT = PAGE_COUNT_DEFAULT,
 		count: PER_PAGE = PER_PAGE_DEFAULT,
@@ -62,10 +65,11 @@ export default defineEventHandler(async (event) => {
 			},
 			where: {
 				name: {
-					contains: typeof name !== 'string' ? '' : name,
+					contains: typeof search !== 'string' ? '' : search,
 					mode: 'insensitive',
 				},
 			},
+			take: take ? +take : undefined,
 		})
 		let filteredOfferings = offerings.filter((offering) => {
 			const byTypes = TYPES_QUERY.length
@@ -171,7 +175,7 @@ export default defineEventHandler(async (event) => {
 			where: {
 				user: {
 					name: {
-						contains: name,
+						contains: search,
 						mode: 'insensitive',
 					},
 				},

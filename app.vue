@@ -41,4 +41,8 @@ button {
 .v-leave-to {
 	opacity: 0;
 }
+
+.scrollbar-thin {
+	scrollbar-width: thin;
+}
 </style>

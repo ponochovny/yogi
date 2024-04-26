@@ -77,18 +77,28 @@
 							'text-orange-600': isSearchOpen,
 						}"
 					/>
-					<Input
-						ref="searchInput"
-						@click="searchInputClick"
-						@focus="searchInputFocus"
-						@input="globalSearchDebounce"
-						:modelValue="searchString"
-						placeholder="Search"
-						:inputClass="{
-							'border-none !shadow-none ring-0': true,
-							'bg-gray-100/80': variant === 'secondary',
-						}"
-					/>
+					<template v-if="variant === 'default'">
+						<Input
+							ref="searchInput"
+							@click="searchInputClick"
+							@focus="searchInputFocus"
+							@input="globalSearchDebounce"
+							:modelValue="searchString"
+							placeholder="Search"
+							:inputClass="{
+								'border-none !shadow-none ring-0': true,
+							}"
+						/>
+					</template>
+					<template v-else>
+						<Input
+							v-model="searchString"
+							placeholder="Search"
+							:inputClass="{
+								'border-none !shadow-none ring-0 bg-gray-100/80': true,
+							}"
+						/>
+					</template>
 				</div>
 			</PopoverTrigger>
 			<PopoverContent
@@ -148,6 +158,7 @@ interface IProps {
 const props = withDefaults(defineProps<IProps>(), {
 	variant: 'default',
 })
+const emit = defineEmits(['update'])
 const route = useRoute()
 const router = useRouter()
 const locationString = ref('')
@@ -163,12 +174,20 @@ function openLocationEvent(val: boolean) {
 	}
 }
 function onSubmit() {
-	const params = new URLSearchParams({
-		...route.query,
+	const obj = {
+		...(props.variant === 'secondary' && route.query),
 		location: locationString.value,
 		search: searchString.value,
-	}).toString()
+	}
+
+	if (props.variant === 'secondary') {
+		update(obj)
+	}
+	const params = new URLSearchParams({ ...obj }).toString()
 	router.push('/search?' + params)
+}
+function update(data: any) {
+	emit('update', data)
 }
 onMounted(() => {
 	const { query } = route
