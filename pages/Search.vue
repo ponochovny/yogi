@@ -1,5 +1,9 @@
 <template>
-	<SearchContainer @update="updated" :loading="loading">
+	<SearchContainer
+		@update="updated"
+		:loading="loading"
+		:priceRange="[priceRange.price_from || 0, priceRange.price_to || 0]"
+	>
 		<div class="pb-10 pt-8 px-6">
 			<div class="mb-6">
 				<p class="font-bold text-lg">
@@ -110,9 +114,10 @@ const filters = reactive<ISearchParams>({
 		end: undefined,
 	},
 	page: 1,
-	count: 3,
+	count: 20,
 	total: 0,
 })
+const priceRange = ref({ price_from: 0, price_to: 0 })
 function resetSearchResults() {
 	searchResults.value = []
 }
@@ -121,7 +126,8 @@ const isShowPagination = computed(() => {
 })
 
 function updated(data: any) {
-	if (JSON.stringify(data) !== JSON.stringify(filters) || isInitialLoad.value) {
+	const { page, count, total, ...rest } = filters
+	if (JSON.stringify(data) !== JSON.stringify(rest) || isInitialLoad.value) {
 		if (data.activityType !== filters.activityType) {
 			resetSearchResults()
 		}
@@ -140,13 +146,19 @@ function updated(data: any) {
 
 function fetch() {
 	loading.value = true
-	$fetch<{ data: TOffering[]; meta: { total: number } }>(
+
+	const priceFromCheck = isNumber(filters.price_from) && filters.price_from >= 0
+
+	$fetch<{
+		data: TOffering[]
+		meta: { total: number; min_price: number; max_price: number }
+	}>(
 		'/api/search?' +
 			new URLSearchParams({
 				...(filters.count && { count: filters.count.toString() }),
 				...(filters.page && { page: filters.page.toString() }),
-				...(filters.price_from && {
-					price_from: filters.price_from.toString(),
+				...(priceFromCheck && {
+					price_from: filters.price_from?.toString(),
 				}),
 				...(filters.price_to && { price_to: filters.price_to.toString() }),
 				...(filters.activityType && { activityType: filters.activityType }),
@@ -165,6 +177,10 @@ function fetch() {
 		.then(({ data, meta }) => {
 			searchResults.value = data
 			filters.total = meta.total
+			priceRange.value = {
+				price_from: meta.min_price,
+				price_to: meta.max_price,
+			}
 		})
 		.catch((error) => console.log(error))
 		.finally(() => (loading.value = false))

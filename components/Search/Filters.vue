@@ -63,20 +63,51 @@
 						<template v-else> Pick a date </template>
 					</Button>
 				</PopoverTrigger>
-				<PopoverContent class="w-auto p-0 rounded-2xl">
+				<PopoverContent
+					class="w-auto p-0 rounded-t-none rounded-b-2xl mt-2 border-gray-200/80"
+				>
 					<CalendarPicker v-if="dateRange" v-model="dateRange" />
 				</PopoverContent>
 			</Popover>
-			<Popover>
+			<Popover @update:open="priceChange">
 				<PopoverTrigger>
-					<div class="w-24">Price</div>
+					<Button
+						variant="primaryOutline"
+						:class="
+							cn(
+								'justify-start text-left font-normal',
+								!formData.date.start && 'text-muted-foreground'
+							)
+						"
+					>
+						<div class="">Price</div>
+					</Button>
 				</PopoverTrigger>
 				<PopoverContent
 					:align="'start'"
 					:arrowPadding="0"
-					class="mt-2 max-w-[200px] rounded-2xl border-0 shadow-md"
+					class="mt-2 max-w-[250px] rounded-b-2xl rounded-t-none border-0 border-t-[1px] border-gray-200/80 shadow-md pt-6 pb-3"
 				>
-					<div>Price</div>
+					<div class="flex gap-2 text-nowrap flex-col">
+						<div class="w-full">
+							<Slider
+								:default-value="[33]"
+								:max="_priceRange[1]"
+								:min="_priceRange[0]"
+								:step="1"
+								v-model="priceSelected"
+								:minStepsBetweenThumbs="1"
+							/>
+						</div>
+						<div class="flex justify-between">
+							<span class="">
+								{{ currencySymbolByCode('USD') }}{{ priceSelected[0] / 100 }}
+							</span>
+							<span class="">
+								{{ currencySymbolByCode('USD') }}{{ priceSelected[1] / 100 }}
+							</span>
+						</div>
+					</div>
 				</PopoverContent>
 			</Popover>
 		</div>
@@ -90,12 +121,14 @@ import { DATA_TYPES } from '~/helpers/constants'
 import type { ISearchParams, TDataType } from '~/helpers/types/search'
 import { format } from 'date-fns'
 import { cn } from '~/lib/utils'
+import { currencySymbolByCode } from '~/helpers'
 
 export default defineComponent({
 	name: 'Filters',
 })
 </script>
 <script lang="ts" setup>
+const props = defineProps<{ priceRange: [number, number] }>()
 const emit = defineEmits(['update'])
 
 const route = useRoute()
@@ -159,6 +192,14 @@ function clearDate() {
 	formData.date.end = undefined
 	update()
 }
+function priceChange(val: boolean) {
+	if (val) return
+
+	formData.price_from = priceSelected.value[0]
+	formData.price_to = priceSelected.value[1]
+
+	update()
+}
 
 onMounted(() => {
 	const { query } = route
@@ -206,4 +247,13 @@ function setActivityType(type: TDataType) {
 function update() {
 	emit('update', formData)
 }
+
+const _priceRange = ref([0, 100])
+const priceSelected = ref([0, 100])
+watch(
+	() => props.priceRange,
+	(val) => {
+		_priceRange.value = [...val]
+	}
+)
 </script>

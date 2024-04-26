@@ -10,6 +10,7 @@
 			@update="emit('update', $event)"
 			class="transition-opacity"
 			:class="{ 'opacity-60 pointer-events-none': loading }"
+			:priceRange="priceRange"
 		/>
 
 		<div :class="cn(props.contentClass)">
@@ -33,6 +34,7 @@ interface IProps {
 	class?: string
 	contentClass?: string
 	loading?: boolean
+	priceRange: [number, number]
 }
 const props = defineProps<IProps>()
 const emit = defineEmits(['update'])
