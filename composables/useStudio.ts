@@ -79,13 +79,21 @@ export default () => {
 		})
 	}
 
-	const getStudios = () => {
-		return useFetchApi<{ data: TStudio[] }>('/api/studios')
+	const getStudios = (queries?: string) => {
+		return useFetchApi<{ data: TStudio[] }>(
+			`/api/studios${queries ? '?' + queries : ''}`
+		)
+	}
+	const getStudiosOpen = (queries?: string) => {
+		return useFetch<{ data: TStudio[] }>(
+			`/api/studios${queries ? '?' + queries : ''}`
+		)
 	}
 
 	return {
 		createStudio,
 		updateStudio,
 		getStudios,
+		getStudiosOpen,
 	}
 }
