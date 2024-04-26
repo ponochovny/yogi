@@ -145,7 +145,7 @@ export default defineComponent({
 interface IProps {
 	variant?: 'default' | 'secondary'
 }
-withDefaults(defineProps<IProps>(), {
+const props = withDefaults(defineProps<IProps>(), {
 	variant: 'default',
 })
 const route = useRoute()
@@ -233,6 +233,8 @@ function searchInputClick(e: any) {
 	}
 }
 function searchInputFocus() {
+	if (props.variant === 'secondary') return
+
 	if (!searchString.value && !searchResults.value) {
 		shortSearchHandler('')
 	}
@@ -243,12 +245,15 @@ const { shortSearch } = useSearch()
 const searchResults = ref<IShortSearchData | null>(null)
 const searchResultsFetching = ref(false)
 async function shortSearchHandler(val: string) {
+	if (props.variant === 'secondary') return
+
 	searchResultsFetching.value = true
 	const { data } = await shortSearch(val)
 	searchResults.value = data
 	searchResultsFetching.value = false
 }
 const globalSearchDebounce = useDebounce(async (e: any) => {
+	if (props.variant === 'secondary') return
 	if (!e?.target) return
 
 	await shortSearchHandler(e.target.value)

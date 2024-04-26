@@ -110,8 +110,8 @@ const formData = reactive<ISearchParams>({
 		start: undefined,
 		end: undefined,
 	},
-	page: 1,
-	count: 20,
+	// page: 1,
+	// count: 3,
 	// price_from: 6000,
 	// price_to: 6200,
 })

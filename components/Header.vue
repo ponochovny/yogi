@@ -46,6 +46,7 @@
 						v-for="currency of _currencies"
 						:key="currency.code"
 						:value="currency.code"
+						class="hover:cursor-pointer transition-colors hover:bg-gray-100/60"
 					>
 						{{ currency.code }}
 					</SelectItem>
