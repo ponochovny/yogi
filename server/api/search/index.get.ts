@@ -34,6 +34,7 @@ export default defineEventHandler(async (event) => {
 		date_end?: string
 		price_from?: string
 		price_to?: string
+		// take?: string
 	}
 	const {
 		name = '',
@@ -48,8 +49,10 @@ export default defineEventHandler(async (event) => {
 
 	const page_meta = {
 		page: +PAGE_COUNT,
-		count: PAGE_COUNT * PER_PAGE,
+		// count: PAGE_COUNT * PER_PAGE,
 	}
+	const splice_from = (PAGE_COUNT - 1) * PER_PAGE
+	const splice_to = +PER_PAGE
 
 	if (ACTIVITY_TYPE === 'Offerings') {
 		const offerings = await getOfferings<IOfferingResponse[]>({
@@ -64,49 +67,53 @@ export default defineEventHandler(async (event) => {
 				},
 			},
 		})
-		const filteredOfferings = offerings
-			.filter((offering) => {
-				const byTypes = TYPES_QUERY.length
-					? offering.types.some((type) => TYPES_QUERY.includes(type))
-					: true
-				const byCategories = CATEGORIES_QUERY.length
-					? offering.categories.some((category) =>
-							CATEGORIES_QUERY.includes(category)
-					  )
-					: true
+		let filteredOfferings = offerings.filter((offering) => {
+			const byTypes = TYPES_QUERY.length
+				? offering.types.some((type) => TYPES_QUERY.includes(type))
+				: true
+			const byCategories = CATEGORIES_QUERY.length
+				? offering.categories.some((category) =>
+						CATEGORIES_QUERY.includes(category)
+				  )
+				: true
 
-				const isNoDates = !(DATE_START && DATE_END)
-				const offeringStart = offering.start.valueOf()
-				const filterStart = new Date(DATE_START as string)
-					.setHours(0, 0, 0)
-					.valueOf()
-				const offeringEnd = offering.end.valueOf()
-				const filterEnd = new Date(DATE_END as string)
-					.setHours(23, 59, 59, 999)
-					.valueOf()
+			const isNoDates = !(DATE_START && DATE_END)
+			const offeringStart = offering.start.valueOf()
+			const filterStart = new Date(DATE_START as string)
+				.setHours(0, 0, 0)
+				.valueOf()
+			const offeringEnd = offering.end.valueOf()
+			const filterEnd = new Date(DATE_END as string)
+				.setHours(23, 59, 59, 999)
+				.valueOf()
 
-				const isOfferingWithinRange =
-					offeringStart <= filterEnd && offeringEnd >= filterStart
+			const isOfferingWithinRange =
+				offeringStart <= filterEnd && offeringEnd >= filterStart
 
-				const byDates = isNoDates ? true : isOfferingWithinRange
+			const byDates = isNoDates ? true : isOfferingWithinRange
 
-				const { minPrice, maxPrice } =
-					getLowestAndHighestTicketPriceByOffering(offering)
-				const byPrice = !(query.price_from && query.price_to)
-					? true
-					: minPrice <= +query.price_to && maxPrice >= +query.price_from
+			const { minPrice, maxPrice } =
+				getLowestAndHighestTicketPriceByOffering(offering)
+			const byPrice = !(query.price_from && query.price_to)
+				? true
+				: minPrice <= +query.price_to && maxPrice >= +query.price_from
 
-				return byTypes && byCategories && byDates && byPrice
-			})
-			.map((offering) => offeringTransformer(offering))
+			return byTypes && byCategories && byDates && byPrice
+		})
 
 		const { minPrice, maxPrice } =
 			getLowestAndHighestTicketPrice(filteredOfferings)
+		const total = filteredOfferings.length
+
+		if (PAGE_COUNT && PER_PAGE) {
+			filteredOfferings = filteredOfferings.splice(splice_from, splice_to)
+		}
 
 		return {
-			data: filteredOfferings.slice(PAGE_COUNT - 1, PAGE_COUNT * PER_PAGE),
+			data: filteredOfferings.map((offering) => offeringTransformer(offering)),
 			meta: {
 				...page_meta,
+				total,
 				minPrice,
 				maxPrice,
 			},
@@ -115,7 +122,7 @@ export default defineEventHandler(async (event) => {
 	}
 
 	if (ACTIVITY_TYPE === 'Studio & Event Hosts') {
-		const studios = (await getStudios({
+		let studios = (await getStudios({
 			include: {
 				owner: true,
 				logo: true,
@@ -134,12 +141,17 @@ export default defineEventHandler(async (event) => {
 			},
 		})) as unknown as IStudioResponse[]
 
+		const total = studios.length
+
+		if (PAGE_COUNT && PER_PAGE) {
+			studios = studios.splice(splice_from, splice_to)
+		}
+
 		return {
-			data: studios
-				.map((studio) => studioTransformer(studio))
-				.slice(PAGE_COUNT - 1, PAGE_COUNT * PER_PAGE),
+			data: studios.map((studio) => studioTransformer(studio)),
 			meta: {
 				...page_meta,
+				total,
 			},
 			status: 'Success!',
 		}
@@ -166,17 +178,23 @@ export default defineEventHandler(async (event) => {
 				practitionerTransformer(practitioner.user)
 			),
 		]
-		const uniquePractitionersList = [
+		let uniquePractitionersList = [
 			...new Map(pracs.map((item: any) => [item.id, item])).values(),
 		]
+		const total = uniquePractitionersList.length
+
+		if (PAGE_COUNT && PER_PAGE) {
+			uniquePractitionersList = uniquePractitionersList.splice(
+				splice_from,
+				splice_to
+			)
+		}
 
 		return {
-			data: uniquePractitionersList.slice(
-				PAGE_COUNT - 1,
-				PAGE_COUNT * PER_PAGE
-			),
+			data: uniquePractitionersList,
 			meta: {
 				...page_meta,
+				total,
 			},
 			status: 'Success!',
 		}

@@ -1,6 +1,11 @@
 <template>
 	<SearchContainer @update="updated" :loading="loading">
-		<div class="py-10 px-6">
+		<div class="pb-10 pt-8 px-6">
+			<div class="mb-6">
+				<p class="font-bold text-lg">
+					We found {{ filters.total }} results for you
+				</p>
+			</div>
 			<div
 				class="grid xl:grid-cols-5 lg:grid-cols-3 sm:grid-cols-2 gap-x-4 gap-y-7 auto-rows-1fr"
 			>
@@ -26,6 +31,43 @@
 					/>
 				</template>
 			</div>
+			<div v-if="isShowPagination" class="flex pt-12 justify-center">
+				<Pagination
+					v-slot="{ page }"
+					:items-per-page="filters.count"
+					:total="filters.total"
+					:sibling-count="1"
+					show-edges
+					:default-page="filters.page"
+					v-model:page="filters.page"
+					@update:page="fetch"
+				>
+					<PaginationList v-slot="{ items }" class="flex items-center gap-1">
+						<PaginationFirst />
+						<PaginationPrev />
+
+						<template v-for="(item, index) in items">
+							<PaginationListItem
+								v-if="item.type === 'page'"
+								:key="index"
+								:value="item.value"
+								as-child
+							>
+								<Button
+									class="w-10 h-10 p-0"
+									:variant="item.value === page ? 'default' : 'outline'"
+								>
+									{{ item.value }}
+								</Button>
+							</PaginationListItem>
+							<PaginationEllipsis v-else :key="item.type" :index="index" />
+						</template>
+
+						<PaginationNext />
+						<PaginationLast />
+					</PaginationList>
+				</Pagination>
+			</div>
 		</div>
 	</SearchContainer>
 </template>
@@ -38,6 +80,18 @@ import { format } from 'date-fns'
 import type { TStudio } from '~/helpers/types/studio'
 import type { TUser } from '~/server/types'
 import type { TOffering } from '~/helpers/types/offering'
+import {
+	Pagination,
+	PaginationEllipsis,
+	PaginationFirst,
+	PaginationLast,
+	PaginationList,
+	PaginationListItem,
+	PaginationNext,
+	PaginationPrev,
+} from '@/components/ui/pagination'
+
+import { Button } from '@/components/ui/button'
 
 export default defineComponent({
 	name: 'SearchPage',
@@ -56,11 +110,15 @@ const filters = reactive<ISearchParams>({
 		end: undefined,
 	},
 	page: 1,
-	count: 20,
+	count: 3,
+	total: 0,
 })
 function resetSearchResults() {
 	searchResults.value = []
 }
+const isShowPagination = computed(() => {
+	return (filters.total || 0) / (filters.count || 0) > 1
+})
 
 function updated(data: any) {
 	if (JSON.stringify(data) !== JSON.stringify(filters) || isInitialLoad.value) {
@@ -82,7 +140,7 @@ function updated(data: any) {
 
 function fetch() {
 	loading.value = true
-	$fetch<{ data: TOffering[] }>(
+	$fetch<{ data: TOffering[]; meta: { total: number } }>(
 		'/api/search?' +
 			new URLSearchParams({
 				...(filters.count && { count: filters.count.toString() }),
@@ -104,8 +162,9 @@ function fetch() {
 				}),
 			}).toString()
 	)
-		.then(({ data }) => {
+		.then(({ data, meta }) => {
 			searchResults.value = data
+			filters.total = meta.total
 		})
 		.catch((error) => console.log(error))
 		.finally(() => (loading.value = false))
