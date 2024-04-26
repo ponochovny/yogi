@@ -148,7 +148,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import type { IStudio } from '~/helpers/types/studio'
+import type { TStudio } from '~/helpers/types/studio'
 import { MapPinIcon } from '@heroicons/vue/24/outline'
 
 export default defineComponent({
@@ -157,7 +157,7 @@ export default defineComponent({
 </script>
 <script lang="ts" setup>
 const route = useRoute()
-const { data: studioData } = await useFetch<{ data: IStudio }>(
+const { data: studioData } = await useFetch<{ data: TStudio }>(
 	`/api/studios/${route.params.slug}`
 )
 </script>

@@ -1,6 +1,6 @@
 import { getPractitionersByStudioID } from '~/server/db/practitioners'
 import { practitionerTransformer } from '~/server/transformers/user'
-import type { IUser } from '~/server/types'
+import type { IPractitionerResponse } from '~/server/types'
 
 export default defineEventHandler(async (event) => {
 	const { studio_id } = await readBody(event)
@@ -9,13 +9,7 @@ export default defineEventHandler(async (event) => {
 		include: {
 			user: true,
 		},
-	})) as unknown as {
-		id: string
-		userId: string
-		studioId: string
-		offeringId: string
-		user: IUser
-	}[]
+	})) as unknown as IPractitionerResponse[]
 
 	return {
 		data: studioPractitioners.map((practitioner) =>

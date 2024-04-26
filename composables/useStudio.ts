@@ -1,5 +1,5 @@
 import type { TMarker } from '~/helpers/types/map'
-import type { IStudio } from '~/helpers/types/studio'
+import type { TStudio } from '~/helpers/types/studio'
 
 interface IData {
 	name: string
@@ -80,7 +80,7 @@ export default () => {
 	}
 
 	const getStudios = () => {
-		return useFetchApi<{ data: IStudio[] }>('/api/studios')
+		return useFetchApi<{ data: TStudio[] }>('/api/studios')
 	}
 
 	return {

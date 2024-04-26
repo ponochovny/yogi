@@ -1,37 +1,28 @@
 import type { Prisma } from '@prisma/client'
 import type { DefaultArgs } from '@prisma/client/runtime/library'
 import { prisma } from '.'
+import type { ICreateTicketData, TUpdateTicketData } from '../types/ticket'
 
-export const createTicket = (data: {
-	name: string
-	description: string
-	price: number
-	currency: string
-	offeringId: string
-	status: 'active' | 'inactive'
-}) =>
+export const createTicket = ({
+	name,
+	description,
+	price,
+	currency,
+	offeringId,
+	status,
+}: ICreateTicketData) =>
 	prisma.ticket.create({
 		data: {
-			name: data.name,
-			description: data.description,
-			price: data.price,
-			currency: data.currency,
-			offeringId: data.offeringId,
-			status: data.status,
+			name,
+			description,
+			price,
+			currency,
+			offeringId,
+			status,
 		},
 	})
 
-export const updateTicket = (
-	data: Partial<{
-		name: string
-		description: string
-		price: number
-		currency: string
-		offeringId: string
-		status: 'active' | 'inactive'
-	}>,
-	ticketId: string
-) =>
+export const updateTicket = (data: TUpdateTicketData, ticketId: string) =>
 	prisma.ticket.update({
 		where: {
 			id: ticketId,

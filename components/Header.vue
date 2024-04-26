@@ -1,12 +1,20 @@
 <template>
-	<div class="flex items-center">
+	<div
+		class="flex items-center px-6"
+		:class="{
+			'bg-white py-3': variant === 'white',
+		}"
+	>
 		<NuxtLink
 			to="/"
 			class="transition duration-1000 ease-in bg-transparent rounded-full hover:bg-orange-200"
 		>
 			<img src="/img/logo.svg" alt="Yogi app" width="65" />
 		</NuxtLink>
-		<div class="ml-[10%] flex gap-8">
+
+		<slot name="left" />
+
+		<div v-if="links" class="ml-[10%] flex gap-8">
 			<NuxtLink to="/">
 				<span class="font-semibold">Explore live offerings</span>
 			</NuxtLink>
@@ -14,7 +22,12 @@
 				<span class="font-semibold">Add your business</span>
 			</NuxtLink>
 		</div>
+
 		<div class="flex items-center gap-4 ml-auto">
+			<NuxtLink v-if="user && !links" to="/user/studio">
+				<span class="font-semibold">Add your business</span>
+			</NuxtLink>
+
 			<Select v-model="currencySelected">
 				<SelectTrigger
 					class="inline-flex w-auto items-center justify-between rounded px-[15px] text-[13px] leading-none h-[35px] gap-[5px] bg-transparent text-grass11 border-none outline-none ring-0 focus:ring-0 focus:outline-none ring-offset-0 focus:ring-offset-0"
@@ -26,34 +39,36 @@
 						</div>
 					</div>
 				</SelectTrigger>
-				<SelectContent class="mt-2 rounded-2xl border-0 shadow-md p-1.5">
+				<SelectContent
+					class="mt-2 rounded-2xl shadow-md p-1.5 border border-gray-300/40"
+				>
 					<SelectItem
 						v-for="currency of _currencies"
 						:key="currency.code"
 						:value="currency.code"
+						class="hover:cursor-pointer transition-colors hover:bg-gray-100/60"
 					>
 						{{ currency.code }}
 					</SelectItem>
 				</SelectContent>
 			</Select>
+
 			<!-- Cart status -->
 
 			<template v-if="isAuthLoading">Loading...</template>
-
 			<template v-else-if="!user">
 				<NuxtLink to="/auth?t=register">
 					<Button>
 						<span class="text-base font-bold text-white">Sign up</span>
 					</Button>
 				</NuxtLink>
-				<NuxtLink to="/auth?t=login" class="font-semibold">Log in</NuxtLink>
+				<NuxtLink :to="loginLink()" class="font-semibold">Log in</NuxtLink>
 			</template>
-
 			<template v-else>
 				<Popover>
 					<PopoverTrigger>
 						<div
-							class="flex items-center gap-4 p-2 pr-3 rounded-full bg-white !text-black shadow-md hover:bg-orange-600 hover:!text-white transition-colors duration-500"
+							class="flex items-center gap-4 p-2 pr-3 rounded-full bg-white !text-black shadow-md hover:bg-orange-600 hover:!text-white transition-colors duration-500 border border-gray-300/40"
 						>
 							<img
 								:src="user.profileImage || ''"
@@ -68,9 +83,9 @@
 						</div>
 					</PopoverTrigger>
 					<PopoverContent
-						align="end"
+						:align="'end'"
 						:arrowPadding="0"
-						class="mt-2 max-w-[200px] rounded-2xl border-0 shadow-md"
+						class="mt-2 max-w-[200px] rounded-2xl shadow-md border border-gray-300/40"
 					>
 						<div class="flex flex-col gap-2 w-full">
 							<NuxtLink to="/user/profile"> My Profile </NuxtLink>
@@ -86,7 +101,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import type { IUser } from '~/server/types'
+import type { TUser } from '~/server/types'
 import currencies from '~/helpers/currencies.json'
 import { BanknotesIcon } from '@heroicons/vue/24/outline'
 
@@ -98,10 +113,24 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
+interface IProps {
+	links?: boolean
+	variant?: 'white' | 'default'
+}
+withDefaults(defineProps<IProps>(), {
+	links: true,
+	variant: 'default',
+})
+const route = useRoute()
 const { useAuthUser, useAuthLoading, logout } = useAuth()
 const isAuthLoading = useAuthLoading()
-const user = useAuthUser() as Ref<IUser>
+const user = useAuthUser() as Ref<TUser>
 const _currencies = currencies
 
 const currencySelected = ref(_currencies[0].code)
+
+function loginLink() {
+	// @ts-ignore
+	return '/auth?t=login' + '&redirect=' + route.href.substring(1)
+}
 </script>

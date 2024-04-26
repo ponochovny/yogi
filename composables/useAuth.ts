@@ -1,23 +1,23 @@
-import type { IUser } from '~/server/types'
+import type { TUser } from '~/server/types'
 import useFetchApi from './useFetchApi'
 import { jwtDecode } from 'jwt-decode'
-import type { IStudio } from '~/helpers/types/studio'
+import type { TStudio } from '~/helpers/types/studio'
 
 export default () => {
 	const useAuthToken = () => useState('auth_token')
-	const useAuthUser = (): Ref<IUser | null> =>
-		useState<IUser | null>('auth_user')
+	const useAuthUser = (): Ref<TUser | null> =>
+		useState<TUser | null>('auth_user')
 	const useAuthLoading = () => useState('auth_loading', () => true)
 	const useAuthInitLoading = () => useState('auth_init_loading', () => true)
-	const useStudioSelected = (): Ref<IStudio | null> =>
-		useState<IStudio | null>('auth_studio_selected', () => null)
+	const useStudioSelected = (): Ref<TStudio | null> =>
+		useState<TStudio | null>('auth_studio_selected', () => null)
 
 	const setToken = (newToken: string) => {
 		const authToken = useAuthToken()
 		authToken.value = newToken
 	}
 
-	const setUser = (newUser: IUser | null) => {
+	const setUser = (newUser: TUser | null) => {
 		const authUser = useAuthUser()
 		authUser.value = newUser
 	}
@@ -45,7 +45,7 @@ export default () => {
 		return new Promise(async (resolve, reject) => {
 			try {
 				setIsAuthLoading(true)
-				const data: { user: IUser; access_token: string } = await $fetch(
+				const data: { user: TUser; access_token: string } = await $fetch(
 					'/api/auth/register',
 					{
 						method: 'POST',
@@ -74,7 +74,7 @@ export default () => {
 			try {
 				setIsAuthLoading(true)
 				// @ts-ignore
-				const data: { user: IUser; access_token: string } = await $fetch(
+				const data: { user: TUser; access_token: string } = await $fetch(
 					'/api/auth/login',
 					{
 						method: 'POST',
@@ -152,13 +152,13 @@ export default () => {
 	const updateProfile = async (
 		newData: Partial<
 			Pick<
-				IUser,
+				TUser,
 				'name' | 'email' | 'bio' | 'interestsCategory' | 'interestsType'
 			>
 		> & { mediaFiles?: { avatar: any } }
 	) => {
 		// TODO: set type
-		const authUser = useAuthUser() as Ref<IUser>
+		const authUser = useAuthUser() as Ref<TUser>
 
 		const form = new FormData()
 

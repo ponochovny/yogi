@@ -1,9 +1,11 @@
 import formidable from 'formidable'
-import type { IStudio } from '~/helpers/types/studio'
+import type { TStudio } from '~/helpers/types/studio'
 import { generateSlug } from '~/lib/utils'
-import { createMediaFile, type IMediaFile } from '~/server/db/mediaFiles'
+import { createMediaFile } from '~/server/db/mediaFiles'
 import { attachPractitionerToStudio } from '~/server/db/practitioners'
 import { createStudio } from '~/server/db/studio'
+import type { IMediaFile } from '~/server/types'
+import type { TCreateStudioData } from '~/server/types/studio'
 import { uploadToCloudinary } from '~/server/utils/cloudinary'
 
 export default defineEventHandler(async (event) => {
@@ -27,18 +29,7 @@ export default defineEventHandler(async (event) => {
 
 	const slug = generateSlug(fields.name[0])
 
-	const studioData: Pick<
-		IStudio,
-		| 'bio'
-		| 'currency'
-		| 'mission'
-		| 'name'
-		| 'slug'
-		| 'timezone'
-		| 'ownerId'
-		| 'categories'
-		| 'types'
-	> & { location: string } = {
+	const studioData: TCreateStudioData = {
 		name: fields.name[0],
 		slug,
 		location: fields.location[0],

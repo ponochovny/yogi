@@ -180,10 +180,12 @@ import { defineComponent } from 'vue'
 import timezones from '~/helpers/timeZones.json'
 import _data from '~/helpers/offeringAttributes.json'
 import { toast } from 'vue-sonner'
-import type { IOffering, ITicket } from '~/helpers/types/offering'
+import type { TOffering } from '~/helpers/types/offering'
 import randomOfferingData from '~/helpers/randomOfferingData.json'
 import type { IFeature, TMarker } from '~/helpers/types/map'
 import { MapIcon, ArrowPathIcon } from '@heroicons/vue/24/outline'
+import type { ITicketResponse } from '~/server/types/ticket'
+import type { TTicket } from '~/helpers/types/ticket'
 
 export default defineComponent({
 	name: 'OfferingCreation',
@@ -192,7 +194,7 @@ export default defineComponent({
 <script lang="ts" setup>
 interface IProps {
 	updateData?: boolean
-	offering?: IOffering
+	offering?: TOffering
 }
 const props = withDefaults(defineProps<IProps>(), {
 	updateData: false,
@@ -405,15 +407,17 @@ onBeforeMount(() => {
 
 		const isTicketsExist = !!props.offering.tickets?.length
 
-		const transformedTicket = (ticket: ITicket) => {
-			return {
-				...ticket,
-				price: ticket.price.toString(),
-			}
-		}
-		formData.tickets = isTicketsExist
-			? props.offering.tickets.map(transformedTicket)
-			: [{ ...emptyTicket }]
+		// const transformedTicket = (ticket: ITicketResponse): TTicket => {
+		// 	// @ts-ignore
+		// 	return {
+		// 		...ticket,
+		// 		price: ticket.price.toString(),
+		// 	}
+		// }
+		formData.tickets =
+			isTicketsExist && props.offering.tickets
+				? props.offering.tickets
+				: [{ ...emptyTicket }]
 	}
 })
 
@@ -530,7 +534,7 @@ async function updateOfferingHandler() {
 		(el) => !oldPracs.some((_el) => _el === el)
 	)
 
-	const oldTickets = props.offering.tickets.map((el) => el.id)
+	const oldTickets = props.offering.tickets?.map((el) => el.id) || []
 	const updatedTickets = formData.tickets.map((el) => el?.id || '')
 	const newTickets = formData.tickets.filter((el) => !el.id)
 	const ticketsRemove = getDifference(oldTickets, updatedTickets)

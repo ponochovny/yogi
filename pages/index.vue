@@ -9,12 +9,18 @@
 		<MainContainer contentClass="py-6">
 			<!-- Search block -->
 			<div
-				class="flex flex-col gap-2 my-6 rounded-xl border px-10 py-8 items-center justify-center border-gray-400"
+				class="flex flex-col gap-2 my-6 px-10 pt-32 pb-52 items-center justify-center"
 			>
-				<div>Search</div>
+				<h1 class="font-bold text-5xl mb-5">Elevate Health & Harmony</h1>
+				<p class="text-sm max-w-[800px] text-center mb-12 leading-6">
+					Championing personal wellness transformations, alongside nurturing the
+					growth of community-based health ventures.
+				</p>
+				<MainSearch />
 			</div>
 			<!-- Slider with categories which link to search page -->
-			<div class="grid grid-cols-4 gap-4">
+			<p class="font-bold text-3xl mb-12">All offerings</p>
+			<div class="grid grid-cols-4 gap-x-4 gap-y-7">
 				<OfferingCard
 					v-for="offering of offerings?.data"
 					:key="offering?.id"

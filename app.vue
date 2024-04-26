@@ -29,7 +29,8 @@ button {
 	color: black;
 	transition: all 0.35s ease;
 	&:hover {
-		color: red;
+		--tw-text-opacity: 1;
+		color: rgb(234 88 12 / var(--tw-text-opacity));
 	}
 }
 .v-enter-active,
@@ -39,5 +40,9 @@ button {
 .v-enter-from,
 .v-leave-to {
 	opacity: 0;
+}
+
+.scrollbar-thin {
+	scrollbar-width: thin;
 }
 </style>

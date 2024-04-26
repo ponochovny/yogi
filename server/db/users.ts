@@ -1,10 +1,8 @@
 import bcrypt from 'bcryptjs'
 import { prisma } from '.'
-import type { IUser } from '../types'
+import type { TCreateUserData, TUpdateProfileData } from '../types/user'
 
-export const createUser = (
-	userData: Pick<IUser, 'name' | 'email' | 'password' | 'profileImage'>
-) => {
+export const createUser = (userData: TCreateUserData) => {
 	const finalUserData = {
 		...userData,
 		password: bcrypt.hashSync(userData.password, 10),
@@ -46,10 +44,7 @@ export const getUserById = (id: string) => {
 	})
 }
 
-export const updateProfile = (
-	userId: string,
-	newData: Partial<Pick<IUser, 'name' | 'email' | 'bio' | 'profileImage'>>
-) => {
+export const updateProfile = (userId: string, newData: TUpdateProfileData) => {
 	return prisma.user.update({
 		where: {
 			id: userId,

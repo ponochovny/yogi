@@ -71,7 +71,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import type { IOffering } from '~/helpers/types/offering'
+import type { TOffering } from '~/helpers/types/offering'
 
 export default defineComponent({
 	name: 'UserOfferingSettings',
@@ -82,7 +82,6 @@ const route = useRoute()
 const router = useRouter()
 const { id: studioId } = route.params
 const tab = ref<'create' | 'list'>('create')
-const offerings = ref<IOffering[]>([])
 const { getOfferingsByStudioId } = useOffering()
 
 if (!studioId || !isString(studioId)) {
@@ -90,7 +89,7 @@ if (!studioId || !isString(studioId)) {
 }
 
 const { data: offeringsRes, refresh } = await getOfferingsByStudioId<{
-	data: IOffering[]
+	data: TOffering[]
 	refresh: () => void
 	// eslint-disable-next-line indent
 }>(!studioId || !isString(studioId) ? '' : studioId, { immediate: false })

@@ -1,11 +1,11 @@
 import formidable from 'formidable'
-import type { IStudio } from '~/helpers/types/studio'
 import { createMediaFile } from '~/server/db/mediaFiles'
 import {
 	attachPractitionerToStudio,
 	getPractitionerByStudioID,
 } from '~/server/db/practitioners'
 import { updateStudio } from '~/server/db/studio'
+import type { TUpdateStudioData } from '~/server/types/studio'
 import { uploadToCloudinary } from '~/server/utils/cloudinary'
 
 export default defineEventHandler(async (event) => {
@@ -25,19 +25,9 @@ export default defineEventHandler(async (event) => {
 		files: any
 	}
 
-	const userId = event.context.auth.user.id
+	// const userId = event.context.auth.user.id
 
-	const studioData: Pick<
-		IStudio,
-		| 'bio'
-		| 'currency'
-		| 'mission'
-		| 'name'
-		| 'timezone'
-		| 'ownerId'
-		| 'categories'
-		| 'types'
-	> & { location: string } = {
+	const studioData: TUpdateStudioData = {
 		name: fields.name[0],
 		location: fields.location[0],
 		timezone: fields.timezone[0],
@@ -49,7 +39,7 @@ export default defineEventHandler(async (event) => {
 		mission: fields.mission[0],
 
 		// owner
-		ownerId: userId,
+		// ownerId: userId,
 	}
 
 	const studio = await updateStudio(studioData, fields.studio_id[0])

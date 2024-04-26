@@ -1,6 +1,6 @@
 import formidable from 'formidable'
 import { convertPriceStringToNumber } from '~/helpers'
-import type { IOfferingCreation } from '~/helpers/types/offering'
+import type { IOfferingCreateData } from '~/helpers/types/offering'
 import { generateSlug } from '~/lib/utils'
 import { createMediaFile } from '~/server/db/mediaFiles'
 import { createOffering } from '~/server/db/offerings'
@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
 	const studioId = fields.studioId[0]
 
 	const offeringData: Omit<
-		IOfferingCreation,
+		IOfferingCreateData,
 		'practitioners' | 'banners' | 'tickets' | 'location'
 	> & { location: string } = {
 		name: fields.name[0],

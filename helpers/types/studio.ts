@@ -1,30 +1,21 @@
-import type { IUser } from '~/server/types'
+import type { TOwner, TPractitioner, TUser } from '~/server/types'
 import type { TMarker } from './map'
+import type { IStudioResponse } from '~/server/types/studio'
 
-export interface IStudio {
-	id: string
-	slug: string
-	name: string
-	location: TMarker | null
-	timezone: string
-	currency: string
-	categories: string[]
-	types: string[]
-
-	// Media files
+export type TStudio = Omit<
+	IStudioResponse,
+	| 'logo'
+	| 'banner'
+	| 'owner'
+	| 'practitioners'
+	| 'location'
+	| 'createdAt'
+	| 'updatedAt'
+	| 'ownerId'
+> & {
 	logo: { url: string }
 	banner: { url: string }[]
-
-	// TODO: add tag interface
-	// tags: Tag[]
-	tags: any[]
-	bio: string
-	mission: string
-
-	// Owner
-	owner: IUser
-	ownerId: string
-
-	// Practitioners
-	practitioners: IUser[]
+	location: TMarker
+	owner?: TOwner
+	practitioners: TPractitioner[]
 }

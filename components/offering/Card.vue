@@ -70,7 +70,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import type { IOffering } from '~/helpers/types/offering'
+import type { TOffering } from '~/helpers/types/offering'
 import { dateString } from '~/lib/utils'
 
 export default defineComponent({
@@ -79,7 +79,7 @@ export default defineComponent({
 </script>
 <script lang="ts" setup>
 interface IProps {
-	offering: IOffering
+	offering: TOffering
 }
 const props = defineProps<IProps>()
 

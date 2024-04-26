@@ -1,41 +1,65 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable indent */
-import type { ITicket } from '~/helpers/types/offering'
-import type { IUser } from '../types'
+import type { TOffering } from '~/helpers/types/offering'
+import type { IUserResponse } from '../types'
+import type { IOfferingResponse } from '../types/offering'
 import { mediaFileTransformer } from './mediaFiles'
 import { studioTransformer } from './studio'
 import { ticketTransformer } from './ticket'
 import { practitionerTransformer } from './user'
+import type { TMarker } from '~/helpers/types/map'
+import type { TTicket } from '~/helpers/types/ticket'
+import type { IStudioResponse } from '../types/studio'
 
 // TODO: offering type
-export const offeringTransformer = (offering: any, isTicketsFull?: boolean) => {
-	if (!offering) return null
+export const offeringTransformer = (
+	offering: IOfferingResponse,
+	isTicketsFull?: boolean
+): TOffering => {
+	const { createdAt, updatedAt, ...rest } = offering
+	let location: TMarker = {
+		name: offering.location,
+		coords: [0, 0],
+	}
 
-	const parsedLocation = JSON.parse(JSON.stringify(offering.location))
+	async function parseLocation() {
+		try {
+			const t = JSON.parse(offering.location)
+			location = t
+		} catch (error) {
+			console.log(
+				'error parsing location',
+				'=>',
+				offering.name,
+				'=>',
+				offering.location
+			)
+		}
+	}
+	parseLocation()
 
 	return {
-		...offering,
+		...rest,
 		banners:
 			offering.banners && offering.banners.length
 				? offering.banners.map(mediaFileTransformer)
 				: [],
 		practitioners: offering.practitioners
-			? offering.practitioners.map((item: { user: IUser }) =>
+			? offering.practitioners.map((item: { user: IUserResponse }) =>
 					practitionerTransformer(item.user)
 			  )
-			: undefined,
+			: [],
 		tickets: offering.tickets
 			? offering.tickets
 					.sort((a: any, b: any) => b.price - a.price)
 					.map(ticketTransformer)
-					.filter((ticket: ITicket) =>
+					.filter((ticket: TTicket) =>
 						isTicketsFull ? true : ticket.status === 'active'
 					)
 			: [],
-		studio: studioTransformer(offering.studio),
-		location:
-			typeof parsedLocation === 'string'
-				? JSON.parse(parsedLocation)
-				: parsedLocation,
+		studio: offering.studio
+			? studioTransformer(offering.studio as IStudioResponse)
+			: undefined,
+		location,
 	}
 }

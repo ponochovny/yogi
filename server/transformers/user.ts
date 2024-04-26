@@ -1,18 +1,18 @@
-import type { IUser } from '../types'
+import type { TUser, IUserResponse, TPractitioner, TOwner } from '../types'
 
-export const userTransformer = (user: IUser) => {
+export const userTransformer = (user: IUserResponse): TUser => {
 	const { password, createdAt, updatedAt, avatars, ...rest } = user
-	const lastAvatar = avatars ? avatars[avatars.length - 1] : { url: '' }
 	return {
 		...rest,
 	}
 }
 
-export const practitionerTransformer = (user: IUser) => {
+export const practitionerTransformer = (user: IUserResponse): TPractitioner => {
 	const {
 		password,
 		createdAt,
 		updatedAt,
+		avatars,
 		interestsCategory,
 		interestsType,
 		...rest
@@ -22,24 +22,7 @@ export const practitionerTransformer = (user: IUser) => {
 	}
 }
 
-export const userSearchTransformer = (user: IUser & { _id: any }) => {
-	const {
-		password,
-		createdAt,
-		updatedAt,
-		interestsCategory,
-		interestsType,
-		email,
-		...rest
-	} = user
-	return {
-		...rest,
-	}
-}
-
-export const ownerTransformer = (user: IUser & { _id: any }) => {
-	if (!user) return {}
-
+export const userSearchTransformer = (user: IUserResponse & { _id: any }) => {
 	const {
 		password,
 		createdAt,
@@ -54,7 +37,26 @@ export const ownerTransformer = (user: IUser & { _id: any }) => {
 	}
 }
 
-export const userSearchTransformerRaw = (user: IUser & { _id: any }) => {
+export const ownerTransformer = (
+	user: IUserResponse & { _id: any }
+): TOwner => {
+	const {
+		password,
+		createdAt,
+		updatedAt,
+		interestsCategory,
+		interestsType,
+		email,
+		...rest
+	} = user
+	return {
+		...rest,
+	}
+}
+
+export const userSearchTransformerRaw = (
+	user: IUserResponse & { _id: any }
+) => {
 	const { _id, ...rest } = userSearchTransformer(user)
 	return {
 		...rest,

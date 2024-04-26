@@ -157,7 +157,7 @@
 					</div>
 				</div>
 				<div
-					v-if="offeringData.data.tickets.length"
+					v-if="offeringData.data.tickets?.length"
 					class="bg-red-200/20 rounded-xl p-10 w-[400px] self-start flex flex-col gap-4"
 				>
 					<button
@@ -204,7 +204,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { currencySymbolByCode } from '~/helpers'
-import type { IOffering } from '~/helpers/types/offering'
 import {
 	CalendarIcon,
 	MapPinIcon,
@@ -212,6 +211,7 @@ import {
 	ClockIcon,
 } from '@heroicons/vue/24/outline'
 import { dateString } from '~/lib/utils'
+import type { TOffering } from '~/helpers/types/offering'
 
 export default defineComponent({
 	name: 'SingleOffering',
@@ -222,7 +222,7 @@ const route = useRoute()
 const router = useRouter()
 const error = ref('')
 
-const { data: offeringData } = await useFetch<{ data: IOffering }>(
+const { data: offeringData } = await useFetch<{ data: TOffering }>(
 	`/api/offerings/${route.params.slug}`
 )
 

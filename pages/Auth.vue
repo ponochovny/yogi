@@ -44,11 +44,18 @@ function setMode(event: any) {
 	mode.value = event
 
 	if (event === 'login') {
-		router.replace({ path: '/auth' })
+		router.push({
+			path: '/auth',
+			query: {
+				...route.query,
+				t: 'login',
+			},
+		})
 	} else {
 		router.push({
 			path: '/auth',
 			query: {
+				...route.query,
 				t: 'register',
 			},
 		})
