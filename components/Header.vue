@@ -15,7 +15,7 @@
 		<slot name="left" />
 
 		<div v-if="links" class="ml-[10%] flex gap-8">
-			<NuxtLink to="/">
+			<NuxtLink to="/search?location=Online">
 				<span class="font-semibold">Explore live offerings</span>
 			</NuxtLink>
 			<NuxtLink to="/user/studio" v-if="user">
