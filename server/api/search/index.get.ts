@@ -101,21 +101,25 @@ export default defineEventHandler(async (event) => {
 			return byTypes && byCategories && byDates && byPrice
 		})
 
-		const { minPrice, maxPrice } =
-			getLowestAndHighestTicketPrice(filteredOfferings)
 		const total = filteredOfferings.length
 
 		if (PAGE_COUNT && PER_PAGE) {
 			filteredOfferings = filteredOfferings.splice(splice_from, splice_to)
 		}
 
+		const result = filteredOfferings.map((offering) =>
+			offeringTransformer(offering)
+		)
+
+		const { minPrice, maxPrice } = getLowestAndHighestTicketPrice(result)
+
 		return {
-			data: filteredOfferings.map((offering) => offeringTransformer(offering)),
+			data: result,
 			meta: {
 				...page_meta,
 				total,
-				minPrice,
-				maxPrice,
+				min_price: minPrice,
+				max_price: maxPrice,
 			},
 			status: 'Success!',
 		}
