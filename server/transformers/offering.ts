@@ -27,13 +27,13 @@ export const offeringTransformer = (
 			const t = JSON.parse(offering.location)
 			location = t
 		} catch (error) {
-			console.log(
-				'error parsing location',
-				'=>',
-				offering.name,
-				'=>',
-				offering.location
-			)
+			// console.log(
+			// 	'error parsing location',
+			// 	'=>',
+			// 	offering.name,
+			// 	'=>',
+			// 	offering.location
+			// )
 		}
 	}
 	parseLocation()
