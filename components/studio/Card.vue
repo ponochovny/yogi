@@ -9,6 +9,7 @@
 				:alt="studio.name"
 				:title="studio.name"
 				class="w-full h-full object-cover object-center rounded-t-2xl"
+				provider="cloudinary"
 				format="webp"
 				width="400"
 				height="128"
