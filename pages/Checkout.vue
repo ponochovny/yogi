@@ -23,7 +23,8 @@
 						<p class="font-semibold text-lg">
 							Payment
 							<span class="font-normal text-xs">
-								{{ loading ? 'Please wait. Loading...' : '' }}
+								{{ loading && !error ? 'Please wait. Loading...' : '' }}
+								<pre>{{ error }}</pre>
 							</span>
 						</p>
 						<div class="max-w-[400px]">
@@ -144,6 +145,7 @@ const {
 	injectStripe,
 	handleSubmitStripeForm,
 	// refetch,
+	error,
 	loading,
 } = useStripe('#payment-element', {
 	amount: _data.amount,
