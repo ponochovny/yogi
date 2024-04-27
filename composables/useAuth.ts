@@ -125,11 +125,15 @@ export default () => {
 	const refreshToken = () => {
 		return new Promise(async (resolve, reject) => {
 			try {
-				const { access_token } = await $fetch('/api/auth/refresh')
-
-				setToken(access_token)
+				const response = await $fetch<{ access_token: string; error: any }>(
+					'/api/auth/refresh'
+				)
+				if (response.error) {
+					reject(response.error)
+				}
+				setToken(response.access_token)
 				resolve(true)
-			} catch (error) {
+			} catch (error: any) {
 				reject(error)
 			}
 		})
@@ -200,24 +204,29 @@ export default () => {
 
 		const newRefreshTime = jwt.exp - 60000
 
-		setTimeout(() => {
-			// try {
-			refreshToken()
-			// await refreshToken()
-			// } catch (error) {
-			// 	console.log(error)
-			// }
+		setTimeout(async () => {
+			try {
+				const response: any = await refreshToken()
+				if (response.error) {
+					throw new Error('Failed to refresh token')
+				}
+			} catch (error) {
+				//
+			}
 			reRefreshAccessToken()
 		}, newRefreshTime)
 	}
 
-	const initAuth = () => {
-		return new Promise(async (resolve, reject) => {
+	const initAuth = () =>
+		new Promise(async (resolve, reject) => {
 			try {
 				setIsAuthInitLoading(true)
 				setIsAuthLoading(true)
 
-				await refreshToken()
+				const response: any = await refreshToken()
+				if (response.error) {
+					throw new Error('Failed to refresh token')
+				}
 				await getUser()
 
 				reRefreshAccessToken()
@@ -230,7 +239,6 @@ export default () => {
 				setIsAuthLoading(false)
 			}
 		})
-	}
 
 	return {
 		login,
