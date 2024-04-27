@@ -200,5 +200,6 @@ const { data: quote } = useFetch('/api/quote')
 		rgba(0, 0, 0, 0.5) 97%,
 		rgba(0, 0, 0, 0.05) 100%
 	);
+	padding-right: 50px;
 }
 </style>
