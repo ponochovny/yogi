@@ -196,7 +196,7 @@
 						>
 							<TicketIcon
 								v-if="selectedTicket === ticket.id"
-								class="w-10 text-gray-700 stroke-1"
+								class="w-10 text-gray-700 stroke-1 shrink-0"
 							/>
 							<div v-else class="w-10 block"></div>
 							<div class="flex flex-col">
