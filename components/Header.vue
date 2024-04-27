@@ -2,13 +2,21 @@
 	<div
 		class="flex items-center sm:px-6 flex-row"
 		:class="{
-			'bg-white py-3': variant === 'white',
+			'bg-white py-3 flex-col lg:flex-row md:gap-0 gap-3': variant === 'white',
 		}"
 	>
-		<div class="flex items-center w-full">
+		<div
+			class="flex w-full items-center"
+			:class="{
+				'md:flex-row flex-col': variant === 'white',
+			}"
+		>
 			<NuxtLink
 				to="/"
 				class="shrink-0 w-[65px] transition duration-1000 ease-in bg-transparent rounded-full hover:bg-orange-200"
+				:class="{
+					'mb-4 md:mb-0': variant === 'white',
+				}"
 			>
 				<NuxtImg src="/img/logo.svg" alt="Yogi app" width="65" height="65" />
 			</NuxtLink>
@@ -25,7 +33,10 @@
 			</div>
 		</div>
 
-		<div class="flex items-center gap-4 ml-auto shrink-0">
+		<div
+			class="flex items-center gap-0 sm:gap-4 ml-auto shrink-0"
+			:class="{ 'px-6 md:px-0': variant === 'white' }"
+		>
 			<NuxtLink v-if="user && !links" to="/user/studio">
 				<span class="font-semibold">Add your business</span>
 			</NuxtLink>
@@ -61,7 +72,7 @@
 			<template v-if="isAuthLoading">Loading...</template>
 			<template v-else-if="!user">
 				<NuxtLink to="/auth?t=register">
-					<Button>
+					<Button class="mr-2 sm:mr-0">
 						<span class="text-base font-bold text-white">Sign up</span>
 					</Button>
 				</NuxtLink>

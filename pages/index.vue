@@ -42,7 +42,7 @@
 					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
 						Studios & Event Hosts
 					</p>
-					<div class="flex gap-6 overflow-x-auto">
+					<div class="flex gap-6 overflow-x-auto transparent-edge">
 						<StudioCard
 							v-for="studio of studios?.data"
 							:key="studio?.id"
@@ -86,7 +86,7 @@
 					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
 						Upcoming virtual
 					</p>
-					<div class="flex gap-6 overflow-x-auto">
+					<div class="flex gap-6 overflow-x-auto transparent-edge">
 						<OfferingCard
 							v-for="offering of offeringsOnline?.data"
 							:key="offering?.id"
@@ -104,7 +104,7 @@
 					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
 						Wellness getaways
 					</p>
-					<div class="flex gap-6 overflow-x-auto">
+					<div class="flex gap-6 overflow-x-auto transparent-edge">
 						<OfferingCard
 							v-for="offering of offeringsWellness?.data"
 							:key="offering?.id"
@@ -122,7 +122,7 @@
 					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
 						Deeper Education
 					</p>
-					<div class="flex gap-6 overflow-x-auto">
+					<div class="flex gap-6 overflow-x-auto transparent-edge">
 						<OfferingCard
 							v-for="offering of offeringsEducation?.data"
 							:key="offering?.id"
@@ -187,3 +187,15 @@ const { data: studios } = await getStudiosOpen(
 )
 const { data: quote } = useFetch('/api/quote')
 </script>
+
+<style lang="scss">
+.transparent-edge {
+	mask-image: linear-gradient(
+		to right,
+		black 0%,
+		rgba(0, 0, 0, 1) 95%,
+		rgba(0, 0, 0, 0.5) 97%,
+		rgba(0, 0, 0, 0.05) 100%
+	);
+}
+</style>

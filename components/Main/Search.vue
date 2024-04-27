@@ -1,6 +1,10 @@
 <template>
 	<form
-		class="flex sm:flex-row flex-col w-full sm:w-auto"
+		class="flex flex-col w-full"
+		:class="{
+			'sm:w-auto sm:flex-row': variant === 'default',
+			'w-full md:flex-row': variant === 'secondary',
+		}"
 		@submit.prevent="onSubmit"
 	>
 		<Popover @update:open="openLocationEvent">
@@ -8,12 +12,19 @@
 				<div
 					class="shadow-sm flex items-center"
 					:class="{
-						'sm:rounded-tl-2xl sm:rounded-bl-none sm:rounded-r-none':
-							isLocationOpen,
-						'rounded-t-2xl sm:rounded-l-2xl sm:rounded-r-none': !isLocationOpen,
 						'gap-2 w-full sm:w-[250px] md:w-[300px] py-2 px-4 bg-white':
 							variant === 'default',
-						'gap-1 w-[250px] py-1 px-2 bg-gray-100/80': variant === 'secondary',
+						'rounded-t-2xl sm:rounded-tl-2xl sm:rounded-bl-none sm:rounded-r-none':
+							isLocationOpen && variant === 'default',
+						'rounded-t-2xl sm:rounded-l-2xl sm:rounded-r-none':
+							!isLocationOpen && variant === 'default',
+
+						'gap-1 w-full md:w-[250px] py-1 px-2 bg-gray-100/80':
+							variant === 'secondary',
+						'rounded-t-2xl md:rounded-tl-2xl md:rounded-bl-none md:rounded-r-none':
+							isLocationOpen && variant === 'secondary',
+						'rounded-t-2xl md:rounded-l-2xl md:rounded-r-none':
+							!isLocationOpen && variant === 'secondary',
 					}"
 				>
 					<MapPinIcon
@@ -42,7 +53,7 @@
 				side="bottom"
 				class="-mt-1 rounded-b-2xl rounded-t-none border-0"
 				:class="{
-					'w-[calc(100vw_-_32px)] sm:w-[250px] md:w-[300px] shadow-sm':
+					'w-[calc(100vw_-_49px)] sm:w-[250px] md:w-[300px] shadow-sm':
 						variant === 'default',
 					'w-[250px] shadow-lg': variant === 'secondary',
 				}"
@@ -74,7 +85,8 @@
 					:class="{
 						'gap-2 w-full sm:w-[300px] md:w-[400px] py-2 px-4 bg-white':
 							variant === 'default',
-						'gap-1 w-[250px] py-1 px-2 bg-gray-100/80': variant === 'secondary',
+						'gap-1 w-full md:w-[250px] py-1 px-2 bg-gray-100/80':
+							variant === 'secondary',
 					}"
 				>
 					<MagnifyingGlassIcon
@@ -117,7 +129,7 @@
 				side="bottom"
 				class="-mt-1 rounded-b-2xl rounded-t-none border-0 p-1 py-3 max-h-[484px] overflow-y-auto"
 				:class="{
-					'w-[calc(100vw_-_32px)] sm:w-[300px] md:w-[400px] shadow-sm':
+					'w-[calc(100vw_-_49px)] sm:w-[300px] md:w-[400px] shadow-sm':
 						variant === 'default',
 					// 'w-[250px] shadow-lg': variant === 'secondary',
 				}"
@@ -131,16 +143,32 @@
 			</PopoverContent>
 		</Popover>
 		<Button
-			class="rounded-none rounded-b-2xl sm:rounded-l-none sm:rounded-r-2xl"
+			class=""
 			:class="{
-				'px-4 py-3 sm:py-0 sm:px-6': variant === 'default',
-				'px-4': variant === 'secondary',
+				'rounded-none rounded-b-2xl sm:rounded-l-none sm:rounded-r-2xl flex gap-2 items-center justify-center sm:justify-start px-4 py-3 sm:py-0 sm:px-6':
+					variant === 'default',
+				'rounded-none rounded-b-2xl md:rounded-l-none md:rounded-r-2xl flex gap-2 items-center justify-center md:justify-start px-4 py-3 md:py-0':
+					variant === 'secondary',
 			}"
 			btnSize="sm"
 			type="submit"
 			title="Search"
 		>
-			<MagnifyingGlassIcon class="text-white w-6" />
+			<MagnifyingGlassIcon
+				class="text-white w-6"
+				:class="{
+					'hidden sm:block': variant === 'default',
+					'hidden md:block': variant === 'secondary',
+				}"
+			/>
+			<span
+				:class="{
+					'block sm:hidden': variant === 'default',
+					'block md:hidden': variant === 'secondary',
+				}"
+			>
+				Search
+			</span>
 		</Button>
 	</form>
 </template>

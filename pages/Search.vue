@@ -11,7 +11,7 @@
 				</p>
 			</div>
 			<div
-				class="grid xl:grid-cols-5 lg:grid-cols-3 sm:grid-cols-2 gap-x-4 gap-y-7 auto-rows-1fr"
+				class="grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 gap-x-4 gap-y-7 auto-rows-1fr"
 			>
 				<template v-if="filters.activityType === 'Offerings'">
 					<OfferingCard

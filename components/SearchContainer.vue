@@ -4,7 +4,7 @@
 			<template #left>
 				<MainSearch
 					variant="secondary"
-					class="ml-24"
+					class="px-4 md:p-0 md:ml-6 lg:ml-16 xl:ml-24"
 					@update="emit('update', $event)"
 				/>
 			</template>

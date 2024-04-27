@@ -6,7 +6,7 @@
 				v-for="dataType of DATA_TYPES"
 				:key="dataType"
 				@click="setActivityType(dataType)"
-				class="py-2 font-semibold relative after:h-[3px] after:w-[15px] after:bg-orange-500 after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-[12px] after:opacity-0"
+				class="py-2 font-semibold relative after:h-[3px] after:w-[15px] after:bg-orange-500 after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-[12px] after:opacity-0 text-nowrap"
 				:class="{
 					'after:opacity-100 text-orange-600':
 						formData.activityType === dataType,
@@ -46,7 +46,7 @@
 						variant="primaryOutline"
 						:class="
 							cn(
-								'justify-start text-left font-normal h-[40px]',
+								'justify-start text-left font-normal h-[40px] text-nowrap',
 								!formData.date.start && 'text-muted-foreground'
 							)
 						"
@@ -78,7 +78,7 @@
 						variant="primaryOutline"
 						:class="
 							cn(
-								'justify-start text-left font-normal h-[40px]',
+								'justify-start text-left font-normal h-[40px] text-nowrap',
 								isPriceDefault && 'text-muted-foreground'
 							)
 						"
