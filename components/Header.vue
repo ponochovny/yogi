@@ -84,7 +84,8 @@
 						<div
 							class="flex items-center gap-4 p-2 pr-3 rounded-full bg-white !text-black shadow-md hover:bg-orange-600 hover:!text-white transition-colors duration-500 border border-gray-300/40"
 						>
-							<img
+							<NuxtImg
+								provider="cloudinary"
 								:src="user.profileImage || ''"
 								:alt="user.name || ''"
 								width="36"
