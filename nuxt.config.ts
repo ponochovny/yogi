@@ -69,8 +69,8 @@ export default defineNuxtConfig({
 	},
 
 	routeRules: {
-		// '/**': { isr: 60 * 60 * 6 },
-		// '/search': { ssr: false },
+		// '/**': { isr: 60 * 60 * 6 }, // TODO: home page search requests not working :/
+		// '/search': { ssr: false }, // TODO: set useLazyFetch
 		'/user/**': { ssr: false },
 		'/checkout': { ssr: false },
 	},
