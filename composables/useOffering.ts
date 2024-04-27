@@ -88,10 +88,14 @@ export default () => {
 		})
 	}
 
-	const getOfferings = (queries?: string) => {
-		return useFetch<{ data: TOffering[] }>(
-			`/api/offerings${queries ? '?' + queries : ''}`
-		)
+	const getOfferings = (queries?: string, isLazy?: boolean) => {
+		const uri = `/api/offerings${queries ? '?' + queries : ''}`
+
+		if (isLazy) {
+			return useLazyFetch<{ data: TOffering[] }>(uri)
+		} else {
+			return useFetch<{ data: TOffering[] }>(uri)
+		}
 	}
 
 	const getOfferingsByStudioId = <T>(

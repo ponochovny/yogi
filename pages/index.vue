@@ -168,19 +168,22 @@ const { data: offeringsWellness } = await getOfferings(
 	new URLSearchParams({
 		types: 'Festival, Retreat',
 		limit: '8',
-	}).toString()
+	}).toString(),
+	true
 )
 const { data: offeringsEducation } = await getOfferings(
 	new URLSearchParams({
 		types: 'Course,Teacher Training,Workshop',
 		limit: '8',
-	}).toString()
+	}).toString(),
+	true
 )
 const { data: offeringsOnline } = await getOfferings(
 	new URLSearchParams({
 		virtual: 'true',
 		limit: '8',
-	}).toString()
+	}).toString(),
+	true
 )
 const { data: studios } = await getStudiosOpen(
 	new URLSearchParams({ limit: '10' }).toString()
