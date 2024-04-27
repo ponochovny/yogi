@@ -67,7 +67,7 @@
 									}}
 								</span>
 								<span class="font-semibold text-sm">
-									{{ data?.data.offering?.location }}
+									{{ data?.data.offering?.location?.name }}
 								</span>
 							</div>
 						</div>
@@ -79,11 +79,7 @@
 						<div class="flex justify-between">
 							<span>{{ count }}x {{ data?.data.name }}</span>
 							<span class="font-semibold">
-								{{
-									`${currencySymbolByCode(data?.data.currency || '')}${
-										data?.data.price
-									}`
-								}}
+								{{ `${data?.data.price}` }}
 							</span>
 						</div>
 						<hr />
@@ -91,11 +87,7 @@
 							<p class="font-semibold">Total</p>
 							<p>
 								<span class="font-semibold">
-									{{
-										`${currencySymbolByCode(data?.data.currency || '')}${
-											data?.data.price
-										}`
-									}}
+									{{ `${data?.data.price}` }}
 								</span>
 							</p>
 						</div>
@@ -121,9 +113,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { convertPriceStringToNumber, currencySymbolByCode } from '~/helpers'
+import { convertPriceStringToNumber } from '~/helpers'
+import type { TTicket } from '~/helpers/types/ticket'
 import { dateString } from '~/lib/utils'
-import type { ITicketResponse } from '~/server/types/ticket'
 
 export default defineComponent({
 	name: 'CheckoutPage',
@@ -134,9 +126,7 @@ const route = useRoute()
 const router = useRouter()
 const { count, ticketId } = route.query
 
-const { data } = await useFetch<{ data: ITicketResponse }>(
-	`/api/ticket/${ticketId}`
-)
+const { data } = await useFetch<{ data: TTicket }>(`/api/ticket/${ticketId}`)
 
 if (!data) {
 	router.push('/')
@@ -178,8 +168,12 @@ onMounted(() => injectStripe())
 // < TESTING STRIPE <
 
 function offeringBanner() {
-	const dataBanner = data.value?.data?.offering?.banners[0].url || ''
-	const noBanner = 'img/banner-placeholder2.jpeg'
-	return dataBanner || noBanner
+	if (
+		data.value?.data?.offering?.banner &&
+		data.value?.data?.offering?.banner[0]
+	) {
+		return data.value?.data?.offering?.banner[0]
+	}
+	return 'img/banner-placeholder2.jpeg'
 }
 </script>

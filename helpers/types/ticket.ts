@@ -1,4 +1,5 @@
 import type { ITicketResponse } from '~/server/types/ticket'
+import type { TMarker } from './map'
 
 export type TTicket = Omit<
 	ITicketResponse,
@@ -12,7 +13,7 @@ export type TTicket = Omit<
 export type TTicketOffering = {
 	name: string
 	activity: 'appointment' | 'class' | 'event'
-	location: string
+	location: TMarker
 	start: Date
 	end: Date
 	banner: string[]
