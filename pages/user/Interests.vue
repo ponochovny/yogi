@@ -1,6 +1,6 @@
 <template>
 	<NuxtLayout name="user-admin">
-		<div class="max-w-[600px]">
+		<div class="lg:pr-0 pr-6 max-w-[600px]">
 			<h1 class="pt-8 text-2xl font-bold mb-6">Interests</h1>
 			<div class="flex flex-col gap-8">
 				<div class="flex flex-col gap-3">

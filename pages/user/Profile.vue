@@ -1,6 +1,6 @@
 <template>
 	<NuxtLayout name="user-admin">
-		<div class="max-w-[600px]">
+		<div class="pr-6 lg:pr-0 max-w-[600px]">
 			<h1 class="pt-8 text-2xl font-bold mb-6">Edit profile</h1>
 			<div class="flex flex-col gap-3">
 				<LogoFile

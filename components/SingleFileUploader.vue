@@ -14,10 +14,13 @@
 			<div v-if="fileUrl" class="flex gap-1 flex-wrap">
 				<img
 					:src="fileUrl"
-					class="object-cover object-center w-36 h-36 rounded-full"
+					class="object-cover object-center w-24 sm:w-36 h-24 sm:h-36 rounded-full"
 				/>
 			</div>
-			<div v-else class="w-36 h-36 rounded-full bg-slate-100"></div>
+			<div
+				v-else
+				class="w-24 sm:w-36 h-24 sm:h-36 rounded-full bg-slate-100"
+			></div>
 		</div>
 	</div>
 </template>

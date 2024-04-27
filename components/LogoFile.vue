@@ -11,13 +11,13 @@
 				alt="Studio logo"
 				class="object-cover object-center"
 				:class="{
-					'w-36 h-36 rounded-full': variant === 'rounded',
+					'w-24 sm:w-36 h-24 sm:h-36 rounded-full': variant === 'rounded',
 					'w-36 h-20 rounded-xl': variant === 'banner',
 				}"
 			/>
 			<div
 				v-else
-				class="w-36 h-36 rounded-full bg-slate-100 flex items-center justify-center"
+				class="w-24 h-24 sm:w-36 sm:h-36 rounded-full bg-slate-100 flex items-center justify-center"
 			>
 				<ArrowDownTrayIcon class="w-7 text-gray-400" />
 			</div>

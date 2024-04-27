@@ -12,7 +12,7 @@
 			v-model:imageUrl="bannerImageUrl"
 		/>
 		<Input v-model="formData.name" label="Studio name" />
-		<div class="flex gap-2">
+		<div class="flex gap-2 flex-col sm:flex-row items-start justify-start">
 			<Yselect
 				label="Studio location"
 				ref="selectComponent"
@@ -31,14 +31,14 @@
 					props.studio?.location
 				"
 				@click="resetMarker(true)"
-				class="flex items-center justify-center h-[42px] self-end rounded-md border border-gray-300 px-2 hover:bg-gray-100 shadow-sm"
+				class="flex items-center justify-center h-[42px] sm:self-end rounded-md border border-gray-300 px-2 hover:bg-gray-100 shadow-sm mr-auto"
 				title="Reset"
 			>
 				<ArrowPathIcon class="w-6 text-gray-600 stroke-1" />
 			</button>
 			<button
 				@click="isShowMap = !isShowMap"
-				class="flex items-center justify-center h-[42px] self-end rounded-md border border-gray-300 px-2 hover:bg-gray-100 shadow-sm"
+				class="flex items-center justify-center h-[42px] self-end rounded-md border border-gray-300 px-2 hover:bg-gray-100 shadow-sm mr-auto"
 				title="Open map"
 			>
 				<MapIcon class="w-6 text-gray-600 stroke-1" />
@@ -72,7 +72,7 @@
 			field="name"
 			value-prop="code"
 		/>
-		<div class="flex gap-2">
+		<div class="flex gap-2 flex-col sm:flex-row">
 			<Yselect
 				v-model="formData.categories"
 				label="Categories"

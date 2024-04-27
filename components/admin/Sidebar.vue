@@ -8,7 +8,7 @@
 			active-class="border-l-4 border-orange-300"
 		>
 			<component :is="item.icon" class="w-7 stroke-1" />
-			<span class="font-semibold">{{ item.name }}</span>
+			<span class="hidden lg:block font-semibold">{{ item.name }}</span>
 		</NuxtLink>
 	</div>
 </template>

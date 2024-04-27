@@ -16,7 +16,7 @@
 							class="self-start"
 							variant="primaryOutline"
 							btnSize="md2"
-							:disabled="loading"
+							:disabled="loading || true"
 						>
 							<span class="font-semibold">+ Add a person</span>
 						</Button>

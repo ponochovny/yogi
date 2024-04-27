@@ -1,11 +1,11 @@
 <template>
-	<div class="flex flex-col gap-3 max-w-[600px]">
+	<div class="flex flex-col gap-3 lg:pr-0 pr-6 max-w-[600px]">
 		<Input
 			v-model="formData.name"
 			label="Offering name"
 			placeholder="Offering name"
 		/>
-		<div class="flex gap-2">
+		<div class="flex gap-2 flex-col sm:flex-row">
 			<Datepicker label="Start" v-model="formData.start" />
 			<Datepicker label="End" v-model="formData.end" />
 		</div>
@@ -15,7 +15,7 @@
 			:options="['Class', 'Event', 'Appointment']"
 		/>
 
-		<div class="flex gap-2">
+		<div class="flex gap-3 sm:gap-2 flex-col sm:flex-row">
 			<Input
 				v-model="formData.duration"
 				label="Offering duration"
@@ -28,7 +28,7 @@
 				placeholder="Offering spots"
 				type="number"
 			/>
-			<div class="flex space-x-2 pb-3 self-end items-center">
+			<div class="flex space-x-2 sm:pb-3 self-end items-center mr-auto">
 				<Switch
 					id="airplane-mode"
 					:checked="formData.is_private"
@@ -43,7 +43,7 @@
 			label="Offering description"
 			placeholder="Offering description"
 		/>
-		<div class="flex gap-2">
+		<div class="flex gap-3 sm:gap-2 flex-col sm:flex-row">
 			<Yselect
 				v-model="formData.categories"
 				label="Categories"
@@ -62,7 +62,7 @@
 			/>
 		</div>
 
-		<div class="flex gap-2">
+		<div class="flex gap-3 sm:gap-2 flex-col sm:flex-row">
 			<Yselect
 				label="Offering location"
 				ref="selectComponent"
@@ -81,14 +81,14 @@
 					props.offering?.location
 				"
 				@click="resetMarker(true)"
-				class="flex items-center justify-center h-[42px] self-end rounded-md border border-gray-300 px-2 hover:bg-gray-100 shadow-sm"
+				class="flex items-center justify-center h-[42px] self-end rounded-md border border-gray-300 px-2 hover:bg-gray-100 shadow-sm mr-auto"
 				title="Reset"
 			>
 				<ArrowPathIcon class="w-6 text-gray-600 stroke-1" />
 			</button>
 			<button
 				@click="isShowMap = !isShowMap"
-				class="flex items-center justify-center h-[42px] self-end rounded-md border border-gray-300 px-2 hover:bg-gray-100 shadow-sm"
+				class="flex items-center justify-center h-[42px] self-end rounded-md border border-gray-300 px-2 hover:bg-gray-100 shadow-sm mr-auto"
 				title="Open map"
 			>
 				<MapIcon class="w-6 text-gray-600 stroke-1" />
@@ -407,16 +407,15 @@ onBeforeMount(() => {
 
 		const isTicketsExist = !!props.offering.tickets?.length
 
-		// const transformedTicket = (ticket: ITicketResponse): TTicket => {
-		// 	// @ts-ignore
-		// 	return {
-		// 		...ticket,
-		// 		price: ticket.price.toString(),
-		// 	}
-		// }
+		const transformedTicket = (ticket: TTicket): TTicket => {
+			return {
+				...ticket,
+				price: (ticket.price_int / 100).toString(),
+			}
+		}
 		formData.tickets =
 			isTicketsExist && props.offering.tickets
-				? props.offering.tickets
+				? props.offering.tickets.map(transformedTicket)
 				: [{ ...emptyTicket }]
 	}
 })

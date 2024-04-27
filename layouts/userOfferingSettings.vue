@@ -3,10 +3,10 @@
 		<Header />
 		<div class="py-10">
 			<div class="bg-white rounded-md flex">
-				<div class="pr-10 w-full max-w-[220px]">
+				<div class="lg:pr-10 w-auto lg:w-full lg:max-w-[220px]">
 					<AdminSidebar :menu-items="_menuItems" />
 				</div>
-				<div class="pl-10 border-l pb-10 w-full">
+				<div class="pl-6 md:pl-10 border-l pb-10 w-full">
 					<slot />
 				</div>
 			</div>
