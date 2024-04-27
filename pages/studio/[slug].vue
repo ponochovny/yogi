@@ -103,6 +103,7 @@
 									:title="practitioner.name"
 									class="w-12 rounded-full"
 									width="48"
+									height="48"
 									format="webp"
 								/>
 								<NuxtLink :to="'/practitioner/' + practitioner.id">

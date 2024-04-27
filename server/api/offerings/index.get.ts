@@ -9,23 +9,6 @@ export default defineEventHandler(async (event) => {
 		location?: string // TMarker
 		virtual?: string // boolean
 	}
-
-	const offerings = await getOfferings<IOfferingResponse[]>({
-		include: {
-			studio: {
-				include: {
-					logo: true,
-				},
-			},
-			banners: true,
-			practitioners: {
-				include: {
-					user: true,
-				},
-			},
-		},
-	})
-
 	function filtered(offerings: IOfferingResponse[]): IOfferingResponse[] {
 		return offerings.filter((offering) => {
 			const byTypes = types
@@ -37,8 +20,33 @@ export default defineEventHandler(async (event) => {
 		})
 	}
 
-	return {
-		data: filtered(offerings).map((offering) => offeringTransformer(offering)),
-		status: 'Success!',
+	try {
+		const offerings = await getOfferings<IOfferingResponse[]>({
+			include: {
+				studio: {
+					include: {
+						logo: true,
+					},
+				},
+				banners: true,
+				practitioners: {
+					include: {
+						user: true,
+					},
+				},
+			},
+		})
+
+		return {
+			data: filtered(offerings).map((offering) =>
+				offeringTransformer(offering)
+			),
+			status: 'Success!',
+		}
+	} catch (error) {
+		return {
+			data: [],
+			status: 'Error!',
+		}
 	}
 })
