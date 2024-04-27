@@ -70,7 +70,9 @@
 					:alt="offeringData.data.name"
 					:title="offeringData.data.name"
 					class="object-cover w-full h-full"
-					provider="cloudinary"
+					:provider="
+						offeringData.data.banners.length ? 'cloudinary' : undefined
+					"
 					sizes="400px md:800px lg:1280px"
 					format="webp"
 					:class="{
@@ -186,7 +188,7 @@
 						<div
 							class="flex gap-4 px-2 py-1 border rounded-lg border-gray-400 text-left text-black transition-colors"
 							:class="{
-								'hover:bg-orange-200/20 hover:border-orange-400/50 pl-7':
+								'hover:bg-orange-200/20 hover:border-orange-400/50':
 									selectedTicket !== ticket.id,
 								'bg-orange-200/20 border-orange-400/50':
 									selectedTicket === ticket.id,
