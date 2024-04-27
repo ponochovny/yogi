@@ -13,6 +13,17 @@
 			<div
 				class="grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 gap-x-4 gap-y-7 auto-rows-1fr"
 			>
+				<div
+					class="w-full"
+					:class="{
+						hidden: !loading,
+					}"
+				>
+					<LoadingIcon
+						v-show="loading"
+						class="fill-orange-600 mx-auto w-10 h-10"
+					/>
+				</div>
 				<template v-if="filters.activityType === 'Offerings'">
 					<OfferingCard
 						v-for="offering of (searchResults as TOffering[])"
@@ -103,7 +114,7 @@ export default defineComponent({
 </script>
 <script lang="ts" setup>
 const route = useRoute()
-const loading = ref(false)
+const loading = ref(true)
 const searchResults = ref<TOffering[] | TStudio[] | TUser[]>([])
 const isInitialLoad = ref(true)
 const filters = reactive<ISearchParams>({
