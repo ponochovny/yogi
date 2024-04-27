@@ -5,21 +5,13 @@
 		:priceRange="[priceRange.price_from || 0, priceRange.price_to || 0]"
 	>
 		<div class="pb-10 pt-8 px-6">
-			<div class="mb-6">
+			<div class="mb-6 transition-opacity" :class="{ 'opacity-60': loading }">
 				<p class="font-bold text-lg">
 					We found {{ filters.total }} results for you
 				</p>
 			</div>
-			<div
-				class="w-full"
-				:class="{
-					hidden: !loading,
-				}"
-			>
-				<LoadingIcon
-					v-show="loading"
-					class="fill-orange-600 mx-auto w-10 h-10"
-				/>
+			<div class="w-full" v-show="loading">
+				<LoadingIcon class="fill-orange-600 mx-auto w-10 h-10" />
 			</div>
 			<div
 				class="grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 gap-x-4 gap-y-7 auto-rows-1fr"
