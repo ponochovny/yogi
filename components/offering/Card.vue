@@ -62,6 +62,7 @@
 					:src="offering.studio?.logo.url"
 					:alt="offering.studio?.name"
 					provider="cloudinary"
+					format="webp"
 					class="w-8 h-8 rounded-full object-cover object-center"
 					width="32"
 					height="32"

@@ -91,6 +91,7 @@
 								width="36"
 								height="36"
 								class="rounded-full w-9 h-9 object-cover"
+								format="webp"
 							/>
 							<span class="font-semibold">
 								{{ user?.name || user?.email }}

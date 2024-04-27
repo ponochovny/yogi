@@ -28,6 +28,7 @@
 					class="w-full h-full object-cover object-center rounded-full"
 					width="96"
 					height="96"
+					format="webp"
 				/>
 			</div>
 			<div class="mb-1">

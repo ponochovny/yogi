@@ -13,6 +13,7 @@
 					:title="studioData.data.name"
 					sizes="400px md:800px lg:1280px"
 					class="object-cover object-center w-full h-full"
+					format="webp"
 				/>
 			</div>
 			<div
@@ -30,6 +31,7 @@
 						:title="studioData.data.name"
 						class="object-cover rounded-full border-gray-200 border object-center w-full h-full"
 						sizes="112px sm:144px lg:176px"
+						format="webp"
 					/>
 				</div>
 				<div
@@ -101,6 +103,7 @@
 									:title="practitioner.name"
 									class="w-12 rounded-full"
 									width="48"
+									format="webp"
 								/>
 								<NuxtLink :to="'/practitioner/' + practitioner.id">
 									<span class="font-semibold">

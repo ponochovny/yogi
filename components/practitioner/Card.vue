@@ -4,6 +4,8 @@
 			class="relative min-h-32 bg-white px-4 py-3 rounded-2xl mx-auto flex flex-col max-w-full w-full"
 		>
 			<NuxtImg
+				provider="cloudinary"
+				format="webp"
 				:src="getProfileImageUrl"
 				:alt="practitioner.name || ''"
 				:title="practitioner.name"
