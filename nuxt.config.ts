@@ -72,5 +72,6 @@ export default defineNuxtConfig({
 		'/**': { isr: 60 * 60 * 6 },
 		'/search': { ssr: false },
 		'/user/**': { ssr: false },
+		'/checkout': { ssr: false },
 	},
 })
