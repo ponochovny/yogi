@@ -1,6 +1,6 @@
 <template>
 	<div class="relative max-w-screen-xl pt-3 mx-auto">
-		<Header />
+		<Header class="px-4 xl:px-0" />
 		<div class="py-10">
 			<div class="bg-white rounded-md flex">
 				<div class="lg:pr-10 w-auto lg:w-full lg:max-w-[220px]">
