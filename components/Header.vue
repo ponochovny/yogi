@@ -10,7 +10,7 @@
 				to="/"
 				class="shrink-0 w-[65px] transition duration-1000 ease-in bg-transparent rounded-full hover:bg-orange-200"
 			>
-				<NuxtImg src="/img/logo.svg" alt="Yogi app" width="65" />
+				<NuxtImg src="/img/logo.svg" alt="Yogi app" width="65" height="65" />
 			</NuxtLink>
 
 			<slot name="left" />
@@ -49,6 +49,7 @@
 						:key="currency.code"
 						:value="currency.code"
 						class="hover:cursor-pointer transition-colors hover:bg-gray-100/60"
+						title="Currency select"
 					>
 						{{ currency.code }}
 					</SelectItem>

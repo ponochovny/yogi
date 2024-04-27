@@ -1,6 +1,6 @@
 <template>
 	<div class="relative overflow-hidden min-h-screen">
-		<di
+		<div
 			class="bg-[#93ACA8] xl:w-[400px] xl:h-[400px] md:w-[300px] md:h-[300px] rounded-full absolute xl:-left-[200px] md:-left-[150px] xl:top-[300px] md:top-[200px] pointer-events-none"
 		/>
 		<div

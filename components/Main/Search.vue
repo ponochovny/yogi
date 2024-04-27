@@ -138,6 +138,7 @@
 			}"
 			btnSize="sm"
 			type="submit"
+			title="Search"
 		>
 			<MagnifyingGlassIcon class="text-white w-6" />
 		</Button>

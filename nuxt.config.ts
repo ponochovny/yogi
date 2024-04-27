@@ -50,6 +50,13 @@ export default defineNuxtConfig({
 
 	app: {
 		head: {
+			title: 'Yogi - Your wellness home',
+			meta: [
+				{ name: 'description', content: 'All you need for your wellness' },
+			],
+			htmlAttrs: {
+				lang: 'en',
+			},
 			link: [
 				{
 					hid: 'icon',
