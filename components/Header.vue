@@ -37,7 +37,7 @@
 			class="flex items-center gap-0 sm:gap-4 ml-auto shrink-0"
 			:class="{ 'px-6 md:px-0': variant === 'white' }"
 		>
-			<NuxtLink v-if="user && !links" to="/user/studio">
+			<NuxtLink v-if="user && !links" to="/user/studio" class="hidden sm:block">
 				<span class="font-semibold">Add your business</span>
 			</NuxtLink>
 
@@ -93,7 +93,7 @@
 								class="rounded-full w-9 h-9 object-cover"
 								format="webp"
 							/>
-							<span class="font-semibold">
+							<span class="font-semibold text-nowrap">
 								{{ user?.name || user?.email }}
 							</span>
 						</div>
