@@ -1,29 +1,31 @@
 <template>
 	<div
-		class="flex items-center px-6"
+		class="flex items-center sm:px-6 flex-row"
 		:class="{
 			'bg-white py-3': variant === 'white',
 		}"
 	>
-		<NuxtLink
-			to="/"
-			class="transition duration-1000 ease-in bg-transparent rounded-full hover:bg-orange-200"
-		>
-			<img src="/img/logo.svg" alt="Yogi app" width="65" />
-		</NuxtLink>
-
-		<slot name="left" />
-
-		<div v-if="links" class="ml-[10%] flex gap-8">
-			<NuxtLink to="/">
-				<span class="font-semibold">Explore live offerings</span>
+		<div class="flex items-center w-full">
+			<NuxtLink
+				to="/"
+				class="shrink-0 w-[65px] transition duration-1000 ease-in bg-transparent rounded-full hover:bg-orange-200"
+			>
+				<img src="/img/logo.svg" alt="Yogi app" width="65" />
 			</NuxtLink>
-			<NuxtLink to="/user/studio" v-if="user">
-				<span class="font-semibold">Add your business</span>
-			</NuxtLink>
+
+			<slot name="left" />
+
+			<div v-if="links" class="ml-3 sm:ml-[10%] hidden md:flex gap-3 sm:gap-8">
+				<NuxtLink to="/search?location=Online">
+					<span class="font-semibold">Explore live offerings</span>
+				</NuxtLink>
+				<NuxtLink to="/user/studio" v-if="user">
+					<span class="font-semibold">Add your business</span>
+				</NuxtLink>
+			</div>
 		</div>
 
-		<div class="flex items-center gap-4 ml-auto">
+		<div class="flex items-center gap-4 ml-auto shrink-0">
 			<NuxtLink v-if="user && !links" to="/user/studio">
 				<span class="font-semibold">Add your business</span>
 			</NuxtLink>
@@ -87,8 +89,15 @@
 						:arrowPadding="0"
 						class="mt-2 max-w-[200px] rounded-2xl shadow-md border border-gray-300/40"
 					>
-						<div class="flex flex-col gap-2 w-full">
+						<div class="flex flex-col gap-4 md:gap-2 w-full">
 							<NuxtLink to="/user/profile"> My Profile </NuxtLink>
+
+							<NuxtLink class="block md:hidden" to="/search?location=Online">
+								Explore live offerings
+							</NuxtLink>
+							<NuxtLink class="block md:hidden" to="/user/studio" v-if="user">
+								Add your business
+							</NuxtLink>
 
 							<button @click="logout" class="text-left">Logout</button>
 						</div>

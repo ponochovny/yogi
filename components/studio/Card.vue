@@ -5,7 +5,7 @@
 			class="block h-32 bg-gray-200 rounded-t-2xl"
 		>
 			<NuxtImg
-				:src="getBannerUrl"
+				:src="getBannerUrl()"
 				:alt="studio.name"
 				:title="studio.name"
 				class="w-full h-full object-cover object-center rounded-t-2xl"
@@ -18,7 +18,7 @@
 				class="-mt-14 w-24 h-24 rounded-full border-4 border-white mb-2 bg-gray-100"
 			>
 				<NuxtImg
-					:src="getLogoUrl"
+					:src="getLogoUrl()"
 					:alt="studio.name"
 					:title="studio.name"
 					class="w-full h-full object-cover object-center rounded-full"
@@ -56,18 +56,18 @@ interface IProps {
 }
 const props = defineProps<IProps>()
 
-const getBannerUrl = computed<string>(() => {
+const getBannerUrl = () => {
 	if (props.studio.banner && props.studio.banner[0]) {
 		return props.studio.banner[0].url
 	}
 
 	return 'img/banner-placeholder2.jpeg'
-})
-const getLogoUrl = computed<string>(() => {
+}
+const getLogoUrl = () => {
 	if (props.studio.logo && props.studio.logo.url) {
 		return props.studio.logo.url
 	}
 
 	return 'img/logo-placeholder.png'
-})
+}
 </script>

@@ -1,5 +1,8 @@
 <template>
-	<div class="relative max-w-screen-xl pt-3 mx-auto" :class="cn(props.class)">
+	<div
+		class="relative max-w-screen-xl pt-3 mx-auto px-4"
+		:class="cn(props.class)"
+	>
 		<Header />
 
 		<div :class="cn(props.contentClass)">

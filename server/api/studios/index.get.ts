@@ -3,6 +3,10 @@ import { studioTransformer } from '~/server/transformers/studio'
 import type { IStudioResponse } from '~/server/types/studio'
 
 export default defineEventHandler(async (event) => {
+	const query = getQuery(event)
+
+	const { limit } = query
+
 	const studios = await getStudios({
 		include: {
 			owner: true,
@@ -14,6 +18,7 @@ export default defineEventHandler(async (event) => {
 				},
 			},
 		},
+		take: limit ? +limit : undefined,
 	})
 
 	return {

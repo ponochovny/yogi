@@ -2,7 +2,14 @@ import { getOfferings } from '~/server/db/offerings'
 import { offeringTransformer } from '~/server/transformers/offering'
 import type { IOfferingResponse } from '~/server/types/offering'
 
-export default defineEventHandler(async () => {
+export default defineEventHandler(async (event) => {
+	const query = getQuery(event)
+	const { types, location, virtual } = query as {
+		types?: string
+		location?: string // TMarker
+		virtual?: string // boolean
+	}
+
 	const offerings = await getOfferings<IOfferingResponse[]>({
 		include: {
 			studio: {
@@ -19,8 +26,19 @@ export default defineEventHandler(async () => {
 		},
 	})
 
+	function filtered(offerings: IOfferingResponse[]): IOfferingResponse[] {
+		return offerings.filter((offering) => {
+			const byTypes = types
+				? offering.types.some((type) => types.split(',').includes(type))
+				: true
+			const byVirtual = virtual ? offering.location === 'Online' : true
+
+			return byTypes && byVirtual
+		})
+	}
+
 	return {
-		data: offerings.map((offering) => offeringTransformer(offering)),
+		data: filtered(offerings).map((offering) => offeringTransformer(offering)),
 		status: 'Success!',
 	}
 })

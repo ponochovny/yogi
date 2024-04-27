@@ -88,8 +88,10 @@ export default () => {
 		})
 	}
 
-	const getOfferings = () => {
-		return useFetch<{ data: TOffering[] }>('/api/offerings')
+	const getOfferings = (queries?: string) => {
+		return useFetch<{ data: TOffering[] }>(
+			`/api/offerings${queries ? '?' + queries : ''}`
+		)
 	}
 
 	const getOfferingsByStudioId = <T>(
