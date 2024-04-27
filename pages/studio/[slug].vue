@@ -2,35 +2,41 @@
 	<MainContainer>
 		<template v-if="studioData">
 			<div
-				class="h-[450px] overflow-hidden rounded-t-3xl mt-14"
+				class="h-[200px] sm:h-[300px] xl:h-[450px] overflow-hidden rounded-t-3xl mt-14"
 				:class="{ 'bg-orange-400/70': !studioData.data.banner.length }"
 			>
 				<NuxtImg
 					v-if="studioData.data.banner.length"
+					provider="cloudinary"
 					:src="studioData.data.banner[0].url"
 					:alt="studioData.data.name"
 					:title="studioData.data.name"
+					sizes="400px md:800px lg:1280px"
 					class="object-cover object-center w-full h-full"
 				/>
 			</div>
 			<div
-				class="relative bg-white rounded-b-3xl mx-auto px-16 py-20 pt-28 flex"
+				class="relative bg-white rounded-b-3xl mx-auto px-6 sm:px-10 lg:px-16 py-20 sm:pt-24 lg:pt-28 flex mb-10"
 			>
 				<div
-					class="absolute w-44 h-44 -top-20 left-24 border-4 border-white rounded-full"
+					class="absolute w-28 h-28 -top-12 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:w-36 sm:h-36 sm:-top-16 sm:left-16 lg:w-44 lg:h-44 lg:-top-20 lg:left-24 border-4 border-white rounded-full"
 				>
 					<!-- TODO: if no logo -->
 					<NuxtImg
 						v-if="studioData.data.logo.url"
+						provider="cloudinary"
 						:src="studioData.data.logo.url"
 						:alt="studioData.data.name"
 						:title="studioData.data.name"
 						class="object-cover rounded-full border-gray-200 border object-center w-full h-full"
+						sizes="112px sm:144px lg:176px"
 					/>
 				</div>
-				<div class="flex gap-8 flex-col w-[calc(100%_-_400px)]">
-					<div class="flex flex-col gap-4">
-						<div class="flex gap-1 text-sm items-center">
+				<div
+					class="flex gap-4 sm:gap-8 flex-col w-full lg:w-[calc(100%_-_200px)] xl:w-[calc(100%_-_400px)]"
+				>
+					<div class="flex flex-col gap-2 sm:gap-4">
+						<div class="flex gap-1 text-sm items-center flex-col sm:flex-row">
 							<div class="flex gap-1 text-xs font-semibold flex-wrap">
 								<span
 									class="text-rose-500 uppercase"
@@ -41,7 +47,7 @@
 									}}{{ idx === studioData.data.types.length - 1 ? '' : ',' }}
 								</span>
 							</div>
-							<span> • </span>
+							<span class="sm:block hidden"> • </span>
 							<div class="flex flex-wrap">
 								<span
 									v-for="(cat, idx) of studioData.data.categories"
@@ -55,7 +61,9 @@
 								</span>
 							</div>
 						</div>
-						<div class="text-3xl font-semibold">{{ studioData.data.name }}</div>
+						<div class="text-2xl sm:text-3xl font-semibold">
+							{{ studioData.data.name }}
+						</div>
 						<div class="flex gap-2 items-center">
 							<MapPinIcon class="w-5 stroke-1.5" />
 							<a
@@ -68,7 +76,7 @@
 							</a>
 						</div>
 					</div>
-					<div v-if="studioData.data.bio" class="flex flex-col gap-6">
+					<div v-if="studioData.data.bio" class="flex flex-col gap-3 sm:gap-6">
 						<div class="font-semibold text-lg">About</div>
 						<div class="whitespace-pre-line leading-7">
 							{{ studioData.data.bio }}
@@ -77,7 +85,7 @@
 
 					<div
 						v-if="studioData.data.practitioners.length"
-						class="flex flex-col gap-6"
+						class="flex flex-col gap-3 sm:gap-6"
 					>
 						<div class="font-semibold text-lg">Practitioners</div>
 						<div class="flex gap-4 flex-wrap">
@@ -87,10 +95,12 @@
 								:key="practitioner.id"
 							>
 								<NuxtImg
+									provider="cloudinary"
 									:src="practitioner.profileImage || ''"
 									:alt="practitioner.name || ''"
 									:title="practitioner.name"
 									class="w-12 rounded-full"
+									width="48"
 								/>
 								<NuxtLink :to="'/practitioner/' + practitioner.id">
 									<span class="font-semibold">
@@ -101,14 +111,17 @@
 						</div>
 					</div>
 
-					<div v-if="studioData.data.mission" class="flex flex-col gap-6">
+					<div
+						v-if="studioData.data.mission"
+						class="flex flex-col gap-3 sm:gap-6"
+					>
 						<div class="font-semibold text-lg">Mission</div>
 						<div class="whitespace-pre-line leading-7">
 							{{ studioData.data.mission }}
 						</div>
 					</div>
 
-					<div class="flex flex-col gap-6">
+					<div class="flex flex-col gap-3 sm:gap-6">
 						<div class="font-semibold text-lg">Location</div>
 						<div
 							class="border rounded-xl font-semibold flex flex-col"
