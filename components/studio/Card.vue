@@ -21,10 +21,13 @@
 				class="-mt-14 w-24 h-24 rounded-full border-4 border-white mb-2 bg-gray-100"
 			>
 				<NuxtImg
-					:src="getLogoUrl()"
-					:alt="studio.name"
+					:provider="getLogoUrl().placeholder ? undefined : 'cloudinary'"
+					:src="getLogoUrl().url"
+					:alt="'Logo of ' + studio.name"
 					:title="studio.name"
 					class="w-full h-full object-cover object-center rounded-full"
+					width="96"
+					height="96"
 				/>
 			</div>
 			<div class="mb-1">
@@ -74,9 +77,15 @@ const getBannerUrl = () => {
 }
 const getLogoUrl = () => {
 	if (props.studio.logo && props.studio.logo.url) {
-		return props.studio.logo.url
+		return {
+			placeholder: false,
+			url: props.studio.logo.url,
+		}
 	}
 
-	return 'img/logo-placeholder.png'
+	return {
+		placeholder: true,
+		url: 'img/logo-placeholder.png',
+	}
 }
 </script>
