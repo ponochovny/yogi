@@ -5,7 +5,9 @@
 				<span class="text-2xl md:text-3xl font-semibold">Checkout</span>
 			</div>
 			<div class="flex gap-2 md:gap-3 flex-col lg:flex-row">
-				<div class="bg-white rounded-xl py-8 px-10 flex flex-1 flex-col gap-8">
+				<div
+					class="bg-white rounded-xl py-8 px-6 sm:px-10 flex flex-1 flex-col gap-8"
+				>
 					<div class="flex flex-col gap-4 max-w-[400px]">
 						<p class="font-semibold text-lg">Personal details</p>
 						<Input label="Full name" name="name" v-model="formData.name" />

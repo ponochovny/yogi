@@ -1,9 +1,9 @@
 <template>
 	<MainContainer>
 		<!-- TODO: Add confetti <if (purchase)> -->
-		<div class="py-10 flex flex-col gap-10 items-center">
+		<div class="py-8 sm:py-10 flex flex-col gap-4 sm:gap-10 items-center">
 			<div class="flex flex-col gap-1">
-				<p class="font-semibold text-3xl text-center">
+				<p class="font-semibold text-2xl sm:text-3xl text-center">
 					{{ purchase ? 'Successful purchase!' : 'Payment in progress...' }}
 				</p>
 				<p
@@ -58,7 +58,7 @@
 						}}
 					</span>
 					<span class="font-semibold text-sm">
-						{{ purchase?.data.ticket.offering.location }}
+						{{ purchase?.data.ticket.offering.location.name }}
 					</span>
 					<div class="flex items-center gap-2 text-orange-500">
 						<TicketIcon class="w-7 stroke-1" />
