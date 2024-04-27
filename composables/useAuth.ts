@@ -125,11 +125,11 @@ export default () => {
 	const refreshToken = () => {
 		return new Promise(async (resolve, reject) => {
 			try {
-				const response = await $fetch<{ access_token: string; error: any }>(
+				const response = await $fetch<{ access_token: string; body: any }>(
 					'/api/auth/refresh'
 				)
-				if (response.error) {
-					reject(response.error)
+				if (response?.body?.error) {
+					reject(response?.body?.error)
 				}
 				setToken(response.access_token)
 				resolve(true)
@@ -207,7 +207,7 @@ export default () => {
 		setTimeout(async () => {
 			try {
 				const response: any = await refreshToken()
-				if (response.error) {
+				if (response?.body?.error) {
 					throw new Error('Failed to refresh token')
 				}
 			} catch (error) {
@@ -224,7 +224,7 @@ export default () => {
 				setIsAuthLoading(true)
 
 				const response: any = await refreshToken()
-				if (response.error) {
+				if (response?.body?.error) {
 					throw new Error('Failed to refresh token')
 				}
 				await getUser()
