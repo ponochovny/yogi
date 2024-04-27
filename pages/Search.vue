@@ -217,13 +217,19 @@ function fetch() {
 	$fetch<{
 		data: TOffering[]
 		meta: { total: number; min_price: number; max_price: number }
+		error?: any
 	}>('/api/search?' + new URLSearchParams(obj).toString())
-		.then(({ data, meta }) => {
+		.then((response) => {
+			const { data, meta, error } = response
 			searchResults.value = data
-			filters.total = meta.total
+			if (error) {
+				alert(JSON.stringify(error))
+				return
+			}
+			filters.total = meta?.total || 0
 			priceRange.value = {
-				price_from: meta.min_price,
-				price_to: meta.max_price,
+				price_from: meta.min_price || 0,
+				price_to: meta.max_price || 0,
 			}
 		})
 		.catch((error) => console.log(error))
