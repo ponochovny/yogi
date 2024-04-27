@@ -10,7 +10,7 @@
 					variant === 'primary',
 			},
 			{
-				'border border-orange-600/30 bg-transparent text-orange-600 rounded-full hover:bg-orange-400/10 hover:text-orange-600 active:bg-orange-400/5 disabled:bg-transparent disabled:opacity-50 ring ring-orange-300/0 active:ring-orange-300 active:ring-opacity-50':
+				'border border-orange-600/30 bg-transparent text-orange-600 rounded-full hover:bg-orange-400/10 hover:text-orange-600 active:bg-orange-400/5 disabled:bg-transparent disabled:opacity-50 ring ring-orange-300/0 active:ring-orange-300 active:ring-opacity-50 disabled:ring-0':
 					variant === 'primaryOutline',
 			},
 			{
