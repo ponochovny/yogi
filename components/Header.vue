@@ -10,7 +10,7 @@
 				to="/"
 				class="shrink-0 w-[65px] transition duration-1000 ease-in bg-transparent rounded-full hover:bg-orange-200"
 			>
-				<img src="/img/logo.svg" alt="Yogi app" width="65" />
+				<NuxtImg src="/img/logo.svg" alt="Yogi app" width="65" />
 			</NuxtLink>
 
 			<slot name="left" />

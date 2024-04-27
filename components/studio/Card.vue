@@ -5,14 +5,13 @@
 			class="block h-32 bg-gray-200 rounded-t-2xl"
 		>
 			<NuxtImg
-				:src="getBannerUrl()"
+				:src="getBannerUrl().url"
 				:alt="studio.name"
 				:title="studio.name"
 				class="w-full h-full object-cover object-center rounded-t-2xl"
-				provider="cloudinary"
+				:provider="getBannerUrl().placeholder ? undefined : 'cloudinary'"
 				format="webp"
 				width="400"
-				height="128"
 			/>
 		</NuxtLink>
 		<div
@@ -62,10 +61,16 @@ const props = defineProps<IProps>()
 
 const getBannerUrl = () => {
 	if (props.studio.banner && props.studio.banner[0]) {
-		return props.studio.banner[0].url
+		return {
+			placeholder: false,
+			url: props.studio.banner[0].url,
+		}
 	}
 
-	return 'img/banner-placeholder2.jpeg'
+	return {
+		placeholder: true,
+		url: 'img/banner-placeholder2.jpeg',
+	}
 }
 const getLogoUrl = () => {
 	if (props.studio.logo && props.studio.logo.url) {

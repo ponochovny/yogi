@@ -5,9 +5,12 @@
 			class="block h-32 bg-gray-200 rounded-2xl"
 		>
 			<NuxtImg
-				:src="getImageUrl"
+				:src="getImageUrl().url"
 				:alt="offering.name"
 				:title="offering.name"
+				:provider="getImageUrl().placeholder ? undefined : 'cloudinary'"
+				format="webp"
+				width="400"
 				class="w-full h-full object-cover object-center rounded-2xl"
 			/>
 		</NuxtLink>
@@ -54,11 +57,13 @@
 				:to="'studio/' + offering.studio?.slug"
 				class="flex gap-1 items-center"
 			>
-				<img
+				<NuxtImg
 					v-if="offering.studio?.logo"
 					:src="offering.studio?.logo.url"
-					alt=""
+					provider="cloudinary"
 					class="w-8 h-8 rounded-full object-cover object-center"
+					width="32"
+					height="32"
 				/>
 				<span class="text-sm font-semibold">
 					{{ offering.studio?.name }}
@@ -83,11 +88,17 @@ interface IProps {
 }
 const props = defineProps<IProps>()
 
-const getImageUrl = computed<string>(() => {
+const getImageUrl = () => {
 	if (props.offering.banners && props.offering.banners[0]) {
-		return props.offering.banners[0].url
+		return {
+			placeholder: false,
+			url: props.offering.banners[0].url,
+		}
 	}
 
-	return 'img/banner-placeholder2.jpeg'
-})
+	return {
+		placeholder: true,
+		url: 'img/banner-placeholder2.jpeg',
+	}
+}
 </script>
