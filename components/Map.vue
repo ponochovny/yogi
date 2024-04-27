@@ -147,7 +147,7 @@ interface IProps {
 	sMarker?: TMarker
 }
 const props = withDefaults(defineProps<IProps>(), {
-	theme: 2,
+	theme: 1,
 	maxZoom: 18,
 	minZoom: 3,
 	zoom: 14,

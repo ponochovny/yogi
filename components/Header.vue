@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="flex items-center px-6 flex-row"
+		class="flex items-center sm:px-6 flex-row"
 		:class="{
 			'bg-white py-3 flex-col lg:flex-row md:gap-0 gap-3': variant === 'white',
 		}"
