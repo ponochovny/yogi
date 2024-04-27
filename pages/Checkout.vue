@@ -1,10 +1,10 @@
 <template>
 	<MainContainer>
-		<form class="py-10" @submit.prevent="handleSubmitStripeForm">
-			<div class="mb-8">
-				<span class="text-3xl font-semibold">Checkout</span>
+		<form class="py-6 md:py-10" @submit.prevent="handleSubmitStripeForm">
+			<div class="mb-4 md:mb-8">
+				<span class="text-2xl md:text-3xl font-semibold">Checkout</span>
 			</div>
-			<div class="flex gap-3">
+			<div class="flex gap-2 md:gap-3 flex-col lg:flex-row">
 				<div class="bg-white rounded-xl py-8 px-10 flex flex-1 flex-col gap-8">
 					<div class="flex flex-col gap-4 max-w-[400px]">
 						<p class="font-semibold text-lg">Personal details</p>
@@ -31,7 +31,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="flex flex-col gap-3 w-1/3">
+				<div
+					class="flex flex-col gap-2 md:gap-3 lg:min-w-[400px] w-full lg:w-1/3"
+				>
 					<div v-if="data" class="bg-white rounded-xl py-4 px-6">
 						<div class="flex gap-3">
 							<img
