@@ -57,10 +57,10 @@
 					/>
 				</div>
 				<div
-					class="relative rounded-3xl bg-gradient-to-r from-cyan-600 from-10% to-orange-400/50 to-90% md:py-20 md:px-32 py-10 px-16 flex text-white items-center z-10 overflow-hidden"
+					class="relative rounded-3xl bg-gradient-to-r from-cyan-600 from-10% to-orange-800/50 to-90% md:py-20 md:px-32 py-8 sm:px-16 px-8 pr-4 flex text-white items-center z-10 overflow-hidden sm:flex-row flex-col gap-4 sm:gap-0"
 				>
 					<div
-						class="absolute inset-0 z-[-1] opacity-20 blur-sm pointer-events-none"
+						class="absolute inset-0 z-[-1] opacity-20 blur-[1px] sm:blur-sm pointer-events-none"
 						:style="{
 							backgroundImage: `url('img/decoration.svg')`,
 							backgroundSize: '40%',
@@ -69,11 +69,17 @@
 						}"
 					></div>
 					<div class="w-[50%]">
-						<span class="font-semibold text-xl">Quote of the day</span>
+						<span class="font-semibold text-lg sm:text-xl">
+							Quote of the day
+						</span>
 					</div>
-					<div class="flex flex-col gap-3">
-						<span class="text-xl">&laquo;{{ quote?.data.quote }}&raquo;</span>
-						<span class="font-semibold">{{ quote?.data.author }}</span>
+					<div class="flex flex-col gap-1 sm:gap-3">
+						<span class="text-lg sm:text-xl">
+							&laquo;{{ quote?.data.quote }}&raquo;
+						</span>
+						<span class="font-semibold text-sm sm:text-base">{{
+							quote?.data.author
+						}}</span>
 					</div>
 				</div>
 				<div>
