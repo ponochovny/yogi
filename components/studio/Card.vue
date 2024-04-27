@@ -9,6 +9,9 @@
 				:alt="studio.name"
 				:title="studio.name"
 				class="w-full h-full object-cover object-center rounded-t-2xl"
+				format="webp"
+				width="400"
+				height="128"
 			/>
 		</NuxtLink>
 		<div

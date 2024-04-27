@@ -9,6 +9,12 @@ export default defineNuxtConfig({
 		'@nuxt/image',
 	],
 
+	image: {
+		cloudinary: {
+			baseURL: 'https://res.cloudinary.com/dllruwqbd/image/fetch/',
+		},
+	},
+
 	primevue: {
 		components: {
 			include: ['FileUpload'],
