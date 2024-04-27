@@ -11,7 +11,7 @@
 				class="w-full h-full object-cover object-center rounded-t-2xl"
 				:provider="getBannerUrl().placeholder ? undefined : 'cloudinary'"
 				format="webp"
-				width="400"
+				sizes="305px lg:405px"
 			/>
 		</NuxtLink>
 		<div

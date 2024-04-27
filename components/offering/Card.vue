@@ -11,6 +11,7 @@
 				:provider="getImageUrl().placeholder ? undefined : 'cloudinary'"
 				format="webp"
 				width="400"
+				sizes="400px"
 				class="w-full h-full object-cover object-center rounded-2xl"
 			/>
 		</NuxtLink>
