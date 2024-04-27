@@ -1,10 +1,10 @@
 <template>
 	<div class="relative overflow-hidden min-h-screen">
 		<di
-			class="bg-[#93ACA8] w-[400px] h-[400px] rounded-full absolute -left-[200px] top-[300px] pointer-events-none"
+			class="bg-[#93ACA8] xl:w-[400px] xl:h-[400px] md:w-[300px] md:h-[300px] rounded-full absolute xl:-left-[200px] md:-left-[150px] xl:top-[300px] md:top-[200px] pointer-events-none"
 		/>
 		<div
-			class="bg-[#CA9A8E] w-[400px] h-[400px] rounded-full absolute -right-[200px] top-[800px] pointer-events-none"
+			class="bg-[#CA9A8E] xl:w-[400px] xl:h-[400px] rounded-full absolute xl:-right-[200px] xl:top-[800px] md:w-[250px] md:h-[250px] md:-right-[125px] md:top-[500px] pointer-events-none"
 		/>
 		<div
 			class="w-[600px] h-[600px] rounded-full absolute -left-[300px] top-[1800px] bg-contain bg-no-repeat opacity-10 pointer-events-none"
@@ -15,9 +15,11 @@
 		<MainContainer contentClass="py-6">
 			<!-- Search block -->
 			<div
-				class="flex flex-col gap-2 my-6 px-10 pt-32 pb-52 items-center justify-center"
+				class="flex flex-col gap-2 my-6 sm:px-10 md:pt-32 md:pb-52 pt-20 pb-32 items-center justify-center"
 			>
-				<h1 class="font-bold text-5xl mb-5">Elevate Health & Harmony</h1>
+				<h1 class="font-bold md:text-5xl text-4xl md:mb-5 mb-2 text-center">
+					Elevate Health & Harmony
+				</h1>
 				<p class="text-sm max-w-[800px] text-center mb-12 leading-6">
 					Championing personal wellness transformations, alongside nurturing the
 					growth of community-based health ventures.
@@ -25,7 +27,7 @@
 				<MainSearch />
 			</div>
 			<!-- Slider with categories which link to search page -->
-			<div class="flex flex-col gap-y-24">
+			<div class="flex flex-col md:gap-y-24 gap-y-16">
 				<!-- <div>
 					<p class="font-bold text-3xl mb-12">All offerings</p>
 					<div class="grid grid-cols-4 gap-x-4 gap-y-7">
@@ -37,13 +39,15 @@
 					</div>
 				</div> -->
 				<div>
-					<p class="font-bold text-3xl mb-12">Studios & Event Hosts</p>
+					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
+						Studios & Event Hosts
+					</p>
 					<div class="flex gap-6 overflow-x-auto">
 						<StudioCard
 							v-for="studio of studios?.data"
 							:key="studio?.id"
 							:studio="studio"
-							class="min-w-[405px] max-w-[405px]"
+							class="xl:min-w-[405px] xl:max-w-[405px] min-w-[305px] max-w-[305px]"
 						/>
 					</div>
 					<MainNoContent
@@ -53,7 +57,7 @@
 					/>
 				</div>
 				<div
-					class="relative rounded-3xl bg-gradient-to-r from-cyan-600 from-10% to-orange-400/50 to-90% py-20 px-32 flex text-white items-center z-10 overflow-hidden"
+					class="relative rounded-3xl bg-gradient-to-r from-cyan-600 from-10% to-orange-400/50 to-90% md:py-20 md:px-32 py-10 px-16 flex text-white items-center z-10 overflow-hidden"
 				>
 					<div
 						class="absolute inset-0 z-[-1] opacity-20 blur-sm pointer-events-none"
@@ -73,13 +77,15 @@
 					</div>
 				</div>
 				<div>
-					<p class="font-bold text-3xl mb-12">Upcoming virtual</p>
+					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
+						Upcoming virtual
+					</p>
 					<div class="flex gap-6 overflow-x-auto">
 						<OfferingCard
 							v-for="offering of offeringsOnline?.data"
 							:key="offering?.id"
 							:offering="offering"
-							class="min-w-[300px] max-w-[300px]"
+							class="xl:min-w-[300px] xl:max-w-[300px]"
 						/>
 					</div>
 					<MainNoContent
@@ -89,7 +95,9 @@
 					/>
 				</div>
 				<div>
-					<p class="font-bold text-3xl mb-12">Wellness getaways</p>
+					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
+						Wellness getaways
+					</p>
 					<div class="flex gap-6 overflow-x-auto">
 						<OfferingCard
 							v-for="offering of offeringsWellness?.data"
@@ -105,7 +113,9 @@
 					/>
 				</div>
 				<div>
-					<p class="font-bold text-3xl mb-12">Deeper Education</p>
+					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
+						Deeper Education
+					</p>
 					<div class="flex gap-6 overflow-x-auto">
 						<OfferingCard
 							v-for="offering of offeringsEducation?.data"

@@ -1,13 +1,18 @@
 <template>
-	<form class="flex" @submit.prevent="onSubmit">
+	<form
+		class="flex sm:flex-row flex-col w-full sm:w-auto"
+		@submit.prevent="onSubmit"
+	>
 		<Popover @update:open="openLocationEvent">
 			<PopoverTrigger as="div">
 				<div
 					class="shadow-sm flex items-center"
 					:class="{
-						'rounded-tl-2xl rounded-bl-none rounded-r-none': isLocationOpen,
-						'rounded-l-2xl rounded-r-none': !isLocationOpen,
-						'gap-2 w-[300px] py-2 px-4 bg-white': variant === 'default',
+						'sm:rounded-tl-2xl sm:rounded-bl-none sm:rounded-r-none':
+							isLocationOpen,
+						'rounded-t-2xl sm:rounded-l-2xl sm:rounded-r-none': !isLocationOpen,
+						'gap-2 w-full sm:w-[250px] md:w-[300px] py-2 px-4 bg-white':
+							variant === 'default',
 						'gap-1 w-[250px] py-1 px-2 bg-gray-100/80': variant === 'secondary',
 					}"
 				>
@@ -37,7 +42,7 @@
 				side="bottom"
 				class="-mt-1 rounded-b-2xl rounded-t-none border-0"
 				:class="{
-					'w-[300px] shadow-sm': variant === 'default',
+					'w-[250px] md:w-[300px] shadow-sm': variant === 'default',
 					'w-[250px] shadow-lg': variant === 'secondary',
 				}"
 			>
@@ -66,7 +71,8 @@
 				<div
 					class="shadow-sm flex items-center rounded-none"
 					:class="{
-						'gap-2 w-[400px] py-2 px-4 bg-white': variant === 'default',
+						'gap-2 w-full sm:w-[300px] md:w-[400px] py-2 px-4 bg-white':
+							variant === 'default',
 						'gap-1 w-[250px] py-1 px-2 bg-gray-100/80': variant === 'secondary',
 					}"
 				>
@@ -110,7 +116,7 @@
 				side="bottom"
 				class="-mt-1 rounded-b-2xl rounded-t-none border-0 p-1 py-3 max-h-[484px] overflow-y-auto"
 				:class="{
-					'w-[400px] shadow-sm': variant === 'default',
+					'w-[300px] md:w-[400px] shadow-sm': variant === 'default',
 					// 'w-[250px] shadow-lg': variant === 'secondary',
 				}"
 			>
@@ -123,9 +129,9 @@
 			</PopoverContent>
 		</Popover>
 		<Button
-			class="rounded-l-none rounded-r-2xl"
+			class="rounded-none rounded-b-2xl sm:rounded-l-none sm:rounded-r-2xl"
 			:class="{
-				'px-6': variant === 'default',
+				'px-4 py-3 sm:py-0 sm:px-6': variant === 'default',
 				'px-4': variant === 'secondary',
 			}"
 			btnSize="sm"
