@@ -1,7 +1,7 @@
 <template>
 	<div class="flex flex-col lg:flex-row lg:min-h-screen gap-10 lg:gap-0">
 		<div
-			class="min-h-full bg-orange-400 bg-[url('https://picsum.photos/500/1080?blur=9')] bg-no-repeat bg-cover bg-center flex flex-col items-start lg:gap-16 gap-10 pt-10 pb-10 lg:pb-0 lg:pt-36 pl-10 sm:pl-20 w-full lg:w-1/3"
+			class="min-h-full bg-orange-400 lg:bg-[url('https://picsum.photos/500/1080?blur=9')] bg-[url('https://picsum.photos/500/250?blur=9')] bg-no-repeat bg-cover bg-center flex flex-col items-start lg:gap-16 gap-10 pt-10 pb-10 lg:pb-0 lg:pt-36 pl-10 sm:pl-20 w-full lg:w-1/3"
 		>
 			<NuxtLink
 				to="/"
