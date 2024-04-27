@@ -69,8 +69,8 @@ export default defineNuxtConfig({
 	},
 
 	routeRules: {
-		'/**': { isr: 60 * 60 * 6 },
-		'/search': { ssr: false },
+		// '/**': { isr: 60 * 60 * 6 },
+		// '/search': { ssr: false },
 		'/user/**': { ssr: false },
 		'/checkout': { ssr: false },
 	},
