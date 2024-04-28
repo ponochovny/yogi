@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs'
 import { prisma } from '.'
 import type { TCreateUserData, TUpdateProfileData } from '../types/user'
+import type { IUserResponse } from '../types'
 
 export const createUser = (userData: TCreateUserData) => {
 	const finalUserData = {
@@ -20,8 +21,9 @@ export const getUserByEmail = (email: string) => {
 		},
 		include: {
 			avatars: true,
+			studio: true,
 		},
-	})
+	}) as unknown as Promise<IUserResponse>
 }
 
 export const getUsersByString = (string: string) => {
@@ -41,7 +43,10 @@ export const getUserById = (id: string) => {
 		where: {
 			id,
 		},
-	})
+		include: {
+			studio: true,
+		},
+	}) as unknown as Promise<IUserResponse | null>
 }
 
 export const updateProfile = (userId: string, newData: TUpdateProfileData) => {

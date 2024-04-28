@@ -32,7 +32,7 @@
 			type="password"
 			name="repeatPassword"
 		/>
-		<Button @click="handleAuth" type="submit">
+		<Button type="submit">
 			<span class="font-bold text-white">
 				{{ props.mode === 'register' ? 'Register' : 'Login' }}
 			</span>
@@ -46,7 +46,11 @@
 			</template>
 			<template v-else>
 				<span>Already have an account?</span>
-				<button type="button" @click="emit('mode', 'login')">
+				<button
+					type="button"
+					@click="emit('mode', 'login')"
+					:disabled="data.loading"
+				>
 					<span class="font-semibold">Log in</span>
 				</button>
 			</template>
@@ -56,6 +60,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
+import { toast } from 'vue-sonner'
 
 export default defineComponent({
 	name: 'AuthForm',
@@ -87,8 +92,8 @@ async function handleLogin(redirect?: string) {
 			password: data.password,
 		})
 		navigateTo(redirect ? '/' + redirect : '/')
-	} catch (error) {
-		console.log(error)
+	} catch (error: any) {
+		toast.error(error.data.statusMessage)
 	} finally {
 		data.loading = false
 	}
@@ -105,8 +110,8 @@ async function handleRegister(redirect?: string) {
 			repeatPassword: data.repeatPassword,
 		})
 		navigateTo(redirect ? '/' + redirect : '/')
-	} catch (error) {
-		console.log(error)
+	} catch (error: any) {
+		toast.error(error.data.statusMessage)
 	} finally {
 		data.loading = false
 	}
