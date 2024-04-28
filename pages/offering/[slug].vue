@@ -73,6 +73,7 @@
 					:provider="
 						offeringData.data.banners.length ? 'cloudinary' : undefined
 					"
+					placeholder
 					sizes="400px md:800px lg:1280px"
 					format="webp"
 					:class="{
