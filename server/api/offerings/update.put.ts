@@ -134,9 +134,9 @@ export default defineEventHandler(async (event) => {
 	}
 
 	// Tickets
-	if (fields['tickets[]'] && typeof fields['tickets[]'] === 'string') {
+	if (fields['tickets[]']) {
 		const ticketPromises = []
-		for (const ticket of JSON.parse(fields['tickets[]'])) {
+		for (const ticket of fields['tickets[]']) {
 			const _ticket = JSON.parse(ticket)
 
 			ticketPromises.push(

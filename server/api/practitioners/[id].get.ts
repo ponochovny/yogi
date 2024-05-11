@@ -35,11 +35,11 @@ export default defineEventHandler(async (event) => {
 			userId: id,
 			studios: practitioners
 				// @ts-ignore
-				.map((el) => studioTransformer(el.studio))
+				.map((el) => (el.studio ? studioTransformer(el.studio) : null))
 				.filter((el) => el),
 			offerings: practitioners
 				// @ts-ignore
-				.map((el) => offeringTransformer(el.offering))
+				.map((el) => (el.offering ? offeringTransformer(el.offering) : null))
 				.filter((el) => el),
 		}
 
