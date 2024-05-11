@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import type { IUserResponse, TOwner, TPractitioner, TUser } from '../types'
+import type { IUserResponse } from '../types'
 import type { IStudioResponse } from '../types/studio'
 import { mediaFileTransformer } from './mediaFiles'
 import { ownerTransformer, practitionerTransformer } from './user'

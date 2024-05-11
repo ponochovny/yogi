@@ -1,13 +1,18 @@
 <template>
 	<MainContainer>
 		<div class="py-10">
-			<div v-if="practitioner" class="rounded-3xl bg-white p-20 flex gap-x-8">
+			<div
+				v-if="practitioner"
+				class="rounded-3xl bg-white p-4 py-8 sm:p-10 md:p-20 flex gap-x-8 flex-col lg:flex-row gap-4 lg:gap-0"
+			>
 				<div class="flex flex-1 flex-col gap-12">
-					<div class="flex gap-8">
-						<img
+					<div class="flex gap-6 sm:gap-8">
+						<NuxtImg
+							provider="cloudinary"
 							:src="practitioner.data.profileImage || ''"
 							:alt="practitioner.data.name || ''"
-							class="w-40 h-40 rounded-full object-cover object-center"
+							class="w-24 h-24 md:w-40 md:h-40 rounded-full object-cover object-center"
+							sizes="96px md:160px"
 						/>
 						<div class="flex flex-col gap-y-3 justify-center">
 							<p class="text-3xl font-semibold">{{ practitioner.data.name }}</p>
@@ -23,7 +28,7 @@
 								</NuxtLink>
 							</div>
 							<div class="flex gap-1 text-gray-600 items-start">
-								<MapPinIcon class="w-6 stroke-1" />
+								<MapPinIcon class="w-6 stroke-1 shrink-0" />
 								<div class="flex flex-col gap-1">
 									<a
 										v-for="studio of practitioner.data.studios"
@@ -51,7 +56,7 @@
 						Tip {{ practitioner.data.name }}
 					</Button>
 				</div>
-				<div class="pt-20">
+				<div class="lg:pt-20">
 					<Button disabled>
 						Book private appointment {{ practitioner.data.name }}
 					</Button>

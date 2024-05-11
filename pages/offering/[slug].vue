@@ -131,7 +131,7 @@
 								:src="practitioner.profileImage || ''"
 								:alt="practitioner.name || ''"
 								:title="practitioner.name"
-								class="w-12 rounded-full"
+								class="w-12 h-12 rounded-full"
 								provider="cloudinary"
 								format="webp"
 								width="48"
