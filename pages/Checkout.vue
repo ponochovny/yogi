@@ -1,11 +1,13 @@
 <template>
 	<MainContainer>
-		<form class="py-10" @submit.prevent="handleSubmitStripeForm">
-			<div class="mb-8">
-				<span class="text-3xl font-semibold">Checkout</span>
+		<form class="py-6 md:py-10" @submit.prevent="handleSubmitStripeForm">
+			<div class="mb-4 md:mb-8">
+				<span class="text-2xl md:text-3xl font-semibold">Checkout</span>
 			</div>
-			<div class="flex gap-3">
-				<div class="bg-white rounded-xl py-8 px-10 flex flex-1 flex-col gap-8">
+			<div class="flex gap-2 md:gap-3 flex-col lg:flex-row">
+				<div
+					class="bg-white rounded-xl py-8 px-6 sm:px-10 flex flex-1 flex-col gap-8"
+				>
 					<div class="flex flex-col gap-4 max-w-[400px]">
 						<p class="font-semibold text-lg">Personal details</p>
 						<Input label="Full name" name="name" v-model="formData.name" />
@@ -14,7 +16,7 @@
 							class="self-start"
 							variant="primaryOutline"
 							btnSize="md2"
-							:disabled="loading"
+							:disabled="loading || true"
 						>
 							<span class="font-semibold">+ Add a person</span>
 						</Button>
@@ -23,7 +25,8 @@
 						<p class="font-semibold text-lg">
 							Payment
 							<span class="font-normal text-xs">
-								{{ loading ? 'Please wait. Loading...' : '' }}
+								{{ loading && !error ? 'Please wait. Loading...' : '' }}
+								<pre>{{ error }}</pre>
 							</span>
 						</p>
 						<div class="max-w-[400px]">
@@ -31,7 +34,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="flex flex-col gap-3 w-1/3">
+				<div
+					class="flex flex-col gap-2 md:gap-3 lg:min-w-[400px] w-full lg:w-1/3"
+				>
 					<div v-if="data" class="bg-white rounded-xl py-4 px-6">
 						<div class="flex gap-3">
 							<img
@@ -43,31 +48,31 @@
 									class="capitalize font-bold text-sm"
 									:class="{
 										'text-blue-500/90':
-											data?.data.offering.activity.toLowerCase() === 'class',
+											data?.data.offering?.activity.toLowerCase() === 'class',
 										'text-red-400':
-											data?.data.offering.activity.toLowerCase() === 'event',
+											data?.data.offering?.activity.toLowerCase() === 'event',
 										'text-yellow-500':
-											data?.data.offering.activity.toLowerCase() ===
+											data?.data.offering?.activity.toLowerCase() ===
 											'appointment',
 									}"
 								>
-									{{ data?.data.offering.activity }}
+									{{ data?.data.offering?.activity }}
 								</span>
-								<NuxtLink :to="'/offering/' + data?.data.offering.slug">
+								<NuxtLink :to="'/offering/' + data?.data.offering?.slug">
 									<span class="font-semibold">
-										{{ data?.data.offering.name }}
+										{{ data?.data.offering?.name }}
 									</span>
 								</NuxtLink>
 								<span class="font-semibold text-sm text-gray-600">
 									{{
 										dateString(
-											data?.data.offering.start,
-											data?.data.offering.end
+											data?.data.offering?.start || '',
+											data?.data.offering?.end || ''
 										)
 									}}
 								</span>
 								<span class="font-semibold text-sm">
-									{{ data?.data.offering.location?.name }}
+									{{ data?.data.offering?.location?.name }}
 								</span>
 							</div>
 						</div>
@@ -79,11 +84,7 @@
 						<div class="flex justify-between">
 							<span>{{ count }}x {{ data?.data.name }}</span>
 							<span class="font-semibold">
-								{{
-									`${currencySymbolByCode(data?.data.currency || '')}${
-										data?.data.price
-									}`
-								}}
+								{{ `${data?.data.price}` }}
 							</span>
 						</div>
 						<hr />
@@ -91,11 +92,7 @@
 							<p class="font-semibold">Total</p>
 							<p>
 								<span class="font-semibold">
-									{{
-										`${currencySymbolByCode(data?.data.currency || '')}${
-											data?.data.price
-										}`
-									}}
+									{{ `${data?.data.price}` }}
 								</span>
 							</p>
 						</div>
@@ -128,7 +125,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { convertPriceStringToNumber, currencySymbolByCode } from '~/helpers'
+import { convertPriceStringToNumber } from '~/helpers'
+import type { TTicket } from '~/helpers/types/ticket'
 import { dateString } from '~/lib/utils'
 
 export default defineComponent({
@@ -140,14 +138,14 @@ const route = useRoute()
 const router = useRouter()
 const { count, ticketId } = route.query
 
-const { data } = await useFetch(`/api/ticket/${ticketId}`)
+const { data } = await useFetch<{ data: TTicket }>(`/api/ticket/${ticketId}`)
 
 if (!data) {
 	router.push('/')
 }
 
 const _data = reactive({
-	amount: convertPriceStringToNumber(data.value?.data.price || ''),
+	amount: convertPriceStringToNumber(data.value?.data.price.toString() || ''),
 	currency: data.value?.data.currency || '',
 })
 
@@ -156,6 +154,7 @@ const {
 	injectStripe,
 	handleSubmitStripeForm,
 	// refetch,
+	error,
 	loading,
 } = useStripe('#payment-element', {
 	amount: _data.amount,
@@ -182,8 +181,12 @@ onMounted(() => injectStripe())
 // < TESTING STRIPE <
 
 function offeringBanner() {
-	const dataBanner = data.value?.data?.offering.banner[0]
-	const noBanner = 'img/banner-placeholder2.jpeg'
-	return dataBanner || noBanner
+	if (
+		data.value?.data?.offering?.banner &&
+		data.value?.data?.offering?.banner[0]
+	) {
+		return data.value?.data?.offering?.banner[0]
+	}
+	return 'img/banner-placeholder2.jpeg'
 }
 </script>

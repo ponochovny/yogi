@@ -2,6 +2,7 @@ import { prisma } from '.'
 import type { Prisma } from '@prisma/client'
 import type { DefaultArgs } from '@prisma/client/runtime/library'
 
+// TODO: offering types
 export const createOffering = (offeringData: any) => {
 	return prisma.offering.create({
 		data: {
@@ -9,6 +10,7 @@ export const createOffering = (offeringData: any) => {
 		},
 	})
 }
+// TODO: offering types
 export const updateOffering = (offeringData: any, offeringId: string) => {
 	return prisma.offering.update({
 		where: {
@@ -20,31 +22,31 @@ export const updateOffering = (offeringData: any, offeringId: string) => {
 	})
 }
 
-export const getOfferings = (
+export const getOfferings = <T>(
 	params: Prisma.OfferingFindManyArgs<DefaultArgs> = {}
-) => {
-	return prisma.offering.findMany({ ...params })
+): Promise<T> => {
+	return prisma.offering.findMany({ ...params }) as Promise<T>
 }
 
-export const getOfferingBySlug = (
+export const getOfferingBySlug = <T>(
 	slug: string,
 	params: Prisma.OfferingFindUniqueArgs<DefaultArgs>
-) => {
+): Promise<T> | null => {
 	return prisma.offering.findUnique({
 		...params,
 		where: {
 			...params?.where,
 			slug,
 		},
-	})
+	}) as unknown as Promise<T> | null
 }
-export const getOfferingsByStudioId = (
+export const getOfferingsByStudioId = <T>(
 	params: Prisma.OfferingFindUniqueArgs<DefaultArgs>
-) => {
+): Promise<T> => {
 	return prisma.offering.findMany({
 		...params,
 		where: {
 			...params?.where,
 		},
-	})
+	}) as Promise<T>
 }

@@ -6,12 +6,16 @@
 			{ 'px-3 py-1': btnSize === 'sm' },
 			{ 'px-4 py-2': btnSize === 'md2' },
 			{
-				'bg-orange-600 text-white rounded-full hover:bg-orange-600/75 hover:text-white disabled:bg-orange-600/20 disabled:opacity-50':
+				'bg-orange-600 text-white rounded-full hover:bg-orange-600/75 active:bg-orange-600/60 hover:text-white disabled:bg-orange-600/20 disabled:opacity-50':
 					variant === 'primary',
 			},
 			{
-				'bg-transparent text-orange-600 rounded-full hover:bg-orange-400/10 hover:text-orange-600 disabled:bg-transparent disabled:opacity-50':
+				'border border-orange-600/30 bg-transparent text-orange-600 rounded-full hover:bg-orange-400/10 hover:text-orange-600 active:bg-orange-400/5 disabled:bg-transparent disabled:opacity-50 ring ring-orange-300/0 active:ring-orange-300 active:ring-opacity-50 disabled:ring-0':
 					variant === 'primaryOutline',
+			},
+			{
+				'bg-transparent text-orange-600 rounded-full hover:bg-orange-400/10 hover:text-orange-600 active:bg-orange-400/5 disabled:bg-transparent disabled:opacity-50':
+					variant === 'primaryGhost',
 			},
 			props.class,
 		]"
@@ -33,7 +37,7 @@ export default defineComponent({
 interface IProps {
 	type?: 'button' | 'submit'
 	btnSize?: 'sm' | 'md' | 'md2'
-	variant?: 'primary' | 'primaryOutline'
+	variant?: 'primary' | 'primaryOutline' | 'primaryGhost'
 	class?: string
 	disabled?: boolean
 }

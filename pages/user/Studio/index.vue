@@ -1,12 +1,12 @@
 <template>
 	<NuxtLayout name="user-admin">
-		<div class="max-w-[600px]">
-			<div class="flex gap-4">
+		<div class="lg:pr-0 pr-6 max-w-[600px]">
+			<div class="flex gap-2 sm:gap-4 flex-col sm:flex-row pt-8 mb-6">
 				<button
 					v-if="studios.length > 0"
 					@click="tab = 'list'"
 					type="button"
-					class="pt-8 text-2xl font-bold mb-6"
+					class="text-2xl font-bold"
 					:class="{
 						'text-orange-500 underline underline-offset-4': tab === 'list',
 					}"
@@ -16,7 +16,7 @@
 				<button
 					@click="tab = 'create'"
 					type="button"
-					class="pt-8 text-2xl font-bold mb-6"
+					class="text-2xl font-bold"
 					:class="{
 						'text-orange-500 underline underline-offset-4': tab === 'create',
 					}"
@@ -36,7 +36,7 @@
 						:value="`item-${index}`"
 					>
 						<AccordionTrigger class="hover:no-underline">
-							<span class="text-2xl font-semibold">
+							<span class="text-2xl font-semibold text-left">
 								{{ studio.name }}
 							</span>
 						</AccordionTrigger>
@@ -59,7 +59,7 @@
 				</Accordion>
 			</div>
 		</div>
-		<div class="max-w-[600px]" v-show="tab === 'create'">
+		<div class="lg:pr-0 pr-6 max-w-[600px]" v-show="tab === 'create'">
 			<div class="flex flex-col gap-8">
 				<StudioCreation @updated="loadStudios" />
 			</div>
@@ -69,7 +69,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import type { IStudio } from '~/helpers/types/studio'
+import type { TStudio } from '~/helpers/types/studio'
 import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
 
 export default defineComponent({
@@ -82,7 +82,7 @@ definePageMeta({
 })
 const loading = ref(true)
 const tab = ref<'create' | 'list'>('create')
-const studios = ref<IStudio[]>([])
+const studios = ref<TStudio[]>([])
 const { getStudios } = useStudio()
 
 async function loadStudios() {
@@ -100,7 +100,7 @@ onBeforeMount(async () => {
 	await loadStudios()
 })
 
-function gotoStudioSettings(studioData: IStudio) {
+function gotoStudioSettings(studioData: TStudio) {
 	const { useStudioSelected } = useAuth()
 	const studioId = useStudioSelected()
 

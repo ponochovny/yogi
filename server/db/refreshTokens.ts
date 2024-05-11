@@ -13,7 +13,7 @@ export const createRefreshToken = (refreshToken: {
 		data: refreshToken,
 	})
 }
-export const deleteRefreshToken = (refreshToken: any) => {
+export const deleteRefreshToken = (refreshToken: string) => {
 	return prisma.refreshToken.delete({
 		where: {
 			token: refreshToken,

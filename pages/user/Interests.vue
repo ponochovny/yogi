@@ -1,6 +1,6 @@
 <template>
 	<NuxtLayout name="user-admin">
-		<div class="max-w-[600px]">
+		<div class="lg:pr-0 pr-6 max-w-[600px]">
 			<h1 class="pt-8 text-2xl font-bold mb-6">Interests</h1>
 			<div class="flex flex-col gap-8">
 				<div class="flex flex-col gap-3">
@@ -50,7 +50,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import data from '~/helpers/offeringAttributes.json'
-import type { IUser } from '~/server/types'
+import type { TUser } from '~/server/types'
 import { toast } from 'vue-sonner'
 
 export default defineComponent({
@@ -63,7 +63,7 @@ definePageMeta({
 })
 const { useAuthUser, updateProfile } = useAuth()
 
-const user = useAuthUser() as Ref<IUser>
+const user = useAuthUser() as Ref<TUser>
 const _data = data
 
 const updatedData = reactive<any>({
@@ -96,7 +96,7 @@ setData(user.value)
 watch(user, (val) => {
 	if (val) setData(val)
 })
-function setData(val: IUser) {
+function setData(val: TUser) {
 	if (val) {
 		updatedData.categories = [...val.interestsCategory]
 		updatedData.types = [...val.interestsType]

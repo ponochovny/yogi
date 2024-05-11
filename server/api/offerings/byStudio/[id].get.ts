@@ -1,10 +1,11 @@
 import { getOfferingsByStudioId } from '~/server/db/offerings'
 import { offeringTransformer } from '~/server/transformers/offering'
+import type { IOfferingResponse } from '~/server/types/offering'
 
 export default defineEventHandler(async (event) => {
 	const { id } = getRouterParams(event)
 
-	const offerings = await getOfferingsByStudioId({
+	const offerings = await getOfferingsByStudioId<IOfferingResponse[]>({
 		include: {
 			studio: {
 				include: {

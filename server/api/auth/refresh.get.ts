@@ -6,25 +6,13 @@ export default defineEventHandler(async (event) => {
 	const refreshToken = getCookie(event, 'refresh_token')
 
 	if (!refreshToken) {
-		return sendError(
-			event,
-			createError({
-				statusCode: 401,
-				statusMessage: 'Refresh token is invalid',
-			})
-		)
+		return { statusCode: 200, body: { error: 'No refresh token' } }
 	}
 
 	const rToken = await getRefreshTokenByToken(refreshToken)
 
 	if (!rToken) {
-		return sendError(
-			event,
-			createError({
-				statusCode: 401,
-				statusMessage: 'Refresh token is invalid',
-			})
-		)
+		return { statusCode: 200, body: { error: 'Refresh token is invalid' } }
 	}
 
 	const token = decodeRefreshToken(refreshToken)
@@ -33,24 +21,18 @@ export default defineEventHandler(async (event) => {
 		const user = await getUserById(token?.userId as string)
 
 		if (!user)
-			return sendError(
-				event,
-				createError({
-					statusCode: 400,
-					statusMessage: 'User not found',
-				})
-			)
+			throw createError({
+				statusCode: 400,
+				statusMessage: 'User not found',
+			})
 
 		const { accessToken } = generateTokens(user)
 
 		return { access_token: accessToken }
 	} catch (error) {
-		return sendError(
-			event,
-			createError({
-				statusCode: 500,
-				statusMessage: 'Something went wrong',
-			})
-		)
+		throw createError({
+			statusCode: 500,
+			statusMessage: 'Something went wrong',
+		})
 	}
 })

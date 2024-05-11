@@ -1,4 +1,28 @@
-export interface IUser {
+export type TUser = Omit<
+	IUserResponse,
+	'password' | 'createdAt' | 'updatedAt' | 'avatars'
+>
+export type TPractitioner = Omit<
+	IUserResponse,
+	| 'password'
+	| 'createdAt'
+	| 'updatedAt'
+	| 'avatars'
+	| 'interestsCategory'
+	| 'interestsType'
+>
+
+export type TOwner = Omit<
+	IUserResponse,
+	| 'password'
+	| 'createdAt'
+	| 'updatedAt'
+	| 'interestsCategory'
+	| 'interestsType'
+	| 'email'
+>
+
+export interface IUserResponse {
 	id: string
 	email: string
 	password: string
@@ -12,4 +36,22 @@ export interface IUser {
 
 	createdAt: Date
 	updatedAt: Date
+}
+
+export interface IPractitionerResponse {
+	id: string
+	userId: string
+	studioId: any
+	offeringId: string
+	user: IUserResponse
+}
+
+export interface IMediaFile {
+	url: string
+	providerPublicId: string
+	bannerStudioId?: string | null
+	logoStudioId?: string | null
+	userId?: string
+	logoOfferingId?: string | null
+	bannerOfferingId?: string | null
 }

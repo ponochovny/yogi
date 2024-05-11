@@ -47,10 +47,14 @@
 							{{ practitioner.data.bio }}
 						</div>
 					</div>
-					<Button class="self-start">Tip {{ practitioner.data.name }}</Button>
+					<Button disabled class="self-start">
+						Tip {{ practitioner.data.name }}
+					</Button>
 				</div>
 				<div class="pt-20">
-					<Button>Book private appointment {{ practitioner.data.name }}</Button>
+					<Button disabled>
+						Book private appointment {{ practitioner.data.name }}
+					</Button>
 				</div>
 			</div>
 		</div>
@@ -62,10 +66,10 @@
  * Single practitioner page by user id
  */
 import { defineComponent } from 'vue'
-import type { IOffering } from '~/helpers/types/offering'
-import type { IStudio } from '~/helpers/types/studio'
-import type { IUser } from '~/server/types'
+import type { TStudio } from '~/helpers/types/studio'
+import type { TUser } from '~/server/types'
 import { MapPinIcon } from '@heroicons/vue/24/outline'
+import type { TOffering } from '~/helpers/types/offering'
 
 export default defineComponent({
 	name: 'PractitionerPage',
@@ -75,6 +79,6 @@ export default defineComponent({
 const route = useRoute()
 const { id } = route.params
 const { data: practitioner } = await useFetch<{
-	data: IUser & { studios: IStudio[]; offerings: IOffering[] }
+	data: TUser & { studios: TStudio[]; offerings: TOffering[] }
 }>('/api/practitioners/' + id)
 </script>

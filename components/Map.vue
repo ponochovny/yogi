@@ -147,7 +147,7 @@ interface IProps {
 	sMarker?: TMarker
 }
 const props = withDefaults(defineProps<IProps>(), {
-	theme: 2,
+	theme: 1,
 	maxZoom: 18,
 	minZoom: 3,
 	zoom: 14,
@@ -167,7 +167,7 @@ const emit = defineEmits([
 const show = ref(false)
 const _zoom = ref(14)
 const _center = ref<number[]>([0, 0])
-const _theme = ref<number>(2)
+const _theme = ref<number>(1)
 // watch(
 // 	() => [props.zoom, props.center, props.theme],
 // 	([newZoom, newCenter, newTheme], [oldZoom, oldCenter, oldTheme]) => {

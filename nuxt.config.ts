@@ -9,6 +9,12 @@ export default defineNuxtConfig({
 		'@nuxt/image',
 	],
 
+	image: {
+		cloudinary: {
+			baseURL: 'https://res.cloudinary.com/dllruwqbd/image/fetch/',
+		},
+	},
+
 	primevue: {
 		components: {
 			include: ['FileUpload'],
@@ -44,6 +50,13 @@ export default defineNuxtConfig({
 
 	app: {
 		head: {
+			title: 'Yogi - Your wellness home',
+			meta: [
+				{ name: 'description', content: 'All you need for your wellness' },
+			],
+			htmlAttrs: {
+				lang: 'en',
+			},
 			link: [
 				{
 					hid: 'icon',
@@ -53,5 +66,12 @@ export default defineNuxtConfig({
 				},
 			],
 		},
+	},
+
+	routeRules: {
+		// '/**': { isr: 60 * 60 * 6 }, // TODO: home page search requests not working :/
+		// '/search': { ssr: false }, // TODO: set useLazyFetch
+		'/user/**': { ssr: false },
+		'/checkout': { ssr: false },
 	},
 })

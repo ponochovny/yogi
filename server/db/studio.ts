@@ -1,22 +1,9 @@
-import type { IStudio } from '~/helpers/types/studio'
 import { prisma } from '.'
 import type { Prisma } from '@prisma/client'
 import type { DefaultArgs } from '@prisma/client/runtime/library'
+import type { TUpdateStudioData, TCreateStudioData } from '../types/studio'
 
-export const createStudio = (
-	studioData: Pick<
-		IStudio,
-		| 'bio'
-		| 'currency'
-		| 'mission'
-		| 'name'
-		| 'slug'
-		| 'timezone'
-		| 'ownerId'
-		| 'categories'
-		| 'types'
-	> & { location: string }
-) => {
+export const createStudio = (studioData: TCreateStudioData) => {
 	return prisma.studio.create({
 		data: {
 			bio: studioData.bio,
@@ -33,17 +20,7 @@ export const createStudio = (
 	})
 }
 export const updateStudio = (
-	studioData: Pick<
-		IStudio,
-		| 'bio'
-		| 'currency'
-		| 'mission'
-		| 'name'
-		| 'timezone'
-		| 'ownerId'
-		| 'categories'
-		| 'types'
-	> & { location: string },
+	studioData: TUpdateStudioData,
 	studioId: string
 ) => {
 	return prisma.studio.update({
@@ -59,7 +36,7 @@ export const updateStudio = (
 			categories: studioData.categories,
 			types: studioData.types,
 			location: studioData.location,
-			ownerId: studioData.ownerId,
+			// ownerId: studioData.ownerId,
 		},
 	})
 }

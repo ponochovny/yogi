@@ -9,18 +9,34 @@
 				:mode="mode"
 				:value="modelValue"
 				@update:model-value="emit('update:model-value', $event)"
+				@close="emit('close')"
 				:options="options"
 				:classes="{
-					container: 'multiselect !border-gray-300 !mt-1 !rounded-md',
+					container:
+						variant === 'button'
+							? 'flex relative border border-orange-600/30 bg-transparent text-orange-600 rounded-full hover:bg-orange-400/10 hover:text-orange-600 active:bg-orange-400/5 disabled:bg-transparent disabled:opacity-50 h-[40px] ring ring-orange-300/0 !transition'
+							: 'multiselect !border-gray-300 !mt-1 !rounded-md',
+					placeholder:
+						variant === 'button'
+							? 'w-full px-5 pb-0.5 absolute inset-0 flex items-center justify-center'
+							: 'multiselect-placeholder',
+					caret:
+						variant === 'button'
+							? 'multiselect-caret !bg-orange-600/50'
+							: 'multiselect-caret',
+					dropdown:
+						variant === 'button'
+							? 'multiselect-dropdown scrollbar !rounded-b-2xl !rounded-t-none !-bottom-[13px] !border-0 !border-t-[1px] !border-gray-200/80 !shadow-md scrollbar-thin'
+							: 'multiselect-dropdown scrollbar',
+
 					containerOpen:
 						'_is-open border-orange-300 ring ring-orange-300 ring-opacity-50 !border-orange-300',
 					containerActive:
-						'_is-active border-orange-300 ring ring-orange-300 ring-opacity-50 !border-orange-300',
+						'_is-active border-orange-300 ring !ring-orange-300 !ring-opacity-50 !border-orange-300',
 					optionPointed: 'bg-orange-400/10',
 					optionSelected: '',
 					optionSelectedPointed: 'bg-orange-400/10',
 					search: 'multiselect-search focus:ring-0',
-					dropdown: 'multiselect-dropdown scrollbar',
 					tagsSearch:
 						'multiselect-tags-search !ring-0 !border-b-2 !border-solid !border-transparent focus:!border-orange-400',
 					tag: 'multiselect-tag !bg-orange-400',
@@ -69,6 +85,20 @@
 						</span>
 					</div>
 				</template>
+				<template v-if="variant === 'button'" #multiplelabel="{ values }">
+					<div class="flex gap-2 truncate pl-4 w-full pr-2 mb-0.5">
+						<span
+							v-for="(val, idx) of (values as any[])"
+							:key="field ? val[field] : val"
+						>
+							{{ field ? val[field] : val
+							}}{{ idx + 1 === (values as any[]).length ? '' : ',' }}
+						</span>
+					</div>
+					<div v-if="(values as any[]).length > 1" class="mx-1">
+						{{ '+' + ((values as any[]).length - 1) }}
+					</div>
+				</template>
 			</Multiselect>
 		</label>
 	</div>
@@ -86,6 +116,7 @@ export default defineComponent({
 </script>
 <script lang="ts" setup>
 interface IProps {
+	variant?: 'button'
 	mode?: 'single' | 'multiple' | 'tags'
 	modelValue: any
 	label?: string
@@ -115,7 +146,7 @@ const props = withDefaults(defineProps<IProps>(), {
 	minChars: 0,
 	openDirection: 'bottom',
 })
-const emit = defineEmits(['update:model-value'])
+const emit = defineEmits(['update:model-value', 'close'])
 
 const componentRef = ref<any>(null)
 function open() {

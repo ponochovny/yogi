@@ -1,12 +1,12 @@
 <template>
 	<div class="relative max-w-screen-xl pt-3 mx-auto" :class="cn(props.class)">
-		<Header />
+		<Header class="px-4 xl:px-0" />
 		<div class="py-10">
 			<div class="bg-white rounded-md flex">
-				<div class="pr-10 w-full max-w-[220px]">
+				<div class="lg:pr-10 w-auto lg:w-full lg:max-w-[220px]">
 					<AdminSidebar :menu-items="_userMenu" />
 				</div>
-				<div class="pl-10 border-l pb-10 w-full">
+				<div class="pl-6 md:pl-10 border-l pb-10 w-full">
 					<slot />
 				</div>
 			</div>

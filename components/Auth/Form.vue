@@ -67,6 +67,7 @@ interface IProps {
 }
 const props = defineProps<IProps>()
 const emit = defineEmits(['mode'])
+const route = useRoute()
 
 const data = reactive({
 	name: '',
@@ -76,7 +77,7 @@ const data = reactive({
 	loading: false,
 })
 
-async function handleLogin() {
+async function handleLogin(redirect?: string) {
 	const { login } = useAuth()
 
 	data.loading = true
@@ -85,14 +86,14 @@ async function handleLogin() {
 			email: data.email,
 			password: data.password,
 		})
-		navigateTo('/')
+		navigateTo(redirect ? '/' + redirect : '/')
 	} catch (error) {
 		console.log(error)
 	} finally {
 		data.loading = false
 	}
 }
-async function handleRegister() {
+async function handleRegister(redirect?: string) {
 	const { register } = useAuth()
 
 	data.loading = true
@@ -103,7 +104,7 @@ async function handleRegister() {
 			password: data.password,
 			repeatPassword: data.repeatPassword,
 		})
-		navigateTo('/')
+		navigateTo(redirect ? '/' + redirect : '/')
 	} catch (error) {
 		console.log(error)
 	} finally {
@@ -112,6 +113,7 @@ async function handleRegister() {
 }
 
 function handleAuth() {
-	props.mode === 'register' ? handleRegister() : handleLogin()
+	const redirect = route.query.redirect?.toString()
+	props.mode === 'register' ? handleRegister(redirect) : handleLogin(redirect)
 }
 </script>

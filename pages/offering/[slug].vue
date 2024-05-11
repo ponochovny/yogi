@@ -1,7 +1,7 @@
 <template>
 	<MainContainer>
 		<template v-if="offeringData">
-			<div class="flex flex-col gap-3 mt-14 mb-10">
+			<div class="flex flex-col gap-3 mt-6 sm:mt-14 mb-4 sm:mb-10">
 				<div class="flex gap-1 text-sm">
 					<div class="flex gap-1 text-xs font-semibold">
 						<span
@@ -29,8 +29,10 @@
 						</span>
 					</div>
 				</div>
-				<div class="text-3xl font-semibold">{{ offeringData.data.name }}</div>
-				<div class="flex gap-4 items-center">
+				<div class="text-2xl sm:text-3xl font-semibold">
+					{{ offeringData.data.name }}
+				</div>
+				<div class="flex gap-2 sm:gap-4 sm:items-center flex-col sm:flex-row">
 					<div class="flex gap-2 items-center">
 						<CalendarIcon class="w-5 text-orange-500 stroke-1.5" />
 						<span class="font-semibold text-sm text-gray-600">
@@ -56,7 +58,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="h-[450px] overflow-hidden rounded-3xl">
+			<div
+				class="h-[250px] sm:h-[350px] xl:h-[450px] overflow-hidden rounded-3xl"
+			>
 				<NuxtImg
 					:src="
 						offeringData.data.banners.length
@@ -66,24 +70,35 @@
 					:alt="offeringData.data.name"
 					:title="offeringData.data.name"
 					class="object-cover w-full h-full"
+					:provider="
+						offeringData.data.banners.length ? 'cloudinary' : undefined
+					"
+					placeholder
+					sizes="400px md:800px lg:1280px"
+					format="webp"
 					:class="{
 						'opacity-70': !offeringData.data.banners.length,
 					}"
 				/>
 			</div>
 			<div
-				class="relative bg-white rounded-3xl -mt-20 mx-auto w-[99%] px-16 py-20 flex gap-8"
+				class="relative bg-white rounded-3xl -mt-20 mx-auto w-full md:w-[99%] px-6 sm:px-10 lg:px-16 py-10 md:py-20 flex gap-8 flex-col-reverse lg:flex-row"
 			>
-				<div class="flex flex-col gap-10 w-[calc(100%_-_400px)]">
-					<div v-if="offeringData.data.description" class="flex flex-col gap-6">
+				<div
+					class="flex flex-col gap-4 sm:gap-8 w-full lg:w-[calc(100%_-_200px)] xl:w-[calc(100%_-_400px)]"
+				>
+					<div
+						v-if="offeringData.data.description"
+						class="flex flex-col gap-3 sm:gap-6"
+					>
 						<div class="font-semibold text-lg">
 							{{ 'About ' + offeringData.data.name }}
 						</div>
-						<div class="whitespace-pre-line leading-7">
+						<div class="whitespace-pre-line leading-6 sm:leading-7">
 							{{ offeringData.data.description }}
 						</div>
 					</div>
-					<div class="flex flex-col gap-6">
+					<div class="flex flex-col gap-3 sm:gap-6">
 						<div class="font-semibold text-lg">Host</div>
 						<div class="flex gap-4 items-center">
 							<NuxtImg
@@ -91,6 +106,9 @@
 								:alt="offeringData.data.studio?.name || ''"
 								:title="offeringData.data.studio?.name"
 								class="w-20 h-20 rounded-full object-cover object-center"
+								provider="cloudinary"
+								format="webp"
+								width="80"
 							/>
 							<NuxtLink :to="`/studio/${offeringData.data.studio?.slug || ''}`">
 								<span class="font-semibold text-lg">
@@ -101,7 +119,7 @@
 					</div>
 					<div
 						v-if="offeringData.data.practitioners.length"
-						class="flex flex-col gap-6"
+						class="flex flex-col gap-3 sm:gap-6"
 					>
 						<div class="font-semibold text-lg">Practitioners</div>
 						<div
@@ -114,6 +132,9 @@
 								:alt="practitioner.name || ''"
 								:title="practitioner.name"
 								class="w-12 rounded-full"
+								provider="cloudinary"
+								format="webp"
+								width="48"
 							/>
 							<NuxtLink :to="'/practitioner/' + practitioner.id">
 								<span class="font-semibold">
@@ -122,7 +143,7 @@
 							</NuxtLink>
 						</div>
 					</div>
-					<div class="flex flex-col gap-6">
+					<div class="flex flex-col gap-3 sm:gap-6">
 						<div class="font-semibold text-lg">Location</div>
 						<div
 							class="border rounded-xl font-semibold flex flex-col"
@@ -157,8 +178,8 @@
 					</div>
 				</div>
 				<div
-					v-if="offeringData.data.tickets.length"
-					class="bg-red-200/20 rounded-xl p-10 w-[400px] self-start flex flex-col gap-4"
+					v-if="offeringData.data.tickets?.length"
+					class="bg-red-200/20 rounded-xl p-4 sm:p-6 md:p-10 w-full lg:w-[400px] self-start flex flex-col gap-4"
 				>
 					<button
 						v-for="ticket of offeringData.data.tickets"
@@ -168,7 +189,7 @@
 						<div
 							class="flex gap-4 px-2 py-1 border rounded-lg border-gray-400 text-left text-black transition-colors"
 							:class="{
-								'hover:bg-orange-200/20 hover:border-orange-400/50 pl-7':
+								'hover:bg-orange-200/20 hover:border-orange-400/50':
 									selectedTicket !== ticket.id,
 								'bg-orange-200/20 border-orange-400/50':
 									selectedTicket === ticket.id,
@@ -176,23 +197,25 @@
 						>
 							<TicketIcon
 								v-if="selectedTicket === ticket.id"
-								class="w-10 text-gray-700 stroke-1"
+								class="w-10 text-gray-700 stroke-1 shrink-0"
 							/>
+							<div v-else class="w-10 block"></div>
 							<div class="flex flex-col">
 								<p>{{ ticket.name }}</p>
 								<p class="text-xs">{{ ticket.description }}</p>
 								<span class="font-semibold text-lg">
-									{{
-										currencySymbolByCode(ticket.currency) + '' + ticket.price
-									}}
+									{{ ticket.price }}
 								</span>
 							</div>
 						</div>
 					</button>
-					<div class="text-rose-500">
+					<div class="text-rose-500" :class="{ hidden: !error }">
 						{{ error && !selectedTicket ? error : '' }}
 					</div>
-					<Button @click="handleCheckout(selectedTicket, 1)">
+					<Button
+						@click="handleCheckout(selectedTicket, 1)"
+						class="mx-auto w-full max-w-[300px] lg:w-full"
+					>
 						<span class="font-semibold mx-auto">Checkout</span>
 					</Button>
 				</div>
@@ -203,8 +226,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { currencySymbolByCode } from '~/helpers'
-import type { IOffering } from '~/helpers/types/offering'
 import {
 	CalendarIcon,
 	MapPinIcon,
@@ -212,6 +233,7 @@ import {
 	ClockIcon,
 } from '@heroicons/vue/24/outline'
 import { dateString } from '~/lib/utils'
+import type { TOffering } from '~/helpers/types/offering'
 
 export default defineComponent({
 	name: 'SingleOffering',
@@ -222,7 +244,7 @@ const route = useRoute()
 const router = useRouter()
 const error = ref('')
 
-const { data: offeringData } = await useFetch<{ data: IOffering }>(
+const { data: offeringData } = await useFetch<{ data: TOffering }>(
 	`/api/offerings/${route.params.slug}`
 )
 

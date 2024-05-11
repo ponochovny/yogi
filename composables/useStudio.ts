@@ -1,5 +1,5 @@
 import type { TMarker } from '~/helpers/types/map'
-import type { IStudio } from '~/helpers/types/studio'
+import type { TStudio } from '~/helpers/types/studio'
 
 interface IData {
 	name: string
@@ -79,13 +79,21 @@ export default () => {
 		})
 	}
 
-	const getStudios = () => {
-		return useFetchApi<{ data: IStudio[] }>('/api/studios')
+	const getStudios = (queries?: string) => {
+		return useFetchApi<{ data: TStudio[] }>(
+			`/api/studios${queries ? '?' + queries : ''}`
+		)
+	}
+	const getStudiosOpen = (queries?: string) => {
+		return useFetch<{ data: TStudio[] }>(
+			`/api/studios${queries ? '?' + queries : ''}`
+		)
 	}
 
 	return {
 		createStudio,
 		updateStudio,
 		getStudios,
+		getStudiosOpen,
 	}
 }

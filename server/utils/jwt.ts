@@ -1,7 +1,7 @@
 import jwt, { type JwtPayload } from 'jsonwebtoken'
-import type { IUser } from '../types'
+import type { IUserResponse } from '../types'
 
-const generateAccessToken = (user: IUser) => {
+const generateAccessToken = (user: IUserResponse) => {
 	const config = useRuntimeConfig()
 
 	return jwt.sign({ userId: user.id }, config.jwtAccessSecret as string, {
@@ -9,7 +9,7 @@ const generateAccessToken = (user: IUser) => {
 	})
 }
 
-const generateRefreshToken = (user: IUser) => {
+const generateRefreshToken = (user: IUserResponse) => {
 	const config = useRuntimeConfig()
 
 	return jwt.sign({ userId: user.id }, config.jwtRefreshSecret as string, {
@@ -45,7 +45,7 @@ export const decodeAccessToken = (token: string) => {
 	}
 }
 
-export const generateTokens = (user: IUser) => {
+export const generateTokens = (user: IUserResponse) => {
 	const accessToken = generateAccessToken(user)
 	const refreshToken = generateRefreshToken(user)
 

@@ -1,6 +1,6 @@
 <template>
 	<NuxtLayout name="user-admin">
-		<div class="max-w-[600px]">
+		<div class="pr-6 lg:pr-0 max-w-[600px]">
 			<h1 class="pt-8 text-2xl font-bold mb-6">Edit profile</h1>
 			<div class="flex flex-col gap-3">
 				<LogoFile
@@ -30,7 +30,7 @@
 <script lang="ts">
 import { defineComponent, watch } from 'vue'
 import { toast } from 'vue-sonner'
-import type { IUser } from '~/server/types'
+import type { TUser } from '~/server/types'
 
 export default defineComponent({
 	name: 'ProfilePage',
@@ -45,7 +45,7 @@ const { useAuthUser, updateProfile } = useAuth()
 const selectedFileAvatar = ref<any>(null)
 const avatarUrl = ref<string | null>(null)
 
-const user = useAuthUser() as Ref<IUser>
+const user = useAuthUser() as Ref<TUser>
 const actionButtonDisabled = computed(() => {
 	if (!user.value) return true
 	const obj1 = { ...data }

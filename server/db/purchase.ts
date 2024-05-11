@@ -1,14 +1,9 @@
 import type { DefaultArgs } from '@prisma/client/runtime/library'
 import { prisma } from '.'
 import type { Prisma } from '@prisma/client'
+import type { ICreatePurchaseData } from '../types/purchase'
 
-export const createPurchase = (data: {
-	id: string
-	receipt_email: string
-	user_id: string
-	user_name: string | null
-	ticket_id: string
-}) =>
+export const createPurchase = (data: ICreatePurchaseData) =>
 	prisma.purchase.create({
 		data: {
 			userId: data.user_id,
