@@ -42,14 +42,15 @@
 					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
 						Studios & Event Hosts
 					</p>
-					<div class="flex gap-6 overflow-x-auto transparent-edge">
-						<StudioCard
+					<SwiperBlock :length="studios?.data.length">
+						<SwiperSlide
 							v-for="studio of studios?.data"
 							:key="studio?.id"
-							:studio="studio"
 							class="xl:min-w-[405px] xl:max-w-[405px] min-w-[305px] max-w-[305px]"
-						/>
-					</div>
+						>
+							<StudioCard :studio="studio" />
+						</SwiperSlide>
+					</SwiperBlock>
 					<MainNoContent
 						v-if="!studios?.data.length"
 						title="There are no corresponding studios"
@@ -77,23 +78,27 @@
 						<span class="text-lg sm:text-xl">
 							&laquo;{{ quote?.data.quote }}&raquo;
 						</span>
-						<span class="font-semibold text-sm sm:text-base">{{
-							quote?.data.author
-						}}</span>
+						<span class="font-semibold text-sm sm:text-base">
+							{{ quote?.data.author }}
+						</span>
 					</div>
 				</div>
 				<div>
 					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
 						Upcoming virtual
 					</p>
-					<div class="flex gap-6 overflow-x-auto transparent-edge">
-						<OfferingCard
+					<SwiperBlock :length="offeringsOnline?.data.length">
+						<SwiperSlide
 							v-for="offering of offeringsOnline?.data"
 							:key="offering?.id"
-							:offering="offering"
-							class="xl:min-w-[300px] xl:max-w-[300px]"
-						/>
-					</div>
+							class="min-w-[300px] max-w-[300px]"
+						>
+							<OfferingCard
+								:offering="offering"
+								class="min-w-[300px] max-w-[300px]"
+							/>
+						</SwiperSlide>
+					</SwiperBlock>
 					<MainNoContent
 						v-if="!offeringsOnline?.data.length"
 						title="There are no corresponding offerings"
@@ -104,14 +109,15 @@
 					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
 						Wellness getaways
 					</p>
-					<div class="flex gap-6 overflow-x-auto transparent-edge">
-						<OfferingCard
+					<SwiperBlock :length="offeringsWellness?.data.length">
+						<SwiperSlide
 							v-for="offering of offeringsWellness?.data"
 							:key="offering?.id"
-							:offering="offering"
 							class="min-w-[300px] max-w-[300px]"
-						/>
-					</div>
+						>
+							<OfferingCard :offering="offering" />
+						</SwiperSlide>
+					</SwiperBlock>
 					<MainNoContent
 						v-if="!offeringsWellness?.data.length"
 						title="There are no corresponding offerings"
@@ -122,14 +128,18 @@
 					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
 						Deeper Education
 					</p>
-					<div class="flex gap-6 overflow-x-auto transparent-edge">
-						<OfferingCard
+					<SwiperBlock :length="offeringsEducation?.data.length">
+						<SwiperSlide
 							v-for="offering of offeringsEducation?.data"
 							:key="offering?.id"
-							:offering="offering"
 							class="min-w-[300px] max-w-[300px]"
-						/>
-					</div>
+						>
+							<OfferingCard
+								:offering="offering"
+								class="min-w-[300px] max-w-[300px]"
+							/>
+						</SwiperSlide>
+					</SwiperBlock>
 					<MainNoContent
 						v-if="!offeringsEducation?.data.length"
 						title="There are no corresponding offerings"
@@ -190,16 +200,3 @@ const { data: studios } = await getStudiosOpen(
 )
 const { data: quote } = useFetch('/api/quote')
 </script>
-
-<style lang="scss">
-.transparent-edge {
-	mask-image: linear-gradient(
-		to right,
-		black 0%,
-		rgba(0, 0, 0, 1) 95%,
-		rgba(0, 0, 0, 0.5) 97%,
-		rgba(0, 0, 0, 0.05) 100%
-	);
-	padding-right: 50px;
-}
-</style>
