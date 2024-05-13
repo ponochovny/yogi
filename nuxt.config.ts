@@ -7,6 +7,7 @@ export default defineNuxtConfig({
 		'nuxt-lodash',
 		'nuxt-primevue',
 		'@nuxt/image',
+		'nuxt-swiper',
 	],
 
 	image: {
