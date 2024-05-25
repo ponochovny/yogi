@@ -194,7 +194,7 @@ export default defineComponent({
 <script lang="ts" setup>
 interface IProps {
 	updateData?: boolean
-	offering?: TOffering
+	offering?: TOffering | null
 }
 const props = withDefaults(defineProps<IProps>(), {
 	updateData: false,
