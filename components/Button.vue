@@ -14,6 +14,10 @@
 					variant === 'primaryOutline',
 			},
 			{
+				'border border-rose-600/30 bg-transparent text-rose-600 rounded-full hover:bg-rose-400/10 hover:text-rose-600 active:bg-rose-400/5 disabled:bg-transparent disabled:opacity-50 ring ring-rose-300/0 active:ring-rose-300 active:ring-opacity-50 disabled:ring-0':
+					variant === 'dangerOutline',
+			},
+			{
 				'bg-transparent text-orange-600 rounded-full hover:bg-orange-400/10 hover:text-orange-600 active:bg-orange-400/5 disabled:bg-transparent disabled:opacity-50':
 					variant === 'primaryGhost',
 			},
@@ -37,7 +41,7 @@ export default defineComponent({
 interface IProps {
 	type?: 'button' | 'submit'
 	btnSize?: 'sm' | 'md' | 'md2'
-	variant?: 'primary' | 'primaryOutline' | 'primaryGhost'
+	variant?: 'primary' | 'primaryOutline' | 'primaryGhost' | 'dangerOutline'
 	class?: string
 	disabled?: boolean
 }
