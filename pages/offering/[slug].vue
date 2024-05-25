@@ -109,6 +109,7 @@
 								provider="cloudinary"
 								format="webp"
 								width="80"
+								height="80"
 							/>
 							<NuxtLink :to="`/studio/${offeringData.data.studio?.slug || ''}`">
 								<span class="font-semibold text-lg">
@@ -122,25 +123,28 @@
 						class="flex flex-col gap-3 sm:gap-6"
 					>
 						<div class="font-semibold text-lg">Practitioners</div>
-						<div
-							class="flex gap-4 items-center"
-							v-for="practitioner of offeringData.data.practitioners"
-							:key="practitioner.id"
-						>
-							<NuxtImg
-								:src="practitioner.profileImage || ''"
-								:alt="practitioner.name || ''"
-								:title="practitioner.name"
-								class="w-12 rounded-full"
-								provider="cloudinary"
-								format="webp"
-								width="48"
-							/>
-							<NuxtLink :to="'/practitioner/' + practitioner.id">
-								<span class="font-semibold">
-									{{ practitioner.name }}
-								</span>
-							</NuxtLink>
+						<div class="flex flex-wrap gap-4 flex-col sm:flex-row">
+							<div
+								class="flex gap-4 items-center"
+								v-for="practitioner of offeringData.data.practitioners"
+								:key="practitioner.id"
+							>
+								<NuxtImg
+									:src="practitioner.profileImage || ''"
+									:alt="practitioner.name || ''"
+									:title="practitioner.name"
+									class="w-12 h-12 rounded-full"
+									provider="cloudinary"
+									format="webp"
+									width="48"
+									height="48"
+								/>
+								<NuxtLink :to="'/practitioner/' + practitioner.id">
+									<span class="font-semibold">
+										{{ practitioner.name }}
+									</span>
+								</NuxtLink>
+							</div>
 						</div>
 					</div>
 					<div class="flex flex-col gap-3 sm:gap-6">

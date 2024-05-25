@@ -6,9 +6,10 @@
 					v-if="studios.length > 0"
 					@click="tab = 'list'"
 					type="button"
-					class="text-2xl font-bold"
+					class="text-2xl font-bold transition-colors"
 					:class="{
 						'text-orange-500 underline underline-offset-4': tab === 'list',
+						'text-gray-400 hover:text-black': tab !== 'list',
 					}"
 				>
 					Studios list
@@ -80,6 +81,8 @@ export default defineComponent({
 definePageMeta({
 	middleware: ['user'],
 })
+const { useAuthUser } = useAuth()
+const user = useAuthUser()
 const loading = ref(true)
 const tab = ref<'create' | 'list'>('create')
 const studios = ref<TStudio[]>([])
@@ -96,9 +99,13 @@ async function loadStudios() {
 	}
 }
 
-onBeforeMount(async () => {
-	await loadStudios()
-})
+watch(
+	() => user.value,
+	(val) => {
+		if (val) loadStudios()
+	},
+	{ immediate: true }
+)
 
 function gotoStudioSettings(studioData: TStudio) {
 	const { useStudioSelected } = useAuth()

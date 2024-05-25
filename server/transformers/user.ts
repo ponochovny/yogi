@@ -1,7 +1,7 @@
 import type { TUser, IUserResponse, TPractitioner, TOwner } from '../types'
 
 export const userTransformer = (user: IUserResponse): TUser => {
-	const { password, createdAt, updatedAt, avatars, ...rest } = user
+	const { password, createdAt, updatedAt, avatars, studio, ...rest } = user
 	return {
 		...rest,
 	}

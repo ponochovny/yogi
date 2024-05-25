@@ -1,3 +1,5 @@
+import type { IStudioResponse } from './studio'
+
 export type TUser = Omit<
 	IUserResponse,
 	'password' | 'createdAt' | 'updatedAt' | 'avatars'
@@ -33,6 +35,8 @@ export interface IUserResponse {
 	interestsType: string[]
 
 	avatars?: { url: string; id: string }[]
+
+	studio?: IStudioResponse
 
 	createdAt: Date
 	updatedAt: Date
