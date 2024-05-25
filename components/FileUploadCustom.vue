@@ -9,7 +9,7 @@
 			class="flex gap-x-2 gap-y-2 flex-wrap border rounded-xl p-3 mb-2"
 		>
 			<div
-				v-for="(fileUrl, index) of uploaded as any[]"
+				v-for="(fileUrl, index) of (uploaded as any[])"
 				:key="fileUrl"
 				class="relative w-24 h-24 shadow-lg border rounded-md"
 			>
@@ -137,6 +137,7 @@
 </template>
 
 <script setup lang="ts">
+import FileUpload from 'primevue/fileupload'
 import { ref } from 'vue'
 import { usePrimeVue } from 'primevue/config'
 import { XMarkIcon } from '@heroicons/vue/24/outline'

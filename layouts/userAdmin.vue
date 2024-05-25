@@ -1,12 +1,12 @@
 <template>
-	<div class="relative max-w-screen-xl pt-3 mx-auto" :class="cn(props.class)">
-		<Header class="px-4 xl:px-0" />
+	<div class="relative max-w-screen-[1920px] pt-3 mx-auto">
+		<Header class="px-4" />
 		<div class="py-10">
 			<div class="bg-white rounded-md flex">
 				<div class="lg:pr-10 w-auto lg:w-full lg:max-w-[220px]">
-					<AdminSidebar :menu-items="_userMenu" />
+					<AdminSidebar :menu-items="_menuItems" />
 				</div>
-				<div class="pl-6 md:pl-10 border-l pb-10 w-full">
+				<div class="pl-12 md:pl-16 border-l pb-10 w-full">
 					<slot />
 				</div>
 			</div>
@@ -16,17 +16,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { cn } from '@/lib/utils'
-import { userMenu } from '~/helpers/adminPanel'
+import { userOfferingSettingsMenu } from '~/helpers/adminPanel'
 
 export default defineComponent({
-	name: 'UserAdminLayout',
+	name: 'UserOfferingSettingsLayout',
 })
 </script>
 <script lang="ts" setup>
-interface IProps {
-	class?: string
-}
-const props = defineProps<IProps>()
-const _userMenu = userMenu
+const props = defineProps<{ creation?: boolean }>()
+const _menuItems = userOfferingSettingsMenu(props.creation)
 </script>

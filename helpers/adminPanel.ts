@@ -30,6 +30,28 @@ export const userOfferingSettingsMenu = (creation?: boolean) =>
 		const studioSelected = useStudioSelected()
 		const id = studioSelected.value?.id || route.params?.id || ''
 
+		const defaultMenu = [
+			{
+				name: 'Edit profile',
+				icon: PencilSquareIcon,
+				link: '/user/profile',
+			},
+			{
+				name: 'Interests',
+				icon: SparklesIcon,
+				link: '/user/interests',
+			},
+			{
+				name: 'Studio',
+				icon: UserGroupIcon,
+				link: '/user/studio',
+			},
+		]
+
+		const isDefaultMenu = defaultMenu.find((el) => el.link === route.path)
+
+		if (isDefaultMenu) return defaultMenu
+
 		if (creation) {
 			return [
 				{
