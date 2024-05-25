@@ -23,24 +23,36 @@ export const userMenu = [
 		link: '/user/studio',
 	},
 ]
-export const userOfferingSettingsMenu = computed(() => {
-	const { useStudioSelected } = useAuth()
-	const route = useRoute()
-	const studioSelected = useStudioSelected()
-	const id = studioSelected.value?.id || route.params?.id || ''
-	return [
-		{
-			name: 'Back',
-			icon: ChevronLeftIcon,
-			link: '/user/studio',
-		},
-		{
-			name: 'Offerings',
-			icon: BookOpenIcon,
-			link: `/user/studio/${id}/offerings`,
-		},
-	]
-})
+export const userOfferingSettingsMenu = (creation?: boolean) =>
+	computed(() => {
+		const { useStudioSelected } = useAuth()
+		const route = useRoute()
+		const studioSelected = useStudioSelected()
+		const id = studioSelected.value?.id || route.params?.id || ''
+
+		if (creation) {
+			return [
+				{
+					name: 'Back',
+					icon: ChevronLeftIcon,
+					link: `/user/studio/${id}/offerings`,
+				},
+			]
+		}
+
+		return [
+			{
+				name: 'Back',
+				icon: ChevronLeftIcon,
+				link: '/user/studio',
+			},
+			{
+				name: 'Offerings',
+				icon: BookOpenIcon,
+				link: `/user/studio/${id}/offerings`,
+			},
+		]
+	})
 
 export const categories = [
 	'Flow Arts',
