@@ -88,7 +88,7 @@
 							</span>
 						</div>
 						<hr />
-						<div class="flex justify-between">
+						<div class="flex justify-between mb-4">
 							<p class="font-semibold">Total</p>
 							<p>
 								<span class="font-semibold">
@@ -96,11 +96,6 @@
 								</span>
 							</p>
 						</div>
-					</div>
-
-					<div class="bg-white rounded-xl py-4 px-6">
-						<!-- <p class="font-semibold">Terms & Conditions</p>
-						<div>[Checkbox] I Agree to Terms of ...</div> -->
 						<Button
 							class="text-white font-semibold w-full"
 							type="submit"
@@ -109,6 +104,18 @@
 							<span class="mx-auto">Confirm pay</span>
 						</Button>
 					</div>
+
+					<!-- <div class="bg-white rounded-xl py-4 px-6"> -->
+					<!-- <p class="font-semibold">Terms & Conditions</p>
+						<div>[Checkbox] I Agree to Terms of ...</div> -->
+					<!-- <Button
+							class="text-white font-semibold w-full"
+							type="submit"
+							:disabled="loading"
+						>
+							<span class="mx-auto">Confirm pay</span>
+						</Button>
+					</div> -->
 				</div>
 			</div>
 		</form>
