@@ -40,6 +40,18 @@ export const getOfferingBySlug = <T>(
 		},
 	}) as unknown as Promise<T> | null
 }
+export const getOfferingById = <T>(
+	id: string,
+	params: Prisma.OfferingFindUniqueArgs<DefaultArgs>
+): Promise<T> | null => {
+	return prisma.offering.findUnique({
+		...params,
+		where: {
+			...params?.where,
+			id,
+		},
+	}) as unknown as Promise<T> | null
+}
 export const getOfferingsByStudioId = <T>(
 	params: Prisma.OfferingFindUniqueArgs<DefaultArgs>
 ): Promise<T> => {
