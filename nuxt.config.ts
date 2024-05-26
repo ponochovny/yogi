@@ -8,6 +8,7 @@ export default defineNuxtConfig({
 		'nuxt-primevue',
 		'@nuxt/image',
 		'nuxt-swiper',
+		'@vite-pwa/nuxt',
 	],
 
 	image: {
@@ -49,8 +50,36 @@ export default defineNuxtConfig({
 		mapboxPublicApi: process.env.MAPBOX_PUBLIC_API,
 	},
 
+	pwa: {
+		manifest: {
+			name: 'Yogiapp',
+			short_name: 'Yogiapp',
+			description:
+				'Wellness marketplace, book your next appointment, retreat, festival',
+			theme_color: '#FEF3E4',
+			icons: [
+				{
+					src: 'pwa-icon-192x192.png',
+					sizes: '192x192',
+					type: 'image/png',
+				},
+				{
+					src: 'pwa-icon-512x512.png',
+					sizes: '512x512',
+					type: 'image/png',
+				},
+			],
+		},
+		devOptions: {
+			enabled: true,
+			type: 'module',
+		},
+	},
+
 	app: {
 		head: {
+			charset: 'utf-8',
+			viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
 			title: 'Yogi - Your wellness home',
 			meta: [
 				{ name: 'description', content: 'All you need for your wellness' },

@@ -1,4 +1,5 @@
 <template>
+	<VitePwaManifest />
 	<div :class="{ dark: darkMode, 'bg-[#FEF3E4] min-h-screen': true }">
 		<Transition>
 			<LoadingPage v-if="isAuthInitLoading" />
