@@ -23,7 +23,7 @@
 					</div>
 					<div class="flex flex-col gap-4">
 						<p class="font-semibold text-lg">
-							Payment
+							Payment (Testing mode)
 							<span class="font-normal text-xs">
 								{{ loading && !error ? 'Please wait. Loading...' : '' }}
 								<pre>{{ error }}</pre>
