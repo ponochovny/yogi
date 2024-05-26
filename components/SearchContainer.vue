@@ -13,7 +13,7 @@
 		<SearchFilters
 			@update="emit('update', $event)"
 			class="transition-opacity"
-			:class="{ 'opacity-60 pointer-events-none': loading }"
+			:class="{ 'opacity-80 pointer-events-none': loading }"
 			:priceRange="priceRange"
 		/>
 

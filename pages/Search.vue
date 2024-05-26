@@ -5,7 +5,7 @@
 		:priceRange="[priceRange.price_from || 0, priceRange.price_to || 0]"
 	>
 		<div class="pb-10 pt-8 px-6">
-			<div class="mb-6 transition-opacity" :class="{ 'opacity-60': loading }">
+			<div class="mb-6 transition-opacity" :class="{ 'opacity-80': loading }">
 				<p class="font-bold text-lg">
 					We found {{ filters.total }} results for you
 				</p>
