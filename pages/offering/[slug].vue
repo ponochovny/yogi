@@ -265,6 +265,6 @@ useSeoMeta({
 	ogImage: offering.value?.data.banners.length
 		? offering.value?.data.banners[0].url
 		: 'img/banner-placeholder2.jpeg',
-	twitterCard: 'summary',
+	twitterCard: 'summary_large_image',
 })
 </script>
