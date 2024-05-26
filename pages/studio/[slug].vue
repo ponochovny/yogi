@@ -1,16 +1,16 @@
 <template>
 	<MainContainer>
-		<template v-if="studioData">
+		<template v-if="studio">
 			<div
 				class="h-[200px] sm:h-[300px] xl:h-[450px] overflow-hidden rounded-t-3xl mt-14"
-				:class="{ 'bg-orange-400/70': !studioData.data.banner.length }"
+				:class="{ 'bg-orange-400/70': !studio.data.banner.length }"
 			>
 				<NuxtImg
-					v-if="studioData.data.banner.length"
+					v-if="studio.data.banner.length"
 					provider="cloudinary"
-					:src="studioData.data.banner[0].url"
-					:alt="studioData.data.name"
-					:title="studioData.data.name"
+					:src="studio.data.banner[0].url"
+					:alt="studio.data.name"
+					:title="studio.data.name"
 					sizes="400px md:800px lg:1280px"
 					class="object-cover object-center w-full h-full"
 					format="webp"
@@ -24,11 +24,11 @@
 				>
 					<!-- TODO: if no logo -->
 					<NuxtImg
-						v-if="studioData.data.logo.url"
+						v-if="studio.data.logo.url"
 						provider="cloudinary"
-						:src="studioData.data.logo.url"
-						:alt="studioData.data.name"
-						:title="studioData.data.name"
+						:src="studio.data.logo.url"
+						:alt="studio.data.name"
+						:title="studio.data.name"
 						class="object-cover rounded-full border-gray-200 border object-center w-full h-full"
 						sizes="112px sm:144px lg:176px"
 						format="webp"
@@ -42,58 +42,56 @@
 							<div class="flex gap-1 text-xs font-semibold flex-wrap">
 								<span
 									class="text-rose-500 uppercase"
-									v-for="(type, idx) of studioData.data.types"
+									v-for="(type, idx) of studio.data.types"
 									:key="type"
 								>
 									{{ type
-									}}{{ idx === studioData.data.types.length - 1 ? '' : ',' }}
+									}}{{ idx === studio.data.types.length - 1 ? '' : ',' }}
 								</span>
 							</div>
 							<span class="sm:block hidden"> • </span>
 							<div class="flex flex-wrap">
 								<span
-									v-for="(cat, idx) of studioData.data.categories"
+									v-for="(cat, idx) of studio.data.categories"
 									:key="cat"
 									class="text-xs mr-1"
 								>
 									{{ cat
-									}}{{
-										idx === studioData.data.categories.length - 1 ? '' : ','
-									}}
+									}}{{ idx === studio.data.categories.length - 1 ? '' : ',' }}
 								</span>
 							</div>
 						</div>
 						<div class="text-2xl sm:text-3xl font-semibold">
-							{{ studioData.data.name }}
+							{{ studio.data.name }}
 						</div>
 						<div class="flex gap-2 items-center">
 							<MapPinIcon class="w-5 stroke-1.5" />
 							<a
-								:href="`https://www.google.com/maps/place/${studioData.data.location?.name}`"
+								:href="`https://www.google.com/maps/place/${studio.data.location?.name}`"
 								target="_blank"
 							>
 								<span class="font-semibold text-sm">
-									{{ studioData.data.location?.name }}
+									{{ studio.data.location?.name }}
 								</span>
 							</a>
 						</div>
 					</div>
-					<div v-if="studioData.data.bio" class="flex flex-col gap-3 sm:gap-6">
+					<div v-if="studio.data.bio" class="flex flex-col gap-3 sm:gap-6">
 						<div class="font-semibold text-lg">About</div>
 						<div class="whitespace-pre-line leading-7">
-							{{ studioData.data.bio }}
+							{{ studio.data.bio }}
 						</div>
 					</div>
 
 					<div
-						v-if="studioData.data.practitioners.length"
+						v-if="studio.data.practitioners.length"
 						class="flex flex-col gap-3 sm:gap-6"
 					>
 						<div class="font-semibold text-lg">Practitioners</div>
 						<div class="flex gap-4 flex-wrap">
 							<div
 								class="flex gap-4 items-center"
-								v-for="practitioner of studioData.data.practitioners"
+								v-for="practitioner of studio.data.practitioners"
 								:key="practitioner.id"
 							>
 								<NuxtImg
@@ -115,13 +113,10 @@
 						</div>
 					</div>
 
-					<div
-						v-if="studioData.data.mission"
-						class="flex flex-col gap-3 sm:gap-6"
-					>
+					<div v-if="studio.data.mission" class="flex flex-col gap-3 sm:gap-6">
 						<div class="font-semibold text-lg">Mission</div>
 						<div class="whitespace-pre-line leading-7">
-							{{ studioData.data.mission }}
+							{{ studio.data.mission }}
 						</div>
 					</div>
 
@@ -130,29 +125,27 @@
 						<div
 							class="border rounded-xl font-semibold flex flex-col"
 							:class="{
-								'p-6': !studioData.data.location?.name,
-								'pb-6': studioData.data.location?.name,
+								'p-6': !studio.data.location?.name,
+								'pb-6': studio.data.location?.name,
 							}"
 						>
 							<div
-								v-if="studioData.data.location?.name"
+								v-if="studio.data.location?.name"
 								class="w-full h-[300px] rounded-t-xl overflow-hidden"
 							>
 								<Map
 									:zoom="14"
-									:center="studioData.data.location.coords"
-									:markers="[studioData.data.location]"
+									:center="studio.data.location.coords"
+									:markers="[studio.data.location]"
 								/>
 							</div>
 							<a
-								:href="`https://www.google.com/maps/place/${studioData.data.location?.name}`"
+								:href="`https://www.google.com/maps/place/${studio.data.location?.name}`"
 								target="_blank"
-								:class="{ 'px-6 pt-3': studioData.data.location?.name }"
+								:class="{ 'px-6 pt-3': studio.data.location?.name }"
 							>
 								<span>
-									{{
-										studioData.data.location?.name || studioData.data.location
-									}}
+									{{ studio.data.location?.name || studio.data.location }}
 								</span>
 							</a>
 						</div>
@@ -174,7 +167,18 @@ export default defineComponent({
 </script>
 <script lang="ts" setup>
 const route = useRoute()
-const { data: studioData } = await useFetch<{ data: TStudio }>(
+const { data: studio } = await useFetch<{ data: TStudio }>(
 	`/api/studios/${route.params.slug}`
 )
+
+useSeoMeta({
+	title: studio.value?.data.name,
+	ogTitle: studio.value?.data.name,
+	description: studio.value?.data.bio,
+	ogDescription: studio.value?.data.bio,
+	ogImage: studio.value?.data.banner.length
+		? studio.value?.data.banner[0].url
+		: 'img/banner-placeholder2.jpeg',
+	twitterCard: 'summary',
+})
 </script>

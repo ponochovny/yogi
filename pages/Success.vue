@@ -98,4 +98,15 @@ const { data: purchase } = useFetch<{ data: IPurchase }>(
 )
 
 if (!purchase) router.push('/')
+
+useSeoMeta({
+	title: 'Success payment',
+	ogTitle: 'Success payment',
+	description:
+		'Wellness marketplace, book your next appointment, retreat, festival',
+	ogDescription:
+		'Wellness marketplace, book your next appointment, retreat, festival',
+	ogImage: 'img/logoBg.svg',
+	twitterCard: 'summary',
+})
 </script>

@@ -189,4 +189,13 @@ function offeringBanner() {
 	}
 	return 'img/banner-placeholder2.jpeg'
 }
+
+useSeoMeta({
+	title: 'Checkout',
+	ogTitle: 'Checkout',
+	description: '',
+	ogDescription: '',
+	ogImage: 'img/logoBg.svg',
+	twitterCard: 'summary',
+})
 </script>

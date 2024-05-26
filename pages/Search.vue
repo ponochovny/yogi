@@ -238,4 +238,15 @@ function fetch() {
 		.catch((error) => console.log(error))
 		.finally(() => (loading.value = false))
 }
+
+useSeoMeta({
+	title: 'Search page',
+	ogTitle: 'Search page',
+	description:
+		'Wellness marketplace, book your next appointment, retreat, festival',
+	ogDescription:
+		'Wellness marketplace, book your next appointment, retreat, festival',
+	ogImage: 'img/logoBg.svg',
+	twitterCard: 'summary',
+})
 </script>

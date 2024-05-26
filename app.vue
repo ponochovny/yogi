@@ -20,7 +20,9 @@ onBeforeMount(() => {
 })
 
 useHead({
-	title: 'Yogi',
+	titleTemplate: (titleChunk) => {
+		return titleChunk ? `${titleChunk} - Yogi` : 'Yogi'
+	},
 })
 </script>
 <style lang="scss">

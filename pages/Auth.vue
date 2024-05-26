@@ -61,4 +61,15 @@ function setMode(event: any) {
 		})
 	}
 }
+
+useSeoMeta({
+	title: 'Authorization page',
+	ogTitle: 'Authorization page',
+	description:
+		'Wellness marketplace, book your next appointment, retreat, festival',
+	ogDescription:
+		'Wellness marketplace, book your next appointment, retreat, festival',
+	ogImage: 'img/logoBg.svg',
+	twitterCard: 'summary',
+})
 </script>

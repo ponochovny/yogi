@@ -1,6 +1,6 @@
 <template>
 	<MainContainer>
-		<template v-if="offeringData">
+		<template v-if="offering">
 			<div class="flex flex-col gap-3 mt-6 sm:mt-14 mb-4 sm:mb-10">
 				<div class="flex gap-1 text-sm">
 					<div class="flex gap-1 text-xs font-semibold">
@@ -8,20 +8,20 @@
 							class="capitalize font-bold"
 							:class="{
 								'text-blue-500/90':
-									offeringData.data.activity.toLowerCase() === 'class',
+									offering.data.activity.toLowerCase() === 'class',
 								'text-red-400':
-									offeringData.data.activity.toLowerCase() === 'event',
+									offering.data.activity.toLowerCase() === 'event',
 								'text-yellow-500':
-									offeringData.data.activity.toLowerCase() === 'appointment',
+									offering.data.activity.toLowerCase() === 'appointment',
 							}"
 						>
-							{{ offeringData.data.activity }}
+							{{ offering.data.activity }}
 						</span>
 						<span> • </span>
 					</div>
 					<div class="flex flex-wrap">
 						<span
-							v-for="cat of offeringData.data.categories"
+							v-for="cat of offering.data.categories"
 							:key="cat"
 							class="text-xs mr-1"
 						>
@@ -30,30 +30,30 @@
 					</div>
 				</div>
 				<div class="text-2xl sm:text-3xl font-semibold">
-					{{ offeringData.data.name }}
+					{{ offering.data.name }}
 				</div>
 				<div class="flex gap-2 sm:gap-4 sm:items-center flex-col sm:flex-row">
 					<div class="flex gap-2 items-center">
 						<CalendarIcon class="w-5 text-orange-500 stroke-1.5" />
 						<span class="font-semibold text-sm text-gray-600">
-							{{ dateString(offeringData.data.start, offeringData.data.end) }}
+							{{ dateString(offering.data.start, offering.data.end) }}
 						</span>
 					</div>
 					<a
-						:href="`https://www.google.com/maps/place/${offeringData.data.location?.name}`"
+						:href="`https://www.google.com/maps/place/${offering.data.location?.name}`"
 						target="_blank"
 						class="flex gap-2 items-center"
 					>
 						<MapPinIcon class="w-5 text-orange-500 stroke-1.5" />
 						<span class="font-semibold text-sm">
-							{{ offeringData.data.location?.name }}
+							{{ offering.data.location?.name }}
 						</span>
 					</a>
 
 					<div class="flex gap-2 items-center">
 						<ClockIcon class="w-5 text-orange-500 stroke-1.5" />
 						<span class="font-semibold text-sm">
-							{{ offeringData.data.duration + 'min.' }}
+							{{ offering.data.duration + 'min.' }}
 						</span>
 					</div>
 				</div>
@@ -63,21 +63,19 @@
 			>
 				<NuxtImg
 					:src="
-						offeringData.data.banners.length
-							? offeringData.data.banners[0].url
+						offering.data.banners.length
+							? offering.data.banners[0].url
 							: 'img/banner-placeholder2.jpeg'
 					"
-					:alt="offeringData.data.name"
-					:title="offeringData.data.name"
+					:alt="offering.data.name"
+					:title="offering.data.name"
 					class="object-cover w-full h-full"
-					:provider="
-						offeringData.data.banners.length ? 'cloudinary' : undefined
-					"
+					:provider="offering.data.banners.length ? 'cloudinary' : undefined"
 					placeholder
 					sizes="400px md:800px lg:1280px"
 					format="webp"
 					:class="{
-						'opacity-70': !offeringData.data.banners.length,
+						'opacity-70': !offering.data.banners.length,
 					}"
 				/>
 			</div>
@@ -88,45 +86,45 @@
 					class="flex flex-col gap-4 sm:gap-8 w-full lg:w-[calc(100%_-_200px)] xl:w-[calc(100%_-_400px)]"
 				>
 					<div
-						v-if="offeringData.data.description"
+						v-if="offering.data.description"
 						class="flex flex-col gap-3 sm:gap-6"
 					>
 						<div class="font-semibold text-lg">
-							{{ 'About ' + offeringData.data.name }}
+							{{ 'About ' + offering.data.name }}
 						</div>
 						<div class="whitespace-pre-line leading-6 sm:leading-7">
-							{{ offeringData.data.description }}
+							{{ offering.data.description }}
 						</div>
 					</div>
 					<div class="flex flex-col gap-3 sm:gap-6">
 						<div class="font-semibold text-lg">Host</div>
 						<div class="flex gap-4 items-center">
 							<NuxtImg
-								:src="offeringData.data.studio?.logo.url || ''"
-								:alt="offeringData.data.studio?.name || ''"
-								:title="offeringData.data.studio?.name"
+								:src="offering.data.studio?.logo.url || ''"
+								:alt="offering.data.studio?.name || ''"
+								:title="offering.data.studio?.name"
 								class="w-20 h-20 rounded-full object-cover object-center"
 								provider="cloudinary"
 								format="webp"
 								width="80"
 								height="80"
 							/>
-							<NuxtLink :to="`/studio/${offeringData.data.studio?.slug || ''}`">
+							<NuxtLink :to="`/studio/${offering.data.studio?.slug || ''}`">
 								<span class="font-semibold text-lg">
-									{{ offeringData.data.studio?.name }}
+									{{ offering.data.studio?.name }}
 								</span>
 							</NuxtLink>
 						</div>
 					</div>
 					<div
-						v-if="offeringData.data.practitioners.length"
+						v-if="offering.data.practitioners.length"
 						class="flex flex-col gap-3 sm:gap-6"
 					>
 						<div class="font-semibold text-lg">Practitioners</div>
 						<div class="flex flex-wrap gap-4 flex-col sm:flex-row">
 							<div
 								class="flex gap-4 items-center"
-								v-for="practitioner of offeringData.data.practitioners"
+								v-for="practitioner of offering.data.practitioners"
 								:key="practitioner.id"
 							>
 								<NuxtImg
@@ -152,41 +150,38 @@
 						<div
 							class="border rounded-xl font-semibold flex flex-col"
 							:class="{
-								'p-6': !offeringData.data.location?.name,
-								'pb-6': offeringData.data.location?.name,
+								'p-6': !offering.data.location?.name,
+								'pb-6': offering.data.location?.name,
 							}"
 						>
 							<div
-								v-if="offeringData.data.location?.name"
+								v-if="offering.data.location?.name"
 								class="w-full h-[300px] rounded-t-xl overflow-hidden"
 							>
 								<Map
 									:zoom="14"
-									:center="offeringData.data.location.coords"
-									:markers="[offeringData.data.location]"
+									:center="offering.data.location.coords"
+									:markers="[offering.data.location]"
 								/>
 							</div>
 							<a
-								:href="`https://www.google.com/maps/place/${offeringData.data.location?.name}`"
+								:href="`https://www.google.com/maps/place/${offering.data.location?.name}`"
 								target="_blank"
-								:class="{ 'px-6 pt-3': offeringData.data.location?.name }"
+								:class="{ 'px-6 pt-3': offering.data.location?.name }"
 							>
 								<span>
-									{{
-										offeringData.data.location?.name ||
-										offeringData.data.location
-									}}
+									{{ offering.data.location?.name || offering.data.location }}
 								</span>
 							</a>
 						</div>
 					</div>
 				</div>
 				<div
-					v-if="offeringData.data.tickets?.length"
+					v-if="offering.data.tickets?.length"
 					class="bg-red-200/20 rounded-xl p-4 sm:p-6 md:p-10 w-full lg:w-[400px] self-start flex flex-col gap-4"
 				>
 					<button
-						v-for="ticket of offeringData.data.tickets"
+						v-for="ticket of offering.data.tickets"
 						:key="ticket.id"
 						@click="selectedTicket = ticket.id"
 					>
@@ -248,7 +243,7 @@ const route = useRoute()
 const router = useRouter()
 const error = ref('')
 
-const { data: offeringData } = await useFetch<{ data: TOffering }>(
+const { data: offering } = await useFetch<{ data: TOffering }>(
 	`/api/offerings/${route.params.slug}`
 )
 
@@ -261,4 +256,15 @@ function handleCheckout(ticketId: string, count: number) {
 	}
 	router.push(`/checkout?count=${count}&ticketId=${ticketId}`)
 }
+
+useSeoMeta({
+	title: offering.value?.data.name,
+	ogTitle: offering.value?.data.name,
+	description: offering.value?.data.description,
+	ogDescription: offering.value?.data.description,
+	ogImage: offering.value?.data.banners.length
+		? offering.value?.data.banners[0].url
+		: 'img/banner-placeholder2.jpeg',
+	twitterCard: 'summary',
+})
 </script>

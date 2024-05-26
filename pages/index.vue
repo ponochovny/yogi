@@ -199,4 +199,15 @@ const { data: studios } = await getStudiosOpen(
 	new URLSearchParams({ limit: '10' }).toString()
 )
 const { data: quote } = useFetch('/api/quote')
+
+useSeoMeta({
+	title: 'Main page',
+	ogTitle: 'Main page',
+	description:
+		'Wellness marketplace, book your next appointment, retreat, festival',
+	ogDescription:
+		'Wellness marketplace, book your next appointment, retreat, festival',
+	ogImage: 'img/logoBg.svg',
+	twitterCard: 'summary',
+})
 </script>
