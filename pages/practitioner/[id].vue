@@ -86,4 +86,13 @@ const { id } = route.params
 const { data: practitioner } = await useFetch<{
 	data: TUser & { studios: TStudio[]; offerings: TOffering[] }
 }>('/api/practitioners/' + id)
+
+useSeoMeta({
+	title: practitioner.value?.data.name,
+	ogTitle: practitioner.value?.data.name + ' | Yogi',
+	description: practitioner.value?.data.bio,
+	ogDescription: practitioner.value?.data.bio,
+	ogImage: practitioner.value?.data.profileImage,
+	twitterCard: 'summary',
+})
 </script>
