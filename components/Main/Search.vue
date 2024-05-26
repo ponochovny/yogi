@@ -53,7 +53,7 @@
 				side="bottom"
 				class="-mt-1 rounded-b-2xl rounded-t-none border-0"
 				:class="{
-					'w-[calc(100vw_-_49px)] sm:w-[250px] md:w-[300px] shadow-sm':
+					'w-[calc(100vw_-_2rem)] sm:w-[250px] md:w-[300px] shadow-sm':
 						variant === 'default',
 					'w-[250px] shadow-lg': variant === 'secondary',
 				}"
@@ -129,7 +129,7 @@
 				side="bottom"
 				class="-mt-1 rounded-b-2xl rounded-t-none border-0 p-1 py-3 max-h-[484px] overflow-y-auto"
 				:class="{
-					'w-[calc(100vw_-_49px)] sm:w-[300px] md:w-[400px] shadow-sm':
+					'w-[calc(100vw_-_2rem)] sm:w-[300px] md:w-[400px] shadow-sm':
 						variant === 'default',
 					// 'w-[250px] shadow-lg': variant === 'secondary',
 				}"
