@@ -1,5 +1,5 @@
 <template>
-	<div class="sm:-mx-5" v-if="length">
+	<div class="-mx-3 sm:-mx-5" v-if="length">
 		<div class="relative w-full px-5">
 			<div class="rounded-2xl overflow-hidden">
 				<Swiper
@@ -7,7 +7,12 @@
 					@snapIndexChange="snapIndexChange"
 					:modules="[SwiperAutoplay, SwiperNavigation]"
 					slides-per-view="auto"
-					:space-between="24"
+					:spaceBetween="10"
+					:breakpoints="{
+						615: {
+							spaceBetween: 24,
+						},
+					}"
 					:navigation="{
 						nextEl: nextNavigation,
 						prevEl: prevNavigation,
