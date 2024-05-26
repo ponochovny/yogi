@@ -58,14 +58,12 @@
 					/>
 				</div>
 				<div
-					class="relative rounded-3xl bg-gradient-to-r from-cyan-600 from-10% to-orange-800/50 to-90% md:py-20 md:px-32 py-8 sm:px-16 px-8 pr-4 flex text-white items-center z-10 overflow-hidden sm:flex-row flex-col gap-4 sm:gap-0"
+					class="relative rounded-3xl bg-gradient-to-r from-cyan-600 from-10% to-orange-800/50 to-100% sm:to-90% md:py-20 md:px-32 py-8 sm:px-16 px-8 pr-4 flex text-white items-center z-10 overflow-hidden sm:flex-row flex-col gap-4 sm:gap-0"
 				>
 					<div
-						class="absolute inset-0 z-[-1] opacity-20 blur-[1px] sm:blur-sm pointer-events-none"
+						class="absolute inset-0 z-[-1] opacity-20 blur-[2px] sm:blur-sm pointer-events-none bg-[length:80%_auto] md:bg-[length:40%_auto] bg-[position:-80px_-10px] md:bg-[position:left_-20px]"
 						:style="{
 							backgroundImage: `url('img/decoration.svg')`,
-							backgroundSize: '40%',
-							backgroundPosition: 'left -20px',
 							backgroundRepeat: 'no-repeat',
 						}"
 					></div>
