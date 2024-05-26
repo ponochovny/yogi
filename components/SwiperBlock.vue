@@ -1,5 +1,5 @@
 <template>
-	<div class="-mx-5" v-if="length">
+	<div class="sm:-mx-5" v-if="length">
 		<div class="relative w-full px-5">
 			<div class="rounded-2xl overflow-hidden">
 				<Swiper
