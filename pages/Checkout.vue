@@ -195,7 +195,7 @@ useSeoMeta({
 	ogTitle: 'Checkout',
 	description: '',
 	ogDescription: '',
-	ogImage: 'logoBg.svg',
+	ogImage: 'logoBg.png',
 	twitterCard: 'summary',
 })
 </script>

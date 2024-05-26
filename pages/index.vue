@@ -207,7 +207,7 @@ useSeoMeta({
 		'Wellness marketplace, book your next appointment, retreat, festival',
 	ogDescription:
 		'Wellness marketplace, book your next appointment, retreat, festival',
-	ogImage: 'img/logoBg.svg',
+	ogImage: 'logoBg.png',
 	twitterCard: 'summary',
 })
 </script>
