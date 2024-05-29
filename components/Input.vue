@@ -15,6 +15,7 @@
 				@input="(event: any) => emit('update:modelValue', event.target.value)"
 				class="block w-full border-gray-300 rounded-md shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-300 focus:ring-opacity-50"
 				:class="cn(props.inputClass)"
+				:autocomplete="autocomplete"
 			/>
 		</label>
 	</div>
@@ -40,6 +41,7 @@ interface IProps {
 	id?: string
 	class?: any
 	inputClass?: any
+	autocomplete?: 'off' | 'on' | string
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -47,7 +49,7 @@ const props = withDefaults(defineProps<IProps>(), {
 	label: null,
 	placeholder: '',
 	type: 'text',
-	autocomplete: false,
+	autocomplete: 'off',
 	id: '',
 })
 

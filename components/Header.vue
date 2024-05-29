@@ -2,25 +2,25 @@
 	<div
 		class="flex items-center flex-row"
 		:class="{
-			'bg-white py-3 flex-col lg:flex-row md:gap-0 gap-3': variant === 'white',
+			'bg-white py-3 flex-col md:flex-row md:gap-0 gap-3 flex-wrap':
+				variant === 'white',
 		}"
 	>
+		<NuxtLink
+			to="/"
+			class="shrink-0 w-[65px] transition duration-1000 ease-in bg-transparent rounded-full hover:bg-orange-200"
+			:class="{
+				'mb-4 md:mb-0': variant === 'white',
+			}"
+		>
+			<NuxtImg src="/img/logo.svg" alt="Yogi app" width="65" height="65" />
+		</NuxtLink>
 		<div
-			class="flex w-full items-center"
+			class="flex items-center w-full md:w-auto order-3 md:order-none"
 			:class="{
 				'md:flex-row flex-col': variant === 'white',
 			}"
 		>
-			<NuxtLink
-				to="/"
-				class="shrink-0 w-[65px] transition duration-1000 ease-in bg-transparent rounded-full hover:bg-orange-200"
-				:class="{
-					'mb-4 md:mb-0': variant === 'white',
-				}"
-			>
-				<NuxtImg src="/img/logo.svg" alt="Yogi app" width="65" height="65" />
-			</NuxtLink>
-
 			<slot name="left" />
 
 			<div v-if="links" class="ml-3 sm:ml-[10%] hidden md:flex gap-3 sm:gap-8">

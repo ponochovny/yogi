@@ -34,8 +34,8 @@
 						:src="getImageUrl(offering)"
 						class="w-8 h-6 rounded-md object-cover object-center mt-1"
 						provider="cloudinary"
-						width="32"
-						height="24"
+						width="100"
+						height="auto"
 						format="webp"
 					/>
 					<div class="flex flex-col gap-0">
