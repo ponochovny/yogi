@@ -563,6 +563,7 @@ async function updateOfferingHandler() {
 		ticketsRemove,
 		practitioners: newPracs,
 		practitionersRemove,
+		isActive: props.offering.isActive,
 	})
 	updateOffering(deepCloned, props.offering.id)
 		.then(() => {
@@ -606,6 +607,7 @@ async function createOfferingHandler() {
 		studioId: isArray(studioId)
 			? (studioId[0] as string)
 			: (studioId as string),
+		isActive: false,
 	})
 	createOffering(deepCloned)
 		.then(() => {

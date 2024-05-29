@@ -32,6 +32,8 @@ export interface IOfferingResponse {
 	location: string
 	timezone: string
 
+	isActive: boolean
+
 	createdAt: string
 	updatedAt: string
 

@@ -15,8 +15,9 @@ export default defineEventHandler(async (event) => {
 				? offering.types.some((type) => types.split(',').includes(type))
 				: true
 			const byVirtual = virtual ? offering.location === 'Online' : true
+			const isActive = offering.isActive
 
-			return byTypes && byVirtual
+			return byTypes && byVirtual && isActive
 		})
 	}
 

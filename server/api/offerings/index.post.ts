@@ -45,6 +45,7 @@ export default defineEventHandler(async (event) => {
 		categories: fields.categories[0].split(','),
 		location: fields.location[0],
 		timezone: fields.timezone[0],
+		isActive: false,
 
 		// owner
 		studioId,

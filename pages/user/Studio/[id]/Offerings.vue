@@ -1,6 +1,6 @@
 <template>
 	<NuxtLayout name="user-admin">
-		<div class="pt-6 -ml-16">
+		<div class="pt-6 -ml-4 md:-ml-16">
 			<Button
 				class="ml-auto mr-4 mb-4"
 				variant="primaryOutline"
@@ -28,7 +28,9 @@
 							{{ dateString(offering.start, offering.end) }}
 						</TableCell>
 						<TableCell class="font-medium">
-							{{ offering.name }}
+							<NuxtLink :to="'/offering/' + offering.slug">
+								{{ offering.name }}
+							</NuxtLink>
 						</TableCell>
 						<TableCell>{{ offering.types.join(', ') }}</TableCell>
 						<TableCell>{{ offering.location.name }}</TableCell>
@@ -45,7 +47,9 @@
 							</div>
 							<!-- {{ offering.practitioners.map((el) => el.name).join(', ') }} -->
 						</TableCell>
-						<TableCell>{{ 'Active' }}</TableCell>
+						<TableCell>
+							{{ !offering.isActive ? 'Inactive' : 'Active' }}
+						</TableCell>
 						<TableCell>
 							{{ offering.is_private ? 'Private' : 'Public' }}
 						</TableCell>
@@ -53,7 +57,7 @@
 							<Popover>
 								<PopoverTrigger>
 									<button>
-										<EllipsisHorizontalCircleIcon class="w-6 h-6" />
+										<EllipsisHorizontalCircleIcon class="w-6 h-6 stroke-1" />
 									</button>
 								</PopoverTrigger>
 								<PopoverContent
@@ -74,16 +78,24 @@
 										btnSize="sm"
 										variant="primaryOutline"
 										class="w-full justify-center"
+										disabled
 									>
 										<span>Duplicate</span>
 									</Button>
 									<hr class="my-1" />
 									<Button
+										@click="
+											activeToggleOffering(offering.id, !offering.isActive)
+										"
 										btnSize="sm"
-										variant="dangerOutline"
+										:variant="
+											offering.isActive ? 'dangerOutline' : 'primaryOutline'
+										"
 										class="w-full justify-center"
 									>
-										<span>Delete</span>
+										<span>
+											{{ offering.isActive ? 'Deactivate' : 'Activate' }}
+										</span>
 									</Button>
 								</PopoverContent>
 							</Popover>
@@ -99,6 +111,7 @@
 import { defineComponent } from 'vue'
 import type { TOffering } from '~/helpers/types/offering'
 import { dateString } from '~/lib/utils'
+import { toast } from 'vue-sonner'
 import { EllipsisHorizontalCircleIcon } from '@heroicons/vue/24/outline'
 
 export default defineComponent({
@@ -126,4 +139,14 @@ const { data: offeringsRes, refresh } = await getOfferingsByStudioId<{
 }>(!studioId || !isString(studioId) ? '' : studioId, { immediate: false })
 
 onMounted(() => refresh())
+
+const { toggleActiveOfferingById } = useOffering()
+function activeToggleOffering(id: string, val: boolean) {
+	toggleActiveOfferingById(id, val)
+		.then(() => {
+			toast.success(`Offering has been ${val ? 'deactivated' : 'activated'}`)
+			refresh()
+		})
+		.catch((err) => console.log('err', err))
+}
 </script>

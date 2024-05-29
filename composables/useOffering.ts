@@ -105,6 +105,13 @@ export default () => {
 		return useFetch<T>('/api/offerings/byStudio/' + id, { ...options })
 	}
 
+	const toggleActiveOfferingById = <T>(id: string, val: boolean) => {
+		return useFetchApi<T>('/api/offerings/update?id=' + id, {
+			method: 'PUT',
+			body: { isActive: val },
+		})
+	}
+
 	const removePractitioners = (pracIds: string[], offeringId: string) => {
 		return useFetchApi('/api/practitioners', {
 			method: 'DELETE',
@@ -119,6 +126,7 @@ export default () => {
 		getOfferings,
 		getOfferingsByStudioId,
 		updateOffering,
+		toggleActiveOfferingById,
 		removePractitioners,
 	}
 }

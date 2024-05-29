@@ -45,28 +45,42 @@ export default defineEventHandler(async (event) => {
 		files: any
 	}
 
+	const fieldsFromForm = () => {
+		return {
+			...(fields.name[0] && { name: fields.name[0] }),
+			...(fields.name[0] && { slug: generateSlug(fields.name[0]) }),
+			activity: fields.activity[0],
+			start: new Date(fields.start[0]),
+			end: new Date(fields.end[0]),
+			duration: +fields.duration[0],
+			description: fields.description[0],
+			spots: +fields.spots[0],
+			is_private: fields.is_private[0] === 'true',
+			types: fields.types[0].split(','),
+			categories: fields.categories[0].split(','),
+			location: fields.location[0],
+			timezone: fields.timezone[0],
+		}
+	}
+
 	const offeringData: Partial<
 		Omit<
 			IOfferingCreateData,
 			'practitioners' | 'banners' | 'tickets' | 'location'
 		>
-	> & { location: string } = {
-		...(fields.name[0] && { name: fields.name[0] }),
-		...(fields.name[0] && { slug: generateSlug(fields.name[0]) }),
-		activity: fields.activity[0],
-		start: new Date(fields.start[0]),
-		end: new Date(fields.end[0]),
-		duration: +fields.duration[0],
-		description: fields.description[0],
-		spots: +fields.spots[0],
-		is_private: fields.is_private[0] === 'true',
-		types: fields.types[0].split(','),
-		categories: fields.categories[0].split(','),
-		location: fields.location[0],
-		timezone: fields.timezone[0],
-	}
+	> & { location?: string } =
+		fields.isActive !== undefined
+			? { isActive: !!fields.isActive }
+			: fieldsFromForm()
 
 	const updatedOffering = await updateOffering(offeringData, offeringId)
+
+	if (fields.isActive !== undefined) {
+		return {
+			data: updatedOffering,
+			status: 'Success!',
+		}
+	}
 
 	// Handle Remove Practitioners
 	if (fields[`practitionersRemove[]`]) {

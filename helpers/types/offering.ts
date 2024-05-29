@@ -27,6 +27,7 @@ export interface IOfferingCreateData {
 	practitioners: string[]
 	location: TMarker | null
 	studioId: string
+	isActive: boolean
 }
 
 export interface IOfferingUpdateData extends IOfferingCreateData {
@@ -44,6 +45,7 @@ export type TOffering = Omit<
 	| 'location'
 	| 'tickets'
 > & {
+	isActive: boolean
 	studio?: TStudio
 	banners: { url: string }[]
 	practitioners: TPractitioner[]
