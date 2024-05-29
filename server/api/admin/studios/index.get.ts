@@ -18,14 +18,17 @@ export default defineEventHandler(async (event) => {
 						user: true,
 					},
 				},
+				_count: {
+					select: {
+						offerings: true,
+					},
+				},
 			},
 			take: limit ? +limit : undefined,
 		})) as unknown as IStudioResponse[]
 
 		return {
-			data: studios
-				.filter((studio) => !studio.isArchived)
-				.map((studio) => studioTransformer(studio)),
+			data: studios.map((studio) => studioTransformer(studio)),
 			status: 'Success!',
 		}
 	} catch (error) {

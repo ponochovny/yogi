@@ -19,6 +19,7 @@ export interface IStudioResponse {
 	logo: any[]
 	banner: any[]
 	practitioners: IPractitionerResponse[]
+	isArchived?: boolean
 }
 
 export type TUpdateStudioData = Pick<

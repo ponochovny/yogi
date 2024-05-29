@@ -92,8 +92,8 @@
 		</div>
 		<!-- TODO: tags -->
 		<!-- <Yselect label="Tags" /> -->
-		<Textarea v-model="formData.bio" label="Bio" />
-		<Textarea v-model="formData.mission" label="Mission" />
+		<Textarea v-model="formData.bio" label="Bio" class="min-h-48" />
+		<Textarea v-model="formData.mission" label="Mission" class="min-h-48" />
 		<Yselect
 			mode="tags"
 			v-model="formData.practitioners"
@@ -252,12 +252,9 @@ onMounted(() => {
 })
 onBeforeMount(() => {
 	if (props.studio && props.updateData) {
+		const isCoords = props.studio.location?.coords
 		const loc = {
-			center:
-				[
-					props.studio.location?.coords[1] || 0,
-					props.studio.location?.coords[0] || 0,
-				] || [],
+			center: [isCoords ? isCoords[1] : 0, isCoords ? isCoords[0] : 0] || [],
 			id: props.studio.location?.name || '',
 			place_name: props.studio.location?.name || '',
 		}
