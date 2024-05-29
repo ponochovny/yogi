@@ -6,7 +6,7 @@
 				<div class="lg:pr-10 w-auto lg:w-full lg:max-w-[220px]">
 					<AdminSidebar :menu-items="_menuItems" />
 				</div>
-				<div class="pl-12 md:pl-16 border-l pb-10 w-full">
+				<div class="pl-4 md:pl-16 border-l pb-10 w-[calc(100%-64px)] lg:w-full">
 					<slot />
 				</div>
 			</div>
