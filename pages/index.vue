@@ -42,7 +42,10 @@
 					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
 						Studios & Event Hosts
 					</p>
-					<SwiperBlock :length="studios?.data.length">
+					<SwiperBlock
+						:length="studios?.data.length"
+						classSlideContainer="overflow-hidden rounded-2xl"
+					>
 						<SwiperSlide
 							v-for="studio of studios?.data"
 							:key="studio?.id"
@@ -85,7 +88,10 @@
 					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
 						Upcoming virtual
 					</p>
-					<SwiperBlock :length="offeringsOnline?.data.length">
+					<SwiperBlock
+						:length="offeringsOnline?.data.length"
+						classSlideContainer="overflow-hidden rounded-2xl"
+					>
 						<SwiperSlide
 							v-for="offering of offeringsOnline?.data"
 							:key="offering?.id"
@@ -107,7 +113,10 @@
 					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
 						Wellness getaways
 					</p>
-					<SwiperBlock :length="offeringsWellness?.data.length">
+					<SwiperBlock
+						:length="offeringsWellness?.data.length"
+						classSlideContainer="overflow-hidden rounded-2xl"
+					>
 						<SwiperSlide
 							v-for="offering of offeringsWellness?.data"
 							:key="offering?.id"
@@ -126,7 +135,10 @@
 					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
 						Deeper Education
 					</p>
-					<SwiperBlock :length="offeringsEducation?.data.length">
+					<SwiperBlock
+						:length="offeringsEducation?.data.length"
+						classSlideContainer="overflow-hidden rounded-2xl"
+					>
 						<SwiperSlide
 							v-for="offering of offeringsEducation?.data"
 							:key="offering?.id"

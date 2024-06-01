@@ -333,12 +333,5 @@ function coordsClicked() {
 	setTimeout(() => emit('coordsClicked'), 0)
 }
 
-watch(
-	() => props.markers,
-	(val) => {
-		console.log(val)
-	}
-)
-
 defineExpose({ selectFeature })
 </script>

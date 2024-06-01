@@ -58,26 +58,33 @@
 					</div>
 				</div>
 			</div>
-			<div
-				class="h-[250px] sm:h-[350px] xl:h-[450px] overflow-hidden rounded-3xl"
-			>
-				<NuxtImg
-					:src="
-						offering.data.banners.length
-							? offering.data.banners[0].url
-							: 'img/banner-placeholder2.jpeg'
-					"
-					:alt="offering.data.name"
-					:title="offering.data.name"
-					class="object-cover w-full h-full"
-					:provider="offering.data.banners.length ? 'cloudinary' : undefined"
-					placeholder
-					sizes="400px md:800px lg:1280px"
-					format="webp"
-					:class="{
-						'opacity-70': !offering.data.banners.length,
-					}"
-				/>
+			<div class="relative h-[250px] sm:h-[350px] xl:h-[450px] z-0">
+				<SwiperBlock
+					:length="offering.data.banners.length"
+					class="h-[250px] sm:h-[350px] xl:h-[450px]"
+					classSlideContainer="overflow-hidden rounded-3xl"
+				>
+					<SwiperSlide
+						v-for="(banner, idx) of offering.data.banners"
+						:key="idx"
+					>
+						<div class="h-[250px] sm:h-[350px] xl:h-[450px]">
+							<NuxtImg
+								:src="banner.url || 'img/banner-placeholder2.jpeg'"
+								:alt="offering.data.name"
+								:title="offering.data.name"
+								class="object-cover w-full h-full rounded-3xl"
+								:provider="banner ? 'cloudinary' : undefined"
+								placeholder
+								sizes="400px md:800px lg:1280px"
+								format="webp"
+								:class="{
+									'opacity-70': !banner,
+								}"
+							/>
+						</div>
+					</SwiperSlide>
+				</SwiperBlock>
 			</div>
 			<div
 				class="relative bg-white rounded-3xl -mt-20 mx-auto w-full md:w-[99%] px-6 sm:px-10 lg:px-16 py-10 md:py-20 flex gap-8 flex-col-reverse lg:flex-row"
