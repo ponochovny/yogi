@@ -14,8 +14,7 @@
 						<Input label="Email" name="email" v-model="formData.email" />
 						<Button
 							class="self-start"
-							variant="primaryOutline"
-							btnSize="md2"
+							variant="outline"
 							:disabled="loading || true"
 						>
 							<span class="font-semibold">+ Add a person</span>

@@ -3,24 +3,29 @@ import { type VariantProps, cva } from 'class-variance-authority'
 export { default as Button } from './Button.vue'
 
 export const buttonVariants = cva(
-	'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+	'inline-flex items-center transition duration-300 ease-in-out disabled:cursor-default disabled:pointer-events-none disabled:opacity-50',
 	{
 		variants: {
 			variant: {
-				default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+				default:
+					'bg-orange-600 text-white rounded-full hover:bg-orange-600/75 active:bg-orange-600/60 hover:text-white disabled:bg-orange-600/20 disabled:opacity-50',
 				destructive:
-          'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+					'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+				destructiveOutline:
+					'border border-rose-600/30 bg-transparent text-rose-600 rounded-full hover:bg-rose-400/10 hover:text-rose-600 active:bg-rose-400/5 ring ring-rose-300/0 active:ring-rose-300 active:ring-opacity-50 disabled:ring-0',
 				outline:
-          'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
+					'border border-orange-600/30 bg-transparent text-orange-600 rounded-full hover:bg-orange-400/10 hover:text-orange-600 active:bg-orange-400/5 ring ring-orange-300/0 active:ring-orange-300 active:ring-opacity-50 disabled:ring-0',
 				secondary:
-          'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-				ghost: 'hover:bg-accent hover:text-accent-foreground',
+					'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+				ghost:
+					'bg-transparent text-orange-600 rounded-full hover:bg-orange-400/10 hover:text-orange-600 active:bg-orange-400/5',
 				link: 'text-primary underline-offset-4 hover:underline',
 			},
 			size: {
-				default: 'h-10 px-4 py-2',
-				sm: 'h-9 rounded-md px-3',
-				lg: 'h-11 rounded-md px-8',
+				default: 'px-8 py-2',
+				sm: 'px-3 py-1',
+				md: 'px-4 py-2',
+				// lg: 'px-8 py-2',
 				icon: 'h-10 w-10',
 			},
 		},
@@ -28,7 +33,7 @@ export const buttonVariants = cva(
 			variant: 'default',
 			size: 'default',
 		},
-	},
+	}
 )
 
 export type ButtonVariants = VariantProps<typeof buttonVariants>

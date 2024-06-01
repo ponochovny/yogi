@@ -13,9 +13,9 @@
 		<l-control position="bottomleft">
 			<div class="flex gap-1 pb-2 items-center">
 				<span class="text-white">Theme:</span>
-				<Button btnSize="sm" @click="_theme = 0">1</Button>
-				<Button btnSize="sm" @click="_theme = 1">2</Button>
-				<Button btnSize="sm" @click="_theme = 2">3</Button>
+				<Button size="sm" @click="_theme = 0">1</Button>
+				<Button size="sm" @click="_theme = 1">2</Button>
+				<Button size="sm" @click="_theme = 2">3</Button>
 			</div>
 		</l-control>
 		<l-control v-if="searchable" position="topleft">

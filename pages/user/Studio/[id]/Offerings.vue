@@ -3,7 +3,7 @@
 		<div class="pt-6 -ml-16">
 			<Button
 				class="ml-auto mr-4 mb-4"
-				variant="primaryOutline"
+				variant="outline"
 				@click="$router.push($route.fullPath + '/create')"
 			>
 				<span class="font-semibold">+ Create new offering</span>
@@ -61,8 +61,8 @@
 									class="flex flex-col gap-1 max-w-[170px] rounded-2xl shadow-md border border-gray-300/40"
 								>
 									<Button
-										btnSize="sm"
-										variant="primaryOutline"
+										size="sm"
+										variant="outline"
 										class="w-full justify-center"
 										@click="
 											$router.push($route.fullPath + '/edit/' + offering.id)
@@ -71,16 +71,16 @@
 										<span>Edit</span>
 									</Button>
 									<Button
-										btnSize="sm"
-										variant="primaryOutline"
+										size="sm"
+										variant="outline"
 										class="w-full justify-center"
 									>
 										<span>Duplicate</span>
 									</Button>
 									<hr class="my-1" />
 									<Button
-										btnSize="sm"
-										variant="dangerOutline"
+										size="sm"
+										variant="destructiveOutline"
 										class="w-full justify-center"
 									>
 										<span>Delete</span>

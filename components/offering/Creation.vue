@@ -150,12 +150,7 @@
 			@remove="removeTicket"
 		/>
 
-		<Button
-			variant="primaryOutline"
-			btnSize="md2"
-			@click="addEmptyTicket"
-			class="self-start"
-		>
+		<Button variant="outline" @click="addEmptyTicket" class="self-start">
 			<span>+ Add more</span>
 		</Button>
 

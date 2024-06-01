@@ -150,7 +150,7 @@
 				'rounded-none rounded-b-2xl md:rounded-l-none md:rounded-r-2xl flex gap-2 items-center justify-center md:justify-start px-4 py-3 md:py-0':
 					variant === 'secondary',
 			}"
-			btnSize="sm"
+			size="sm"
 			type="submit"
 			title="Search"
 		>

@@ -20,6 +20,7 @@
 					class="text-2xl font-bold"
 					:class="{
 						'text-orange-500 underline underline-offset-4': tab === 'create',
+						'text-gray-400 hover:text-black': tab !== 'create',
 					}"
 				>
 					Create studio
@@ -45,7 +46,7 @@
 							<Button
 								class="mb-2"
 								@click="gotoStudioSettings(studio)"
-								btnSize="sm"
+								size="sm"
 							>
 								<Cog6ToothIcon class="text-white w-6 py-2" />
 							</Button>

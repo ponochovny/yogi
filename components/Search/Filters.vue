@@ -43,7 +43,7 @@
 			<Popover @update:open="dateChange">
 				<PopoverTrigger as-child>
 					<Button
-						variant="primaryOutline"
+						variant="outline"
 						:class="
 							cn(
 								'justify-start text-left font-normal h-[40px] text-nowrap',
@@ -75,7 +75,7 @@
 			<Popover @update:open="priceChange">
 				<PopoverTrigger as-child>
 					<Button
-						variant="primaryOutline"
+						variant="outline"
 						:class="
 							cn(
 								'justify-start text-left font-normal h-[40px] text-nowrap',
