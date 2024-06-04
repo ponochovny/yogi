@@ -25,7 +25,7 @@
 			<slot name="left" />
 
 			<div v-if="links" class="ml-3 sm:ml-[10%] hidden md:flex gap-3 sm:gap-8">
-				<NuxtLink to="/search?location=Online">
+				<NuxtLink to="/search">
 					<span class="font-semibold text-nowrap">Explore live offerings</span>
 				</NuxtLink>
 				<NuxtLink to="/user/studio" v-if="user">
@@ -107,7 +107,7 @@
 						<div class="flex flex-col gap-4 md:gap-2 w-full">
 							<NuxtLink to="/user/profile"> My Profile </NuxtLink>
 
-							<NuxtLink class="block md:hidden" to="/search?location=Online">
+							<NuxtLink class="block md:hidden" to="/search">
 								Explore live offerings
 							</NuxtLink>
 							<NuxtLink class="block md:hidden" to="/user/studio" v-if="user">

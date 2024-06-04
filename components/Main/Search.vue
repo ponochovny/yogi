@@ -2,7 +2,7 @@
 	<form
 		class="flex flex-col w-full"
 		:class="{
-			'sm:w-auto sm:flex-row': variant === 'default',
+			'sm:w-auto sm:flex-row shadow-sm rounded-2xl': variant === 'default',
 			'w-full md:flex-row': variant === 'secondary',
 		}"
 		@submit.prevent="onSubmit"
