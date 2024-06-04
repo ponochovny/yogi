@@ -8,12 +8,16 @@ export default () => {
 	const createOffering = (data: Omit<IOfferingCreateData, 'slug'>) => {
 		const form = new FormData()
 
-		const { banners, practitioners, tickets, ...rest } = data
+		const { banners, practitioners, tickets, location, ...rest } = data
 
 		Object.keys(rest).map((key: string) => {
 			//@ts-ignore
 			form.append(key, data[key])
 		})
+
+		if (location) {
+			form.append('location', JSON.stringify(location))
+		}
 
 		// Banner
 		for (const banner of banners) {
@@ -44,6 +48,8 @@ export default () => {
 
 		const {
 			banners,
+			bannersDelete,
+			bannersOrder,
 			practitioners,
 			practitionersRemove,
 			tickets,
@@ -58,6 +64,8 @@ export default () => {
 		})
 
 		// Banner
+		form.append('bannersOrder', JSON.stringify(bannersOrder))
+		form.append('bannersDelete', JSON.stringify(bannersDelete))
 		for (const banner of banners) {
 			form.append('fileToUpload[]', banner)
 		}

@@ -23,6 +23,8 @@ export interface IOfferingCreateData {
 	}[]
 	start: Date
 	end: Date
+	bannersDelete: string[]
+	bannersOrder: (string | null)[]
 	banners: File[]
 	practitioners: string[]
 	location: TMarker | null
@@ -47,7 +49,7 @@ export type TOffering = Omit<
 > & {
 	isActive: boolean
 	studio?: TStudio
-	banners: { url: string }[]
+	banners: { id?: string; url: string }[]
 	practitioners: TPractitioner[]
 	location: TMarker
 	tickets: TTicket[]

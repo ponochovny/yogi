@@ -159,12 +159,9 @@
 			<span>+ Add more</span>
 		</Button>
 
-		<!-- @files="setBannersFiles" -->
-		<FileUploadCustom
-			label="Banners"
-			v-model:files="bannersFiles"
-			:uploaded="offering ? offering.banners.map((el: any) => el.url) : []"
-			v-if="showBannersUploader"
+		<ModuleImagesGalleryUploader
+			:data="bannersUpdate"
+			@change="moduleImagesChange"
 		/>
 
 		<Button @click="handleForm" class="self-start">
@@ -184,7 +181,6 @@ import type { TOffering } from '~/helpers/types/offering'
 import randomOfferingData from '~/helpers/randomOfferingData.json'
 import type { IFeature, TMarker } from '~/helpers/types/map'
 import { MapIcon, ArrowPathIcon } from '@heroicons/vue/24/outline'
-import type { ITicketResponse } from '~/server/types/ticket'
 import type { TTicket } from '~/helpers/types/ticket'
 
 export default defineComponent({
@@ -265,6 +261,8 @@ function getDifference(oldArray: string[], newArray: string[]) {
 }
 
 // Media
+const bannersDelete = ref<string[]>([])
+const bannersOrder = ref<(string | null)[]>([])
 const bannersFiles = ref<any[]>([])
 // function setBannersFiles(files: any) {
 // 	bannersFiles.value = [...files]
@@ -363,8 +361,14 @@ onMounted(() => {
 		formData.name = randomNames[Math.floor(Math.random() * randomNames.length)]
 	}
 })
+
+const bannersUpdate = ref<{ id: string; url: string }[]>([])
 onBeforeMount(() => {
 	if (props.offering && props.updateData) {
+		bannersUpdate.value = props.offering.banners.map((el) => ({
+			id: el.id || '',
+			url: el.url,
+		}))
 		const centerFn = () => {
 			if (!props.offering) return [0, 0]
 			if (!props.offering.location) return [0, 0]
@@ -523,6 +527,34 @@ function handleForm() {
 	}
 }
 
+function moduleImagesChange(data: { id: string | null; file: File }[]) {
+	const isUpdate = props.offering && props.updateData
+
+	if (isUpdate) {
+		const findMissingElements = (
+			arr1: { id: string | null }[],
+			arr2: { id: string }[]
+		): string[] => {
+			return arr2
+				.filter((item2) => typeof item2.id === 'string')
+				.filter((item2) => !arr1.some((item1) => item1.id === item2.id))
+				.map((item) => item.id) as string[]
+		}
+		const oldIds = props.offering?.banners.map((el) => ({
+			id: el.id as string,
+		}))
+		const missingIds = findMissingElements(data, oldIds)
+		const croppedImagesIds = data
+			.filter((el) => el.file && el.id)
+			.map((el) => el.id) as string[]
+
+		bannersDelete.value = missingIds.concat(croppedImagesIds)
+	}
+
+	bannersOrder.value = data.map((el) => (el.file && el.id ? null : el.id))
+	bannersFiles.value = data.map((el) => el.file)
+}
+
 async function updateOfferingHandler() {
 	if (!props.offering?.id) return
 
@@ -540,7 +572,7 @@ async function updateOfferingHandler() {
 
 	const deepCloned = useCloneDeep({
 		...formData,
-		name: formData.name === props.offering.name ? '' : formData.name,
+		name: formData.name,
 		activity: formData.activity.toLowerCase() as
 			| 'appointment'
 			| 'class'
@@ -555,6 +587,8 @@ async function updateOfferingHandler() {
 		spots: +formData.spots,
 		start: new Date(formData.start),
 		end: new Date(formData.end),
+		bannersDelete: bannersDelete.value,
+		bannersOrder: bannersOrder.value,
 		banners: bannersFiles.value,
 		studioId: isArray(studioId)
 			? (studioId[0] as string)
@@ -603,6 +637,8 @@ async function createOfferingHandler() {
 		spots: +formData.spots,
 		start: new Date(formData.start),
 		end: new Date(formData.end),
+		bannersDelete: bannersDelete.value,
+		bannersOrder: bannersOrder.value,
 		banners: bannersFiles.value,
 		studioId: isArray(studioId)
 			? (studioId[0] as string)
@@ -612,10 +648,6 @@ async function createOfferingHandler() {
 	createOffering(deepCloned)
 		.then(() => {
 			resetFormData()
-			showBannersUploader.value = false
-			setTimeout(() => {
-				showBannersUploader.value = true
-			}, 500)
 			bannersFiles.value = []
 			emit('updated')
 			toast.success('Offering has been added')

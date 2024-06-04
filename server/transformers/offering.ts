@@ -38,12 +38,19 @@ export const offeringTransformer = (
 	}
 	parseLocation()
 
+	const bannersExists = offering.banners && offering.banners.length
+	const sortedBanners = () =>
+		offering.banners
+			.map(mediaFileTransformer)
+			.sort((a, b) =>
+				typeof a.order === 'number' && typeof b.order === 'number'
+					? a.order - b.order
+					: 0
+			)
+
 	return {
 		...rest,
-		banners:
-			offering.banners && offering.banners.length
-				? offering.banners.map(mediaFileTransformer)
-				: [],
+		banners: bannersExists ? sortedBanners() : [],
 		practitioners: offering.practitioners
 			? offering.practitioners.map((item: { user: IUserResponse }) =>
 					practitionerTransformer(item.user)
