@@ -24,6 +24,11 @@ export default defineEventHandler(async (event) => {
 					},
 				},
 			},
+			where: {
+				owner: {
+					id: event.context.auth.user.id,
+				},
+			},
 			take: limit ? +limit : undefined,
 		})) as unknown as IStudioResponse[]
 
