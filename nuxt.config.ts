@@ -8,6 +8,7 @@ export default defineNuxtConfig({
 		'@nuxt/image',
 		'nuxt-swiper',
 		'@vite-pwa/nuxt',
+		'@vueuse/nuxt',
 	],
 
 	image: {

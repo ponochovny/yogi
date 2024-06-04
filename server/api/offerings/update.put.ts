@@ -1,21 +1,26 @@
-import formidable from 'formidable'
 import { convertPriceStringToNumber } from '~/helpers'
-import type {
-	IOfferingCreateData,
-	IOfferingUpdateData,
-} from '~/helpers/types/offering'
+import type { IOfferingCreateData } from '~/helpers/types/offering'
 import { generateSlug } from '~/lib/utils'
-import { createMediaFile } from '~/server/db/mediaFiles'
+import {
+	createMediaFile,
+	deleteMediaFile,
+	updateMediaFile,
+} from '~/server/db/mediaFiles'
 import { updateOffering } from '~/server/db/offerings'
 import { removePractitioner } from '~/server/db/practitioners'
 import { attachPractitionerToOffering } from '~/server/db/practitioners'
 import { createTicket, updateTicket } from '~/server/db/tickets'
+import { extractForm } from '~/server/helpers'
 
-interface IOfferingUpdateDataForm extends IOfferingUpdateData {
-	'practitioners[]': string[]
-	'practitionersRemove[]': string[]
-	'tickets[]': string[]
-	'ticketsRemove[]': string[]
+type IOfferingUpdateDataForm = Partial<
+	Omit<
+		IOfferingCreateData,
+		'practitioners' | 'banners' | 'tickets' | 'location'
+	>
+> & {
+	location?: string
+	practitionersRemove?: string[]
+	ticketsRemove?: string[]
 }
 
 export default defineEventHandler(async (event) => {
@@ -26,45 +31,40 @@ export default defineEventHandler(async (event) => {
 		throw createError({ status: 401, message: 'No id provided' })
 	}
 
-	const form = formidable({})
+	const { fields, files } = await extractForm<
+		Promise<{
+			fields: { [key: string]: string[] } & { studioId: string }
+			files: any
+		}>
+	>(event)
 
-	const formExtracted = await new Promise((resolve, reject) => {
-		form.parse(event.node.req, (error, fields, files) => {
-			if (error) {
-				reject(error)
-			}
-			resolve({ fields, files })
-		})
-	})
-
-	// TODO: set fields types
-	const { fields, files } = formExtracted as {
-		fields: { [key in keyof IOfferingUpdateDataForm]: string[] } & {
-			studioId: string
+	const fieldsFromForm = () => {
+		return {
+			...(fields.name && { name: fields.name[0] }),
+			...(fields.name && { slug: generateSlug(fields.name[0]) }),
+			...(fields.activity && { activity: fields.activity[0] }),
+			...(fields.start && { start: new Date(fields.start[0]) }),
+			...(fields.end && { end: new Date(fields.end[0]) }),
+			...(fields.duration && { duration: +fields.duration[0] }),
+			...(fields.description && { description: fields.description[0] }),
+			...(fields.spots && { spots: +fields.spots[0] }),
+			...(fields.is_private && {
+				is_private: fields.is_private[0] === 'true',
+			}),
+			...(fields.types && { types: fields.types[0].split(',') }),
+			...(fields.categories && {
+				categories: fields.categories[0].split(','),
+			}),
+			...(fields.location && { location: fields.location[0] }),
+			...(fields.timezone && { timezone: fields.timezone[0] }),
+			isActive:
+				typeof fields.isActive == 'boolean'
+					? !!fields.isActive
+					: fields.isActive[0] === 'true',
 		}
-		files: any
 	}
 
-	const offeringData: Partial<
-		Omit<
-			IOfferingCreateData,
-			'practitioners' | 'banners' | 'tickets' | 'location'
-		>
-	> & { location: string } = {
-		...(fields.name[0] && { name: fields.name[0] }),
-		...(fields.name[0] && { slug: generateSlug(fields.name[0]) }),
-		activity: fields.activity[0],
-		start: new Date(fields.start[0]),
-		end: new Date(fields.end[0]),
-		duration: +fields.duration[0],
-		description: fields.description[0],
-		spots: +fields.spots[0],
-		is_private: fields.is_private[0] === 'true',
-		types: fields.types[0].split(','),
-		categories: fields.categories[0].split(','),
-		location: fields.location[0],
-		timezone: fields.timezone[0],
-	}
+	const offeringData: IOfferingUpdateDataForm = fieldsFromForm()
 
 	const updatedOffering = await updateOffering(offeringData, offeringId)
 
@@ -115,20 +115,63 @@ export default defineEventHandler(async (event) => {
 	}
 
 	// Media files (Banner)
-	if (files[`fileToUpload[]`]) {
-		const filePromises = Object.keys(files[`fileToUpload[]`]).map(
-			async (key) => {
-				const file = files[`fileToUpload[]`][key]
 
-				const cloudinaryResource = await uploadToCloudinary(file.filepath)
-
-				return createMediaFile({
-					url: cloudinaryResource.secure_url,
-					providerPublicId: cloudinaryResource.public_id,
-					bannerOfferingId: offeringId,
-				})
+	const findNthNullIndex = (arr: any[], n: number) => {
+		console.log('findNthNullIndex', arr, n)
+		let nullCount = 0
+		for (let i = 0; i < arr.length; i++) {
+			if (arr[i] === null) {
+				nullCount++
+				if (nullCount === n) {
+					console.log('return', i)
+					return i
+				}
 			}
+		}
+		return -1
+	}
+	if (fields.bannersOrder) {
+		console.log('fields.bannersOrder', fields.bannersOrder)
+		const bannersOrder = JSON.parse(fields.bannersOrder[0]) as (string | null)[]
+		const bannersDelete = JSON.parse(fields.bannersDelete[0]) as string[]
+		const orderArr = bannersOrder.map((el) =>
+			el && bannersDelete.includes(el) ? null : el
 		)
+		const deleteMediaFilePromises = bannersDelete.map((el) =>
+			deleteMediaFile(el)
+		)
+		const updateMediaFileOrderPromises = orderArr.map((el, idx) => {
+			if (el === null) return
+			return updateMediaFile(el as string, { order: idx })
+		})
+		await Promise.all([
+			...updateMediaFileOrderPromises,
+			...deleteMediaFilePromises,
+		])
+	}
+	if (files[`fileToUpload[]`]) {
+		const filesArr = Object.keys(files[`fileToUpload[]`])
+		const orderArr = fields.bannersOrder
+			? (JSON.parse(fields.bannersOrder[0]) as (string | null)[])
+			: []
+		const setOrder = (idx: number) => {
+			if (!fields.bannersOrder) return
+			return findNthNullIndex(orderArr, idx + 1)
+		}
+
+		const filePromises = filesArr.map(async (key, idx) => {
+			const order = setOrder(idx)
+			const file = files[`fileToUpload[]`][key]
+
+			const cloudinaryResource = await uploadToCloudinary(file.filepath)
+
+			return createMediaFile({
+				url: cloudinaryResource.secure_url,
+				providerPublicId: cloudinaryResource.public_id,
+				bannerOfferingId: offeringId,
+				order,
+			})
+		})
 
 		await Promise.all(filePromises)
 	}
@@ -155,6 +198,10 @@ export default defineEventHandler(async (event) => {
 
 	return {
 		data: updatedOffering,
+		files,
+		filesArray: files[`fileToUpload[]`]
+			? Object.keys(files[`fileToUpload[]`])
+			: null,
 		status: 'Success!',
 	}
 })

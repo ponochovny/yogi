@@ -1,4 +1,3 @@
-import formidable from 'formidable'
 import { convertPriceStringToNumber } from '~/helpers'
 import type { IOfferingCreateData } from '~/helpers/types/offering'
 import { generateSlug } from '~/lib/utils'
@@ -6,31 +5,27 @@ import { createMediaFile } from '~/server/db/mediaFiles'
 import { createOffering } from '~/server/db/offerings'
 import { attachPractitionerToOffering } from '~/server/db/practitioners'
 import { createTicket } from '~/server/db/tickets'
+import { extractForm } from '~/server/helpers'
 import { uploadToCloudinary } from '~/server/utils/cloudinary'
 
 export default defineEventHandler(async (event) => {
-	const form = formidable({})
-
-	const formExtracted = await new Promise((resolve, reject) => {
-		form.parse(event.node.req, (error, fields, files) => {
-			if (error) {
-				reject(error)
-			}
-			resolve({ fields, files })
-		})
-	})
-
-	// TODO: set fields types
-	const { fields, files } = formExtracted as {
-		fields: { [key: string]: string[] } & { studioId: string }
-		files: any
-	}
+	const { fields, files } = await extractForm<
+		Promise<{
+			fields: { [key: string]: string[] } & { studioId: string }
+			files: any
+		}>
+	>(event)
 
 	const studioId = fields.studioId[0]
 
 	const offeringData: Omit<
 		IOfferingCreateData,
-		'practitioners' | 'banners' | 'tickets' | 'location'
+		| 'practitioners'
+		| 'banners'
+		| 'tickets'
+		| 'location'
+		| 'bannersDelete'
+		| 'bannersOrder'
 	> & { location: string } = {
 		name: fields.name[0],
 		slug: generateSlug(fields.name[0]),
@@ -45,6 +40,7 @@ export default defineEventHandler(async (event) => {
 		categories: fields.categories[0].split(','),
 		location: fields.location[0],
 		timezone: fields.timezone[0],
+		isActive: false,
 
 		// owner
 		studioId,
@@ -68,19 +64,19 @@ export default defineEventHandler(async (event) => {
 
 	// Media files (Banner)
 	if (files[`fileToUpload[]`]) {
-		const filePromises = Object.keys(files[`fileToUpload[]`]).map(
-			async (key) => {
-				const file = files[`fileToUpload[]`][key]
+		const filesArr = Object.keys(files[`fileToUpload[]`])
+		const filePromises = filesArr.map(async (key, idx) => {
+			const file = files[`fileToUpload[]`][key]
 
-				const cloudinaryResource = await uploadToCloudinary(file.filepath)
+			const cloudinaryResource = await uploadToCloudinary(file.filepath)
 
-				return createMediaFile({
-					url: cloudinaryResource.secure_url,
-					providerPublicId: cloudinaryResource.public_id,
-					bannerOfferingId: offering.id,
-				})
-			}
-		)
+			return createMediaFile({
+				url: cloudinaryResource.secure_url,
+				providerPublicId: cloudinaryResource.public_id,
+				bannerOfferingId: offering.id,
+				order: idx,
+			})
+		})
 
 		await Promise.all(filePromises)
 	}

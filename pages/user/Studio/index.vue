@@ -1,7 +1,9 @@
 <template>
 	<NuxtLayout name="user-admin">
 		<div class="lg:pr-0 pr-6 max-w-[600px]">
-			<div class="flex gap-2 sm:gap-4 flex-col sm:flex-row pt-8 mb-6">
+			<div
+				class="flex gap-2 sm:gap-4 flex-col sm:flex-row pt-8 mb-2 md:mb-6 items-start"
+			>
 				<button
 					v-if="studios.length > 0"
 					@click="tab = 'list'"
@@ -37,19 +39,46 @@
 						:key="studio.id"
 						:value="`item-${index}`"
 					>
-						<AccordionTrigger class="hover:no-underline">
-							<span class="text-2xl font-semibold text-left">
+						<AccordionTrigger class="hover:no-underline py-3 md:py-4">
+							<span
+								class="text-xl md:text-2xl font-semibold text-left"
+								:class="{ 'text-gray-100': studio.isArchived }"
+							>
 								{{ studio.name }}
 							</span>
 						</AccordionTrigger>
 						<AccordionContent>
-							<Button
-								class="mb-2"
-								@click="gotoStudioSettings(studio)"
-								size="sm"
-							>
-								<Cog6ToothIcon class="text-white w-6 py-2" />
-							</Button>
+							<div class="flex gap-2 flex-wrap p-1">
+								<Button
+									class="mb-2"
+									@click="gotoStudioSettings(studio)"
+									size="sm"
+									variant="outline"
+									title="Settings"
+								>
+									<Cog6ToothIcon class="text-orange-400 w-6 py-2" />
+								</Button>
+								<Button
+									class="mb-2"
+									@click="
+										toggleArchiveStudioHandler(studio.id, !studio.isArchived)
+									"
+									btnSize="sm"
+									:variant="
+										studio.isArchived ? 'successOutline' : 'destructiveOutline'
+									"
+									:title="studio.isArchived ? 'Unarchive' : 'Archive'"
+								>
+									<ArchiveBoxIcon
+										v-if="!studio.isArchived"
+										class="w-6 py-2 text-rose-500 stroke-1"
+									/>
+									<ArchiveBoxArrowDownIcon
+										v-if="studio.isArchived"
+										class="w-6 py-2 text-emerald-600 stroke-1"
+									/>
+								</Button>
+							</div>
 							<StudioCreation
 								:studio="studio"
 								update-data
@@ -72,7 +101,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import type { TStudio } from '~/helpers/types/studio'
-import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
+import {
+	Cog6ToothIcon,
+	ArchiveBoxArrowDownIcon,
+	ArchiveBoxIcon,
+} from '@heroicons/vue/24/outline'
 
 export default defineComponent({
 	name: 'Studio',
@@ -87,11 +120,11 @@ const user = useAuthUser()
 const loading = ref(true)
 const tab = ref<'create' | 'list'>('create')
 const studios = ref<TStudio[]>([])
-const { getStudios } = useStudio()
+const { getAdminStudios, toggleArchiveStudio } = useStudio()
 
 async function loadStudios() {
 	try {
-		const { data: studiosRes } = await getStudios()
+		const { data: studiosRes } = await getAdminStudios()
 		studios.value = studiosRes
 	} catch (error) {
 		console.log(error)
@@ -114,5 +147,10 @@ function gotoStudioSettings(studioData: TStudio) {
 
 	studioId.value = studioData
 	navigateTo(`/user/studio/${studioData.id}/offerings`)
+}
+
+async function toggleArchiveStudioHandler(id: string, val: boolean) {
+	await toggleArchiveStudio(id, val)
+	await loadStudios()
 }
 </script>

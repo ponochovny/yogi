@@ -9,6 +9,7 @@
 			label="Your name"
 			placeholder="Your name"
 			name="name"
+			autocomplete="off"
 		/>
 		<Input
 			v-model="data.email"
@@ -16,6 +17,7 @@
 			placeholder="Your e-mail"
 			type="email"
 			name="email"
+			:autocomplete="mode !== 'register' ? 'on' : 'off'"
 		/>
 		<Input
 			v-model="data.password"
@@ -23,6 +25,7 @@
 			placeholder="********"
 			type="password"
 			name="password"
+			:autocomplete="mode !== 'register' ? 'on' : 'off'"
 		/>
 		<Input
 			v-if="mode === 'register'"
@@ -31,6 +34,7 @@
 			placeholder="********"
 			type="password"
 			name="repeatPassword"
+			autocomplete="off"
 		/>
 		<Button type="submit">
 			<span class="font-bold text-white">

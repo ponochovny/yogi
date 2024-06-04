@@ -163,7 +163,7 @@
 			/>
 			<span
 				:class="{
-					'block sm:hidden': variant === 'default',
+					'block sm:hidden font-semibold': variant === 'default',
 					'block md:hidden': variant === 'secondary',
 				}"
 			>

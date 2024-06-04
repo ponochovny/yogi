@@ -22,6 +22,22 @@ export const updateOffering = (offeringData: any, offeringId: string) => {
 	})
 }
 
+export const updateOfferingsByStudioId = (
+	offeringData: any,
+	studioId: string
+) => {
+	return prisma.offering.updateMany({
+		where: {
+			studio: {
+				id: studioId,
+			},
+		},
+		data: {
+			...offeringData,
+		},
+	})
+}
+
 export const getOfferings = <T>(
 	params: Prisma.OfferingFindManyArgs<DefaultArgs> = {}
 ): Promise<T> => {

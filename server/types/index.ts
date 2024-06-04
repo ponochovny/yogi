@@ -51,6 +51,7 @@ export interface IPractitionerResponse {
 }
 
 export interface IMediaFile {
+	id?: string
 	url: string
 	providerPublicId: string
 	bannerStudioId?: string | null
@@ -58,4 +59,5 @@ export interface IMediaFile {
 	userId?: string
 	logoOfferingId?: string | null
 	bannerOfferingId?: string | null
+	order?: number
 }

@@ -115,6 +115,8 @@ model Studio {
   // Media files
   // mediaFiles MediaFile[]
 
+  isArchived Boolean?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -136,6 +138,8 @@ model Offering {
   location    String
   timezone    String
 
+  isActive Boolean?
+
   // studio
   studio   Studio @relation(fields: [studioId], references: [id])
   studioId String @db.ObjectId
@@ -152,6 +156,8 @@ model MediaFile {
   id               String @id @default(auto()) @map("_id") @db.ObjectId
   url              String
   providerPublicId String
+
+  order Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

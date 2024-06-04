@@ -32,6 +32,8 @@ export interface IOfferingResponse {
 	location: string
 	timezone: string
 
+	isActive: boolean
+
 	createdAt: string
 	updatedAt: string
 
@@ -43,7 +45,7 @@ export interface IOfferingResponse {
 }
 
 export interface IBanner {
-	id: string
+	id?: string
 	url: string
 	providerPublicId: string
 	createdAt: string
@@ -52,4 +54,5 @@ export interface IBanner {
 	bannerStudioId: string | null
 	userId: string | null
 	bannerOfferingId: string | null
+	order?: number
 }

@@ -2,33 +2,34 @@
 	<div
 		class="flex items-center flex-row"
 		:class="{
-			'bg-white py-3 flex-col lg:flex-row md:gap-0 gap-3': variant === 'white',
+			'bg-white py-3 flex-col md:flex-row md:gap-0 gap-3 flex-wrap':
+				variant === 'white',
+			'justify-between': variant === 'default',
 		}"
 	>
-		<div
-			class="flex w-full items-center"
+		<NuxtLink
+			to="/"
+			class="shrink-0 w-[65px] transition duration-1000 ease-in bg-transparent rounded-full hover:bg-orange-200"
 			:class="{
-				'md:flex-row flex-col': variant === 'white',
+				'mb-4 md:mb-0': variant === 'white',
 			}"
 		>
-			<NuxtLink
-				to="/"
-				class="shrink-0 w-[65px] transition duration-1000 ease-in bg-transparent rounded-full hover:bg-orange-200"
-				:class="{
-					'mb-4 md:mb-0': variant === 'white',
-				}"
-			>
-				<NuxtImg src="/img/logo.svg" alt="Yogi app" width="65" height="65" />
-			</NuxtLink>
-
+			<NuxtImg src="/img/logo.svg" alt="Yogi app" width="65" height="65" />
+		</NuxtLink>
+		<div
+			class="flex items-center w-full md:w-auto"
+			:class="{
+				'md:flex-row flex-col order-3 md:order-none': variant === 'white',
+			}"
+		>
 			<slot name="left" />
 
 			<div v-if="links" class="ml-3 sm:ml-[10%] hidden md:flex gap-3 sm:gap-8">
 				<NuxtLink to="/search?location=Online">
-					<span class="font-semibold">Explore live offerings</span>
+					<span class="font-semibold text-nowrap">Explore live offerings</span>
 				</NuxtLink>
 				<NuxtLink to="/user/studio" v-if="user">
-					<span class="font-semibold">Add your business</span>
+					<span class="font-semibold text-nowrap">Add your business</span>
 				</NuxtLink>
 			</div>
 		</div>

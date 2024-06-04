@@ -30,9 +30,9 @@ export default defineEventHandler(async (event) => {
 
 		return { access_token: accessToken }
 	} catch (error) {
-		throw createError({
+		return {
 			statusCode: 500,
-			statusMessage: 'Something went wrong',
-		})
+			body: { error: 'Refresh token is invalid', details: error },
+		}
 	}
 })

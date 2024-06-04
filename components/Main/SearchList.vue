@@ -30,9 +30,13 @@
 					class="flex gap-3 hover:bg-gray-100/60 transition-colors text-left px-3 py-1.5 rounded-lg"
 					@click="goTo(`/offering/${offering.slug}`)"
 				>
-					<img
+					<NuxtImg
 						:src="getImageUrl(offering)"
 						class="w-8 h-6 rounded-md object-cover object-center mt-1"
+						provider="cloudinary"
+						width="100"
+						height="auto"
+						format="webp"
 					/>
 					<div class="flex flex-col gap-0">
 						<p
@@ -76,10 +80,14 @@
 					class="flex gap-3 hover:bg-gray-100/60 transition-colors text-left px-3 py-1.5 rounded-lg"
 					@click="goTo(`/studio/${studio.slug}`)"
 				>
-					<img
+					<NuxtImg
 						v-if="studio.logo.url"
 						:src="studio.logo.url || ''"
 						class="w-8 h-8 rounded-full object-cover object-center mt-1"
+						provider="cloudinary"
+						width="32"
+						height="32"
+						format="webp"
 					/>
 					<div v-else class="w-8 h-8 rounded-full bg-gray-100"></div>
 					<div class="flex flex-col gap-0">
@@ -109,10 +117,14 @@
 					class="flex gap-3 hover:bg-gray-100/60 transition-colors text-left px-3 py-1.5 rounded-lg items-center"
 					@click="goTo(`/practitioner/${practitioner.id}`)"
 				>
-					<img
+					<NuxtImg
 						v-if="practitioner.profileImage"
 						:src="practitioner.profileImage || ''"
 						class="w-8 h-8 rounded-full object-cover object-center mt-1"
+						provider="cloudinary"
+						width="32"
+						height="32"
+						format="webp"
 					/>
 					<div v-else class="w-8 h-8 rounded-full bg-gray-100"></div>
 					<div class="flex flex-col gap-0 items-center">

@@ -1,5 +1,7 @@
 <template>
-	<div class="bg-white px-6 py-3 border-t shadow-lg flex gap-8 h-16">
+	<div
+		class="bg-white px-6 py-3 border-t shadow-lg flex gap-8 lg:h-16 flex-col-reverse lg:flex-row"
+	>
 		<!-- DATA TYPES FILTER -->
 		<div class="flex gap-4">
 			<button
@@ -17,7 +19,7 @@
 		</div>
 
 		<!-- FILTERS: TYPES, CATEGORIES, DATE, PRICE -->
-		<div v-if="isOfferings" class="flex gap-2">
+		<div v-if="isOfferings" class="flex gap-2 flex-wrap">
 			<Yselect
 				variant="button"
 				@close="update"

@@ -1,13 +1,18 @@
 <template>
-	<div class="sm:-mx-5" v-if="length">
+	<div class="-mx-3 sm:-mx-5" v-if="length">
 		<div class="relative w-full px-5">
-			<div class="rounded-2xl overflow-hidden">
+			<div :class="classSlideContainer">
 				<Swiper
 					@swiper="onSwiper"
 					@snapIndexChange="snapIndexChange"
 					:modules="[SwiperAutoplay, SwiperNavigation]"
 					slides-per-view="auto"
-					:space-between="24"
+					:spaceBetween="10"
+					:breakpoints="{
+						615: {
+							spaceBetween: 24,
+						},
+					}"
 					:navigation="{
 						nextEl: nextNavigation,
 						prevEl: prevNavigation,
@@ -43,7 +48,7 @@ export default defineComponent({
 </script>
 <script lang="ts" setup>
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/outline'
-defineProps<{ length?: number }>()
+defineProps<{ length?: number; classSlideContainer?: string }>()
 const isEnd = ref(false)
 const isBeginning = ref(false)
 const isMiddle = ref(false)

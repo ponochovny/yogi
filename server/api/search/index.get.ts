@@ -103,7 +103,9 @@ export default defineEventHandler(async (event) => {
 					? true
 					: minPrice <= +query.price_to && maxPrice >= +query.price_from
 
-				return byTypes && byCategories && byDates && byPrice
+				return (
+					byTypes && byCategories && byDates && byPrice && offering.isActive
+				)
 			})
 
 			const total = filteredOfferings.length

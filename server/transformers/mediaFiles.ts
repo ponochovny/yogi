@@ -7,7 +7,8 @@ export const mediaFileTransformer = (
 	mediaFile: IMediaFile | IBanner
 ): TMediaFile => {
 	return {
-		// id: mediaFile.id,
+		id: mediaFile.id,
 		url: mediaFile.url,
+		order: mediaFile.order,
 	}
 }

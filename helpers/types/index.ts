@@ -1,4 +1,5 @@
 export type TMediaFile = {
-	// id: string
+	id?: string
 	url: string
+	order?: number
 }

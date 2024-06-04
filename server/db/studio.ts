@@ -61,3 +61,20 @@ export const getStudioBySlug = (
 		},
 	})
 }
+
+export const toggleArchiveStudioById = (
+	id: string,
+	isArchived: boolean,
+	params?: Prisma.StudioUpdateArgs<DefaultArgs>
+) => {
+	return prisma.studio.update({
+		...params,
+		where: {
+			...params?.where,
+			id,
+		},
+		data: {
+			isArchived,
+		},
+	})
+}

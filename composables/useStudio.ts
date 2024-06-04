@@ -78,10 +78,29 @@ export default () => {
 			body: form,
 		})
 	}
+	const toggleArchiveStudio = (studioId: string, val: boolean) => {
+		const res = confirm(
+			`Are you really want to ${
+				val ? 'archive' : 'unarchive'
+			} this studio? ${val}`
+		)
+		if (!res) return
+		return useFetchApi('/api/studios/archive/' + studioId, {
+			method: 'DELETE',
+			body: {
+				isArchived: val,
+			},
+		})
+	}
 
 	const getStudios = (queries?: string) => {
 		return useFetchApi<{ data: TStudio[] }>(
 			`/api/studios${queries ? '?' + queries : ''}`
+		)
+	}
+	const getAdminStudios = (queries?: string) => {
+		return useFetchApi<{ data: TStudio[] }>(
+			`/api/admin/studios${queries ? '?' + queries : ''}`
 		)
 	}
 	const getStudiosOpen = (queries?: string) => {
@@ -94,6 +113,8 @@ export default () => {
 		createStudio,
 		updateStudio,
 		getStudios,
+		getAdminStudios,
 		getStudiosOpen,
+		toggleArchiveStudio,
 	}
 }

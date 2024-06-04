@@ -6,6 +6,7 @@ export default defineEventHandler(async (event) => {
 	const endpoints = [
 		'/api/auth/user',
 		'/api/studios',
+		'/api/admin/studios',
 		'/api/studios/update',
 		'/api/offering',
 	]

@@ -17,7 +17,7 @@ const isAuthInitLoading = useAuthInitLoading()
 const darkMode = ref(false)
 
 onBeforeMount(() => {
-	initAuth()
+	initAuth().catch(() => {})
 })
 
 useHead({
