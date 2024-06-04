@@ -24,7 +24,7 @@
 		>
 			<slot name="left" />
 
-			<div v-if="links" class="ml-3 sm:ml-[10%] hidden md:flex gap-3 sm:gap-8">
+			<div v-if="links" class="ml-3 sm:ml-11 hidden md:flex gap-3 sm:gap-8">
 				<NuxtLink to="/search?location=Online">
 					<span class="font-semibold text-nowrap">Explore live offerings</span>
 				</NuxtLink>
