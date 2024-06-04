@@ -13,6 +13,7 @@ export const buttonVariants = cva(
 					'bg-destructive text-destructive-foreground hover:bg-destructive/90',
 				destructiveOutline:
 					'border border-rose-600/30 bg-transparent text-rose-600 rounded-full hover:bg-rose-400/10 hover:text-rose-600 active:bg-rose-400/5 ring ring-rose-300/0 active:ring-rose-300 active:ring-opacity-50 disabled:ring-0',
+				successOutline: 'border border-emerald-600/30 bg-transparent text-emerald-600 rounded-full hover:bg-emerald-400/10 hover:text-emerald-600 active:bg-emerald-400/5 disabled:bg-transparent disabled:opacity-50 ring ring-emerald-300/0 active:ring-emerald-300 active:ring-opacity-50 disabled:ring-0',
 				outline:
 					'border border-orange-600/30 bg-transparent text-orange-600 rounded-full hover:bg-orange-400/10 hover:text-orange-600 active:bg-orange-400/5 ring ring-orange-300/0 active:ring-orange-300 active:ring-opacity-50 disabled:ring-0',
 				secondary:
