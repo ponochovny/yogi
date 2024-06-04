@@ -197,9 +197,10 @@
 						v-for="ticket of offering.data.tickets"
 						:key="ticket.id"
 						@click="selectedTicket = ticket.id"
+						class="group"
 					>
 						<div
-							class="flex gap-4 px-2 py-1 border rounded-lg border-gray-400 text-left text-black transition-colors"
+							class="flex gap-4 px-2 py-1 border rounded-lg border-gray-200 group-hover:border-orange-400/50 text-left text-black transition-colors"
 							:class="{
 								'hover:bg-orange-200/20 hover:border-orange-400/50':
 									selectedTicket !== ticket.id,
@@ -208,10 +209,14 @@
 							}"
 						>
 							<TicketIcon
-								v-if="selectedTicket === ticket.id"
-								class="w-10 text-gray-700 stroke-1 shrink-0"
+								class="w-10 stroke-1 shrink-0 transition-colors duration-300"
+								:class="{
+									'text-orange-400': selectedTicket === ticket.id,
+									'text-gray-200 group-hover:text-gray-400':
+										selectedTicket !== ticket.id,
+								}"
 							/>
-							<div v-else class="w-10 block"></div>
+							<!-- <div v-else class="w-10 block"></div> -->
 							<div class="flex flex-col">
 								<p>{{ ticket.name }}</p>
 								<p class="text-xs">{{ ticket.description }}</p>
@@ -260,7 +265,10 @@ const { data: offering } = await useFetch<{ data: TOffering }>(
 	`/api/offerings/${route.params.slug}`
 )
 
-const selectedTicket = ref('')
+const selectedTicket = ref(
+	offering.value?.data?.tickets[offering.value?.data?.tickets.length - 1].id ||
+		''
+)
 
 function handleCheckout(ticketId: string, count: number) {
 	if (!selectedTicket.value) {
