@@ -35,12 +35,20 @@
 						<TableCell>{{ offering.types.join(', ') }}</TableCell>
 						<TableCell>{{ offering.location.name }}</TableCell>
 						<TableCell>
-							<div class="flex items-center">
+							<div class="relative flex items-center">
+								<div class="absolute -left-0.5 -top-0.5 flex items-center">
+									<div
+										v-for="(bg, idx) of offering.practitioners"
+										:key="bg.id"
+										class="w-7 h-7 rounded-full bg-orange-500"
+										:class="{ '-ml-[12px]': idx > 0 }"
+									></div>
+								</div>
 								<img
 									v-for="(prac, idx) of offering.practitioners"
 									:key="prac.id"
 									:src="prac.profileImage || ''"
-									class="w-6 h-6 rounded-full"
+									class="w-6 h-6 rounded-full z-10"
 									:class="{ '-ml-2': idx > 0 }"
 									:title="prac.name || ''"
 								/>
@@ -103,6 +111,13 @@
 					</TableRow>
 				</TableBody>
 			</Table>
+
+			<MainNoContent
+				v-if="!offeringsRes?.data.length"
+				class="mt-6"
+				title="You haven't create any offering"
+				text="Here you may find your offerings"
+			/>
 		</div>
 	</NuxtLayout>
 </template>

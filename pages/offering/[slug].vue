@@ -59,6 +59,15 @@
 				</div>
 			</div>
 			<div class="relative h-[250px] sm:h-[350px] xl:h-[450px] z-0">
+				<NuxtImg
+					v-if="!offering.data.banners.length"
+					src="img/banner-placeholder2.jpeg"
+					:alt="offering.data.name"
+					:title="offering.data.name"
+					class="object-cover w-full h-full rounded-3xl opacity-70"
+					sizes="400px md:800px lg:1280px"
+					format="webp"
+				/>
 				<SwiperBlock
 					:length="offering.data.banners.length"
 					class="h-[250px] sm:h-[350px] xl:h-[450px]"
@@ -70,7 +79,7 @@
 					>
 						<div class="h-[250px] sm:h-[350px] xl:h-[450px]">
 							<NuxtImg
-								:src="banner.url || 'img/banner-placeholder2.jpeg'"
+								:src="banner.url"
 								:alt="offering.data.name"
 								:title="offering.data.name"
 								class="object-cover w-full h-full rounded-3xl"
@@ -78,16 +87,13 @@
 								placeholder
 								sizes="400px md:800px lg:1280px"
 								format="webp"
-								:class="{
-									'opacity-70': !banner,
-								}"
 							/>
 						</div>
 					</SwiperSlide>
 				</SwiperBlock>
 			</div>
 			<div
-				class="relative bg-white rounded-3xl -mt-20 mx-auto w-full md:w-[99%] px-6 sm:px-10 lg:px-16 py-10 md:py-20 flex gap-8 flex-col-reverse lg:flex-row"
+				class="relative bg-white rounded-3xl -mt-6 mx-auto w-full md:w-[99%] px-6 sm:px-10 lg:px-16 py-10 md:py-20 flex gap-8 flex-col-reverse lg:flex-row"
 			>
 				<div
 					class="flex flex-col gap-4 sm:gap-8 w-full lg:w-[calc(100%_-_200px)] xl:w-[calc(100%_-_400px)]"
