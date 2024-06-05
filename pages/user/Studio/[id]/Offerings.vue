@@ -2,7 +2,7 @@
 	<NuxtLayout name="user-admin">
 		<div class="pt-6 -ml-4 md:-ml-16">
 			<Button
-				class="ml-auto mr-4 mb-4"
+				class="ml-auto mr-4 mb-4 block"
 				variant="outline"
 				@click="$router.push($route.fullPath + '/create')"
 			>

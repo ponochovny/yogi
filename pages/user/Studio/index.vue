@@ -50,16 +50,16 @@
 						<AccordionContent>
 							<div class="flex gap-2 flex-wrap p-1">
 								<Button
-									class="mb-2"
+									class="mb-2 !px-2"
 									@click="gotoStudioSettings(studio)"
 									size="sm"
 									variant="outline"
 									title="Settings"
 								>
-									<Cog6ToothIcon class="text-orange-400 w-6 py-2" />
+									<Cog6ToothIcon class="text-orange-400 w-6" />
 								</Button>
 								<Button
-									class="mb-2"
+									class="mb-2 !px-2"
 									@click="
 										toggleArchiveStudioHandler(studio.id, !studio.isArchived)
 									"
@@ -71,11 +71,11 @@
 								>
 									<ArchiveBoxIcon
 										v-if="!studio.isArchived"
-										class="w-6 py-2 text-rose-500 stroke-1"
+										class="w-6 text-rose-500 stroke-1"
 									/>
 									<ArchiveBoxArrowDownIcon
 										v-if="studio.isArchived"
-										class="w-6 py-2 text-emerald-600 stroke-1"
+										class="w-6 text-emerald-600 stroke-1"
 									/>
 								</Button>
 							</div>
