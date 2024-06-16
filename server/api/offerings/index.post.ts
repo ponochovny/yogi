@@ -1,5 +1,4 @@
-import { convertPriceStringToNumber } from '~/helpers'
-import type { IOfferingCreateData } from '~/helpers/types/offering'
+import { offeringDataCreationSchema } from '~/helpers/types/offering'
 import { generateSlug } from '~/lib/utils'
 import { createMediaFile } from '~/server/db/mediaFiles'
 import { createOffering } from '~/server/db/offerings'
@@ -8,66 +7,92 @@ import { createTicket } from '~/server/db/tickets'
 import { extractForm } from '~/server/helpers'
 import { uploadToCloudinary } from '~/server/utils/cloudinary'
 
+const parseArrayField = (fields: { [key: string]: string }, field: string) => {
+	const fieldKey = field + '[]'
+	const isSingleTicket = typeof fields[fieldKey] === 'string'
+
+	let result
+	try {
+		result = JSON.parse(fields[fieldKey])
+	} catch (e) {
+		result = fields[fieldKey]
+	}
+	if (isSingleTicket) return [result]
+
+	return (fields[fieldKey] as unknown as string[])?.map((ticket) => {
+		try {
+			return JSON.parse(ticket)
+		} catch (e) {
+			return ticket
+		}
+	})
+}
+
 export default defineEventHandler(async (event) => {
 	const { fields, files } = await extractForm<
 		Promise<{
-			fields: { [key: string]: string[] } & { studioId: string }
+			fields: { [key: string]: string } & { studioId: string }
 			files: any
 		}>
 	>(event)
 
-	const studioId = fields.studioId[0]
+	const studioId = fields.studioId
 
-	const offeringData: Omit<
-		IOfferingCreateData,
-		| 'practitioners'
-		| 'banners'
-		| 'tickets'
-		| 'location'
-		| 'bannersDelete'
-		| 'bannersOrder'
-	> & { location: string } = {
-		name: fields.name[0],
-		slug: generateSlug(fields.name[0]),
-		activity: fields.activity[0],
-		start: new Date(fields.start[0]),
-		end: new Date(fields.end[0]),
-		duration: +fields.duration[0],
-		description: fields.description[0],
-		spots: +fields.spots[0],
-		is_private: fields.is_private[0] === 'true',
-		types: fields.types[0].split(','),
-		categories: fields.categories[0].split(','),
-		location: fields.location[0],
-		timezone: fields.timezone[0],
+	const offeringData = {
+		name: fields.name,
+		description: fields.description,
+		activity: fields.activity,
+		slug: generateSlug(fields.name),
+		types: fields.types.split(','),
+		categories: fields.categories.split(','),
+		duration: +fields.duration,
+		spots: +fields.spots,
+		location: JSON.parse(fields.location as unknown as string),
+		timezone: fields.timezone,
+		start: new Date(fields.start),
+		end: new Date(fields.end),
+		is_private: fields.is_private === 'true',
 		isActive: false,
+		tickets: parseArrayField(fields, 'tickets'),
+		practitioners: parseArrayField(fields, 'practitioners'),
+		banners: files[`fileToUpload[]`] || [],
+		// bannersDelete: z.array(z.string()).optional(),
+		// bannersOrder: z.array(z.string()).optional(),
 
-		// owner
+		// Owner
 		studioId,
 	}
 
-	const offering = await createOffering(offeringData)
-
-	// Practitioners
-	if (fields[`practitioners[]`]) {
-		const practitionerPromises = fields[`practitioners[]`].map(
-			async (userId: string) => {
-				return attachPractitionerToOffering({
-					userId,
-					offeringId: offering.id,
-				})
-			}
-		)
-
-		await Promise.all(practitionerPromises)
+	// CHECK DATA (PARSE BY SCHEMA)
+	const parsed = offeringDataCreationSchema.safeParse(offeringData)
+	if (!parsed.success) {
+		throw createError({
+			statusCode: 400,
+			statusMessage: 'Data is not valid',
+		})
 	}
 
-	// Media files (Banner)
-	if (files[`fileToUpload[]`]) {
-		const filesArr = Object.keys(files[`fileToUpload[]`])
-		const filePromises = filesArr.map(async (key, idx) => {
-			const file = files[`fileToUpload[]`][key]
+	const { banners, practitioners, tickets, location, ...restOfferingData } =
+		offeringData
 
+	// Offering
+	const offering = await createOffering({
+		...restOfferingData,
+		location: JSON.stringify(location),
+	})
+
+	// Practitioners
+	const practitionerPromises = offeringData.practitioners.map(
+		async (userId: string) => {
+			return attachPractitionerToOffering({
+				userId,
+				offeringId: offering.id,
+			})
+		}
+	)
+	// Media files (Banners)
+	const filePromises = (offeringData.banners as any[]).map(
+		async (file: any, idx) => {
 			const cloudinaryResource = await uploadToCloudinary(file.filepath)
 
 			return createMediaFile({
@@ -76,31 +101,34 @@ export default defineEventHandler(async (event) => {
 				bannerOfferingId: offering.id,
 				order: idx,
 			})
-		})
-
-		await Promise.all(filePromises)
-	}
-
+		}
+	)
 	// Tickets
-	const ticketPromises = []
-	for (const ticket of fields['tickets[]']) {
-		const _ticket = JSON.parse(ticket)
-
-		ticketPromises.push(
-			createTicket({
-				name: _ticket.name as string,
-				description: _ticket.description as string,
-				price: convertPriceStringToNumber(_ticket.price),
-				currency: _ticket.currency as string,
-				offeringId: offering.id,
-				status: 'active', // TODO: ticket status
-			})
-		)
-	}
-	await Promise.all(ticketPromises)
+	const ticketPromises = offeringData.tickets.map((ticket) =>
+		createTicket({
+			name: ticket.name,
+			description: ticket.description,
+			price: ticket.price * 100,
+			currency: ticket.currency,
+			offeringId: offering.id,
+			status: ticket.status,
+		})
+	)
+	const results = await Promise.allSettled([
+		...practitionerPromises,
+		...filePromises,
+		...ticketPromises,
+	])
+	const errors: string[] = []
+	results.forEach((result, index) => {
+		if (result.status === 'rejected') {
+			errors.push(`Promise ${index} rejected with reason: ${result.reason}`)
+		}
+	})
 
 	return {
 		data: offering,
 		status: 'Success!',
+		...(errors.length && { errors }),
 	}
 })

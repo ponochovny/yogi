@@ -266,7 +266,7 @@ const { data: offering } = await useFetch<{ data: TOffering }>(
 )
 
 const selectedTicket = ref(
-	offering.value?.data?.tickets[offering.value?.data?.tickets.length - 1].id ||
+	offering.value?.data?.tickets[offering.value?.data?.tickets.length - 1]?.id ||
 		''
 )
 
