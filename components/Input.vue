@@ -11,11 +11,12 @@
 				:placeholder="placeholder"
 				:name="name"
 				:type="type"
-				:value="modelValue"
+				:value="modelValue || ''"
 				@input="(event: any) => emit('update:modelValue', event.target.value)"
 				class="block w-full border-gray-300 rounded-md shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-300 focus:ring-opacity-50"
 				:class="cn(props.inputClass)"
 				:autocomplete="autocomplete"
+				:step="type === 'number' ? step : undefined"
 			/>
 		</label>
 	</div>
@@ -34,7 +35,7 @@ const emit = defineEmits(['update:modelValue', 'focus'])
 
 interface IProps {
 	name?: string
-	modelValue: string
+	modelValue: string | number | undefined
 	label?: string | null
 	placeholder?: string
 	type?: string
@@ -42,6 +43,7 @@ interface IProps {
 	class?: any
 	inputClass?: any
 	autocomplete?: 'off' | 'on' | string
+	step?: string
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -51,6 +53,7 @@ const props = withDefaults(defineProps<IProps>(), {
 	type: 'text',
 	autocomplete: 'off',
 	id: '',
+	step: 'any',
 })
 
 const input = ref<any>(null)

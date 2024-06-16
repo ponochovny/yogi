@@ -28,15 +28,16 @@ const emit = defineEmits(['update:model-value'])
 					{{ props.label }}
 				</span>
 				<Button
-					:variant="'outline'"
+					variant="outline"
 					:class="
 						cn(
 							'w-full justify-start text-left font-normal',
-							'border-gray-300 rounded-md shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-300 focus:ring-opacity-50 hover:bg-transparent',
+							'border-gray-300 rounded-md shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-300 focus:ring-opacity-50 bg-white hover:bg-white px-[0.75rem] py-[0.5rem] text-black',
 							!modelValue && 'text-muted-foreground'
 						)
 					"
 					size="default"
+					type="button"
 				>
 					<CalendarIcon class="mr-2 h-4 w-4" />
 					<span>

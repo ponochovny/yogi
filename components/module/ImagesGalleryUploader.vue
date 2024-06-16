@@ -2,14 +2,20 @@
 	<div>
 		<div>
 			<div class="flex gap-1 flex-wrap mb-4">
-				<Button @click="triggerFileInput" variant="primaryOutline" btnSize="sm">
+				<Button
+					@click="triggerFileInput"
+					variant="outline"
+					size="sm"
+					type="button"
+				>
 					Choose Files
 				</Button>
 				<Button
 					@click="clearFiles"
-					variant="primaryOutline"
+					variant="outline"
 					:disabled="!filesData.length"
-					btnSize="sm"
+					size="sm"
+					type="button"
 				>
 					Clear
 				</Button>
@@ -25,7 +31,7 @@
 			<div
 				v-if="!filesData.length"
 				ref="dropZoneRef"
-				class="p-6 rounded-xl border shadow-md mb-6 transition-colors -mt-2"
+				class="p-6 rounded-xl border border-dashed shadow-md transition-colors -mt-2 bg-white"
 				:class="{ 'bg-yellow-100/50': isOverDropZone }"
 			>
 				Drop images here
@@ -45,12 +51,14 @@
 						<button
 							@click="removeFile(idx)"
 							class="bg-gray-400 rounded-full w-6 h-6 shadow-sm flex items-center justify-center text-gray-100 text-xs z-10 hover:text-gray-100 hover:bg-gray-400/60"
+							type="button"
 						>
 							<TrashIcon class="w-4 stroke-2" />
 						</button>
 						<button
 							@click="cropFile(idx)"
 							class="bg-gray-400 rounded-full w-6 h-6 shadow-sm flex items-center justify-center text-gray-100 text-xs z-10 hover:text-gray-100 hover:bg-gray-400/60"
+							type="button"
 						>
 							<ViewfinderCircleIcon class="w-4 stroke-2" />
 						</button>
@@ -81,9 +89,7 @@
 					:canReset="!!filesData[selectedCropFile.idx]?.cropped.file"
 				>
 					<template #footer="{ save }">
-						<Button @click="save" variant="primary" class="mt-1 mx-auto">
-							Crop
-						</Button>
+						<Button @click="save" class="mt-1 mx-auto"> Crop </Button>
 					</template>
 				</CropperBlock>
 			</DialogContent>
@@ -330,4 +336,6 @@ function handleResetCroppedFile() {
 
 	emitData()
 }
+
+defineExpose({ clearFiles })
 </script>

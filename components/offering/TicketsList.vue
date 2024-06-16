@@ -5,7 +5,7 @@
 		</span>
 		<div class="flex flex-col gap-2">
 			<div
-				class="relative flex gap-2"
+				class="relative flex gap-2 flex-col md:flex-row"
 				v-for="(ticket, idx) of tickets"
 				:key="idx"
 			>
@@ -15,16 +15,24 @@
 					placeholder="Ticket description (optional)"
 				/>
 				<Input
-					v-model="ticket.price"
+					:modelValue="ticket.price"
+					@update:modelValue="ticket.price = Number($event)"
 					placeholder="Ticket price"
 					type="number"
-					class="max-w-32"
+					class="md:max-w-32"
+					step="any"
 				/>
 				<!-- CURRENCY SELECT -->
 				<!-- STATUS SELECT -->
-				<button v-if="tickets.length > 1" @click="emit('remove', idx)">
+				<button
+					v-if="tickets.length > 1"
+					@click="emit('remove', idx)"
+					class="flex items-center gap-2"
+				>
+					<span class="md:hidden">Remove</span>
 					<XMarkIcon class="w-5" />
 				</button>
+				<div class="border md:hidden" />
 			</div>
 		</div>
 	</div>
