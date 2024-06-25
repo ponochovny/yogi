@@ -5,17 +5,18 @@ import type { TStudio } from './studio'
 import type { TTicket } from './ticket'
 
 export type TTicketCreate = {
+	id?: string
 	name: string
 	description: string
 	price: number
 	currency: string
-	status: 'active' | 'inactive'
+	status: 'active' | 'inactive' | string
 }
 
 export enum EActivity {
-	CLASS = 'Class',
-	APPOINTMENT = 'Appointment',
-	EVENT = 'Event',
+	CLASS = 'class',
+	APPOINTMENT = 'appointment',
+	EVENT = 'event',
 }
 
 export interface IOfferingCreateData {
@@ -85,8 +86,10 @@ export const offeringDataCreationSchema = z.object({
 	description: z.string(),
 	activity: z.nativeEnum(EActivity),
 	slug: z.string(),
-	categories: z.array(z.string()),
-	types: z.array(z.string()),
+	categories: z
+		.array(z.string())
+		.min(1, { message: 'Choose at least 1 category' }),
+	types: z.array(z.string()).min(1, { message: 'Choose at least 1 type' }),
 	duration: z.number().min(1, { message: 'You must enter a duration' }),
 	is_private: z.boolean(),
 	spots: z.number().min(1, { message: 'You must enter a number of spots' }),
@@ -105,7 +108,9 @@ export const offeringDataCreationSchema = z.object({
 	bannersDelete: z.array(z.string()).optional(),
 	bannersOrder: z.array(z.string()).optional(),
 	banners: z.array(z.instanceof(File).or(z.object({}))),
-	practitioners: z.array(z.string()),
+	practitioners: z
+		.array(z.string())
+		.min(1, { message: 'Choose at least 1 practitioner' }),
 	location: z.object({
 		coords: z.array(z.number()),
 		name: z.string().min(1, { message: 'Location is required' }),

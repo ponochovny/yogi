@@ -7,8 +7,8 @@ const convertFields = (fields: {
 	const result: any = {}
 
 	for (const key in fields) {
-		if (Array.isArray(fields[key]) && fields[key].length === 1) {
-			result[key] = fields[key][0]
+		if (Array.isArray(fields[key]) && fields[key]?.length === 1) {
+			result[key] = fields[key]![0]
 		} else {
 			result[key] = fields[key]
 		}

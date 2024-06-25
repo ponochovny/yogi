@@ -9,25 +9,52 @@
 				v-for="(ticket, idx) of tickets"
 				:key="idx"
 			>
-				<Input v-model="ticket.name" placeholder="Ticket name" />
-				<Input
+				<Field
+					v-model="ticket.name"
+					:name="`tickets[${idx}].name`"
+					v-slot="{ field, errorMessage }"
+				>
+					<Input
+						v-bind="field"
+						v-model="ticket.name"
+						placeholder="Name"
+						:error="errorMessage"
+					/>
+				</Field>
+				<Field
 					v-model="ticket.description"
-					placeholder="Ticket description (optional)"
-				/>
-				<Input
-					:modelValue="ticket.price"
-					@update:modelValue="ticket.price = Number($event)"
-					placeholder="Ticket price"
-					type="number"
-					class="md:max-w-32"
-					step="any"
-				/>
+					:name="`tickets[${idx}].description`"
+					v-slot="{ field, errorMessage }"
+				>
+					<Input
+						v-bind="field"
+						v-model="ticket.description"
+						placeholder="Description (optional)"
+						:error="errorMessage"
+					/>
+				</Field>
+				<Field
+					v-model="ticket.price"
+					:name="`tickets[${idx}].price`"
+					v-slot="{ field, errorMessage }"
+				>
+					<Input
+						v-bind="field"
+						:modelValue="ticket.price"
+						@update:modelValue="ticket.price = Number($event)"
+						placeholder="Price"
+						type="number"
+						class="md:max-w-32"
+						step="any"
+						:error="errorMessage"
+					/>
+				</Field>
 				<!-- CURRENCY SELECT -->
 				<!-- STATUS SELECT -->
 				<button
 					v-if="tickets.length > 1"
 					@click="emit('remove', idx)"
-					class="flex items-center gap-2"
+					class="flex items-center gap-2 self-start mt-3"
 				>
 					<span class="md:hidden">Remove</span>
 					<XMarkIcon class="w-5" />

@@ -74,13 +74,15 @@ export default (
 		// }
 		return
 	}
-	function getCenter(): number[] {
+	function getCenter(
+		offering?: { location: { coords: number[] } } | null
+	): number[] {
 		if (_location.value) {
 			return [_location.value.center[1], _location.value.center[0]]
 		}
-		// if (props.offering?.location) {
-		// 	return [...props.offering.location.coords]
-		// }
+		if (offering?.location) {
+			return [...offering.location.coords]
+		}
 		return [0, 0]
 	}
 	function resetMarker(mapRerender?: boolean) {

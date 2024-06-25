@@ -1,4 +1,4 @@
-export default (isUpdate: boolean) => {
+export default (isUpdate: boolean, offeringBanners: any[] = []) => {
 	const bannersUpdate = ref<{ id: string; url: string }[]>([])
 	const bannersDelete = ref<string[]>([])
 	const bannersOrder = ref<(string | null)[]>([])
@@ -14,7 +14,6 @@ export default (isUpdate: boolean) => {
 					.filter((item2) => !arr1.some((item1) => item1.id === item2.id))
 					.map((item) => item.id) as string[]
 			}
-			const offeringBanners: any[] = [] // TODO: props.offering.banners
 			const oldIds = offeringBanners.map((el) => ({
 				id: el.id as string,
 			}))

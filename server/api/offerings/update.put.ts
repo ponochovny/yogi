@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
 
 	const { fields, files } = await extractForm<
 		Promise<{
-			fields: { [key: string]: string } & { studioId: string }
+			fields: { [key: string]: string }
 			files: any
 		}>
 	>(event)
@@ -132,8 +132,8 @@ export default defineEventHandler(async (event) => {
 	}
 	if (fields.bannersOrder) {
 		console.log('fields.bannersOrder', fields.bannersOrder)
-		const bannersOrder = JSON.parse(fields.bannersOrder[0]) as (string | null)[]
-		const bannersDelete = JSON.parse(fields.bannersDelete[0]) as string[]
+		const bannersOrder = JSON.parse(fields.bannersOrder) as (string | null)[]
+		const bannersDelete = JSON.parse(fields.bannersDelete) as string[]
 		const orderArr = bannersOrder.map((el) =>
 			el && bannersDelete.includes(el) ? null : el
 		)
@@ -152,7 +152,7 @@ export default defineEventHandler(async (event) => {
 	if (files[`fileToUpload[]`]) {
 		const filesArr = Object.keys(files[`fileToUpload[]`])
 		const orderArr = fields.bannersOrder
-			? (JSON.parse(fields.bannersOrder[0]) as (string | null)[])
+			? (JSON.parse(fields.bannersOrder) as (string | null)[])
 			: []
 		const setOrder = (idx: number) => {
 			if (!fields.bannersOrder) return

@@ -316,14 +316,18 @@ function handleCroppedFile(file: File) {
 }
 function handleResetCroppedFile() {
 	const idx = selectedCropFile.value.idx
-	const originalFile = filesData.value[idx].file as File
+	const original = filesData.value[idx]
+	const originalFile = filesData.value[idx].file
 	filesData.value[idx] = {
 		id: null,
-		name: originalFile.name,
-		size: originalFile.size,
-		type: originalFile.type,
+		name: originalFile?.name || original.name,
+		size: originalFile?.size || original.size,
+		type: originalFile?.type || original.type,
 		file: originalFile,
-		preview: URL.createObjectURL(originalFile),
+		preview:
+			original.preview || originalFile === null
+				? original.preview
+				: URL.createObjectURL(originalFile),
 		cropped: {
 			preview: '',
 			file: null,
@@ -331,7 +335,10 @@ function handleResetCroppedFile() {
 	}
 	selectedCropFile.value = {
 		idx: selectedCropFile.value.idx,
-		url: URL.createObjectURL(originalFile),
+		url:
+			originalFile === null
+				? original.preview
+				: URL.createObjectURL(originalFile),
 	}
 
 	emitData()

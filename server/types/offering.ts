@@ -1,12 +1,12 @@
-import type { TMarker } from '~/helpers/types/map'
-import type { IStudioResponse } from './studio'
+import type { EActivity } from '~/helpers/types/offering'
 import type { IPractitionerResponse } from '.'
+import type { IStudioResponse } from './studio'
 import type { ITicketResponse } from './ticket'
 
 export interface IOfferingResponse {
 	id: string
 	slug: string
-	activity: 'appointment' | 'class' | 'event'
+	activity: EActivity
 	name: string
 	start: Date
 	end: Date
