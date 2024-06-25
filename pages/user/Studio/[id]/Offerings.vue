@@ -56,7 +56,13 @@
 							<!-- {{ offering.practitioners.map((el) => el.name).join(', ') }} -->
 						</TableCell>
 						<TableCell>
-							{{ !offering.isActive ? 'Inactive' : 'Active' }}
+							<span
+								:class="[
+									!offering.isActive ? 'text-rose-600' : 'text-teal-600',
+								]"
+							>
+								{{ !offering.isActive ? 'Inactive' : 'Active' }}
+							</span>
 						</TableCell>
 						<TableCell>
 							{{ offering.is_private ? 'Private' : 'Public' }}
@@ -112,8 +118,12 @@
 				</TableBody>
 			</Table>
 
+			<div class="w-full my-6" v-if="pending">
+				<LoadingIcon class="fill-orange-600 mx-auto w-10 h-10" />
+			</div>
+
 			<MainNoContent
-				v-if="!offeringsRes?.data.length"
+				v-else-if="!offeringsRes?.data.length"
 				class="mt-6"
 				title="You haven't create any offering"
 				text="Here you may find your offerings"
@@ -147,7 +157,11 @@ if (!studioId || !isString(studioId)) {
 	router.push('/')
 }
 
-const { data: offeringsRes, refresh } = await getOfferingsByStudioId<{
+const {
+	data: offeringsRes,
+	pending,
+	refresh,
+} = await getOfferingsByStudioId<{
 	data: TOffering[]
 	refresh: () => void
 	// eslint-disable-next-line indent
