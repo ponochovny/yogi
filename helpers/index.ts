@@ -1,5 +1,6 @@
 import currencies from '~/helpers/currencies.json'
 import flags from '~/helpers/flagsList.json'
+import { format } from 'date-fns'
 
 export function activityColorClass(activity: string) {
 	if (activity.toLowerCase() === 'class') {
@@ -73,4 +74,11 @@ export function formatBytes(bytes: number, decimals: number) {
 		sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
 		i = Math.floor(Math.log(bytes) / Math.log(k))
 	return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
+}
+
+export function liveOfferingsLink() {
+	return `/search?start=${format(new Date(), 'yyyy-MM-dd')}&end=${format(
+		new Date(),
+		'yyyy-MM-dd'
+	)}`
 }

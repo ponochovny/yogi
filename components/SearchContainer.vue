@@ -21,7 +21,7 @@
 			<slot />
 		</div>
 
-		<Footer />
+		<Footer variant="white" />
 	</div>
 </template>
 
