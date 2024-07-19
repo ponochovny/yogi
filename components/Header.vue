@@ -70,7 +70,10 @@
 
 			<!-- Cart status -->
 
-			<template v-if="isAuthLoading">Loading...</template>
+			<template v-if="isAuthLoading">
+				<Loader2Icon class="animate-spin" />
+				<span class="sr-only">Loading...</span>
+			</template>
 			<template v-else-if="!user">
 				<NuxtLink to="/auth?t=register">
 					<Button class="mr-2 sm:mr-0">
@@ -129,6 +132,8 @@ import type { TUser } from '~/server/types'
 import currencies from '~/helpers/currencies.json'
 import { BanknotesIcon } from '@heroicons/vue/24/outline'
 import { liveOfferingsLink } from '~/helpers'
+
+import { Loader2Icon } from 'lucide-vue-next'
 
 export default defineComponent({
 	name: 'Header',
