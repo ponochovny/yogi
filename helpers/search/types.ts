@@ -1,5 +1,5 @@
-import type { TOffering } from './offering'
-import type { TStudio } from './studio'
+import type { TOffering } from '../types/offering'
+import type { TStudio } from '../types/studio'
 import type { DATA_TYPES } from '../constants'
 import type { TUser } from '~/server/types'
 
@@ -28,3 +28,18 @@ export interface ISearchParams {
 }
 
 export interface ISearchData {}
+
+export type TSearchParams = {
+	search?: string
+	location?: string
+	page?: number
+	count?: number
+	activityType?: TDataType
+	types?: string[]
+	categories?: string[]
+	date_start?: Date | string
+	date_end?: Date | string
+	price_from?: number
+	price_to?: number
+	take?: string
+}

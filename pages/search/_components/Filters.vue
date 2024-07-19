@@ -46,16 +46,13 @@
 				<PopoverTrigger as-child>
 					<Button
 						variant="outline"
-						:class="
-							cn(
-								'justify-start text-left font-normal h-[40px] text-nowrap',
-								!formData.date.start && 'text-muted-foreground'
-							)
-						"
+						class="justify-start text-left font-normal h-[40px] text-nowrap"
 					>
 						<template v-if="formData.date.start">
 							<div class="flex gap-2 items-center">
-								<span>{{ formattedDate() }}</span>
+								<span>
+									{{ formattedDate(formData.date.start, formData.date.end) }}
+								</span>
 								<button
 									@click.stop="clearDate"
 									class="text-xs w-4 h-4 rounded-full flex items-center justify-center pb-[4px] bg-orange-400/80 text-white hover:text-white"
@@ -78,12 +75,7 @@
 				<PopoverTrigger as-child>
 					<Button
 						variant="outline"
-						:class="
-							cn(
-								'justify-start text-left font-normal h-[40px] text-nowrap',
-								isPriceDefault && 'text-muted-foreground'
-							)
-						"
+						class="justify-start text-left font-normal h-[40px] text-nowrap"
 					>
 						<div class="">
 							{{
@@ -130,10 +122,10 @@ ${currencySymbol}${priceSelected[1] / 100}`
 import { defineComponent } from 'vue'
 import _data from '~/helpers/offeringAttributes.json'
 import { DATA_TYPES } from '~/helpers/constants'
-import type { ISearchParams, TDataType } from '~/helpers/types/search'
+import type { ISearchParams, TDataType } from '~/helpers/search/types'
 import { format } from 'date-fns'
-import { cn } from '~/lib/utils'
 import { currencySymbolByCode } from '~/helpers'
+import { setDataByRouteQuery, formattedDate } from '@/pages/search/_helpers'
 
 export default defineComponent({
 	name: 'Filters',
@@ -163,41 +155,34 @@ const formData = reactive<ISearchParams>({
 const currencySymbol = computed(() => currencySymbolByCode('USD'))
 const isOfferings = computed(() => route.query.activityType === 'Offerings')
 const dateRange = ref<Date[] | Date | undefined>()
-function formattedDate() {
-	const dStart = formData.date.start
-		? format(formData.date.start, 'MMM dd')
-		: ''
-	const dEnd = formData.date.end ? format(formData.date.end, 'MMM dd') : ''
 
-	if (dStart === dEnd) {
-		return dStart
-	} else {
-		return `${dStart} - ${dEnd}`
-	}
+function update() {
+	emit('update', formData)
 }
-function dateChange(val: boolean) {
-	if (!val) {
-		const _isArray = isArray(dateRange.value)
-		if (
-			!formData.date.start &&
-			_isArray &&
-			format((dateRange.value as Date[])[0], 'yyyy-MM-dd') ===
-				format((dateRange.value as Date[])[1], 'yyyy-MM-dd')
-		) {
-			return
-		}
-		if (_isArray) {
-			const dates = [...(dateRange.value as Date[])]
-			const _isEndDate = dates.length > 1
 
-			formData.date.start = dates[0]
-			formData.date.end = _isEndDate ? dates[1] : dates[0]
-		} else {
-			formData.date.start = dateRange.value as Date
-			formData.date.end = dateRange.value as Date
-		}
-		update()
+function dateChange(val: boolean) {
+	if (val) return
+
+	const _isArray = isArray(dateRange.value)
+	if (
+		!formData.date.start &&
+		_isArray &&
+		format((dateRange.value as Date[])[0], 'yyyy-MM-dd') ===
+			format((dateRange.value as Date[])[1], 'yyyy-MM-dd')
+	) {
+		return
 	}
+	if (_isArray) {
+		const dates = [...(dateRange.value as Date[])]
+		const _isEndDate = dates.length > 1
+
+		formData.date.start = dates[0]
+		formData.date.end = _isEndDate ? dates[1] : dates[0]
+	} else {
+		formData.date.start = dateRange.value as Date
+		formData.date.end = dateRange.value as Date
+	}
+	update()
 }
 function clearDate() {
 	dateRange.value = [new Date(), new Date()]
@@ -215,67 +200,76 @@ function priceChange(val: boolean) {
 }
 
 onMounted(() => {
-	const { query } = route
-	formData.activityType =
-		(query.activityType?.toString() as TDataType) || DATA_TYPES[0]
-	formData.types =
-		query.types
-			?.toString()
-			.split(',')
-			.filter((el) => _types.some((t) => t.name === el)) || []
-	formData.categories =
-		query.categories
-			?.toString()
-			.split(',')
-			.filter((el) => _categories.some((c) => c.name === el)) || []
-	formData.date = {
-		start: query.start ? new Date(query.start.toString()) : undefined,
-		end: query.end ? new Date(query.end.toString()) : undefined,
-	}
-	dateRange.value = [
-		query.start ? (formData.date.start as Date) : new Date(),
-		query.end ? (formData.date.end as Date) : new Date(),
-	]
+	setDataByRouteQuery(route.query, formData, dateRange, priceSelected)
 
 	update()
 })
 
 watch(formData, (val) => {
+	routerPushWithFormData(val, val.activityType !== DATA_TYPES[0])
+})
+
+function routerPushWithFormData(val: ISearchParams, isReset?: boolean) {
 	const obj = {
-		...(route.query.search && { search: route.query.search.toString() }),
-		...(route.query.location && { location: route.query.location.toString() }),
 		...(val.activityType && { activityType: val.activityType }),
 		...(val.categories.length && { categories: val.categories.join(',') }),
 		...(val.types.length && { types: val.types.join(',') }),
 		...(val.date.start && { start: format(val.date.start, 'yyyy-MM-dd') }),
 		...(val.date.end && { end: format(val.date.end, 'yyyy-MM-dd') }),
+		...(val.price_from && { price_from: val.price_from.toString() }),
+		...(val.price_to && { price_to: val.price_to.toString() }),
 	}
-	const params = new URLSearchParams({ ...obj }).toString()
+	const params = new URLSearchParams({
+		...(!isReset && route.query),
+		...obj,
+	}).toString()
+
 	router.push('/search?' + params)
-})
+}
+
+function changeTypeResetFilters() {
+	formData.categories = []
+	formData.types = []
+	formData.date = { start: undefined, end: undefined }
+	// formData.location = ''
+	// formData.search = ''
+	formData.price_from = undefined
+	formData.price_to = undefined
+
+	resetPriceData()
+}
 
 function setActivityType(type: TDataType) {
 	formData.activityType = type
+
+	if (type !== DATA_TYPES[0]) {
+		changeTypeResetFilters()
+	}
+
 	update()
 }
 
-function update() {
-	emit('update', formData)
-}
-
-const _priceRange = ref([0, 100])
-const priceSelected = ref([0, 0])
+/** PRICE */
+const PRICE_DEFAULT = [0, 0]
+const _priceRange = ref(PRICE_DEFAULT)
+const priceSelected = ref(PRICE_DEFAULT)
 const isPriceDefault = computed(
 	() =>
 		JSON.stringify(priceSelected.value) === JSON.stringify(_priceRange.value)
 )
 watch(
 	() => props.priceRange,
-	(val) => {
+	(val, oldVal) => {
+		if (JSON.stringify(val) === JSON.stringify(oldVal)) return
+
 		_priceRange.value = [...val]
-		if (JSON.stringify(priceSelected.value) === JSON.stringify([0, 0])) {
+		if (JSON.stringify(priceSelected.value) === JSON.stringify(PRICE_DEFAULT)) {
 			priceSelected.value = [...val]
 		}
 	}
 )
+function resetPriceData() {
+	_priceRange.value = PRICE_DEFAULT
+	priceSelected.value = PRICE_DEFAULT
+}
 </script>

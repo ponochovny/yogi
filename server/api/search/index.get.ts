@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable indent */
-import type { TDataType } from '~/helpers/types/search'
+import type { TSearchParams } from '~/helpers/search/types'
 import { getOfferings } from '~/server/db/offerings'
 import { getPractitioners } from '~/server/db/practitioners'
 import { getStudios } from '~/server/db/studio'
@@ -23,20 +23,7 @@ const DATE_START_DEFAULT = null
 const DATE_END_DEFAULT = null
 
 export default defineEventHandler(async (event) => {
-	const query = getQuery(event) as {
-		search?: string
-		location?: string
-		page?: number
-		count?: number
-		activityType?: TDataType
-		types?: string[]
-		categories?: string[]
-		date_start?: string
-		date_end?: string
-		price_from?: string
-		price_to?: string
-		take?: string
-	}
+	const query = getQuery(event) as TSearchParams
 	const {
 		take,
 		search = '',
@@ -84,11 +71,11 @@ export default defineEventHandler(async (event) => {
 
 				const isNoDates = !(DATE_START && DATE_END)
 				const offeringStart = offering.start.valueOf()
-				const filterStart = new Date(DATE_START as string)
+				const filterStart = new Date(DATE_START as unknown as string)
 					.setHours(0, 0, 0)
 					.valueOf()
 				const offeringEnd = offering.end.valueOf()
-				const filterEnd = new Date(DATE_END as string)
+				const filterEnd = new Date(DATE_END as unknown as string)
 					.setHours(23, 59, 59, 999)
 					.valueOf()
 

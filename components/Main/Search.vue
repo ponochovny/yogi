@@ -60,7 +60,7 @@
 			>
 				<div class="flex flex-col gap-2 w-full">
 					<button
-						class="text-left flex gap-4 items-center"
+						class="text-left flex gap-4 items-center shrink-0"
 						@click="handleCurrentLocationOption"
 					>
 						<MapIcon class="w-5 stroke-1" />
@@ -68,7 +68,7 @@
 						<LoadingIcon v-if="locationFetching" class="fill-orange-600" />
 					</button>
 					<button
-						class="text-left flex gap-4 items-center"
+						class="text-left flex gap-4 items-center shrink-0"
 						@click="locationString = 'Online'"
 					>
 						<VideoCameraIcon class="w-5 stroke-1" />
@@ -182,7 +182,7 @@ import {
 	MapIcon,
 	VideoCameraIcon,
 } from '@heroicons/vue/24/outline'
-import type { IShortSearchData } from '~/helpers/types/search'
+import type { IShortSearchData } from '~/helpers/search/types'
 
 export default defineComponent({
 	name: 'MainSearch',
@@ -212,7 +212,6 @@ function openLocationEvent(val: boolean) {
 }
 function onSubmit() {
 	const obj = {
-		...(props.variant === 'secondary' && route.query),
 		location: locationString.value,
 		search: searchString.value,
 	}
@@ -220,7 +219,10 @@ function onSubmit() {
 	if (props.variant === 'secondary') {
 		update(obj)
 	}
-	const params = new URLSearchParams({ ...obj }).toString()
+	const params = new URLSearchParams({
+		...(props.variant === 'secondary' && route.query),
+		...obj,
+	}).toString()
 	router.push('/search?' + params)
 }
 function update(data: any) {
