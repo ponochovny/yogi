@@ -5,7 +5,7 @@
 			:key="item.name"
 			class="flex gap-3 items-center pl-4 pr-5 py-2"
 			:to="item.link"
-			active-class="border-l-4 border-orange-300"
+			active-class="border-l-4 border-orange-400"
 		>
 			<component :is="item.icon" class="w-7 stroke-1" />
 			<span class="hidden lg:block font-semibold">{{ item.name }}</span>

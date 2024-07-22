@@ -71,9 +71,7 @@
 				class-name="bg-none"
 			>
 				<div class="w-6 h-6">
-					<MapPinIcon
-						class="w-10 text-orange-600 stroke-[0.5px] stroke-black"
-					/>
+					<MapPinIcon class="w-10 text-primary stroke-[0.5px] stroke-black" />
 				</div>
 			</l-icon>
 		</l-marker>
@@ -96,7 +94,7 @@
 			>
 				<button
 					@click.stop="coordsClicked"
-					class="underline text-orange-600"
+					class="underline text-primary"
 					type="button"
 				>
 					{{ `${singleMarker.coords[0]},${singleMarker.coords[1]}` }}
@@ -110,7 +108,7 @@
 			>
 				<div class="w-6 h-6">
 					<MapPinIcon
-						class="w-10 text-orange-600 stroke-[0.5px] stroke-black"
+						class="w-10 text-primaryroke-[0.5px] stroke-black"
 					/>
 				</div>
 			</l-icon>

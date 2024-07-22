@@ -31,7 +31,7 @@
 						class="w-5 stroke-1 transition-colors"
 						:class="{
 							'text-gray-600': !isLocationOpen,
-							'text-orange-600': isLocationOpen,
+							'text-primary': isLocationOpen,
 						}"
 					/>
 					<Input
@@ -65,7 +65,7 @@
 					>
 						<MapIcon class="w-5 stroke-1" />
 						<span>Use my current location</span>
-						<LoadingIcon v-if="locationFetching" class="fill-orange-600" />
+						<LoadingIcon v-if="locationFetching" class="fill-primary" />
 					</button>
 					<button
 						class="text-left flex gap-4 items-center shrink-0"
@@ -93,7 +93,7 @@
 						class="w-5 stroke-1 transition-colors"
 						:class="{
 							'text-gray-600': !isSearchOpen,
-							'text-orange-600': isSearchOpen,
+							'text-primary': isSearchOpen,
 						}"
 					/>
 					<template v-if="variant === 'default'">

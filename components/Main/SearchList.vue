@@ -3,7 +3,7 @@
 		<div class="relative">
 			<LoadingIcon
 				v-if="loading"
-				class="fill-orange-600 mx-auto absolute left-1/2 -translate-x-1/2 -top-3"
+				class="fill-primary mx-auto absolute left-1/2 -translate-x-1/2 -top-3"
 			/>
 		</div>
 
@@ -140,7 +140,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import type { IShortSearchData } from '~/helpers/types/search'
+import type { IShortSearchData } from '~/helpers/search/types'
 import { dateString } from '~/lib/utils'
 
 export default defineComponent({

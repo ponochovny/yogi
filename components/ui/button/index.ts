@@ -8,7 +8,7 @@ export const buttonVariants = cva(
 		variants: {
 			variant: {
 				default:
-					'bg-orange-600 text-white rounded-full hover:bg-orange-600/75 active:bg-orange-600/60 hover:text-white disabled:bg-orange-600/50 disabled:opacity-70',
+					'bg-primary text-white rounded-full hover:bg-orange-600/75 active:bg-orange-600/60 hover:text-white disabled:bg-orange-600/50 disabled:opacity-70',
 				destructive:
 					'bg-destructive text-destructive-foreground hover:bg-destructive/90',
 				destructiveOutline:
@@ -16,11 +16,11 @@ export const buttonVariants = cva(
 				successOutline:
 					'border border-emerald-600/30 bg-transparent text-emerald-600 rounded-full hover:bg-emerald-400/10 hover:text-emerald-600 active:bg-emerald-400/5 disabled:bg-transparent disabled:opacity-70 ring ring-emerald-300/0 active:ring-emerald-300 active:ring-opacity-50 disabled:ring-0',
 				outline:
-					'border border-orange-600/30 bg-transparent text-orange-600 rounded-full hover:bg-orange-400/10 hover:text-orange-600 active:bg-orange-400/5 ring ring-orange-300/0 active:ring-orange-300 active:ring-opacity-50 disabled:ring-0',
+					'border border-orange-600/30 bg-transparent text-primary rounded-full hover:bg-orange-400/10 hover:text-primary active:bg-orange-400/5 ring ring-orange-300/0 active:ring-orange-300 active:ring-opacity-50 disabled:ring-0',
 				secondary:
-					'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+					'bg-secondary text-secondary-foreground hover:bg-orange-400/80',
 				ghost:
-					'bg-transparent text-orange-600 rounded-full hover:bg-orange-400/10 hover:text-orange-600 active:bg-orange-400/5',
+					'bg-transparent text-primary rounded-full hover:bg-orange-400/10 hover:text-primary active:bg-orange-400/5',
 				link: 'text-primary underline-offset-4 hover:underline',
 			},
 			size: {
