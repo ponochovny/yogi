@@ -14,7 +14,7 @@
 				:classes="{
 					container:
 						variant === 'button'
-							? 'flex relative border border-orange-600/30 bg-transparent text-orange-600 rounded-full hover:bg-orange-400/10 hover:text-orange-600 active:bg-orange-400/5 disabled:bg-transparent disabled:opacity-50 h-[40px] ring ring-orange-300/0 !transition'
+							? 'flex relative border border-orange-600/30 bg-transparent text-primary rounded-full hover:bg-orange-400/10 hover:text-primary active:bg-orange-400/5 disabled:bg-transparent disabled:opacity-50 h-[40px] ring ring-orange-300/0 !transition'
 							: 'multiselect !border-gray-300 !mt-1 !rounded-md',
 					placeholder:
 						variant === 'button'
