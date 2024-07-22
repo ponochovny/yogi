@@ -71,7 +71,7 @@
 			<!-- Cart status -->
 
 			<template v-if="isAuthLoading">
-				<Loader2Icon class="animate-spin" />
+				<Skeleton class="w-40 h-10 rounded-full bg-orange-600/20" />
 				<span class="sr-only">Loading...</span>
 			</template>
 			<template v-else-if="!user">
@@ -86,7 +86,7 @@
 				<Popover>
 					<PopoverTrigger>
 						<div
-							class="flex items-center gap-4 p-2 pr-3 rounded-full bg-white !text-black shadow-md hover:bg-orange-600 hover:!text-white transition-colors duration-500 border border-gray-300/40"
+							class="flex items-center gap-4 p-2 pr-3 rounded-full bg-white !text-black shadow-md hover:bg-primary hover:!text-white transition-colors duration-500 border border-gray-300/40"
 						>
 							<NuxtImg
 								provider="cloudinary"
@@ -133,7 +133,7 @@ import currencies from '~/helpers/currencies.json'
 import { BanknotesIcon } from '@heroicons/vue/24/outline'
 import { liveOfferingsLink } from '~/helpers'
 
-import { Loader2Icon } from 'lucide-vue-next'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export default defineComponent({
 	name: 'Header',

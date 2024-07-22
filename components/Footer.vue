@@ -1,7 +1,7 @@
 <template>
 	<footer class="flex flex-col gap-12 mt-20">
 		<div v-if="variant !== 'white'" class="flex justify-between px-6">
-			<div class="flex flex-col gap-6">
+			<div class="flex flex-col gap-12">
 				<NuxtLink to="/" class="shrink-0 w-[100px] rounded-full bg-orange-200">
 					<NuxtImg
 						src="/img/logo.svg"
@@ -14,7 +14,7 @@
 					<li>
 						<a
 							href="#"
-							class="w-10 h-10 rounded-full bg-white flex items-center justify-center fill-orange-600 shadow-sm hover:bg-orange-400 hover:fill-white"
+							class="w-10 h-10 rounded-full bg-white flex items-center justify-center fill-primary shadow-sm hover:bg-orange-400 hover:fill-white"
 						>
 							<Facebook :size="20" fill="#ea580c" :stroke-width="0" />
 						</a>
@@ -22,7 +22,7 @@
 					<li>
 						<a
 							href="#"
-							class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-orange-600 shadow-sm hover:bg-orange-400 hover:text-white"
+							class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary shadow-sm hover:bg-orange-400 hover:text-white"
 						>
 							<Instagram :size="20" :stroke-width="2" />
 						</a>
@@ -30,16 +30,18 @@
 					<li>
 						<a
 							href="#"
-							class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-orange-600 shadow-sm hover:bg-orange-400 hover:text-white"
+							class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary shadow-sm hover:bg-orange-400 hover:text-white"
 						>
 							<MessagesSquare :size="20" :stroke-width="2" />
 						</a>
 					</li>
 				</ul>
-				<a class="font-semibold" href="mailto:ponochovny@gmail.com">
-					ponochovny@gmail.com
-				</a>
-				<a class="font-semibold" href="tel:+18008080">+1 800-80-80</a>
+				<div class="flex flex-col gap-6">
+					<a class="font-semibold" href="mailto:ponochovny@gmail.com">
+						ponochovny@gmail.com
+					</a>
+					<a class="font-semibold" href="tel:+18008080">+1 800-80-80</a>
+				</div>
 			</div>
 			<!-- <div>col2</div> -->
 		</div>
