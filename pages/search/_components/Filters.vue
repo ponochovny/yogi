@@ -10,8 +10,7 @@
 				@click="setActivityType(dataType)"
 				class="py-2 font-semibold relative after:h-[3px] after:w-[15px] after:bg-orange-500 after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-[12px] after:opacity-0 text-nowrap"
 				:class="{
-					'after:opacity-100 text-orange-600':
-						formData.activityType === dataType,
+					'after:opacity-100 text-primary': formData.activityType === dataType,
 				}"
 			>
 				{{ dataType }}
@@ -53,12 +52,23 @@
 								<span>
 									{{ formattedDate(formData.date.start, formData.date.end) }}
 								</span>
-								<button
+								<!--<button
 									@click.stop="clearDate"
 									class="text-xs w-4 h-4 rounded-full flex items-center justify-center pb-[4px] bg-orange-400/80 text-white hover:text-white"
 									title="Clear date"
 								>
 									x
+								</button>-->
+								<button
+									@click.stop="clearDate"
+									type="button"
+									title="Clear date"
+								>
+									<XCircle
+										:size="20"
+										color="rgb(251, 146, 60)"
+										:stroke-width="1.75"
+									/>
 								</button>
 							</div>
 						</template>
@@ -126,6 +136,7 @@ import type { ISearchParams, TDataType } from '~/helpers/search/types'
 import { format } from 'date-fns'
 import { currencySymbolByCode } from '~/helpers'
 import { setDataByRouteQuery, formattedDate } from '@/pages/search/_helpers'
+import { XCircle } from 'lucide-vue-next'
 
 export default defineComponent({
 	name: 'Filters',
@@ -188,6 +199,9 @@ function clearDate() {
 	dateRange.value = [new Date(), new Date()]
 	formData.date.start = undefined
 	formData.date.end = undefined
+
+	routerPushWithFormData(formData)
+
 	update()
 }
 function priceChange(val: boolean) {
@@ -210,18 +224,41 @@ watch(formData, (val) => {
 })
 
 function routerPushWithFormData(val: ISearchParams, isReset?: boolean) {
-	const obj = {
-		...(val.activityType && { activityType: val.activityType }),
-		...(val.categories.length && { categories: val.categories.join(',') }),
-		...(val.types.length && { types: val.types.join(',') }),
-		...(val.date.start && { start: format(val.date.start, 'yyyy-MM-dd') }),
-		...(val.date.end && { end: format(val.date.end, 'yyyy-MM-dd') }),
-		...(val.price_from && { price_from: val.price_from.toString() }),
-		...(val.price_to && { price_to: val.price_to.toString() }),
+	const { query } = route
+
+	const newQuery = useCloneDeep(query)
+
+	if (val.activityType) {
+		newQuery.activityType = val.activityType
 	}
+	if (val.categories.length) {
+		newQuery.categories = val.categories.join(',')
+	}
+	if (val.types.length) {
+		newQuery.types = val.types.join(',')
+	}
+
+	if (val.date.start) {
+		newQuery.start = format(val.date.start, 'yyyy-MM-dd')
+	} else {
+		delete newQuery.start
+	}
+	if (val.date.end) {
+		newQuery.end = format(val.date.end, 'yyyy-MM-dd')
+	} else {
+		delete newQuery.end
+	}
+
+	if (val.price_from) {
+		newQuery.price_from = val.price_from.toString()
+	}
+	if (val.price_to) {
+		newQuery.price_to = val.price_to.toString()
+	}
+
 	const params = new URLSearchParams({
-		...(!isReset && route.query),
-		...obj,
+		...newQuery,
+		...{},
 	}).toString()
 
 	router.push('/search?' + params)

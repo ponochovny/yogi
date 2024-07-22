@@ -11,7 +11,7 @@
 				</p>
 			</div>
 			<div class="w-full" v-show="loading">
-				<LoadingIcon class="fill-orange-600 mx-auto w-10 h-10" />
+				<LoadingIcon class="fill-primary mx-auto w-10 h-10" />
 			</div>
 			<div
 				class="grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 gap-x-4 gap-y-7 auto-rows-1fr"

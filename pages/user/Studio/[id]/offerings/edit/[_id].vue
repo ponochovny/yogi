@@ -4,7 +4,7 @@
 			<h2 class="text-2xl font-bold mb-6">Edit offering</h2>
 
 			<div class="w-full" v-if="pending">
-				<LoadingIcon class="fill-orange-600 mx-auto w-10 h-10" />
+				<LoadingIcon class="fill-primary mx-auto w-10 h-10" />
 			</div>
 			<OfferingCreation
 				v-else
