@@ -60,7 +60,7 @@
 			>
 				<div class="flex flex-col gap-2 w-full">
 					<button
-						class="text-left flex gap-4 items-center"
+						class="text-left flex gap-4 items-center shrink-0"
 						@click="handleCurrentLocationOption"
 					>
 						<MapIcon class="w-5 stroke-1" />
@@ -68,7 +68,7 @@
 						<LoadingIcon v-if="locationFetching" class="fill-orange-600" />
 					</button>
 					<button
-						class="text-left flex gap-4 items-center"
+						class="text-left flex gap-4 items-center shrink-0"
 						@click="locationString = 'Online'"
 					>
 						<VideoCameraIcon class="w-5 stroke-1" />
@@ -150,7 +150,7 @@
 				'rounded-none rounded-b-2xl md:rounded-l-none md:rounded-r-2xl flex gap-2 items-center justify-center md:justify-start px-4 py-3 md:py-0':
 					variant === 'secondary',
 			}"
-			btnSize="sm"
+			size="sm"
 			type="submit"
 			title="Search"
 		>
@@ -182,7 +182,7 @@ import {
 	MapIcon,
 	VideoCameraIcon,
 } from '@heroicons/vue/24/outline'
-import type { IShortSearchData } from '~/helpers/types/search'
+import type { IShortSearchData } from '~/helpers/search/types'
 
 export default defineComponent({
 	name: 'MainSearch',
@@ -212,7 +212,6 @@ function openLocationEvent(val: boolean) {
 }
 function onSubmit() {
 	const obj = {
-		...(props.variant === 'secondary' && route.query),
 		location: locationString.value,
 		search: searchString.value,
 	}
@@ -220,7 +219,10 @@ function onSubmit() {
 	if (props.variant === 'secondary') {
 		update(obj)
 	}
-	const params = new URLSearchParams({ ...obj }).toString()
+	const params = new URLSearchParams({
+		...(props.variant === 'secondary' && route.query),
+		...obj,
+	}).toString()
 	router.push('/search?' + params)
 }
 function update(data: any) {

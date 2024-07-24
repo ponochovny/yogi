@@ -1,26 +1,25 @@
 import type {
-	IOfferingCreateData,
 	IOfferingUpdateData,
 	TOffering,
+	TOfferingCreationData,
 } from '~/helpers/types/offering'
 
 export default () => {
-	const createOffering = (data: Omit<IOfferingCreateData, 'slug'>) => {
+	const createOffering = (data: TOfferingCreationData) => {
+		const { banners, location, tickets, practitioners, ...rest } = data
+
 		const form = new FormData()
-
-		const { banners, practitioners, tickets, location, ...rest } = data
-
 		Object.keys(rest).map((key: string) => {
-			//@ts-ignore
-			form.append(key, data[key])
+			form.append(key, data[key as keyof typeof data] as string | Blob)
 		})
 
+		// Location
 		if (location) {
 			form.append('location', JSON.stringify(location))
 		}
 
-		// Banner
-		for (const banner of banners) {
+		// Banners
+		for (const banner of banners as File[]) {
 			form.append('fileToUpload[]', banner)
 		}
 
@@ -66,7 +65,7 @@ export default () => {
 		// Banner
 		form.append('bannersOrder', JSON.stringify(bannersOrder))
 		form.append('bannersDelete', JSON.stringify(bannersDelete))
-		for (const banner of banners) {
+		for (const banner of banners as File[]) {
 			form.append('fileToUpload[]', banner)
 		}
 

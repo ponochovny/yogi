@@ -1,5 +1,5 @@
 import { convertPriceStringToNumber } from '~/helpers'
-import type { IOfferingCreateData } from '~/helpers/types/offering'
+import type { EActivity, IOfferingCreateData } from '~/helpers/types/offering'
 import { generateSlug } from '~/lib/utils'
 import {
 	createMediaFile,
@@ -33,34 +33,34 @@ export default defineEventHandler(async (event) => {
 
 	const { fields, files } = await extractForm<
 		Promise<{
-			fields: { [key: string]: string[] } & { studioId: string }
+			fields: { [key: string]: string }
 			files: any
 		}>
 	>(event)
 
 	const fieldsFromForm = () => {
 		return {
-			...(fields.name && { name: fields.name[0] }),
-			...(fields.name && { slug: generateSlug(fields.name[0]) }),
-			...(fields.activity && { activity: fields.activity[0] }),
-			...(fields.start && { start: new Date(fields.start[0]) }),
-			...(fields.end && { end: new Date(fields.end[0]) }),
-			...(fields.duration && { duration: +fields.duration[0] }),
-			...(fields.description && { description: fields.description[0] }),
-			...(fields.spots && { spots: +fields.spots[0] }),
+			...(fields.name && { name: fields.name }),
+			...(fields.name && { slug: generateSlug(fields.name) }),
+			...(fields.activity && { activity: fields.activity as EActivity }),
+			...(fields.start && { start: new Date(fields.start) }),
+			...(fields.end && { end: new Date(fields.end) }),
+			...(fields.duration && { duration: +fields.duration }),
+			...(fields.description && { description: fields.description }),
+			...(fields.spots && { spots: +fields.spots }),
 			...(fields.is_private && {
-				is_private: fields.is_private[0] === 'true',
+				is_private: fields.is_private === 'true',
 			}),
-			...(fields.types && { types: fields.types[0].split(',') }),
+			...(fields.types && { types: fields.types.split(',') }),
 			...(fields.categories && {
-				categories: fields.categories[0].split(','),
+				categories: fields.categories.split(','),
 			}),
-			...(fields.location && { location: fields.location[0] }),
-			...(fields.timezone && { timezone: fields.timezone[0] }),
+			...(fields.location && { location: fields.location }),
+			...(fields.timezone && { timezone: fields.timezone }),
 			isActive:
 				typeof fields.isActive == 'boolean'
 					? !!fields.isActive
-					: fields.isActive[0] === 'true',
+					: fields.isActive === 'true',
 		}
 	}
 
@@ -70,16 +70,16 @@ export default defineEventHandler(async (event) => {
 
 	// Handle Remove Practitioners
 	if (fields[`practitionersRemove[]`]) {
-		const practitionersRemovePromises = fields[`practitionersRemove[]`].map(
-			async (userId: string) => {
-				return removePractitioner({
-					where: {
-						userId,
-						offeringId: offeringId.toString(),
-					},
-				})
-			}
-		)
+		const practitionersRemovePromises = (
+			fields[`practitionersRemove[]`] as unknown as string[]
+		).map(async (userId: string) => {
+			return removePractitioner({
+				where: {
+					userId,
+					offeringId: offeringId.toString(),
+				},
+			})
+		})
 
 		await Promise.all(practitionersRemovePromises)
 	}
@@ -102,14 +102,14 @@ export default defineEventHandler(async (event) => {
 
 	// Practitioners
 	if (fields[`practitioners[]`]) {
-		const practitionerPromises = fields[`practitioners[]`].map(
-			async (userId: string) => {
-				return attachPractitionerToOffering({
-					userId,
-					offeringId,
-				})
-			}
-		)
+		const practitionerPromises = (
+			fields[`practitioners[]`] as unknown as string[]
+		).map(async (userId: string) => {
+			return attachPractitionerToOffering({
+				userId,
+				offeringId,
+			})
+		})
 
 		await Promise.all(practitionerPromises)
 	}
@@ -132,8 +132,8 @@ export default defineEventHandler(async (event) => {
 	}
 	if (fields.bannersOrder) {
 		console.log('fields.bannersOrder', fields.bannersOrder)
-		const bannersOrder = JSON.parse(fields.bannersOrder[0]) as (string | null)[]
-		const bannersDelete = JSON.parse(fields.bannersDelete[0]) as string[]
+		const bannersOrder = JSON.parse(fields.bannersOrder) as (string | null)[]
+		const bannersDelete = JSON.parse(fields.bannersDelete) as string[]
 		const orderArr = bannersOrder.map((el) =>
 			el && bannersDelete.includes(el) ? null : el
 		)
@@ -152,7 +152,7 @@ export default defineEventHandler(async (event) => {
 	if (files[`fileToUpload[]`]) {
 		const filesArr = Object.keys(files[`fileToUpload[]`])
 		const orderArr = fields.bannersOrder
-			? (JSON.parse(fields.bannersOrder[0]) as (string | null)[])
+			? (JSON.parse(fields.bannersOrder) as (string | null)[])
 			: []
 		const setOrder = (idx: number) => {
 			if (!fields.bannersOrder) return

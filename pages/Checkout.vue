@@ -14,8 +14,7 @@
 						<Input label="Email" name="email" v-model="formData.email" />
 						<Button
 							class="self-start"
-							variant="primaryOutline"
-							btnSize="md2"
+							variant="outline"
 							:disabled="loading || true"
 						>
 							<span class="font-semibold">+ Add a person</span>
@@ -39,9 +38,13 @@
 				>
 					<div v-if="data" class="bg-white rounded-xl py-4 px-6">
 						<div class="flex gap-3">
-							<img
+							<NuxtImg
 								:src="offeringBanner()"
 								class="w-24 h-16 rounded-xl object-cover object-center"
+								provider="cloudinary"
+								width="100"
+								height="auto"
+								format="webp"
 							/>
 							<div class="flex flex-col">
 								<span

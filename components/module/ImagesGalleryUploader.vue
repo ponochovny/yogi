@@ -2,14 +2,20 @@
 	<div>
 		<div>
 			<div class="flex gap-1 flex-wrap mb-4">
-				<Button @click="triggerFileInput" variant="primaryOutline" btnSize="sm">
+				<Button
+					@click="triggerFileInput"
+					variant="outline"
+					size="sm"
+					type="button"
+				>
 					Choose Files
 				</Button>
 				<Button
 					@click="clearFiles"
-					variant="primaryOutline"
+					variant="outline"
 					:disabled="!filesData.length"
-					btnSize="sm"
+					size="sm"
+					type="button"
 				>
 					Clear
 				</Button>
@@ -25,7 +31,7 @@
 			<div
 				v-if="!filesData.length"
 				ref="dropZoneRef"
-				class="p-6 rounded-xl border shadow-md mb-6 transition-colors -mt-2"
+				class="p-6 rounded-xl border border-dashed shadow-md transition-colors -mt-2 bg-white"
 				:class="{ 'bg-yellow-100/50': isOverDropZone }"
 			>
 				Drop images here
@@ -45,12 +51,14 @@
 						<button
 							@click="removeFile(idx)"
 							class="bg-gray-400 rounded-full w-6 h-6 shadow-sm flex items-center justify-center text-gray-100 text-xs z-10 hover:text-gray-100 hover:bg-gray-400/60"
+							type="button"
 						>
 							<TrashIcon class="w-4 stroke-2" />
 						</button>
 						<button
 							@click="cropFile(idx)"
 							class="bg-gray-400 rounded-full w-6 h-6 shadow-sm flex items-center justify-center text-gray-100 text-xs z-10 hover:text-gray-100 hover:bg-gray-400/60"
+							type="button"
 						>
 							<ViewfinderCircleIcon class="w-4 stroke-2" />
 						</button>
@@ -83,9 +91,7 @@
 					:stencilProps="stencilProps"
 				>
 					<template #footer="{ save }">
-						<Button @click="save" variant="primary" class="mt-1 mx-auto">
-							Crop
-						</Button>
+						<Button @click="save" class="mt-1 mx-auto"> Crop </Button>
 					</template>
 				</CropperBlock>
 			</DialogContent>
@@ -314,14 +320,18 @@ function handleCroppedFile(file: File) {
 }
 function handleResetCroppedFile() {
 	const idx = selectedCropFile.value.idx
-	const originalFile = filesData.value[idx].file as File
+	const original = filesData.value[idx]
+	const originalFile = filesData.value[idx].file
 	filesData.value[idx] = {
 		id: null,
-		name: originalFile.name,
-		size: originalFile.size,
-		type: originalFile.type,
+		name: originalFile?.name || original.name,
+		size: originalFile?.size || original.size,
+		type: originalFile?.type || original.type,
 		file: originalFile,
-		preview: URL.createObjectURL(originalFile),
+		preview:
+			original.preview || originalFile === null
+				? original.preview
+				: URL.createObjectURL(originalFile),
 		cropped: {
 			preview: '',
 			file: null,
@@ -329,9 +339,14 @@ function handleResetCroppedFile() {
 	}
 	selectedCropFile.value = {
 		idx: selectedCropFile.value.idx,
-		url: URL.createObjectURL(originalFile),
+		url:
+			originalFile === null
+				? original.preview
+				: URL.createObjectURL(originalFile),
 	}
 
 	emitData()
 }
+
+defineExpose({ clearFiles })
 </script>

@@ -5,22 +5,16 @@ export default defineNuxtConfig({
 		'@nuxtjs/tailwindcss',
 		'shadcn-nuxt',
 		'nuxt-lodash',
-		'nuxt-primevue',
 		'@nuxt/image',
 		'nuxt-swiper',
 		'@vite-pwa/nuxt',
 		'@vueuse/nuxt',
+		'@vee-validate/nuxt',
 	],
 
 	image: {
 		cloudinary: {
 			baseURL: 'https://res.cloudinary.com/dllruwqbd/image/fetch/',
-		},
-	},
-
-	primevue: {
-		components: {
-			include: ['FileUpload'],
 		},
 	},
 

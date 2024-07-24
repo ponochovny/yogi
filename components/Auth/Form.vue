@@ -36,7 +36,7 @@
 			name="repeatPassword"
 			autocomplete="off"
 		/>
-		<Button type="submit">
+		<Button type="submit" :disabled="data.loading" :loading="data.loading">
 			<span class="font-bold text-white">
 				{{ props.mode === 'register' ? 'Register' : 'Login' }}
 			</span>
@@ -50,11 +50,7 @@
 			</template>
 			<template v-else>
 				<span>Already have an account?</span>
-				<button
-					type="button"
-					@click="emit('mode', 'login')"
-					:disabled="data.loading"
-				>
+				<button type="button" @click="emit('mode', 'login')">
 					<span class="font-semibold">Log in</span>
 				</button>
 			</template>
@@ -98,7 +94,6 @@ async function handleLogin(redirect?: string) {
 		navigateTo(redirect ? '/' + redirect : '/')
 	} catch (error: any) {
 		toast.error(error.data.statusMessage)
-	} finally {
 		data.loading = false
 	}
 }
@@ -116,12 +111,13 @@ async function handleRegister(redirect?: string) {
 		navigateTo(redirect ? '/' + redirect : '/')
 	} catch (error: any) {
 		toast.error(error.data.statusMessage)
-	} finally {
 		data.loading = false
 	}
 }
 
 function handleAuth() {
+	if (data.loading) return
+
 	const redirect = route.query.redirect?.toString()
 	props.mode === 'register' ? handleRegister(redirect) : handleLogin(redirect)
 }

@@ -13,9 +13,9 @@
 		<l-control position="bottomleft">
 			<div class="flex gap-1 pb-2 items-center">
 				<span class="text-white">Theme:</span>
-				<Button btnSize="sm" @click="_theme = 0">1</Button>
-				<Button btnSize="sm" @click="_theme = 1">2</Button>
-				<Button btnSize="sm" @click="_theme = 2">3</Button>
+				<Button size="sm" @click="_theme = 0" type="button">1</Button>
+				<Button size="sm" @click="_theme = 1" type="button">2</Button>
+				<Button size="sm" @click="_theme = 2" type="button">3</Button>
 			</div>
 		</l-control>
 		<l-control v-if="searchable" position="topleft">
@@ -34,6 +34,7 @@
 						Place a marker or start typing.
 					</p>
 					<button
+						type="button"
 						v-for="feature of searchResults"
 						:key="feature.place_name"
 						class="p-2 rounded-md hover:bg-gray-100 text-left flex gap-2 items-center"
@@ -93,7 +94,11 @@
 				:options="{ offset: [-18, 10] }"
 				className=""
 			>
-				<button @click.stop="coordsClicked" class="underline text-orange-600">
+				<button
+					@click.stop="coordsClicked"
+					class="underline text-orange-600"
+					type="button"
+				>
 					{{ `${singleMarker.coords[0]},${singleMarker.coords[1]}` }}
 				</button>
 			</l-popup>

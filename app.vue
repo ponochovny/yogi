@@ -1,9 +1,9 @@
 <template>
 	<VitePwaManifest />
 	<div :class="{ dark: darkMode, 'bg-[#FEF3E4] min-h-screen': true }">
-		<Transition>
+		<!-- <Transition>
 			<LoadingPage v-if="isAuthInitLoading" />
-		</Transition>
+		</Transition> -->
 		<NuxtLoadingIndicator color="rgb(251 146 60)" />
 		<NuxtLayout>
 			<NuxtPage />

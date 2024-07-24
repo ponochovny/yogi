@@ -24,8 +24,8 @@
 		>
 			<slot name="left" />
 
-			<div v-if="links" class="ml-3 sm:ml-[10%] hidden md:flex gap-3 sm:gap-8">
-				<NuxtLink to="/search">
+			<div v-if="links" class="ml-3 sm:ml-11 hidden md:flex gap-3 sm:gap-8">
+				<NuxtLink :to="liveOfferingsLink()">
 					<span class="font-semibold text-nowrap">Explore live offerings</span>
 				</NuxtLink>
 				<NuxtLink to="/user/studio" v-if="user">
@@ -70,7 +70,10 @@
 
 			<!-- Cart status -->
 
-			<template v-if="isAuthLoading">Loading...</template>
+			<template v-if="isAuthLoading">
+				<Loader2Icon class="animate-spin" />
+				<span class="sr-only">Loading...</span>
+			</template>
 			<template v-else-if="!user">
 				<NuxtLink to="/auth?t=register">
 					<Button class="mr-2 sm:mr-0">
@@ -107,7 +110,7 @@
 						<div class="flex flex-col gap-4 md:gap-2 w-full">
 							<NuxtLink to="/user/profile"> My Profile </NuxtLink>
 
-							<NuxtLink class="block md:hidden" to="/search">
+							<NuxtLink class="block md:hidden" :to="liveOfferingsLink()">
 								Explore live offerings
 							</NuxtLink>
 							<NuxtLink class="block md:hidden" to="/user/studio" v-if="user">
@@ -128,6 +131,9 @@ import { defineComponent } from 'vue'
 import type { TUser } from '~/server/types'
 import currencies from '~/helpers/currencies.json'
 import { BanknotesIcon } from '@heroicons/vue/24/outline'
+import { liveOfferingsLink } from '~/helpers'
+
+import { Loader2Icon } from 'lucide-vue-next'
 
 export default defineComponent({
 	name: 'Header',

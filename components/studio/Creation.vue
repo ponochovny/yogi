@@ -109,7 +109,12 @@
 			:min-chars="1"
 			openDirection="top"
 		/>
-		<Button @click="handleForm" class="self-start" :disabled="isButtonDisabled">
+		<Button
+			@click="handleForm"
+			class="self-start"
+			:disabled="isButtonDisabled"
+			:loading="loading"
+		>
 			<span class="font-semibold text-white">
 				{{ updateData ? 'Update' : 'Create' }}
 			</span>
@@ -363,6 +368,8 @@ function markerRemoved() {
 // LOCATION <
 
 function handleForm() {
+	if (loading.value) return
+
 	if (props.updateData) {
 		updateStudioHandler()
 	} else {

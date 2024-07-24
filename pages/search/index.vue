@@ -1,12 +1,12 @@
 <template>
-	<SearchContainer
-		@update="updated"
+	<SearchLayout
+		@update="updateHandler"
 		:loading="loading"
-		:priceRange="[priceRange.price_from || 0, priceRange.price_to || 0]"
+		:priceRange="[priceRange.price_from, priceRange.price_to]"
 	>
 		<div class="pb-10 pt-8 px-6">
 			<div class="mb-6 transition-opacity" :class="{ 'opacity-80': loading }">
-				<p class="font-bold text-lg">
+				<p class="font-bold text-lg" :class="{ 'opacity-0': loading }">
 					We found {{ filters.total }} results for you
 				</p>
 			</div>
@@ -23,14 +23,14 @@
 						:offering="offering"
 					/>
 				</template>
-				<template v-if="filters.activityType === 'Studio & Event Hosts'">
+				<template v-else-if="filters.activityType === 'Studio & Event Hosts'">
 					<StudioCard
 						v-for="studio of (searchResults as TStudio[])"
 						:key="studio?.id"
 						:studio="studio"
 					/>
 				</template>
-				<template v-if="filters.activityType === 'Practitioners'">
+				<template v-else-if="filters.activityType === 'Practitioners'">
 					<PractitionerCard
 						v-for="practitioner of (searchResults as TUser[])"
 						:key="practitioner?.id"
@@ -38,7 +38,7 @@
 					/>
 				</template>
 			</div>
-			<div v-if="isShowPagination" class="flex pt-12 justify-center">
+			<div v-if="isPagination" class="flex pt-12 justify-center">
 				<Pagination
 					v-slot="{ page }"
 					:items-per-page="filters.count"
@@ -47,7 +47,7 @@
 					show-edges
 					:default-page="filters.page"
 					v-model:page="filters.page"
-					@update:page="fetch"
+					@update:page="fetchHandler"
 				>
 					<PaginationList v-slot="{ items }" class="flex items-center gap-1">
 						<PaginationFirst />
@@ -76,17 +76,22 @@
 				</Pagination>
 			</div>
 		</div>
-	</SearchContainer>
+	</SearchLayout>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { DATA_TYPES } from '~/helpers/constants'
-import type { ISearchParams } from '~/helpers/types/search'
-import { format } from 'date-fns'
+import type { ISearchParams } from '@/helpers/search/types'
+import useSearchPage from './_composables'
+import { compareFilters } from './_helpers'
+import { toast } from 'vue-sonner'
+
+import { DATA_TYPES } from '@/helpers/constants'
 import type { TStudio } from '~/helpers/types/studio'
 import type { TUser } from '~/server/types'
 import type { TOffering } from '~/helpers/types/offering'
+
+import SearchLayout from './_layout/SearchLayout.vue'
 import {
 	Pagination,
 	PaginationEllipsis,
@@ -97,7 +102,6 @@ import {
 	PaginationNext,
 	PaginationPrev,
 } from '@/components/ui/pagination'
-
 import { Button } from '@/components/ui/button'
 
 export default defineComponent({
@@ -105,7 +109,6 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
-const route = useRoute()
 const loading = ref(true)
 const searchResults = ref<TOffering[] | TStudio[] | TUser[]>([])
 const isInitialLoad = ref(true)
@@ -125,114 +128,103 @@ const priceRange = ref({ price_from: 0, price_to: 0 })
 function resetSearchResults() {
 	searchResults.value = []
 }
-const isShowPagination = computed(() => {
+function resetPagination() {
+	filters.page = 1
+	filters.count = 20
+}
+const isPagination = computed(() => {
 	return (filters.total || 0) / (filters.count || 0) > 1
 })
 
-function updated(data: any) {
-	if (data.search || data.location) {
-		if (
-			JSON.stringify({ location: filters.location, search: filters.search }) !==
-			JSON.stringify(data)
-		) {
-			filters.search = data.search
-			filters.location = data.location
+function updateHandler(newFilters: Partial<ISearchParams>) {
+	const { areSameFilters, isSameActivityType } = compareFilters(
+		filters,
+		newFilters
+	)
 
-			fetch()
+	if (areSameFilters && !isInitialLoad.value) return
 
-			return
-		}
-		return
-	} else {
-		filters.search = undefined
-		filters.location = undefined
+	Object.entries(newFilters).forEach(([key, value]) => {
+		filters[key as keyof ISearchParams] = value as never
+	})
+	// if (newFilters.search || newFilters.location) {
+	// 	const check1 =
+	// 		JSON.stringify({ location: filters.location, search: filters.search }) !==
+	// 		JSON.stringify(newFilters)
+
+	// 	if (check1) {
+	// filters.search = newFilters.search
+	// filters.location = newFilters.location
+
+	// 		fetchHandler()
+
+	// 		return
+	// 	}
+	// 	return
+	// } else {
+	// 	filters.search = undefined
+	// 	filters.location = undefined
+	// }
+
+	// if (isInitialLoad.value) {
+	// 	fetchHandler()
+	// 	return
+	// } else if (areSameFilters && !isInitialLoad.value) {
+	// 	return
+	// }
+	// if (areSameFilters || isInitialLoad.value) {
+	// 	// eslint-disable-next-line no-debugger
+	// 	debugger
+
+	// 	// fetchHandler()
+	// 	// loading.value = false
+	// 	return
+	// }
+	if (!isSameActivityType) {
+		resetSearchResults()
+		resetPagination()
+		// priceRange.value = {
+		// 	price_from: 0,
+		// 	price_to: 0,
+		// }
 	}
 
-	const {
-		page,
-		count,
-		total,
-		search: _search,
-		location: _location,
-		...restFilters
-	} = filters
-	const { search, location, ...restData } = data
-	if (
-		JSON.stringify(restData) !== JSON.stringify(restFilters) ||
-		isInitialLoad.value
-	) {
-		if (data.activityType !== filters.activityType) {
-			resetSearchResults()
-		}
-		filters.activityType = data.activityType
-		filters.categories = data.categories
-		filters.types = data.types
-		filters.date.start = data.date?.start
-		filters.date.end = data.date?.end
-		filters.price_from = data.price_from
-		filters.price_to = data.price_to
+	// filters.activityType = newFilters.activityType
+	// filters.categories = newFilters.categories
+	// filters.types = newFilters.types
+	// filters.date.start = newFilters.date?.start
+	// filters.date.end = newFilters.date?.end
+	// filters.price_from = newFilters.price_from
+	// filters.price_to = newFilters.price_to
 
-		fetch()
-	}
+	fetchHandler()
 }
 
-function fetch() {
+function fetchHandler() {
 	loading.value = true
 
-	const priceFromCheck = isNumber(filters.price_from) && filters.price_from >= 0
+	const { fetch } = useSearchPage(filters)
 
-	const searchObj = {
-		...(route.query.search && { search: route.query.search.toString() }),
-		...(route.query.location && {
-			location: route.query.location.toString(),
-		}),
-	}
-	const searchObjFilters = {
-		...(filters.search && { search: filters.search }),
-		...(filters.location && {
-			location: filters.location,
-		}),
-	}
-
-	const obj = {
-		...(isInitialLoad.value && { ...searchObj }),
-		...(!isInitialLoad.value && { ...searchObjFilters }),
-		...(filters.count && { count: filters.count.toString() }),
-		...(filters.page && { page: filters.page.toString() }),
-		...(priceFromCheck && {
-			price_from: filters.price_from?.toString(),
-		}),
-		...(filters.price_to && { price_to: filters.price_to.toString() }),
-		...(filters.activityType && { activityType: filters.activityType }),
-		...(filters.categories?.length && {
-			categories: filters.categories.join(','),
-		}),
-		...(filters.types?.length && { types: filters.types.join(',') }),
-		...(filters.date?.start && {
-			date_start: format(filters.date.start, 'yyyy-MM-dd'),
-		}),
-		...(filters.date?.end && {
-			date_end: format(filters.date.end, 'yyyy-MM-dd'),
-		}),
-	}
 	if (isInitialLoad.value) isInitialLoad.value = false
 
-	$fetch<{
-		data: TOffering[]
-		meta: { total: number; min_price: number; max_price: number }
-		error?: any
-	}>('/api/search?' + new URLSearchParams(obj).toString())
+	fetch()
 		.then((response) => {
-			const { data, meta, error } = response
+			const { data = [], meta, error } = response
+
+			// Set search results data
 			searchResults.value = data
+
+			// Handle error
 			if (error) {
-				alert(JSON.stringify(error))
-				return
+				console.log(error)
+				toast.error('Timed out')
 			}
+
+			// Set filters, price range data
 			filters.total = meta?.total || 0
 			priceRange.value = {
-				price_from: meta.min_price || 0,
-				price_to: meta.max_price || 0,
+				price_from: meta?.min_price || 0,
+				price_to: meta?.max_price || 0,
 			}
 		})
 		.catch((error) => console.log(error))

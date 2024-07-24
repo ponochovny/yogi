@@ -10,7 +10,7 @@
 			</template>
 		</Header>
 
-		<SearchFilters
+		<Filters
 			@update="emit('update', $event)"
 			class="transition-opacity"
 			:class="{ 'opacity-80 pointer-events-none': loading }"
@@ -21,7 +21,7 @@
 			<slot />
 		</div>
 
-		<Footer />
+		<Footer variant="white" />
 	</div>
 </template>
 
@@ -29,8 +29,10 @@
 import { defineComponent } from 'vue'
 import { cn } from '@/lib/utils'
 
+import Filters from '../_components/Filters.vue'
+
 export default defineComponent({
-	name: 'SearchContainer',
+	name: 'SearchLayout',
 })
 </script>
 <script lang="ts" setup>

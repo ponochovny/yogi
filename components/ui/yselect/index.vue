@@ -1,5 +1,5 @@
 <template>
-	<div class="w-full">
+	<div class="w-full flex flex-col gap-1">
 		<label>
 			<span v-if="label" class="text-sm font-bold text-gray-700">
 				{{ label }}
@@ -101,6 +101,9 @@
 				</template>
 			</Multiselect>
 		</label>
+		<p class="text-rose-600 text-xs pl-1" :class="{ hidden: !error }">
+			{{ error }}
+		</p>
 	</div>
 </template>
 
@@ -133,6 +136,7 @@ interface IProps {
 	delay?: number
 	minChars?: number
 	openDirection?: 'bottom' | 'top'
+	error?: string
 }
 const props = withDefaults(defineProps<IProps>(), {
 	mode: 'single',

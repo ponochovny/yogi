@@ -2,8 +2,8 @@
 	<NuxtLayout name="user-admin">
 		<div class="pt-6 -ml-4 md:-ml-16">
 			<Button
-				class="ml-auto mr-4 mb-4"
-				variant="primaryOutline"
+				class="ml-auto mr-4 mb-4 block"
+				variant="outline"
 				@click="$router.push($route.fullPath + '/create')"
 			>
 				<span class="font-semibold">+ Create new offering</span>
@@ -56,7 +56,13 @@
 							<!-- {{ offering.practitioners.map((el) => el.name).join(', ') }} -->
 						</TableCell>
 						<TableCell>
-							{{ !offering.isActive ? 'Inactive' : 'Active' }}
+							<span
+								:class="[
+									!offering.isActive ? 'text-rose-600' : 'text-teal-600',
+								]"
+							>
+								{{ !offering.isActive ? 'Inactive' : 'Active' }}
+							</span>
 						</TableCell>
 						<TableCell>
 							{{ offering.is_private ? 'Private' : 'Public' }}
@@ -73,8 +79,8 @@
 									class="flex flex-col gap-1 max-w-[170px] rounded-2xl shadow-md border border-gray-300/40"
 								>
 									<Button
-										btnSize="sm"
-										variant="primaryOutline"
+										size="sm"
+										variant="outline"
 										class="w-full justify-center"
 										@click="
 											$router.push($route.fullPath + '/edit/' + offering.id)
@@ -83,8 +89,8 @@
 										<span>Edit</span>
 									</Button>
 									<Button
-										btnSize="sm"
-										variant="primaryOutline"
+										size="sm"
+										variant="outline"
 										class="w-full justify-center"
 										disabled
 									>
@@ -95,9 +101,9 @@
 										@click="
 											activeToggleOffering(offering.id, !offering.isActive)
 										"
-										btnSize="sm"
+										size="sm"
 										:variant="
-											offering.isActive ? 'dangerOutline' : 'primaryOutline'
+											offering.isActive ? 'destructiveOutline' : 'outline'
 										"
 										class="w-full justify-center"
 									>
@@ -112,8 +118,12 @@
 				</TableBody>
 			</Table>
 
+			<div class="w-full my-6" v-if="pending">
+				<LoadingIcon class="fill-orange-600 mx-auto w-10 h-10" />
+			</div>
+
 			<MainNoContent
-				v-if="!offeringsRes?.data.length"
+				v-else-if="!offeringsRes?.data.length"
 				class="mt-6"
 				title="You haven't create any offering"
 				text="Here you may find your offerings"
@@ -147,7 +157,11 @@ if (!studioId || !isString(studioId)) {
 	router.push('/')
 }
 
-const { data: offeringsRes, refresh } = await getOfferingsByStudioId<{
+const {
+	data: offeringsRes,
+	pending,
+	refresh,
+} = await getOfferingsByStudioId<{
 	data: TOffering[]
 	refresh: () => void
 	// eslint-disable-next-line indent
