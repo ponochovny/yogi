@@ -1,4 +1,4 @@
-import type { ISearchData, IShortSearchData } from '~/helpers/types/search'
+import type { ISearchData, IShortSearchData } from '~/helpers/search/types'
 
 export default () => {
 	const globalSearch = (val?: string) => {

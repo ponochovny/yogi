@@ -144,7 +144,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import type { IShortSearchData } from '~/helpers/types/search'
+import type { IShortSearchData } from '~/helpers/search/types'
 import { dateString } from '~/lib/utils'
 
 export default defineComponent({
