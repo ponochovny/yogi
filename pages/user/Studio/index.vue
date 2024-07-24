@@ -5,14 +5,16 @@
 				class="flex gap-2 sm:gap-4 flex-col sm:flex-row pt-8 mb-2 md:mb-6 items-start"
 			>
 				<button
-					v-if="studios.length > 0"
-					@click="tab = 'list'"
+					@click="studios.length && (tab = 'list')"
 					type="button"
 					class="text-2xl font-bold transition-colors"
 					:class="{
 						'text-orange-500 underline underline-offset-4': tab === 'list',
-						'text-gray-400 hover:text-black': tab !== 'list',
+						'text-gray-400 hover:text-zinc-900': tab !== 'list',
+						'text-gray-200 hover:text-gray-200 cursor-not-allowed':
+							!studios.length,
 					}"
+					:disabled="!studios.length || loading"
 				>
 					Studios list
 				</button>

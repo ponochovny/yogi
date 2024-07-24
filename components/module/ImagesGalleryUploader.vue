@@ -87,6 +87,8 @@
 					@file="handleCroppedFile"
 					@reset="handleResetCroppedFile"
 					:canReset="!!filesData[selectedCropFile.idx]?.cropped.file"
+					:stencilComponent="stencilComponent"
+					:stencilProps="stencilProps"
 				>
 					<template #footer="{ save }">
 						<Button @click="save" class="mt-1 mx-auto"> Crop </Button>
@@ -123,6 +125,8 @@ const props = withDefaults(
 			| 'svg'
 			| 'webp'
 		)[]
+		stencilComponent?: 'circle' | 'rectangle'
+		stencilProps?: object
 	}>(),
 	{
 		format: () => ['jpeg', 'jpg', 'png', 'webp'],
