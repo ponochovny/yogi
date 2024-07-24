@@ -76,10 +76,7 @@
 				placeholder="Find place on the map"
 			/>
 			<button
-				v-if="
-					props.offering?.location?.name !== formData.location?.place_name &&
-					props.offering?.location
-				"
+				v-if="isResetMarkerBtn"
 				@click="resetMarker(true)"
 				class="flex items-center justify-center h-[42px] self-end rounded-md border border-gray-300 px-2 hover:bg-gray-100 shadow-sm mr-auto"
 				title="Reset"
@@ -162,6 +159,9 @@
 		<ModuleImagesGalleryUploader
 			:data="bannersUpdate"
 			@change="moduleImagesChange"
+			:stencilProps="{
+				aspectRatio: 2.7 / 1,
+			}"
 		/>
 
 		<Button @click="handleForm" class="self-start">
@@ -196,6 +196,12 @@ const props = withDefaults(defineProps<IProps>(), {
 	updateData: false,
 })
 const emit = defineEmits(['updated'])
+
+const isResetMarkerBtn = computed(
+	() =>
+		props.offering?.location?.name !== formData.location?.place_name &&
+		props.offering?.location
+)
 
 // const loading = ref(false)
 
