@@ -199,7 +199,7 @@
 						@click="selectedTicket = ticket.id"
 					>
 						<div
-							class="flex gap-4 px-2 py-1 border rounded-lg border-gray-400 text-left text-black transition-colors"
+							class="flex gap-4 px-2 py-1 border rounded-lg border-gray-400 text-left text-zinc-900 transition-colors"
 							:class="{
 								'hover:bg-orange-200/20 hover:border-orange-400/50':
 									selectedTicket !== ticket.id,

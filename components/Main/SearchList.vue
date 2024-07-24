@@ -50,12 +50,16 @@
 						>
 							{{ offering.activity }}
 						</p>
-						<p class="font-semibold text-sm text-black">{{ offering.name }}</p>
+						<p class="font-semibold text-sm text-zinc-900">
+							{{ offering.name }}
+						</p>
 						<div class="flex gap-1 text-xs">
 							<div class="font-semibold text-gray-500 mb-1 text-nowrap">
 								{{ dateString(offering.start, offering.end) }}
 							</div>
-							<span v-if="offering.location?.name" class="text-black">•</span>
+							<span v-if="offering.location?.name" class="text-zinc-900">
+								•
+							</span>
 							<div
 								class="mb-1 truncate text-gray-600 font-semibold"
 								:title="offering.location?.name || ''"
@@ -91,7 +95,7 @@
 					/>
 					<div v-else class="w-8 h-8 rounded-full bg-gray-100"></div>
 					<div class="flex flex-col gap-0">
-						<p class="font-semibold text-sm text-black">{{ studio.name }}</p>
+						<p class="font-semibold text-sm text-zinc-900">{{ studio.name }}</p>
 						<div class="flex gap-1 text-xs">
 							<div
 								class="mb-1 truncate text-gray-600 font-semibold"
@@ -128,7 +132,7 @@
 					/>
 					<div v-else class="w-8 h-8 rounded-full bg-gray-100"></div>
 					<div class="flex flex-col gap-0 items-center">
-						<p class="font-semibold text-sm text-black">
+						<p class="font-semibold text-sm text-zinc-900">
 							{{ practitioner.name }}
 						</p>
 					</div>

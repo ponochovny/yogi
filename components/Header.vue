@@ -83,7 +83,7 @@
 				<Popover>
 					<PopoverTrigger>
 						<div
-							class="flex items-center gap-4 p-2 pr-3 rounded-full bg-white !text-black shadow-md hover:bg-orange-600 hover:!text-white transition-colors duration-500 border border-gray-300/40"
+							class="flex items-center gap-4 p-2 pr-3 rounded-full bg-white !text-zinc-900 shadow-md hover:bg-orange-600 hover:!text-white transition-colors duration-500 border border-gray-300/40"
 						>
 							<NuxtImg
 								provider="cloudinary"
