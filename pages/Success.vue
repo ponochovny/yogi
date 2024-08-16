@@ -24,7 +24,7 @@
 				class="flex gap-3 px-6 py-5 rounded-xl bg-white shadow-lg"
 			>
 				<img
-					:src="purchase?.data.ticket.offering.banner[0]"
+					:src="offeringBanner().url"
 					class="w-24 h-16 rounded-xl object-cover object-center"
 				/>
 				<div class="flex flex-col">
@@ -98,6 +98,22 @@ const { data: purchase } = useFetch<{ data: IPurchase }>(
 )
 
 if (!purchase) router.push('/')
+
+function offeringBanner() {
+	if (
+		purchase.value?.data.ticket?.offering?.banner &&
+		purchase.value?.data.ticket?.offering?.banner[0]
+	) {
+		return {
+			placeholder: false,
+			url: purchase.value?.data.ticket?.offering?.banner[0],
+		}
+	}
+	return {
+		placeholder: true,
+		url: 'img/banner-placeholder2.jpeg',
+	}
+}
 
 useSeoMeta({
 	title: 'Success payment',
