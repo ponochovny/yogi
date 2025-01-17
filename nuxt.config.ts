@@ -111,13 +111,13 @@ export default defineNuxtConfig({
 	// gtag: {
 	// 	id: 'G-8BK1QNF9T3',
 	// },
-	$production: {
-		scripts: {
-			registry: {
-				googleTagManager: {
-					id: 'G-8BK1QNF9T3',
-				},
+	// $production: {
+	scripts: {
+		registry: {
+			googleTagManager: {
+				id: 'G-8BK1QNF9T3',
 			},
 		},
 	},
+	// },
 })
