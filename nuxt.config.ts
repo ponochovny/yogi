@@ -12,6 +12,7 @@ export default defineNuxtConfig({
 		'@vee-validate/nuxt',
 		'@zadigetvoltaire/nuxt-gtm',
 		'nuxt-gtag',
+		'@nuxt/scripts',
 	],
 
 	image: {
@@ -107,7 +108,16 @@ export default defineNuxtConfig({
 	// 	enabled: true,
 	// 	debug: true,
 	// },
-	gtag: {
-		id: 'G-8BK1QNF9T3',
+	// gtag: {
+	// 	id: 'G-8BK1QNF9T3',
+	// },
+	$production: {
+		scripts: {
+			registry: {
+				googleTagManager: {
+					id: 'G-8BK1QNF9T3',
+				},
+			},
+		},
 	},
 })
