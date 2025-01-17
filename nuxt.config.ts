@@ -1,7 +1,6 @@
 export default defineNuxtConfig({
 	devtools: { enabled: false },
 	modules: [
-		// '@nuxt/scripts',
 		'@nuxtjs/tailwindcss',
 		'shadcn-nuxt',
 		'nuxt-lodash',
@@ -11,7 +10,6 @@ export default defineNuxtConfig({
 		'@vueuse/nuxt',
 		'@vee-validate/nuxt',
 		'@zadigetvoltaire/nuxt-gtm',
-		// 'nuxt-gtag',
 	],
 
 	image: {
@@ -104,26 +102,9 @@ export default defineNuxtConfig({
 		'/checkout': { ssr: false },
 	},
 
-	// @ts-ignore
 	gtm: {
-		id: 'GTM-PZQGRSWW',
-		// id: 'G-8BK1QNF9T3',
+		id: process.env.GOOGLE_TAG_MANAGER_ID,
 		enabled: true,
 		debug: true,
 	},
-	// gtag: {
-	// 	id: 'G-8BK1QNF9T3',
-	// },
-
-	// $production: {
-
-	// scripts: {
-	// 	registry: {
-	// 		googleTagManager: {
-	// 			id: 'G-8BK1QNF9T3',
-	// 		},
-	// 	},
-	// },
-
-	// },
 })
