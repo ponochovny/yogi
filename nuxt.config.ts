@@ -10,6 +10,7 @@ export default defineNuxtConfig({
 		'@vueuse/nuxt',
 		'@vee-validate/nuxt',
 		'@zadigetvoltaire/nuxt-gtm',
+		'nuxt-gtag',
 	],
 
 	image: {
@@ -106,5 +107,9 @@ export default defineNuxtConfig({
 		id: process.env.GOOGLE_TAG_MANAGER_ID,
 		enabled: true,
 		debug: true,
+	},
+
+	gtag: {
+		id: process.env.GOOGLE_TAG_ID,
 	},
 })
