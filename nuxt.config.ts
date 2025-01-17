@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
 	devtools: { enabled: false },
 	modules: [
+		'@nuxt/scripts',
 		'@nuxtjs/tailwindcss',
 		'shadcn-nuxt',
 		'nuxt-lodash',
@@ -10,9 +11,8 @@ export default defineNuxtConfig({
 		'@vite-pwa/nuxt',
 		'@vueuse/nuxt',
 		'@vee-validate/nuxt',
-		'@zadigetvoltaire/nuxt-gtm',
+		// '@zadigetvoltaire/nuxt-gtm',
 		'nuxt-gtag',
-		'@nuxt/scripts',
 	],
 
 	image: {
