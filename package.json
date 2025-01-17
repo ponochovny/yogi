@@ -63,6 +63,7 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/jwt-decode": "^3.1.0",
     "@vue-leaflet/vue-leaflet": "^0.10.1",
+    "@zadigetvoltaire/nuxt-gtm": "^0.0.13",
     "eslint": "^8.57.1",
     "leaflet": "^1.9.4",
     "nuxt-lodash": "^2.5.3",

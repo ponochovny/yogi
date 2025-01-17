@@ -10,6 +10,7 @@ export default defineNuxtConfig({
 		'@vite-pwa/nuxt',
 		'@vueuse/nuxt',
 		'@vee-validate/nuxt',
+		'@zadigetvoltaire/nuxt-gtm',
 	],
 
 	image: {
@@ -98,5 +99,12 @@ export default defineNuxtConfig({
 		// '/search': { ssr: false }, // TODO: set useLazyFetch
 		'/user/**': { ssr: false },
 		'/checkout': { ssr: false },
+	},
+
+	// @ts-ignore
+	gtm: {
+		id: 'GTM-PZQGRSWW',
+		enabled: true,
+		debug: true,
 	},
 })
