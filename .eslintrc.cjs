@@ -4,6 +4,20 @@ module.exports = {
 	rules: {
 		'@typescript-eslint/no-unused-vars': 'off',
 		'vue/html-indent': ['warn', 'tab'],
+		'vue/max-len': [
+			'warn',
+			{
+				code: 120,
+				template: 120,
+				tabWidth: 2,
+				ignorePattern: 'class=".*"|:.*-class-name=".*"',
+				ignoreUrls: true,
+				ignoreStrings: true,
+				ignoreTemplateLiterals: true,
+				ignoreComments: true,
+			},
+		],
+
 		indent: [
 			'error',
 			'tab',

@@ -7,7 +7,9 @@
 			@update:model-value="handleDate"
 			:enable-time-picker="timePicker"
 			calendar-class-name="dp__instance_calendar px-0"
-			calendar-cell-class-name="text-sm sm:text-xs flex items-center justify-center text-basic-800 p-0 rounded-md sm:h-10 sm:w-10 !hover:bg-red-50"
+			calendar-cell-class-name="
+			text-sm sm:text-xs flex items-center justify-center text-basic-800 
+			p-0 rounded-md sm:h-10 sm:w-10 !hover:bg-red-50"
 			menuClassName="dropdown_calendar sm:justify-between w-full shadow-none"
 			inline
 			hide-offset-dates
