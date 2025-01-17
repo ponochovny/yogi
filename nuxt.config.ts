@@ -102,11 +102,11 @@ export default defineNuxtConfig({
 		'/checkout': { ssr: false },
 	},
 
-	gtm: {
-		id: 'GTM-PZQGRSWW',
-		enabled: true,
-		debug: true,
-	},
+	// gtm: {
+	// 	id: 'GTM-PZQGRSWW',
+	// 	enabled: true,
+	// 	debug: true,
+	// },
 	gtag: {
 		id: 'G-8BK1QNF9T3',
 	},
