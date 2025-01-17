@@ -11,6 +11,7 @@ export default defineNuxtConfig({
 		'@vueuse/nuxt',
 		'@vee-validate/nuxt',
 		'@zadigetvoltaire/nuxt-gtm',
+		'nuxt-gtag',
 	],
 
 	image: {
@@ -101,10 +102,12 @@ export default defineNuxtConfig({
 		'/checkout': { ssr: false },
 	},
 
-	// @ts-ignore
 	gtm: {
-		id: 'G-8BK1QNF9T3',
+		id: 'GTM-PZQGRSWW',
 		enabled: true,
 		debug: true,
+	},
+	gtag: {
+		id: 'G-8BK1QNF9T3',
 	},
 })

@@ -38,6 +38,7 @@
     "jwt-decode": "^4.0.0",
     "lucide-vue-next": "^0.344.0",
     "nuxt": "^3.10.3",
+    "nuxt-gtag": "^3.0.2",
     "nuxt-swiper": "^1.2.2",
     "radix-vue": "^1.9.1",
     "slugify": "^1.6.6",
