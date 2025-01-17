@@ -15,6 +15,7 @@
 						<a
 							href="#"
 							class="w-10 h-10 rounded-full bg-white flex items-center justify-center fill-orange-600 shadow-sm hover:bg-orange-400 hover:fill-white"
+							id="facebook-share-button"
 						>
 							<Facebook :size="20" fill="#ea580c" :stroke-width="0" />
 						</a>
@@ -23,6 +24,7 @@
 						<a
 							href="#"
 							class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-orange-600 shadow-sm hover:bg-orange-400 hover:text-white"
+							id="instagram-share-button"
 						>
 							<Instagram :size="20" :stroke-width="2" />
 						</a>
@@ -31,6 +33,7 @@
 						<a
 							href="#"
 							class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-orange-600 shadow-sm hover:bg-orange-400 hover:text-white"
+							id="messenger-share-button"
 						>
 							<MessagesSquare :size="20" :stroke-width="2" />
 						</a>
