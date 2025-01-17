@@ -103,7 +103,7 @@ export default defineNuxtConfig({
 
 	// @ts-ignore
 	gtm: {
-		id: 'GTM-PZQGRSWW',
+		id: 'G-8BK1QNF9T3',
 		enabled: true,
 		debug: true,
 	},
