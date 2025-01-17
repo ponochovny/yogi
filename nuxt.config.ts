@@ -12,7 +12,7 @@ export default defineNuxtConfig({
 		'@vueuse/nuxt',
 		'@vee-validate/nuxt',
 		// '@zadigetvoltaire/nuxt-gtm',
-		'nuxt-gtag',
+		// 'nuxt-gtag',
 	],
 
 	image: {
