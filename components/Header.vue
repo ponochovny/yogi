@@ -170,5 +170,7 @@ function loginLink() {
 	return '/auth?t=login' + '&redirect=' + route.href.substring(1)
 }
 
-getOfferingsCount().then(({ data }) => (isLiveOfferings.value = !!data))
+getOfferingsCount().then(({ data }) => {
+	isLiveOfferings.value = !!data.value?.data
+})
 </script>
