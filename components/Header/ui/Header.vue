@@ -25,7 +25,7 @@
 			<slot name="left" />
 
 			<div v-if="links" class="ml-3 sm:ml-11 hidden md:flex gap-3 sm:gap-8">
-				<NuxtLink :to="liveOfferingsLink()">
+				<NuxtLink v-if="isLiveOfferings" :to="searchLiveOfferingsLink()">
 					<span class="font-semibold text-nowrap">Explore live offerings</span>
 				</NuxtLink>
 				<NuxtLink to="/user/studio" v-if="user">
@@ -110,7 +110,11 @@
 						<div class="flex flex-col gap-4 md:gap-2 w-full">
 							<NuxtLink to="/user/profile"> My Profile </NuxtLink>
 
-							<NuxtLink class="block md:hidden" :to="liveOfferingsLink()">
+							<NuxtLink
+								v-if="isLiveOfferings"
+								class="block md:hidden"
+								:to="searchLiveOfferingsLink()"
+							>
 								Explore live offerings
 							</NuxtLink>
 							<NuxtLink class="block md:hidden" to="/user/studio" v-if="user">
@@ -131,7 +135,7 @@ import { defineComponent } from 'vue'
 import type { TUser } from '~/server/types'
 import currencies from '~/helpers/currencies.json'
 import { BanknotesIcon } from '@heroicons/vue/24/outline'
-import { liveOfferingsLink } from '~/helpers'
+import { searchLiveOfferingsLink } from '~/shared/utils/urls'
 
 import { Skeleton } from '@/components/ui/skeleton'
 
@@ -156,6 +160,7 @@ const { useAuthUser, useAuthLoading, logout } = useAuth()
 const isAuthLoading = useAuthLoading()
 const user = useAuthUser() as Ref<TUser>
 const _currencies = currencies
+const isLiveOfferings = ref(false)
 
 const currencySelected = ref(_currencies[0].code)
 

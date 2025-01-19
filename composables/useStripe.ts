@@ -19,6 +19,7 @@ export default (
 	const authUser = useAuthUser()
 
 	const loading = ref(true)
+	const proceeding = ref(false)
 	const error = ref<string | null>(null)
 	let stripe: Stripe | null
 	let elements: StripeElements
@@ -71,12 +72,15 @@ export default (
 		if (submitError) {
 			console.log('submitError', submitError)
 			loading.value = false
+			proceeding.value = false
 			return
 		}
 
 		const { name, email } = Object.fromEntries(
 			new FormData(e.target as HTMLFormElement)
 		)
+
+		proceeding.value = true
 
 		try {
 			const res = await $fetch('/api/stripe', {
@@ -110,6 +114,7 @@ export default (
 			router.push('/error')
 		} finally {
 			loading.value = false
+			proceeding.value = false
 		}
 	}
 
@@ -149,6 +154,7 @@ export default (
 		injectStripe,
 		handleSubmitStripeForm,
 		loading,
+		proceeding,
 		error,
 		refetch,
 	}

@@ -78,3 +78,18 @@ export const getOfferingsByStudioId = <T>(
 		},
 	}) as Promise<T>
 }
+export const getOfferingsLiveCount = () => {
+	const currentDateISO = new Date().toISOString()
+
+	return prisma.offering.count({
+		where: {
+			start: {
+				lte: currentDateISO,
+			},
+			end: {
+				gte: currentDateISO,
+			},
+			isActive: true,
+		},
+	})
+}

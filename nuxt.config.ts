@@ -1,6 +1,6 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	devtools: { enabled: false },
+
 	modules: [
 		'@nuxtjs/tailwindcss',
 		'shadcn-nuxt',
@@ -10,6 +10,9 @@ export default defineNuxtConfig({
 		'@vite-pwa/nuxt',
 		'@vueuse/nuxt',
 		'@vee-validate/nuxt',
+		'@zadigetvoltaire/nuxt-gtm',
+		'nuxt-gtag',
+		'@pinia/nuxt',
 	],
 
 	image: {
@@ -45,29 +48,31 @@ export default defineNuxtConfig({
 		mapboxPublicApi: process.env.MAPBOX_PUBLIC_API,
 	},
 
-	pwa: {
-		manifest: {
-			name: 'Yogiapp',
-			short_name: 'Yogiapp',
-			description:
-				'Wellness marketplace, book your next appointment, retreat, festival',
-			theme_color: '#FEF3E4',
-			icons: [
-				{
-					src: 'pwa-icon-192x192.png',
-					sizes: '192x192',
-					type: 'image/png',
-				},
-				{
-					src: 'pwa-icon-512x512.png',
-					sizes: '512x512',
-					type: 'image/png',
-				},
-			],
-		},
-		devOptions: {
-			enabled: true,
-			type: 'module',
+	$production: {
+		pwa: {
+			manifest: {
+				name: 'Yogiapp',
+				short_name: 'Yogiapp',
+				description:
+					'Wellness marketplace, book your next appointment, retreat, festival',
+				theme_color: '#FEF3E4',
+				icons: [
+					{
+						src: 'pwa-icon-192x192.png',
+						sizes: '192x192',
+						type: 'image/png',
+					},
+					{
+						src: 'pwa-icon-512x512.png',
+						sizes: '512x512',
+						type: 'image/png',
+					},
+				],
+			},
+			devOptions: {
+				enabled: true,
+				type: 'module',
+			},
 		},
 	},
 
@@ -99,4 +104,16 @@ export default defineNuxtConfig({
 		'/user/**': { ssr: false },
 		'/checkout': { ssr: false },
 	},
+
+	gtm: {
+		id: process.env.GOOGLE_TAG_MANAGER_ID || '',
+		enabled: true,
+		debug: true,
+	},
+
+	gtag: {
+		id: process.env.GOOGLE_TAG_ID,
+	},
+
+	compatibilityDate: '2025-01-19',
 })

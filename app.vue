@@ -1,5 +1,7 @@
 <template>
-	<VitePwaManifest />
+	<template v-if="isProduction">
+		<VitePwaManifest />
+	</template>
 	<div :class="{ dark: darkMode, 'bg-[#FEF3E4] min-h-screen': true }">
 		<!-- <Transition>
 			<LoadingPage v-if="isAuthInitLoading" />
@@ -12,12 +14,19 @@
 	</div>
 </template>
 <script setup>
-const { initAuth, useAuthInitLoading } = useAuth()
-const isAuthInitLoading = useAuthInitLoading()
+import { useHeaderStore } from './components/Header/model/store'
+
+const headerStore = useHeaderStore()
+const {
+	initAuth,
+	// useAuthInitLoading
+} = useAuth()
+// const isAuthInitLoading = useAuthInitLoading()
 const darkMode = ref(false)
 
 onBeforeMount(() => {
 	initAuth().catch(() => {})
+	headerStore.fetchLiveOfferings()
 })
 
 useHead({
@@ -25,6 +34,8 @@ useHead({
 		return titleChunk ? `${titleChunk} - Yogi` : 'Yogi'
 	},
 })
+
+const isProduction = ref(process.env.NODE_ENV === 'production')
 </script>
 <style lang="scss">
 a,

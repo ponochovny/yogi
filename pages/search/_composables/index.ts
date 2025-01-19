@@ -1,9 +1,6 @@
 import { format } from 'date-fns'
-import { convertSearchParamsToParamsURL } from '@/pages/search/_helpers'
 import type { ISearchParams, TSearchParams } from '~/helpers/search/types'
-import type { TOffering } from '~/helpers/types/offering'
-import type { TStudio } from '~/helpers/types/studio'
-import type { TUser } from '~/server/types'
+import { searchDataByQuery } from '../model/services/searchDataByQuery'
 
 export default (filters: ISearchParams) => {
 	const priceFromCheck = isNumber(filters.price_from) && filters.price_from >= 0
@@ -33,15 +30,5 @@ export default (filters: ISearchParams) => {
 		...(filters.page && { page: filters.page }),
 	}
 
-	const paramsURLString = convertSearchParamsToParamsURL(allParams).toString()
-
-	function fetch() {
-		return $fetch<{
-			data: TOffering[] | TStudio[] | TUser[]
-			meta: { total: number; min_price: number; max_price: number }
-			error?: any
-		}>('/api/search?' + paramsURLString)
-	}
-
-	return { fetch }
+	return { fetch: searchDataByQuery(allParams) }
 }

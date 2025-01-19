@@ -116,23 +116,6 @@ export const setDataByRouteQuery = (
 	dateRange.value = _dateRange
 }
 
-/**
- *
- * @param start
- * @param end
- * @returns dStart or ${dStart} - ${dEnd}
- */
-export const formattedDate = (start?: Date, end?: Date) => {
-	const dStart = start ? format(start, 'MMM dd') : ''
-	const dEnd = end ? format(end, 'MMM dd') : ''
-
-	if (dStart === dEnd) {
-		return dStart
-	} else {
-		return `${dStart} - ${dEnd}`
-	}
-}
-
 export const convertSearchParamsToParamsURL = (
 	data: TSearchParams
 ): URLSearchParams => {

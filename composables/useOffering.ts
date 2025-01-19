@@ -39,6 +39,12 @@ export default () => {
 		})
 	}
 
+	const getOfferingsCount = () => {
+		return useFetch('/api/search/live', {
+			method: 'GET',
+		})
+	}
+
 	const updateOffering = (
 		data: Omit<IOfferingUpdateData, 'slug'>,
 		offeringId: string
@@ -135,5 +141,6 @@ export default () => {
 		updateOffering,
 		toggleActiveOfferingById,
 		removePractitioners,
+		getOfferingsCount,
 	}
 }

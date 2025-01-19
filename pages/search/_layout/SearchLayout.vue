@@ -28,6 +28,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { cn } from '@/lib/utils'
+import { Header } from '~/components/Header'
 
 import Filters from '../_components/Filters.vue'
 

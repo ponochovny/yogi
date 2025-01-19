@@ -16,6 +16,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { cn } from '@/lib/utils'
+import { Header } from '~/components/Header'
 
 export default defineComponent({
 	name: 'MainContainer',

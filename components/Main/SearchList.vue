@@ -10,9 +10,9 @@
 		<div
 			v-if="
 				data &&
-				!data.offerings.length &&
-				!data.studios.length &&
-				!data.practitioners.length
+					!data.offerings.length &&
+					!data.studios.length &&
+					!data.practitioners.length
 			"
 			class="text-gray-500 font-semibold text-center text-xs"
 		>

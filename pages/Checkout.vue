@@ -39,9 +39,11 @@
 					<div v-if="data" class="bg-white rounded-xl py-4 px-6">
 						<div class="flex gap-3">
 							<NuxtImg
-								:src="offeringBanner()"
+								:src="offeringBanner().url"
 								class="w-24 h-16 rounded-xl object-cover object-center"
-								provider="cloudinary"
+								:provider="
+									offeringBanner().placeholder ? undefined : 'cloudinary'
+								"
 								width="100"
 								height="auto"
 								format="webp"
@@ -103,6 +105,7 @@
 							class="text-white font-semibold w-full"
 							type="submit"
 							:disabled="loading"
+							:loading="proceeding"
 						>
 							<span class="mx-auto">Confirm pay</span>
 						</Button>
@@ -159,6 +162,7 @@ const {
 	// refetch,
 	error,
 	loading,
+	proceeding,
 } = useStripe('#payment-element', {
 	amount: _data.amount,
 	currency: _data.currency,
@@ -188,9 +192,15 @@ function offeringBanner() {
 		data.value?.data?.offering?.banner &&
 		data.value?.data?.offering?.banner[0]
 	) {
-		return data.value?.data?.offering?.banner[0]
+		return {
+			placeholder: false,
+			url: data.value?.data?.offering?.banner[0],
+		}
 	}
-	return 'img/banner-placeholder2.jpeg'
+	return {
+		placeholder: true,
+		url: 'img/banner-placeholder2.jpeg',
+	}
 }
 
 useSeoMeta({
