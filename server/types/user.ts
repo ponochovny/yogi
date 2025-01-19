@@ -1,7 +1,15 @@
 import type { IUserResponse } from '.'
 
 export type TUpdateProfileData = Partial<
-	Pick<IUserResponse, 'name' | 'email' | 'bio' | 'profileImage'>
+	Pick<
+		IUserResponse,
+		| 'name'
+		| 'email'
+		| 'bio'
+		| 'profileImage'
+		| 'interestsCategory'
+		| 'interestsType'
+	>
 >
 
 export type TCreateUserData = Pick<

@@ -38,6 +38,7 @@
 						class="self-start"
 						@click="handleUpdateProfile"
 						:disabled="actionButtonDisabled"
+						:loading="loading"
 					>
 						<span class="text-white font-bold">Update</span>
 					</Button>
@@ -61,6 +62,9 @@ export default defineComponent({
 definePageMeta({
 	middleware: ['user'],
 })
+
+const loading = ref(false)
+
 const { useAuthUser, updateProfile } = useAuth()
 
 const user = useAuthUser() as Ref<TUser>
@@ -103,6 +107,9 @@ function setData(val: TUser) {
 	}
 }
 function handleUpdateProfile() {
+	if (loading.value) return
+
+	loading.value = true
 	updateProfile({
 		interestsCategory: updatedData.categories,
 		interestsType: updatedData.types,
@@ -112,7 +119,8 @@ function handleUpdateProfile() {
 		})
 		.catch((error) => {
 			setData(user.value)
-			toast.error(error.data.statusMessage)
+			toast.error(error?.message || 'Error occurred')
 		})
+		.finally(() => (loading.value = false))
 }
 </script>

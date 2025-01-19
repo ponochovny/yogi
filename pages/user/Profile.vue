@@ -21,6 +21,7 @@
 					class="self-start"
 					@click="handleUpdateProfile"
 					:disabled="actionButtonDisabled"
+					:loading="loading"
 				>
 					<span class="text-white font-bold">Update</span>
 				</Button>
@@ -42,12 +43,20 @@ export default defineComponent({
 definePageMeta({
 	middleware: ['user'],
 })
+
+const loading = ref(false)
+
 const { useAuthUser, updateProfile } = useAuth()
 
 const selectedFileAvatar = ref<any>(null)
 const avatarUrl = ref<string | null>(null)
 
 const user = useAuthUser() as Ref<TUser>
+const data = reactive({
+	name: '',
+	email: '',
+	bio: '',
+})
 const actionButtonDisabled = computed(() => {
 	if (!user.value) return true
 	const obj1 = { ...data }
@@ -58,12 +67,6 @@ const actionButtonDisabled = computed(() => {
 	}
 	const isAvatarChanged = avatarUrl.value !== user.value?.profileImage
 	return isEqual(obj1, obj2) && !isAvatarChanged
-})
-
-const data = reactive({
-	name: '',
-	email: '',
-	bio: '',
 })
 
 onMounted(() => {
@@ -85,18 +88,23 @@ function setData(val: any) {
 }
 
 function handleUpdateProfile() {
+	if (loading.value) return
+
+	loading.value = true
+
 	updateProfile({
 		...data,
 		mediaFiles: {
 			avatar: selectedFileAvatar.value,
 		},
 	})
-		.then(() => {
+		.then((data) => {
 			toast.success('Data has been updated')
 		})
 		.catch((error) => {
 			setData(user.value)
-			toast.error(error?.data?.statusMessage || 'Error occurred')
+			toast.error(error?.message || 'Error occurred')
 		})
+		.finally(() => (loading.value = false))
 }
 </script>

@@ -23,3 +23,6 @@ logs
 .env.*
 !.env.example
 .vscode/settings.json
+
+# Test pages
+pages/test

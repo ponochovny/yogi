@@ -27,7 +27,7 @@ export const deleteMediaFile = (id: string) => {
 	})
 }
 
-export const deleteManyMediaFileByUserID = (userId: string) => {
+export const deleteManyMediaFilesByUserID = (userId: string) => {
 	return prisma.mediaFile.deleteMany({
 		where: {
 			userId,

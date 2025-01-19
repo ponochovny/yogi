@@ -184,10 +184,17 @@ export default () => {
 				body: form,
 			})
 
-			setUser(res.user)
-			return res.user
-		} catch (error) {
-			throw new Error((error as Error).message)
+			console.log('res', res)
+
+			const updatedUser = {
+				...authUser.value,
+				...res.user,
+			}
+
+			setUser(updatedUser)
+			return updatedUser
+		} catch (error: any) {
+			throw new Error(error?.data?.message || 'Some error occurred')
 		}
 	}
 

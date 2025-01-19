@@ -28,3 +28,21 @@ export const extractForm = <T>(event: H3Event<EventHandlerRequest>): T => {
 		})
 	}) as T
 }
+
+export const extractFormFiles = <T>(event: H3Event<EventHandlerRequest>): T => {
+	const form = formidable()
+	return new Promise((resolve, reject) => {
+		form.parse(event.node.req, (error, fields, files) => {
+			if (error) {
+				reject(error)
+			}
+			Object.entries(fields).forEach(
+				([key, value]: any) => ((fields as any)[key] = value[0])
+			)
+			Object.entries(files).forEach(
+				([key, value]: any) => ((files as any)[key] = value[0])
+			)
+			resolve({ fields, files })
+		})
+	}) as T
+}
