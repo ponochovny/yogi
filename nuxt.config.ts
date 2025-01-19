@@ -1,5 +1,6 @@
 export default defineNuxtConfig({
 	devtools: { enabled: false },
+
 	modules: [
 		'@nuxtjs/tailwindcss',
 		'shadcn-nuxt',
@@ -11,6 +12,7 @@ export default defineNuxtConfig({
 		'@vee-validate/nuxt',
 		'@zadigetvoltaire/nuxt-gtm',
 		'nuxt-gtag',
+		'@pinia/nuxt',
 	],
 
 	image: {
@@ -104,7 +106,7 @@ export default defineNuxtConfig({
 	},
 
 	gtm: {
-		id: process.env.GOOGLE_TAG_MANAGER_ID,
+		id: process.env.GOOGLE_TAG_MANAGER_ID || '',
 		enabled: true,
 		debug: true,
 	},
@@ -112,4 +114,6 @@ export default defineNuxtConfig({
 	gtag: {
 		id: process.env.GOOGLE_TAG_ID,
 	},
+
+	compatibilityDate: '2025-01-19',
 })

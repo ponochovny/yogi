@@ -160,7 +160,6 @@ const { useAuthUser, useAuthLoading, logout } = useAuth()
 const isAuthLoading = useAuthLoading()
 const user = useAuthUser() as Ref<TUser>
 const _currencies = currencies
-const { getOfferingsCount } = useOffering()
 const isLiveOfferings = ref(false)
 
 const currencySelected = ref(_currencies[0].code)
@@ -169,8 +168,4 @@ function loginLink() {
 	// @ts-ignore
 	return '/auth?t=login' + '&redirect=' + route.href.substring(1)
 }
-
-getOfferingsCount().then(({ data }) => {
-	isLiveOfferings.value = !!data.value?.data
-})
 </script>

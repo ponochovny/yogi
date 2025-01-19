@@ -14,6 +14,9 @@
 	</div>
 </template>
 <script setup>
+import { useHeaderStore } from './components/Header/model/store'
+
+const headerStore = useHeaderStore()
 const {
 	initAuth,
 	// useAuthInitLoading
@@ -23,6 +26,7 @@ const darkMode = ref(false)
 
 onBeforeMount(() => {
 	initAuth().catch(() => {})
+	headerStore.fetchLiveOfferings()
 })
 
 useHead({
