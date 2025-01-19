@@ -125,7 +125,8 @@ import { DATA_TYPES } from '~/helpers/constants'
 import type { ISearchParams, TDataType } from '~/helpers/search/types'
 import { format } from 'date-fns'
 import { currencySymbolByCode } from '~/helpers'
-import { setDataByRouteQuery, formattedDate } from '@/pages/search/_helpers'
+import { setDataByRouteQuery } from '@/pages/search/_helpers'
+import { formattedDate } from '~/shared/utils/dates'
 
 export default defineComponent({
 	name: 'Filters',

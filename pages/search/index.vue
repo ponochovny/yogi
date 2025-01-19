@@ -207,7 +207,7 @@ function fetchHandler() {
 
 	if (isInitialLoad.value) isInitialLoad.value = false
 
-	fetch()
+	fetch
 		.then((response) => {
 			const { data = [], meta, error } = response
 
