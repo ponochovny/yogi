@@ -61,7 +61,7 @@
 				<NuxtImg
 					v-if="offering.studio?.logo"
 					:src="offering.studio?.logo.url"
-					:alt="offering.studio?.name"
+					alt="Logo"
 					provider="cloudinary"
 					format="webp"
 					class="w-8 h-8 rounded-full object-cover object-center"

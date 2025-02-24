@@ -10,7 +10,7 @@ import { ChevronDown } from 'lucide-vue-next'
 import { cn } from '@/src/shared/lib/utils'
 
 const props = defineProps<
-	SelectTriggerProps & { class?: HTMLAttributes['class'] }
+	SelectTriggerProps & { class?: HTMLAttributes['class']; ariaLabel?: string }
 >()
 
 const delegatedProps = computed(() => {

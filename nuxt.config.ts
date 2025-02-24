@@ -86,7 +86,7 @@ export default defineNuxtConfig({
 	app: {
 		head: {
 			charset: 'utf-8',
-			viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
+			viewport: 'width=device-width, initial-scale=1',
 			title: 'Yogi - Your wellness home',
 			meta: [
 				{ name: 'description', content: 'All you need for your wellness' },

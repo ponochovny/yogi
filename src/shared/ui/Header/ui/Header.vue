@@ -44,6 +44,7 @@
 
 			<Select v-model="currencySelected">
 				<SelectTrigger
+					aria-label="Select currency"
 					class="inline-flex w-auto items-center justify-between rounded px-[15px] text-[13px] leading-none h-[35px] gap-[5px] bg-transparent text-grass11 border-none outline-none ring-0 focus:ring-0 focus:outline-none ring-offset-0 focus:ring-offset-0"
 				>
 					<div>
