@@ -8,7 +8,7 @@
 		@submit.prevent="onSubmit"
 	>
 		<Popover @update:open="openLocationEvent">
-			<PopoverTrigger as="div" aria-role="button">
+			<PopoverTrigger as="div" role="button">
 				<div
 					class="shadow-sm flex items-center"
 					:class="{
@@ -79,7 +79,7 @@
 		</Popover>
 
 		<Popover @update:open="openSearchEvent" :open="isSearchOpen">
-			<PopoverTrigger as="div" aria-role="button">
+			<PopoverTrigger as="div" role="button">
 				<div
 					class="shadow-sm flex items-center rounded-none"
 					:class="{
