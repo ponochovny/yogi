@@ -1,4 +1,4 @@
-import type { IPurchaseResponse, TPurchase } from '~/helpers/types/purchase'
+import type { IPurchaseResponse, TPurchase } from '~/src/app/types/purchase'
 import { ticketTransformer } from './ticket'
 
 export const purchaseTransformer = (data: IPurchaseResponse): TPurchase => {

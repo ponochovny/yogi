@@ -14,7 +14,7 @@
 	</div>
 </template>
 <script setup>
-import { useHeaderStore } from './components/Header/model/store'
+import { useHeaderStore } from './src/shared/ui/Header/model/store'
 
 const headerStore = useHeaderStore()
 const {

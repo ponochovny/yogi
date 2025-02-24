@@ -1,5 +1,5 @@
-import type { TMarker } from '~/helpers/types/map'
-import type { TStudio } from '~/helpers/types/studio'
+import type { TMarker } from '~/src/app/types/map'
+import type { TStudio } from '~/src/app/types/studio'
 
 interface IData {
 	name: string

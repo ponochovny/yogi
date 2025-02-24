@@ -1,6 +1,6 @@
-import { convertPriceStringToNumber } from '~/helpers'
-import type { EActivity, IOfferingCreateData } from '~/helpers/types/offering'
-import { generateSlug } from '~/lib/utils'
+import { convertPriceStringToNumber } from '~/src/shared/helpers'
+import type { EActivity, IOfferingCreateData } from '~/src/app/types/offering'
+import { generateSlug } from '~/src/shared/lib/utils'
 import {
 	createMediaFile,
 	deleteMediaFile,

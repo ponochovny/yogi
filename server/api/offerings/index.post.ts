@@ -1,5 +1,5 @@
-import { offeringDataCreationSchema } from '~/helpers/types/offering'
-import { generateSlug } from '~/lib/utils'
+import { offeringDataCreationSchema } from '~/src/app/types/offering'
+import { generateSlug } from '~/src/shared/lib/utils'
 import { createMediaFile } from '~/server/db/mediaFiles'
 import { createOffering } from '~/server/db/offerings'
 import { attachPractitionerToOffering } from '~/server/db/practitioners'

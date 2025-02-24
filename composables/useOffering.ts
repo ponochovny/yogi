@@ -2,7 +2,7 @@ import type {
 	IOfferingUpdateData,
 	TOffering,
 	TOfferingCreationData,
-} from '~/helpers/types/offering'
+} from '~/src/app/types/offering'
 
 export default () => {
 	const createOffering = (data: TOfferingCreationData) => {

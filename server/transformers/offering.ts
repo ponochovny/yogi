@@ -1,14 +1,14 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable indent */
-import type { TOffering } from '~/helpers/types/offering'
+import type { TOffering } from '~/src/app/types/offering'
 import type { IUserResponse } from '../types'
 import type { IOfferingResponse } from '../types/offering'
 import { mediaFileTransformer } from './mediaFiles'
 import { studioTransformer } from './studio'
 import { ticketTransformer } from './ticket'
 import { practitionerTransformer } from './user'
-import type { TMarker } from '~/helpers/types/map'
-import type { TTicket } from '~/helpers/types/ticket'
+import type { TMarker } from '~/src/app/types/map'
+import type { TTicket } from '~/src/app/types/ticket'
 import type { IStudioResponse } from '../types/studio'
 
 // TODO: offering type

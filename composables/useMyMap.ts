@@ -1,5 +1,5 @@
-import { identifyInputMapType } from '~/helpers'
-import type { IFeature } from '~/helpers/types/map'
+import { identifyInputMapType } from '~/src/shared/helpers'
+import type { IFeature } from '~/src/app/types/map'
 
 export default () => {
 	const tiles = ref([

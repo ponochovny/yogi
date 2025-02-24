@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable indent */
-import type { TSearchParams } from '~/helpers/search/types'
+import type { TSearchParams } from '~/src/app/types/search/types'
 import { getOfferings } from '~/server/db/offerings'
 import { getPractitioners } from '~/server/db/practitioners'
 import { getStudios } from '~/server/db/studio'

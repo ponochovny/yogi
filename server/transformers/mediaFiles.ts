@@ -1,4 +1,4 @@
-import type { TMediaFile } from '~/helpers/types'
+import type { TMediaFile } from '~/src/app/types'
 import type { IMediaFile } from '../types'
 import type { IBanner } from '../types/offering'
 

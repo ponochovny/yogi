@@ -1,6 +1,11 @@
 export default defineNuxtConfig({
 	devtools: { enabled: false },
 
+	dir: {
+		pages: './src/pages',
+		assets: './src/app/assets',
+	},
+
 	modules: [
 		'@nuxtjs/tailwindcss',
 		'shadcn-nuxt',
@@ -15,6 +20,8 @@ export default defineNuxtConfig({
 		'@pinia/nuxt',
 	],
 
+	components: ['~/src/shared/ui', '~/components'],
+
 	image: {
 		cloudinary: {
 			baseURL: 'https://res.cloudinary.com/dllruwqbd/image/fetch/',
@@ -23,7 +30,7 @@ export default defineNuxtConfig({
 
 	shadcn: {
 		prefix: '',
-		componentDir: './components/ui',
+		componentDir: './src/shared/ui/shadcn',
 	},
 
 	build: {
@@ -99,8 +106,8 @@ export default defineNuxtConfig({
 	},
 
 	routeRules: {
-		// '/**': { isr: 60 * 60 * 6 }, // TODO: home page search requests not working :/
-		// '/search': { ssr: false }, // TODO: set useLazyFetch
+		'/': { isr: 60 * 60 * 24 },
+		'/search': { ssr: false },
 		'/user/**': { ssr: false },
 		'/checkout': { ssr: false },
 	},

@@ -1,8 +1,8 @@
-import type { TTicket, TTicketOffering } from '~/helpers/types/ticket'
+import type { TTicket, TTicketOffering } from '~/src/app/types/ticket'
 import type { ITicketResponse } from '../types/ticket'
 import type { IOfferingResponse } from '../types/offering'
-import { currencySymbolByCode } from '~/helpers'
-import type { TMarker } from '~/helpers/types/map'
+import { currencySymbolByCode } from '~/src/shared/helpers'
+import type { TMarker } from '~/src/app/types/map'
 
 function convertNumberToPriceString(number: number): string {
 	return (number / 100).toFixed(2)

@@ -16,8 +16,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { userOfferingSettingsMenu } from '~/helpers/adminPanel'
-import { Header } from '~/components/Header'
+import { userOfferingSettingsMenu } from '~/src/app/constants/adminPanel'
+import { Header } from '~/src/shared/ui/Header'
 
 export default defineComponent({
 	name: 'UserOfferingSettingsLayout',

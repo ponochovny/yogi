@@ -3,7 +3,7 @@ import type { IUserResponse } from '../types'
 import type { IStudioResponse } from '../types/studio'
 import { mediaFileTransformer } from './mediaFiles'
 import { ownerTransformer, practitionerTransformer } from './user'
-import type { TStudio } from '~/helpers/types/studio'
+import type { TStudio } from '~/src/app/types/studio'
 
 // TODO: set studio type
 export const studioTransformer = (studio: IStudioResponse): TStudio => {

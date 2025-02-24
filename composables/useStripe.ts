@@ -4,7 +4,7 @@ import type {
 	StripePaymentElement,
 } from '@stripe/stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
-import { absoluteUrl } from '~/lib/utils'
+import { absoluteUrl } from '~/src/shared/lib/utils'
 
 export default (
 	injectId: string,

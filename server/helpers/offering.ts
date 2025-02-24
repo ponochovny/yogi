@@ -1,4 +1,4 @@
-import type { TOffering } from '~/helpers/types/offering'
+import type { TOffering } from '~/src/app/types/offering'
 import type { IOfferingResponse } from '../types/offering'
 
 export function getLowestAndHighestTicketPriceByOffering(

@@ -1,6 +1,5 @@
 import formidable from 'formidable'
-import type { TStudio } from '~/helpers/types/studio'
-import { generateSlug } from '~/lib/utils'
+import { generateSlug } from '~/src/shared/lib/utils'
 import { createMediaFile } from '~/server/db/mediaFiles'
 import { attachPractitionerToStudio } from '~/server/db/practitioners'
 import { createStudio } from '~/server/db/studio'

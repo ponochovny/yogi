@@ -1,4 +1,4 @@
-import type { EActivity } from '~/helpers/types/offering'
+import type { EActivity } from '~/src/app/types/offering'
 import type { IPractitionerResponse } from '.'
 import type { IStudioResponse } from './studio'
 import type { ITicketResponse } from './ticket'

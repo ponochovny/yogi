@@ -1,4 +1,4 @@
-import type { TStudio } from '~/helpers/types/studio'
+import type { TStudio } from '~/src/app/types/studio'
 import type { IPractitionerResponse, IUserResponse } from '.'
 
 export interface IStudioResponse {

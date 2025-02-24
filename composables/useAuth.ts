@@ -1,7 +1,7 @@
 import type { TUser } from '~/server/types'
 import useFetchApi from './useFetchApi'
 import { jwtDecode } from 'jwt-decode'
-import type { TStudio } from '~/helpers/types/studio'
+import type { TStudio } from '~/src/app/types/studio'
 
 export default () => {
 	const useAuthToken = () => useState('auth_token')
