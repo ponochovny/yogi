@@ -3,5 +3,10 @@
 </p>
 
 <p align="center">
+  Ver.
+  <br />
   <a href="https://yogiapp.vercel.app/">Vercel</a> | <a href="https://yogiapp.netlify.app/">Netlify</a>
+  <br />
+  <a href="https://deepwiki.com/ponochovny/yogi">deepwiki.com</a>
 </p>
+
