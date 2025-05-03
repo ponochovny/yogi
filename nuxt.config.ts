@@ -1,3 +1,17 @@
+const MODULES = [
+	'@nuxtjs/tailwindcss',
+	'shadcn-nuxt',
+	'nuxt-lodash',
+	'@nuxt/image',
+	'nuxt-swiper',
+	'@vite-pwa/nuxt',
+	'@vueuse/nuxt',
+	'@vee-validate/nuxt',
+	'nuxt-gtag',
+	'@pinia/nuxt',
+]
+const PROD_MODULES = ['@zadigetvoltaire/nuxt-gtm']
+
 export default defineNuxtConfig({
 	devtools: { enabled: false },
 
@@ -6,19 +20,7 @@ export default defineNuxtConfig({
 		assets: './src/app/assets',
 	},
 
-	modules: [
-		'@nuxtjs/tailwindcss',
-		'shadcn-nuxt',
-		'nuxt-lodash',
-		'@nuxt/image',
-		'nuxt-swiper',
-		'@vite-pwa/nuxt',
-		'@vueuse/nuxt',
-		'@vee-validate/nuxt',
-		'@zadigetvoltaire/nuxt-gtm',
-		'nuxt-gtag',
-		'@pinia/nuxt',
-	],
+	modules: [...MODULES],
 
 	components: ['~/src/shared/ui', '~/components'],
 
@@ -56,6 +58,7 @@ export default defineNuxtConfig({
 	},
 
 	$production: {
+		modules: [...MODULES, ...PROD_MODULES],
 		pwa: {
 			manifest: {
 				name: 'Yogiapp',
@@ -80,6 +83,16 @@ export default defineNuxtConfig({
 				enabled: true,
 				type: 'module',
 			},
+		},
+		// @ts-ignore
+		gtm: {
+			id: process.env.GOOGLE_TAG_MANAGER_ID || '',
+			enabled: true,
+			debug: true,
+		},
+
+		gtag: {
+			id: process.env.GOOGLE_TAG_ID,
 		},
 	},
 
@@ -110,16 +123,6 @@ export default defineNuxtConfig({
 		'/search': { ssr: false },
 		'/user/**': { ssr: false },
 		'/checkout': { ssr: false },
-	},
-
-	gtm: {
-		id: process.env.GOOGLE_TAG_MANAGER_ID || '',
-		enabled: true,
-		debug: true,
-	},
-
-	gtag: {
-		id: process.env.GOOGLE_TAG_ID,
 	},
 
 	compatibilityDate: '2025-01-19',
