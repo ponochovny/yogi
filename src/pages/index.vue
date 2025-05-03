@@ -1,13 +1,16 @@
 <template>
 	<div class="relative overflow-hidden min-h-screen">
 		<div
-			class="bg-[#93ACA8] xl:w-[400px] xl:h-[400px] md:w-[300px] md:h-[300px] rounded-full absolute xl:-left-[200px] md:-left-[150px] xl:top-[300px] md:top-[200px] pointer-events-none"
+			class="bg-[#93ACA8] xl:w-[400px] xl:h-[400px] md:w-[300px] md:h-[300px] rounded-full absolute xl:-left-[200px] md:-left-[150px] xl:top-[300px] md:top-[200px] select-none pointer-events-none"
+			tabindex="-1"
 		/>
 		<div
-			class="bg-[#CA9A8E] xl:w-[400px] xl:h-[400px] rounded-full absolute xl:-right-[200px] xl:top-[800px] md:w-[250px] md:h-[250px] md:-right-[125px] md:top-[500px] pointer-events-none"
+			class="bg-[#CA9A8E] xl:w-[400px] xl:h-[400px] rounded-full absolute xl:-right-[200px] xl:top-[800px] md:w-[250px] md:h-[250px] md:-right-[125px] md:top-[500px] select-none pointer-events-none"
+			tabindex="-1"
 		/>
 		<div
-			class="w-[600px] h-[600px] rounded-full absolute -left-[300px] top-[1800px] bg-contain bg-no-repeat opacity-10 pointer-events-none"
+			class="w-[600px] h-[600px] rounded-full absolute -left-[300px] top-[1800px] bg-contain bg-no-repeat opacity-10 select-none pointer-events-none"
+			tabindex="-1"
 			:style="{
 				backgroundImage: `url('img/decoration.svg')`,
 			}"
@@ -42,18 +45,18 @@
 					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
 						Studios & Event Hosts
 					</p>
-					<SwiperBlock
+					<SwiperBlockV2
 						:length="studios?.data.length"
 						classSlideContainer="overflow-hidden rounded-2xl"
 					>
-						<SwiperSlide
+						<swiper-slide
 							v-for="studio of studios?.data"
 							:key="studio?.id"
 							class="xl:min-w-[405px] xl:max-w-[405px] min-w-[305px] max-w-[305px]"
 						>
 							<StudioCard :studio="studio" />
-						</SwiperSlide>
-					</SwiperBlock>
+						</swiper-slide>
+					</SwiperBlockV2>
 					<MainNoContent
 						v-if="!studios?.data.length"
 						title="There are no corresponding studios"
@@ -88,11 +91,11 @@
 					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
 						Upcoming virtual
 					</p>
-					<SwiperBlock
+					<SwiperBlockV2
 						:length="offeringsOnline?.data.length"
 						classSlideContainer="overflow-hidden rounded-2xl"
 					>
-						<SwiperSlide
+						<swiper-slide
 							v-for="offering of offeringsOnline?.data"
 							:key="offering?.id"
 							class="min-w-[300px] max-w-[300px]"
@@ -101,8 +104,8 @@
 								:offering="offering"
 								class="min-w-[300px] max-w-[300px]"
 							/>
-						</SwiperSlide>
-					</SwiperBlock>
+						</swiper-slide>
+					</SwiperBlockV2>
 					<MainNoContent
 						v-if="!offeringsOnline?.data.length"
 						title="There are no corresponding offerings"
@@ -113,18 +116,18 @@
 					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
 						Wellness getaways
 					</p>
-					<SwiperBlock
+					<SwiperBlockV2
 						:length="offeringsWellness?.data.length"
 						classSlideContainer="overflow-hidden rounded-2xl"
 					>
-						<SwiperSlide
+						<swiper-slide
 							v-for="offering of offeringsWellness?.data"
 							:key="offering?.id"
 							class="min-w-[300px] max-w-[300px]"
 						>
 							<OfferingCard :offering="offering" />
-						</SwiperSlide>
-					</SwiperBlock>
+						</swiper-slide>
+					</SwiperBlockV2>
 					<MainNoContent
 						v-if="!offeringsWellness?.data.length"
 						title="There are no corresponding offerings"
@@ -135,11 +138,11 @@
 					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
 						Deeper Education
 					</p>
-					<SwiperBlock
+					<SwiperBlockV2
 						:length="offeringsEducation?.data.length"
 						classSlideContainer="overflow-hidden rounded-2xl"
 					>
-						<SwiperSlide
+						<swiper-slide
 							v-for="offering of offeringsEducation?.data"
 							:key="offering?.id"
 							class="min-w-[300px] max-w-[300px]"
@@ -148,8 +151,8 @@
 								:offering="offering"
 								class="min-w-[300px] max-w-[300px]"
 							/>
-						</SwiperSlide>
-					</SwiperBlock>
+						</swiper-slide>
+					</SwiperBlockV2>
 					<MainNoContent
 						v-if="!offeringsEducation?.data.length"
 						title="There are no corresponding offerings"
