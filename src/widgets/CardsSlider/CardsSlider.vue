@@ -33,7 +33,7 @@ export default defineComponent({
 <script lang="ts" setup>
 interface Props {
 	title: string
-	studio?: boolean
+	studios?: { data: any[] }
 }
 
 defineProps<Props>()

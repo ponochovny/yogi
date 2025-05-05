@@ -232,7 +232,7 @@
 </template>
 
 <script lang="ts">
-import ModuleImagesGalleryUploader from '~/src/widgets/ImagesGalleryUploader'
+import ModuleImagesGalleryUploader from '~/src/widgets/ImagesGalleryUploader.vue'
 import { useForm } from 'vee-validate'
 import { defineComponent } from 'vue'
 import _data from '~/src/app/mocks/offeringAttributes.json'

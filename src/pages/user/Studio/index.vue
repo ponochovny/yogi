@@ -102,7 +102,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import StudioCreation from '~/src/widgets/StudioCreation'
+import StudioCreation from '~/src/widgets/StudioCreation.vue'
 import type { TStudio } from '~/src/app/types/studio'
 import {
 	Cog6ToothIcon,
