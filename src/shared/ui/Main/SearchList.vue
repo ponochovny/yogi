@@ -31,9 +31,13 @@
 					@click="goTo(`/offering/${offering.slug}`)"
 				>
 					<NuxtImg
-						:src="getImageUrl(offering)"
+						:src="getImageUrl(offering.banners, 'banner').url"
 						class="w-8 h-6 rounded-md object-cover object-center mt-1"
-						provider="cloudinary"
+						:provider="
+							getImageUrl(offering.banners).placeholder
+								? undefined
+								: 'cloudinary'
+						"
 						width="100"
 						height="auto"
 						format="webp"
@@ -146,6 +150,7 @@
 import { defineComponent } from 'vue'
 import type { IShortSearchData } from '~/src/app/types/search/types'
 import { dateString } from '~/src/shared/lib/utils'
+import { getImageUrl } from '@/src/shared/lib/utils'
 
 export default defineComponent({
 	name: 'SearchList',
@@ -161,12 +166,5 @@ const router = useRouter()
 
 function goTo(val: string) {
 	router.push(val)
-}
-const getImageUrl = (offering: any) => {
-	if (offering.banners && offering.banners[0]) {
-		return offering.banners[0].url
-	}
-
-	return 'img/banner-placeholder2.jpeg'
 }
 </script>

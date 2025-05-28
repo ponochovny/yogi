@@ -5,10 +5,12 @@
 			class="block h-32 bg-gray-200 rounded-2xl"
 		>
 			<NuxtImg
-				:src="getImageUrl().url"
+				:src="getImageUrl(offering.banners, 'banner').url"
 				:alt="offering.name"
 				:title="offering.name"
-				:provider="getImageUrl().placeholder ? undefined : 'cloudinary'"
+				:provider="
+					getImageUrl(offering.banners).placeholder ? undefined : 'cloudinary'
+				"
 				format="webp"
 				width="400"
 				sizes="400px"
@@ -80,6 +82,7 @@
 import { defineComponent } from 'vue'
 import type { TOffering } from '~/src/app/types/offering'
 import { dateString } from '~/src/shared/lib/utils'
+import { getImageUrl } from '@/src/shared/lib/utils'
 
 export default defineComponent({
 	name: 'OfferingCard',
@@ -90,18 +93,4 @@ interface IProps {
 	offering: TOffering
 }
 const props = defineProps<IProps>()
-
-const getImageUrl = () => {
-	if (props.offering.banners && props.offering.banners[0]) {
-		return {
-			placeholder: false,
-			url: props.offering.banners[0].url,
-		}
-	}
-
-	return {
-		placeholder: true,
-		url: 'img/banner-placeholder2.jpeg',
-	}
-}
 </script>

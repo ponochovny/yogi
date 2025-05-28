@@ -4,6 +4,9 @@ import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { format } from 'date-fns'
 
+const BANNER_PLACEHOLDER = 'img/banner-placeholder2.jpeg'
+const LOGO_PLACEHOLDER = 'img/logo-placeholder.png'
+
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
 }
@@ -26,4 +29,26 @@ export const dateString = (start: string | Date, end: string | Date) => {
 export const absoluteUrl = (path: string): string => {
 	const config = useRuntimeConfig()
 	return `${config.public.appDomain}${path}`
+}
+
+export const getImageUrl = (
+	images: { url: string }[],
+	type: 'banner' | 'logo'
+) => {
+	if (images.length && images[0].url) {
+		return {
+			placeholder: false,
+			url: images[0].url,
+		}
+	}
+
+	return {
+		placeholder: true,
+		url:
+			type === 'logo'
+				? LOGO_PLACEHOLDER
+				: type === 'banner'
+				? BANNER_PLACEHOLDER
+				: BANNER_PLACEHOLDER,
+	}
 }

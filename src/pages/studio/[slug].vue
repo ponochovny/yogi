@@ -6,9 +6,12 @@
 				:class="{ 'bg-orange-400/70': !studio.data.banner.length }"
 			>
 				<NuxtImg
-					v-if="studio.data.banner.length"
-					provider="cloudinary"
-					:src="studio.data.banner[0].url"
+					:provider="
+						getImageUrl([studio.data.banner]).placeholder
+							? undefined
+							: 'cloudinary'
+					"
+					:src="getImageUrl([studio.data.banner], 'banner').url"
 					:alt="studio.data.name"
 					:title="studio.data.name"
 					sizes="400px md:800px lg:1280px"
@@ -22,11 +25,13 @@
 				<div
 					class="absolute w-28 h-28 -top-12 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:w-36 sm:h-36 sm:-top-16 sm:left-16 lg:w-44 lg:h-44 lg:-top-20 lg:left-24 border-4 border-white rounded-full"
 				>
-					<!-- TODO: if no logo -->
 					<NuxtImg
-						v-if="studio.data.logo.url"
-						provider="cloudinary"
-						:src="studio.data.logo.url"
+						:provider="
+							getImageUrl([studio.data.logo]).placeholder
+								? undefined
+								: 'cloudinary'
+						"
+						:src="getImageUrl([studio.data.logo], 'logo').url"
 						:alt="studio.data.name"
 						:title="studio.data.name"
 						class="object-cover rounded-full border-gray-200 border object-center w-full h-full"
@@ -160,6 +165,7 @@
 import { defineComponent } from 'vue'
 import type { TStudio } from '~/src/app/types/studio'
 import { MapPinIcon } from '@heroicons/vue/24/outline'
+import { getImageUrl } from '@/src/shared/lib/utils'
 
 export default defineComponent({
 	name: 'StudioPage',
