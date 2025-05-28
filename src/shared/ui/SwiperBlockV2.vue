@@ -40,7 +40,7 @@ watch(
 
 <template>
 	<div class="-mx-3 sm:-mx-5" v-if="length">
-		<div class="relative w-full px-5">
+		<div class="relative w-full sm:px-5 px-2">
 			<div :class="classSlideContainer">
 				<ClientOnly>
 					<swiper-container

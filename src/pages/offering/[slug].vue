@@ -68,12 +68,12 @@
 					sizes="400px md:800px lg:1280px"
 					format="webp"
 				/>
-				<SwiperBlock
+				<SwiperBlockV2
 					:length="offering.data.banners.length"
 					class="h-[250px] sm:h-[350px] xl:h-[450px]"
 					classSlideContainer="overflow-hidden rounded-3xl"
 				>
-					<SwiperSlide
+					<swiper-slide
 						v-for="(banner, idx) of offering.data.banners"
 						:key="idx"
 					>
@@ -89,8 +89,8 @@
 								format="webp"
 							/>
 						</div>
-					</SwiperSlide>
-				</SwiperBlock>
+					</swiper-slide>
+				</SwiperBlockV2>
 			</div>
 			<div
 				class="relative bg-white rounded-3xl -mt-6 mx-auto w-full md:w-[99%] px-6 sm:px-10 lg:px-16 py-10 md:py-20 flex gap-8 flex-col-reverse lg:flex-row"
@@ -251,6 +251,7 @@ import {
 } from '@heroicons/vue/24/outline'
 import { dateString } from '~/src/shared/lib/utils'
 import type { TOffering } from '~/src/app/types/offering'
+import SwiperBlockV2 from '~/src/shared/ui/SwiperBlockV2.vue'
 
 export default defineComponent({
 	name: 'SingleOffering',
