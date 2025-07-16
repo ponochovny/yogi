@@ -34,7 +34,7 @@
 						:src="getImageUrl(offering.banners, 'banner').url"
 						class="w-8 h-6 rounded-md object-cover object-center mt-1"
 						:provider="
-							getImageUrl(offering.banners).placeholder
+							getImageUrl(offering.banners, 'banner').placeholder
 								? undefined
 								: 'cloudinary'
 						"

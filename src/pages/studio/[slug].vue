@@ -7,11 +7,11 @@
 			>
 				<NuxtImg
 					:provider="
-						getImageUrl([studio.data.banner]).placeholder
+						getImageUrl([studio.data.banner[0]], 'banner').placeholder
 							? undefined
 							: 'cloudinary'
 					"
-					:src="getImageUrl([studio.data.banner], 'banner').url"
+					:src="getImageUrl([studio.data.banner[0]], 'banner').url"
 					:alt="studio.data.name"
 					:title="studio.data.name"
 					sizes="400px md:800px lg:1280px"
@@ -27,7 +27,7 @@
 				>
 					<NuxtImg
 						:provider="
-							getImageUrl([studio.data.logo]).placeholder
+							getImageUrl([studio.data.logo], 'logo').placeholder
 								? undefined
 								: 'cloudinary'
 						"

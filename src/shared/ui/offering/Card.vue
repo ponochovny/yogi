@@ -9,7 +9,9 @@
 				:alt="offering.name"
 				:title="offering.name"
 				:provider="
-					getImageUrl(offering.banners).placeholder ? undefined : 'cloudinary'
+					getImageUrl(offering.banners, 'banner').placeholder
+						? undefined
+						: 'cloudinary'
 				"
 				format="webp"
 				width="400"
