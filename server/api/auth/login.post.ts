@@ -3,66 +3,80 @@ import { getUserByEmail } from '../../db/users'
 import { generateTokens, sendRefreshToken } from '~/server/utils/jwt'
 import type { IUserResponse } from '~/server/types'
 import { userTransformer } from '~/server/transformers/user'
-import { createRefreshToken, getRefreshToken } from '~/server/db/refreshTokens'
+import {
+	createRefreshToken,
+	deleteRefreshToken,
+} from '~/server/db/refreshTokens'
 
 export default defineEventHandler(async (event) => {
-	const body = await readBody(event)
+	try {
+		const body = await readBody(event)
 
-	const { email, password } = body
+		const { email, password } = body
 
-	if (!email || !password) {
-		return sendError(
-			event,
-			createError({ statusCode: 400, statusMessage: 'Invalid params' })
-		)
-	}
-
-	// Is the user registered
-	const user: IUserResponse | null = await getUserByEmail(email)
-
-	if (!user) {
-		return sendError(
-			event,
-			createError({
+		// Validate input parameters
+		if (!email || !password) {
+			throw createError({
 				statusCode: 400,
-				statusMessage: 'Email or password is invalid',
+				statusMessage: 'Email and password are required',
 			})
-		)
-	}
+		}
 
-	// Compare passwords
-	const doesThePasswordMatch = await bcrypt.compare(password, user.password)
+		// Check if user exists
+		const user: IUserResponse | null = await getUserByEmail(email)
 
-	if (!doesThePasswordMatch) {
-		return sendError(
-			event,
-			createError({
-				statusCode: 400,
-				statusMessage: 'Email or password is invalid',
+		if (!user) {
+			throw createError({
+				statusCode: 401,
+				statusMessage: 'Invalid email or password',
 			})
-		)
-	}
+		}
 
-	// Generate Tokens
-	// Access token
-	// Refresh token
-	const { accessToken, refreshToken } = generateTokens(user)
+		// Verify password
+		const isPasswordValid = await bcrypt.compare(password, user.password)
 
-	const isRTExists = await getRefreshToken(refreshToken)
+		if (!isPasswordValid) {
+			throw createError({
+				statusCode: 401,
+				statusMessage: 'Invalid email or password',
+			})
+		}
 
-	if (!isRTExists) {
-		// Save it inside db
+		// Generate tokens
+		const { accessToken, refreshToken } = generateTokens(user)
+
+		// Delete old refresh token if it exists
+		const oldRefreshToken = getCookie(event, 'refresh_token')
+		if (oldRefreshToken) {
+			try {
+				await deleteRefreshToken(oldRefreshToken)
+			} catch (error) {
+				// Token already deleted or doesn't exist - that's ok
+			}
+		}
+
+		// Save new refresh token to database
 		await createRefreshToken({
 			token: refreshToken,
 			userId: user.id,
 		})
-	}
 
-	// Add http only cookie
-	sendRefreshToken(event, refreshToken)
+		// Send refresh token as HTTP-only cookie
+		sendRefreshToken(event, refreshToken)
 
-	return {
-		user: userTransformer(user),
-		access_token: accessToken,
+		return {
+			user: userTransformer(user),
+			access_token: accessToken,
+		}
+	} catch (error: any) {
+		if (error.statusCode) {
+			throw error
+		}
+
+		console.error('Login error:', error)
+		throw createError({
+			statusCode: 500,
+			statusMessage: 'An error occurred during login',
+		})
 	}
 })

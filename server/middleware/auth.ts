@@ -1,47 +1,91 @@
 import UrlPattern from 'url-pattern'
-import { decodeAccessToken } from '../utils/jwt'
+import { verifyAccessToken } from '../utils/jwt'
 import { getUserById } from '../db/users'
 
-export default defineEventHandler(async (event) => {
-	const endpoints = [
-		'/api/auth/user',
-		'/api/studios',
-		'/api/admin/studios',
-		'/api/studios/update',
-		'/api/offering',
-	]
+/**
+ * Protected routes that require authentication
+ */
+const PROTECTED_ENDPOINTS = [
+	'/api/auth/user',
+	'/api/auth/updateProfile',
+	'/api/studios',
+	'/api/admin/studios',
+	'/api/offerings',
+]
 
-	const isHandledByThisMiddleware = endpoints.some((endpoint) => {
+/**
+ * Checks if the route is protected
+ */
+const isProtectedEndpoint = (url: string): boolean => {
+	return PROTECTED_ENDPOINTS.some((endpoint) => {
 		const pattern = new UrlPattern(endpoint)
-
-		return pattern.match(event.node.req.url || '')
+		return pattern.match(url || '')
 	})
+}
 
-	if (!isHandledByThisMiddleware) {
+/**
+ * Extracts access token from Authorization header
+ */
+const extractAccessToken = (event: any): string | null => {
+	const authHeader = event.node.req.headers['authorization']
+	if (!authHeader) return null
+
+	const parts = authHeader.split(' ')
+	if (parts.length !== 2 || parts[0] !== 'Bearer') return null
+
+	return parts[1]
+}
+
+export default defineEventHandler(async (event) => {
+	const url = event.node.req.url || ''
+
+	// Check if current route is protected
+	if (!isProtectedEndpoint(url)) {
 		return
-	}
-
-	const token = event.node.req.headers['authorization']?.split(' ')[1]
-
-	const decoded = decodeAccessToken(token || '')
-
-	if (!decoded) {
-		return sendError(
-			event,
-			createError({
-				statusCode: 401,
-				statusMessage: 'Unauthorized',
-			})
-		)
 	}
 
 	try {
-		const userId = decoded.userId
+		// Extract access token
+		const accessToken = extractAccessToken(event)
 
-		const user = await getUserById(userId)
+		if (!accessToken) {
+			throw createError({
+				statusCode: 401,
+				statusMessage: 'Authorization token is missing',
+			})
+		}
 
+		// Verify token
+		const decoded = verifyAccessToken(accessToken)
+
+		if (!decoded) {
+			throw createError({
+				statusCode: 401,
+				statusMessage: 'Authorization token is invalid or expired',
+			})
+		}
+
+		// Get user
+		const user = await getUserById(decoded.userId)
+
+		if (!user) {
+			throw createError({
+				statusCode: 401,
+				statusMessage: 'User not found',
+			})
+		}
+
+		// Store user in event context
 		event.context.auth = { user }
-	} catch (error) {
-		return
+	} catch (error: any) {
+		if (error.statusCode) {
+			throw error
+		}
+
+		console.error('Auth middleware error:', error)
+		throw createError({
+			statusCode: 401,
+			statusMessage: 'Unauthorized',
+		})
 	}
 })

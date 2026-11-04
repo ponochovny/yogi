@@ -1,68 +1,134 @@
 import jwt, { type JwtPayload } from 'jsonwebtoken'
 import type { IUserResponse } from '../types'
+import type { H3Event } from 'h3'
 
-const generateAccessToken = (user: IUserResponse) => {
+/**
+ * JWT Payload interface
+ */
+export interface TokenPayload extends JwtPayload {
+	userId: string
+	iat: number
+	exp: number
+}
+
+/**
+ * Token pair interface for API responses
+ */
+export interface TokenPair {
+	accessToken: string
+	refreshToken: string
+}
+
+/**
+ * Token configuration
+ */
+const TOKEN_CONFIG = {
+	ACCESS_EXPIRES_IN: '15m', // 15 minutes
+	REFRESH_EXPIRES_IN: '7d', // 7 days
+}
+
+/**
+ * Generates access token
+ */
+const generateAccessToken = (user: IUserResponse): string => {
 	const config = useRuntimeConfig()
+
+	if (!config.jwtAccessSecret) {
+		throw new Error('JWT_ACCESS_SECRET is not configured')
+	}
 
 	return jwt.sign({ userId: user.id }, config.jwtAccessSecret as string, {
-		expiresIn: '12h',
+		expiresIn: TOKEN_CONFIG.ACCESS_EXPIRES_IN,
 	})
 }
 
-const generateRefreshToken = (user: IUserResponse) => {
+/**
+ * Generates refresh token
+ */
+const generateRefreshToken = (user: IUserResponse): string => {
 	const config = useRuntimeConfig()
+
+	if (!config.jwtRefreshSecret) {
+		throw new Error('JWT_REFRESH_SECRET is not configured')
+	}
 
 	return jwt.sign({ userId: user.id }, config.jwtRefreshSecret as string, {
-		expiresIn: '12h',
+		expiresIn: TOKEN_CONFIG.REFRESH_EXPIRES_IN,
 	})
 }
 
-export const decodeRefreshToken = (token: string) => {
+/**
+ * Verifies and decodes refresh token
+ */
+export const verifyRefreshToken = (token: string): TokenPayload | null => {
 	const config = useRuntimeConfig()
 
+	if (!config.jwtRefreshSecret) {
+		console.error('JWT_REFRESH_SECRET is not configured')
+		return null
+	}
+
 	try {
-		return jwt.verify(token, config.jwtRefreshSecret) as {
-			userId: string
-			iat: number
-			exp: number
-		}
+		return jwt.verify(token, config.jwtRefreshSecret as string) as TokenPayload
 	} catch (error) {
+		if (error instanceof jwt.TokenExpiredError) {
+			console.warn('Refresh token has expired')
+		} else if (error instanceof jwt.JsonWebTokenError) {
+			console.warn('Invalid refresh token')
+		}
 		return null
 	}
 }
 
-export const decodeAccessToken = (token: string) => {
+/**
+ * Verifies and decodes access token
+ */
+export const verifyAccessToken = (token: string): TokenPayload | null => {
 	const config = useRuntimeConfig()
 
+	if (!config.jwtAccessSecret) {
+		console.error('JWT_ACCESS_SECRET is not configured')
+		return null
+	}
+
 	try {
-		return jwt.verify(token, config.jwtAccessSecret) as {
-			userId: string
-			iat: number
-			exp: number
-		}
+		return jwt.verify(token, config.jwtAccessSecret as string) as TokenPayload
 	} catch (error) {
+		if (error instanceof jwt.TokenExpiredError) {
+			console.warn('Access token has expired')
+		} else if (error instanceof jwt.JsonWebTokenError) {
+			console.warn('Invalid access token')
+		}
 		return null
 	}
 }
 
-export const generateTokens = (user: IUserResponse) => {
-	const accessToken = generateAccessToken(user)
-	const refreshToken = generateRefreshToken(user)
-
+/**
+ * Generates a pair of access and refresh tokens
+ */
+export const generateTokens = (user: IUserResponse): TokenPair => {
 	return {
-		accessToken,
-		refreshToken,
+		accessToken: generateAccessToken(user),
+		refreshToken: generateRefreshToken(user),
 	}
 }
 
-// TODO: set type
-// "Cannot find name 'H3Event'. Did you mean 'Event'?"
-export const sendRefreshToken = (event: any, token: string) => {
+/**
+ * Saves refresh token in HTTP-only cookie
+ */
+export const sendRefreshToken = (event: H3Event, token: string): void => {
 	setCookie(event, 'refresh_token', token, {
 		httpOnly: true,
-		sameSite: true,
+		secure: process.env.NODE_ENV === 'production',
+		sameSite: 'strict',
+		maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
+		path: '/',
 	})
 }
-export const resetRefreshToken = (event: any) => {
+
+/**
+ * Removes refresh token from cookies
+ */
+export const clearRefreshToken = (event: H3Event): void => {
 	deleteCookie(event, 'refresh_token')
 }

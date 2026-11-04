@@ -2,6 +2,7 @@ import type { IUserResponse } from '~/server/types'
 import { createUser, getUserByEmail } from '../../db/users'
 import { userTransformer } from '~/server/transformers/user'
 import { createRefreshToken } from '~/server/db/refreshTokens'
+import { generateTokens, sendRefreshToken } from '~/server/utils/jwt'
 
 export default defineEventHandler(async (event) => {
 	try {
@@ -9,32 +10,41 @@ export default defineEventHandler(async (event) => {
 
 		const { name, email, password, repeatPassword } = body
 
+		// Validate input parameters
 		if (!name || !email || !password || !repeatPassword) {
-			return sendError(
-				event,
-				createError({ statusCode: 400, statusMessage: 'Invalid params' })
-			)
+			throw createError({
+				statusCode: 400,
+				statusMessage: 'All fields are required',
+			})
 		}
 
+		// Check if passwords match
 		if (password !== repeatPassword) {
-			return sendError(
-				event,
-				createError({ statusCode: 400, statusMessage: 'Password do not match' })
-			)
+			throw createError({
+				statusCode: 400,
+				statusMessage: 'Passwords do not match',
+			})
 		}
 
+		// Check minimum password length
+		if (password.length < 8) {
+			throw createError({
+				statusCode: 400,
+				statusMessage: 'Password must be at least 8 characters long',
+			})
+		}
+
+		// Check if user with this email already exists
 		const userExists = await getUserByEmail(email)
 
 		if (userExists) {
-			return sendError(
-				event,
-				createError({
-					statusCode: 400,
-					statusMessage: 'Email is already taken',
-				})
-			)
+			throw createError({
+				statusCode: 400,
+				statusMessage: 'Email is already registered',
+			})
 		}
 
+		// Create new user
 		const userData: Pick<
 			IUserResponse,
 			'name' | 'email' | 'password' | 'profileImage'
@@ -47,18 +57,16 @@ export default defineEventHandler(async (event) => {
 
 		const user = await createUser(userData)
 
-		// Generate Tokens
-		// Access token
-		// Refresh token
+		// Generate tokens
 		const { accessToken, refreshToken } = generateTokens(user)
 
-		// Save it inside db
+		// Save refresh token to database
 		await createRefreshToken({
 			token: refreshToken,
 			userId: user.id,
 		})
 
-		// Add http only cookie
+		// Send refresh token as HTTP-only cookie
 		sendRefreshToken(event, refreshToken)
 
 		return {
@@ -66,13 +74,14 @@ export default defineEventHandler(async (event) => {
 			access_token: accessToken,
 		}
 	} catch (error: any) {
-		return sendError(
-			event,
-			createError({
-				statusCode: 500,
-				statusMessage: 'Some error occurred',
-				data: error,
-			})
-		)
+		if (error.statusCode) {
+			throw error
+		}
+
+		console.error('Registration error:', error)
+		throw createError({
+			statusCode: 500,
+			statusMessage: 'An error occurred during registration',
+		})
 	}
 })

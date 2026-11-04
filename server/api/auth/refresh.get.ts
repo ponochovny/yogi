@@ -1,38 +1,63 @@
 import { getRefreshTokenByToken } from '~/server/db/refreshTokens'
 import { getUserById } from '~/server/db/users'
-import { decodeRefreshToken } from '~/server/utils/jwt'
+import { verifyRefreshToken, generateTokens } from '~/server/utils/jwt'
 
 export default defineEventHandler(async (event) => {
-	const refreshToken = getCookie(event, 'refresh_token')
-
-	if (!refreshToken) {
-		return { statusCode: 200, body: { error: 'No refresh token' } }
-	}
-
-	const rToken = await getRefreshTokenByToken(refreshToken)
-
-	if (!rToken) {
-		return { statusCode: 200, body: { error: 'Refresh token is invalid' } }
-	}
-
-	const token = decodeRefreshToken(refreshToken)
-
 	try {
-		const user = await getUserById(token?.userId as string)
+		const refreshToken = getCookie(event, 'refresh_token')
 
-		if (!user)
+		if (!refreshToken) {
 			throw createError({
-				statusCode: 400,
+				statusCode: 401,
+				statusMessage: 'Refresh token not found',
+			})
+		}
+
+		// Check if refresh token exists in database
+		const tokenRecord = await getRefreshTokenByToken(refreshToken)
+
+		if (!tokenRecord) {
+			throw createError({
+				statusCode: 401,
+				statusMessage: 'Refresh token is invalid or revoked',
+			})
+		}
+
+		// Verify refresh token
+		const decoded = verifyRefreshToken(refreshToken)
+
+		if (!decoded) {
+			throw createError({
+				statusCode: 401,
+				statusMessage: 'Refresh token is expired or invalid',
+			})
+		}
+
+		// Get user
+		const user = await getUserById(decoded.userId)
+
+		if (!user) {
+			throw createError({
+				statusCode: 401,
 				statusMessage: 'User not found',
 			})
+		}
 
+		// Generate new access token
 		const { accessToken } = generateTokens(user)
 
-		return { access_token: accessToken }
-	} catch (error) {
 		return {
-			statusCode: 500,
-			body: { error: 'Refresh token is invalid', details: error },
+			access_token: accessToken,
 		}
+	} catch (error: any) {
+		if (error.statusCode) {
+			throw error
+		}
+
+		console.error('Token refresh error:', error)
+		throw createError({
+			statusCode: 401,
+			statusMessage: 'Failed to refresh token',
+		})
 	}
 })
