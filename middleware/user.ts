@@ -1,17 +1,7 @@
 export default defineNuxtRouteMiddleware(() => {
-	const { useAuthInitLoading, useAuthUser } = useAuth()
-	const authInitLoading = useAuthInitLoading()
-	const user = useAuthUser()
+	const { loggedIn } = useUserSession()
 
-	watch(
-		() => authInitLoading.value,
-		(val) => {
-			if (!val) {
-				if (!user.value) return navigateTo('/auth')
-			}
-		},
-		{
-			immediate: true,
-		}
-	)
+	if (!loggedIn.value) {
+		return navigateTo('/auth')
+	}
 })

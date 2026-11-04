@@ -1,56 +1,23 @@
 import type { TUser } from '~/server/types'
-import useFetchApi from './useFetchApi'
-import { jwtDecode } from 'jwt-decode'
 import type { TStudio } from '~/src/app/types/studio'
-
-/**
- * API response during authentication
- */
-interface AuthResponse {
-	user: TUser
-	access_token: string
-}
-
-/**
- * API response during token refresh
- */
-interface RefreshResponse {
-	access_token: string
-}
+import useFetchApi from './useFetchApi'
 
 export default () => {
-	// State composables
-	const useAuthToken = () => useState('auth_token', () => '')
-	const useAuthUser = (): Ref<TUser | null> =>
-		useState<TUser | null>('auth_user', () => null)
+	const { user: sessionUser, loggedIn, clear, fetch: refreshSession } = useUserSession()
+
+	const useAuthUser = (): Ref<TUser | null> => sessionUser as Ref<TUser | null>
 	const useAuthLoading = () => useState('auth_loading', () => false)
-	const useAuthInitLoading = () => useState('auth_init_loading', () => true)
+	const useAuthInitLoading = () => useState('auth_init_loading', () => false)
+	const useAuthToken = () => useState('auth_token', () => '')
 	const useStudioSelected = (): Ref<TStudio | null> =>
 		useState<TStudio | null>('auth_studio_selected', () => null)
 
-	// State setters
-	const setToken = (newToken: string) => {
-		const authToken = useAuthToken()
-		authToken.value = newToken
-	}
-
-	const setUser = (newUser: TUser | null) => {
-		const authUser = useAuthUser()
-		authUser.value = newUser
-	}
-
 	const setIsAuthLoading = (value: boolean) => {
-		const authLoading = useAuthLoading()
-		authLoading.value = value
-	}
-
-	const setIsAuthInitLoading = (value: boolean) => {
-		const authInitLoading = useAuthInitLoading()
-		authInitLoading.value = value
+		useAuthLoading().value = value
 	}
 
 	/**
-	 * Registers a new user
+	 * Registers a new user and sets up encrypted session
 	 */
 	const register = async ({
 		name,
@@ -65,24 +32,18 @@ export default () => {
 	}): Promise<void> => {
 		setIsAuthLoading(true)
 		try {
-			const data = await $fetch<AuthResponse>('/api/auth/register', {
+			await $fetch('/api/auth/register', {
 				method: 'POST',
-				body: {
-					name,
-					email,
-					password,
-					repeatPassword,
-				},
+				body: { name, email, password, repeatPassword },
 			})
-			setToken(data.access_token)
-			setUser(data.user)
+			await refreshSession()
 		} finally {
 			setIsAuthLoading(false)
 		}
 	}
 
 	/**
-	 * Sign in to the system
+	 * Signs in user and sets up encrypted session
 	 */
 	const login = async ({
 		email,
@@ -93,35 +54,23 @@ export default () => {
 	}): Promise<void> => {
 		setIsAuthLoading(true)
 		try {
-			const data = await $fetch<AuthResponse>('/api/auth/login', {
+			await $fetch('/api/auth/login', {
 				method: 'POST',
-				body: {
-					email,
-					password,
-				},
+				body: { email, password },
 			})
-			setToken(data.access_token)
-			setUser(data.user)
+			await refreshSession()
 		} finally {
 			setIsAuthLoading(false)
 		}
 	}
 
 	/**
-	 * Sign out from the system
+	 * Signs out and clears session
 	 */
 	const logout = async (): Promise<void> => {
 		setIsAuthLoading(true)
 		try {
-			const authToken = useAuthToken()
-			await $fetch('/api/auth/logout', {
-				method: 'POST',
-				headers: authToken.value
-					? { Authorization: `Bearer ${authToken.value}` }
-					: {},
-			})
-			setToken('')
-			setUser(null)
+			await clear()
 			await navigateTo('/')
 		} finally {
 			setIsAuthLoading(false)
@@ -129,32 +78,14 @@ export default () => {
 	}
 
 	/**
-	 * Refresh access token using refresh token
-	 */
-	const refreshAccessToken = async (): Promise<void> => {
-		try {
-			const response = await $fetch<RefreshResponse>('/api/auth/refresh', {
-				method: 'GET',
-			})
-			setToken(response.access_token)
-		} catch (error) {
-			// If refresh token is expired or invalid, sign out
-			setToken('')
-			setUser(null)
-			throw error
-		}
-	}
-
-	/**
-	 * Get current user data
+	 * Refetches current session
 	 */
 	const getUser = async (): Promise<void> => {
-		const data = await useFetchApi<{ user: TUser }>('/api/auth/user')
-		setUser(data.user)
+		await refreshSession()
 	}
 
 	/**
-	 * Update user profile
+	 * Updates user profile
 	 */
 	const updateProfile = async (
 		newData: Partial<
@@ -162,12 +93,14 @@ export default () => {
 				TUser,
 				'name' | 'email' | 'bio' | 'interestsCategory' | 'interestsType'
 			>
-		> & { mediaFiles?: { avatar: any } },
+		> & { mediaFiles?: { avatar: any } }
 	): Promise<TUser> => {
-		const authUser = useAuthUser() as Ref<TUser>
+		const authUser = useAuthUser()
+		if (!authUser.value) {
+			throw new Error('User not authenticated')
+		}
 
 		const form = new FormData()
-
 		const { mediaFiles, ...rest } = newData
 
 		form.append('userId', authUser.value.id)
@@ -188,108 +121,21 @@ export default () => {
 				{
 					method: 'POST',
 					body: form,
-				},
+				}
 			)
 
-			const updatedUser = {
-				...authUser.value,
-				...res.user,
-			}
-
-			setUser(updatedUser)
-			return updatedUser
+			await refreshSession()
+			return res.user
 		} catch (error: any) {
 			throw new Error(error?.data?.message || 'Failed to update profile')
 		}
 	}
 
 	/**
-	 * Calculate time until access token expiry with buffer
-	 */
-	const getTimeUntilTokenExpiry = (token: string): number => {
-		try {
-			const decoded = jwtDecode<{ exp: number }>(token)
-			if (!decoded.exp) return 0
-
-			// 1 minute buffer before expiry
-			const expiryTime = decoded.exp * 1000 - 60000
-			const currentTime = Date.now()
-			return Math.max(0, expiryTime - currentTime)
-		} catch (error) {
-			console.error('Failed to decode token:', error)
-			return 0
-		}
-	}
-
-	/**
-	 * Automatic access token refresh
-	 * Schedules refresh 1 minute before token expiry
-	 */
-	const scheduleTokenRefresh = (): void => {
-		const authToken = useAuthToken()
-
-		if (!authToken.value) {
-			return
-		}
-
-		const timeUntilExpiry = getTimeUntilTokenExpiry(authToken.value)
-
-		if (timeUntilExpiry <= 0) {
-			// Token already expired
-			setToken('')
-			setUser(null)
-			return
-		}
-
-		const timeoutId = setTimeout(async () => {
-			try {
-				await refreshAccessToken()
-				// Recursively schedule next refresh
-				scheduleTokenRefresh()
-			} catch (error) {
-				console.error('Failed to refresh token:', error)
-				setToken('')
-				setUser(null)
-			}
-		}, timeUntilExpiry)
-
-		// Store timeout ID for cancellation
-		if (process.client) {
-			window.__tokenRefreshTimeout = timeoutId
-		}
-	}
-
-	/**
-	 * Cancel scheduled token refresh
-	 */
-	const cancelTokenRefresh = (): void => {
-		if (process.client && window.__tokenRefreshTimeout) {
-			clearTimeout(window.__tokenRefreshTimeout)
-		}
-	}
-
-	/**
-	 * Initialize authentication on app load
+	 * Initializes session on load
 	 */
 	const initAuth = async (): Promise<void> => {
-		setIsAuthInitLoading(true)
-		setIsAuthLoading(true)
-
-		try {
-			// Try to refresh access token
-			await refreshAccessToken()
-			// Get user data
-			await getUser()
-			// Schedule automatic token refresh
-			scheduleTokenRefresh()
-		} catch (error) {
-			console.error('Auth initialization failed:', error)
-			setToken('')
-			setUser(null)
-		} finally {
-			setIsAuthInitLoading(false)
-			setIsAuthLoading(false)
-		}
+		await refreshSession()
 	}
 
 	return {
@@ -303,16 +149,7 @@ export default () => {
 		useAuthInitLoading,
 		updateProfile,
 		useStudioSelected,
-		refreshAccessToken,
 		getUser,
-	}
-}
-
-/**
- * Global variable for storing token refresh timeout ID
- */
-declare global {
-	interface Window {
-		__tokenRefreshTimeout?: NodeJS.Timeout
+		loggedIn,
 	}
 }

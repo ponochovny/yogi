@@ -1,12 +1,9 @@
 export default <T>(url: string, options: any = {}): Promise<T> => {
-	const { useAuthToken } = useAuth()
-
-	// @ts-ignore
-	return $fetch(url, {
+	return $fetch<T>(url, {
 		...options,
 		headers: {
+			...(import.meta.server ? useRequestHeaders(['cookie']) : {}),
 			...options.headers,
-			Authorization: `Bearer ${useAuthToken().value}`,
 		},
 	})
 }

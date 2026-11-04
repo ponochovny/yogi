@@ -1,8 +1,6 @@
 import type { IUserResponse } from '~/server/types'
 import { createUser, getUserByEmail } from '../../db/users'
 import { userTransformer } from '~/server/transformers/user'
-import { createRefreshToken } from '~/server/db/refreshTokens'
-import { generateTokens, sendRefreshToken } from '~/server/utils/jwt'
 
 export default defineEventHandler(async (event) => {
 	try {
@@ -56,22 +54,17 @@ export default defineEventHandler(async (event) => {
 		}
 
 		const user = await createUser(userData)
+		const userDto = userTransformer(user)
 
-		// Generate tokens
-		const { accessToken, refreshToken } = generateTokens(user)
-
-		// Save refresh token to database
-		await createRefreshToken({
-			token: refreshToken,
-			userId: user.id,
+		// Set encrypted session cookie via nuxt-auth-utils
+		await setUserSession(event, {
+			user: userDto,
+			loggedInAt: Date.now(),
 		})
 
-		// Send refresh token as HTTP-only cookie
-		sendRefreshToken(event, refreshToken)
-
 		return {
-			user: userTransformer(user),
-			access_token: accessToken,
+			user: userDto,
+			success: true,
 		}
 	} catch (error: any) {
 		if (error.statusCode) {

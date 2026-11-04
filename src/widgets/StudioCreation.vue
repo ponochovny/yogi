@@ -28,7 +28,7 @@
 			<button
 				v-if="
 					props.studio?.location?.name !== formData.location?.place_name &&
-					props.studio?.location
+						props.studio?.location
 				"
 				@click="resetMarker(true)"
 				class="flex items-center justify-center h-[42px] sm:self-end rounded-md border border-gray-300 px-2 hover:bg-gray-100 shadow-sm mr-auto"
