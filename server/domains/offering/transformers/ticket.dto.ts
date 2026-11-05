@@ -40,3 +40,4 @@ export const toTicketDto = (ticket: ITicketResponse): TTicket => {
 		offering: offering ? toTicketOffering(offering) : undefined,
 	}
 }
+

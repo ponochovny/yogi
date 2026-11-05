@@ -59,3 +59,4 @@ export const StudioService = {
 		return { data: studio, status: 'Success!' }
 	},
 }
+

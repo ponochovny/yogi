@@ -19,3 +19,4 @@ export const registerSchema = z
 
 export type TLoginInput = z.infer<typeof loginSchema>
 export type TRegisterInput = z.infer<typeof registerSchema>
+

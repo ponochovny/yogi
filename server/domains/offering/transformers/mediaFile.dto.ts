@@ -9,3 +9,4 @@ export const toMediaFileDto = (mediaFile: IMediaFile | IBanner): TMediaFile => {
 		order: mediaFile.order,
 	}
 }
+

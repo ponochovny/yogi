@@ -81,3 +81,4 @@ export const OfferingService = {
 		return { data: offering, status: 'Success!', ...(errors.length && { errors }) }
 	},
 }
+

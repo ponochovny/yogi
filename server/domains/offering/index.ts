@@ -9,3 +9,4 @@ export {
 	getLowestAndHighestTicketPrice,
 	getLowestAndHighestTicketPriceByOffering,
 } from './model/helpers'
+

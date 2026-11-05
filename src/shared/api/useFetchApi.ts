@@ -9,3 +9,4 @@ export const useFetchApi: typeof $fetch = (url, options = {}) => {
 		},
 	})
 }
+

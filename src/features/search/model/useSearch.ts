@@ -18,3 +18,4 @@ export const useSearch = () => {
 
 	return { globalSearch, shortSearch }
 }
+

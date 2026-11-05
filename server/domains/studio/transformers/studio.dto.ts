@@ -28,3 +28,4 @@ export const toStudioDto = (studio: IStudioResponse): TStudio => {
 		location: typeof parsedLocation === 'string' ? JSON.parse(parsedLocation) : parsedLocation,
 	}
 }
+

@@ -48,3 +48,4 @@ export const toOfferingDto = (offering: IOfferingResponse, isTicketsFull?: boole
 		location,
 	}
 }
+

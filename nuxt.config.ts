@@ -16,6 +16,10 @@ const PROD_MODULES = ['@zadigetvoltaire/nuxt-gtm']
 export default defineNuxtConfig({
 	devtools: { enabled: false },
 
+	future: {
+		compatibilityVersion: 4,
+	},
+
 	dir: {
 		pages: './src/pages',
 		assets: './src/app/assets',
