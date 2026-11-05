@@ -52,6 +52,7 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		// Session (nuxt-auth-utils)
 		session: {
+			password: process.env.NUXT_SESSION_PASSWORD || '',
 			maxAge: 60 * 60 * 24 * 7, // 7 days
 		},
 		// Cloudinary
