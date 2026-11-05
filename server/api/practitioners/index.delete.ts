@@ -1,4 +1,4 @@
-import { removePractitioner } from '~/server/db/practitioners'
+import { PractitionerRepo } from '~/server/domains/offering'
 
 export default defineEventHandler(async (event) => {
 	const body = await readBody(event)
@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
 		(practitioner: { id: string; offeringId: string }) => {
 			const id = practitioner.id
 			const offeringId = practitioner.offeringId
-			return removePractitioner({
+			return PractitionerRepo.removeMany({
 				where: {
 					id,
 					offeringId,
@@ -16,5 +16,9 @@ export default defineEventHandler(async (event) => {
 		}
 	)
 
-	const res = await Promise.all(promises)
+	await Promise.all(promises)
+
+	return {
+		status: 'Success!',
+	}
 })

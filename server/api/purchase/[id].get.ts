@@ -1,10 +1,10 @@
-import { getPurchaseByPaymentId } from '~/server/db/purchase'
-import { purchaseTransformer } from '~/server/transformers/purchase'
+import { PurchaseRepo, toPurchaseDto } from '~/server/domains/booking'
+import type { IPurchaseResponse } from '~/src/app/types/purchase'
 
 export default defineEventHandler(async (event) => {
 	const { id } = getRouterParams(event)
 
-	const purchase = await getPurchaseByPaymentId({
+	const purchase = (await PurchaseRepo.findByPaymentId({
 		include: {
 			ticket: {
 				include: {
@@ -17,20 +17,17 @@ export default defineEventHandler(async (event) => {
 			},
 		},
 		where: { paymentId: id },
-	})
+	})) as unknown as IPurchaseResponse
 
 	if (!purchase) {
-		return sendError(
-			event,
-			createError({
-				statusCode: 400,
-				statusMessage: 'Id is incorrect',
-			})
-		)
+		throw createError({
+			statusCode: 400,
+			statusMessage: 'Id is incorrect',
+		})
 	}
 
 	return {
-		data: purchaseTransformer(purchase),
+		data: toPurchaseDto(purchase),
 		status: 'Success!',
 	}
 })

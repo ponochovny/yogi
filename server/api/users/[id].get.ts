@@ -1,27 +1,26 @@
-import { getUserById } from '~/server/db/users'
-import { userTransformer } from '~/server/transformers/user'
+import { UserRepo, toUserDto } from '~/server/domains/user'
 
 export default defineEventHandler(async (event) => {
 	const id = getRouterParam(event, 'id')
 
 	if (!id) {
 		throw createError({
-			status: 400,
-			message: 'User id is missing',
+			statusCode: 400,
+			statusMessage: 'User id is missing',
 		})
 	}
 
-	const user = await getUserById(id)
+	const user = await UserRepo.findById(id)
 
 	if (!user) {
 		throw createError({
-			status: 500,
-			message: 'User not found',
+			statusCode: 404,
+			statusMessage: 'User not found',
 		})
 	}
 
 	return {
-		data: userTransformer(user),
+		data: toUserDto(user),
 		status: 'Success!',
 	}
 })

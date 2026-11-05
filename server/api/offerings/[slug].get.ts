@@ -1,11 +1,10 @@
-import { getOfferingBySlug } from '~/server/db/offerings'
-import { offeringTransformer } from '~/server/transformers/offering'
+import { OfferingRepo, toOfferingDto } from '~/server/domains/offering'
 import type { IOfferingResponse } from '~/server/types/offering'
 
 export default defineEventHandler(async (event) => {
 	const { slug } = getRouterParams(event)
 
-	const offering = await getOfferingBySlug<IOfferingResponse | null>(slug, {
+	const offering = await OfferingRepo.findBySlug<IOfferingResponse | null>(slug, {
 		include: {
 			studio: {
 				include: {
@@ -26,17 +25,14 @@ export default defineEventHandler(async (event) => {
 	})
 
 	if (!offering) {
-		return sendError(
-			event,
-			createError({
-				statusCode: 400,
-				statusMessage: 'Slug is incorrect',
-			})
-		)
+		throw createError({
+			statusCode: 400,
+			statusMessage: 'Slug is incorrect',
+		})
 	}
 
 	return {
-		data: offeringTransformer(offering),
+		data: toOfferingDto(offering),
 		status: 'Success!',
 	}
 })

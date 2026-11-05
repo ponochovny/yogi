@@ -1,16 +1,9 @@
 import { convertPriceStringToNumber } from '~/src/shared/helpers'
 import type { EActivity, IOfferingCreateData } from '~/src/app/types/offering'
 import { generateSlug } from '~/src/shared/lib/utils'
-import {
-	createMediaFile,
-	deleteMediaFile,
-	updateMediaFile,
-} from '~/server/db/mediaFiles'
-import { updateOffering } from '~/server/db/offerings'
-import { removePractitioner } from '~/server/db/practitioners'
-import { attachPractitionerToOffering } from '~/server/db/practitioners'
-import { createTicket, updateTicket } from '~/server/db/tickets'
-import { extractForm } from '~/server/helpers'
+import { OfferingRepo, PractitionerRepo, TicketRepo } from '~/server/domains/offering'
+import { MediaFileRepo } from '~/server/domains/user'
+import { extractForm, uploadToCloudinary } from '~/server/domains/shared'
 
 type IOfferingUpdateDataForm = Partial<
 	Omit<
@@ -28,15 +21,13 @@ export default defineEventHandler(async (event) => {
 	const offeringId = query.id
 
 	if (!offeringId || typeof offeringId !== 'string') {
-		throw createError({ status: 401, message: 'No id provided' })
+		throw createError({ statusCode: 401, statusMessage: 'No id provided' })
 	}
 
-	const { fields, files } = await extractForm<
-		Promise<{
-			fields: { [key: string]: string }
-			files: any
-		}>
-	>(event)
+	const { fields, files } = await extractForm<{
+		fields: { [key: string]: string }
+		files: any
+	}>(event)
 
 	const fieldsFromForm = () => {
 		return {
@@ -58,22 +49,21 @@ export default defineEventHandler(async (event) => {
 			...(fields.location && { location: fields.location }),
 			...(fields.timezone && { timezone: fields.timezone }),
 			isActive:
-				typeof fields.isActive == 'boolean'
+				typeof fields.isActive === 'boolean'
 					? !!fields.isActive
 					: fields.isActive === 'true',
 		}
 	}
 
 	const offeringData: IOfferingUpdateDataForm = fieldsFromForm()
-
-	const updatedOffering = await updateOffering(offeringData, offeringId)
+	const updatedOffering = await OfferingRepo.update(offeringData, offeringId)
 
 	// Handle Remove Practitioners
 	if (fields[`practitionersRemove[]`]) {
 		const practitionersRemovePromises = (
 			fields[`practitionersRemove[]`] as unknown as string[]
 		).map(async (userId: string) => {
-			return removePractitioner({
+			return PractitionerRepo.removeMany({
 				where: {
 					userId,
 					offeringId: offeringId.toString(),
@@ -89,12 +79,7 @@ export default defineEventHandler(async (event) => {
 		const ticketsRemovePromises = []
 		for (const ticketId of fields['ticketsRemove[]']) {
 			ticketsRemovePromises.push(
-				updateTicket(
-					{
-						status: 'inactive',
-					},
-					ticketId
-				)
+				TicketRepo.update({ status: 'inactive' }, ticketId)
 			)
 		}
 		await Promise.all(ticketsRemovePromises)
@@ -105,7 +90,7 @@ export default defineEventHandler(async (event) => {
 		const practitionerPromises = (
 			fields[`practitioners[]`] as unknown as string[]
 		).map(async (userId: string) => {
-			return attachPractitionerToOffering({
+			return PractitionerRepo.attachToOffering({
 				userId,
 				offeringId,
 			})
@@ -115,40 +100,38 @@ export default defineEventHandler(async (event) => {
 	}
 
 	// Media files (Banner)
-
 	const findNthNullIndex = (arr: any[], n: number) => {
-		console.log('findNthNullIndex', arr, n)
 		let nullCount = 0
 		for (let i = 0; i < arr.length; i++) {
 			if (arr[i] === null) {
 				nullCount++
 				if (nullCount === n) {
-					console.log('return', i)
 					return i
 				}
 			}
 		}
 		return -1
 	}
+
 	if (fields.bannersOrder) {
-		console.log('fields.bannersOrder', fields.bannersOrder)
 		const bannersOrder = JSON.parse(fields.bannersOrder) as (string | null)[]
 		const bannersDelete = JSON.parse(fields.bannersDelete) as string[]
 		const orderArr = bannersOrder.map((el) =>
 			el && bannersDelete.includes(el) ? null : el
 		)
 		const deleteMediaFilePromises = bannersDelete.map((el) =>
-			deleteMediaFile(el)
+			MediaFileRepo.delete(el)
 		)
 		const updateMediaFileOrderPromises = orderArr.map((el, idx) => {
 			if (el === null) return
-			return updateMediaFile(el as string, { order: idx })
+			return MediaFileRepo.update(el as string, { order: idx })
 		})
 		await Promise.all([
 			...updateMediaFileOrderPromises,
 			...deleteMediaFilePromises,
 		])
 	}
+
 	if (files[`fileToUpload[]`]) {
 		const filesArr = Object.keys(files[`fileToUpload[]`])
 		const orderArr = fields.bannersOrder
@@ -165,7 +148,7 @@ export default defineEventHandler(async (event) => {
 
 			const cloudinaryResource = await uploadToCloudinary(file.filepath)
 
-			return createMediaFile({
+			return MediaFileRepo.create({
 				url: cloudinaryResource.secure_url,
 				providerPublicId: cloudinaryResource.public_id,
 				bannerOfferingId: offeringId,
@@ -180,16 +163,16 @@ export default defineEventHandler(async (event) => {
 	if (fields['tickets[]']) {
 		const ticketPromises = []
 		for (const ticket of fields['tickets[]']) {
-			const _ticket = JSON.parse(ticket)
+			const ticketData = JSON.parse(ticket)
 
 			ticketPromises.push(
-				createTicket({
-					name: _ticket.name as string,
-					description: _ticket.description as string,
-					price: convertPriceStringToNumber(_ticket.price),
-					currency: _ticket.currency as string,
+				TicketRepo.create({
+					name: ticketData.name as string,
+					description: ticketData.description as string,
+					price: convertPriceStringToNumber(ticketData.price),
+					currency: ticketData.currency as string,
 					offeringId,
-					status: 'active', // TODO: ticket status
+					status: 'active',
 				})
 			)
 		}

@@ -1,16 +1,15 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable indent */
 import type { TSearchParams } from '~/src/app/types/search/types'
-import { getOfferings } from '~/server/db/offerings'
-import { getPractitioners } from '~/server/db/practitioners'
-import { getStudios } from '~/server/db/studio'
 import {
+	OfferingRepo,
+	toOfferingDto,
 	getLowestAndHighestTicketPrice,
 	getLowestAndHighestTicketPriceByOffering,
-} from '~/server/helpers/offering'
-import { offeringTransformer } from '~/server/transformers/offering'
-import { studioTransformer } from '~/server/transformers/studio'
-import { practitionerTransformer } from '~/server/transformers/user'
+	PractitionerRepo,
+} from '~/server/domains/offering'
+import { StudioRepo, toStudioDto } from '~/server/domains/studio'
+import { toPractitionerDto } from '~/server/domains/user'
 import type { IPractitionerResponse } from '~/server/types'
 import type { IOfferingResponse } from '~/server/types/offering'
 import type { IStudioResponse } from '~/server/types/studio'
@@ -27,7 +26,6 @@ export default defineEventHandler(async (event) => {
 	const {
 		take,
 		search = '',
-		location = '',
 		activityType: ACTIVITY_TYPE,
 		page: PAGE_COUNT = PAGE_COUNT_DEFAULT,
 		count: PER_PAGE = PER_PAGE_DEFAULT,
@@ -39,14 +37,13 @@ export default defineEventHandler(async (event) => {
 
 	const page_meta = {
 		page: +PAGE_COUNT,
-		// count: PAGE_COUNT * PER_PAGE,
 	}
 	const splice_from = (PAGE_COUNT - 1) * PER_PAGE
 	const splice_to = +PER_PAGE
 
 	try {
 		if (ACTIVITY_TYPE === 'Offerings') {
-			const offerings = await getOfferings<IOfferingResponse[]>({
+			const offerings = await OfferingRepo.findMany<IOfferingResponse[]>({
 				include: {
 					banners: true,
 					tickets: true,
@@ -102,7 +99,7 @@ export default defineEventHandler(async (event) => {
 			}
 
 			const result = filteredOfferings.map((offering) =>
-				offeringTransformer(offering)
+				toOfferingDto(offering)
 			)
 
 			const { minPrice, maxPrice } = getLowestAndHighestTicketPrice(result)
@@ -120,7 +117,7 @@ export default defineEventHandler(async (event) => {
 		}
 
 		if (ACTIVITY_TYPE === 'Studio & Event Hosts') {
-			let studios = (await getStudios({
+			let studios = (await StudioRepo.findMany({
 				include: {
 					owner: true,
 					logo: true,
@@ -146,7 +143,7 @@ export default defineEventHandler(async (event) => {
 			}
 
 			return {
-				data: studios.map((studio) => studioTransformer(studio)),
+				data: studios.map((studio) => toStudioDto(studio)),
 				meta: {
 					...page_meta,
 					total,
@@ -156,8 +153,8 @@ export default defineEventHandler(async (event) => {
 		}
 
 		if (ACTIVITY_TYPE === 'Practitioners') {
-			const practitioners = await getPractitioners<
-				Promise<IPractitionerResponse[]>
+			const practitioners = await PractitionerRepo.findMany<
+				IPractitionerResponse[]
 			>({
 				include: {
 					user: true,
@@ -173,7 +170,7 @@ export default defineEventHandler(async (event) => {
 			})
 			const pracs = [
 				...practitioners.map((practitioner) =>
-					practitionerTransformer(practitioner.user)
+					toPractitionerDto(practitioner.user)
 				),
 			]
 			let uniquePractitionersList = [

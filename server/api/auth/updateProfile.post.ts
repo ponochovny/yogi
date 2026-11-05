@@ -1,44 +1,23 @@
-import { updateProfile } from '~/server/db/users'
-import updateProfileModel from './_models/updateProfile'
-
-const { extractFields, errorsChecker, updateAvatar } = updateProfileModel()
+import { UserService } from '~/server/domains/user'
+import { extractForm } from '~/server/domains/shared'
 
 export default defineEventHandler(async (event) => {
 	try {
-		const {
-			name,
-			bio,
-			email,
+		const { fields, files } = await extractForm<{
+			fields: { [key: string]: string } & { studioId: string }
+			files: any
+		}>(event)
+
+		const { userId, name, email, bio, interestsCategory, interestsType } = fields
+		const avatar = files?.avatar ? files.avatar[0] : undefined
+
+		const result = await UserService.updateProfile(
 			userId,
-			interestsCategory,
-			interestsType,
-			avatar,
-		} = await extractFields(event)
+			{ name, email, bio, interestsCategory, interestsType },
+			avatar
+		)
 
-		await errorsChecker(event, userId, name, email)
-
-		const { profileImage } = await updateAvatar(avatar, userId)
-
-		await updateProfile(userId, {
-			email,
-			name,
-			bio,
-			profileImage,
-			interestsType: interestsType?.split(','),
-			interestsCategory: interestsCategory?.split(','),
-		})
-
-		return {
-			user: {
-				name,
-				bio,
-				email,
-				userId,
-				interestsType: interestsType?.split(','),
-				interestsCategory: interestsCategory?.split(','),
-				profileImage,
-			},
-		}
+		return result
 	} catch (e: any) {
 		throw createError({
 			statusCode: e.statusCode || 500,

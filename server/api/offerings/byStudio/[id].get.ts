@@ -1,11 +1,10 @@
-import { getOfferingsByStudioId } from '~/server/db/offerings'
-import { offeringTransformer } from '~/server/transformers/offering'
+import { OfferingRepo, toOfferingDto } from '~/server/domains/offering'
 import type { IOfferingResponse } from '~/server/types/offering'
 
 export default defineEventHandler(async (event) => {
 	const { id } = getRouterParams(event)
 
-	const offerings = await getOfferingsByStudioId<IOfferingResponse[]>({
+	const offerings = await OfferingRepo.findManyByStudioId<IOfferingResponse[]>({
 		include: {
 			studio: {
 				include: {
@@ -27,17 +26,14 @@ export default defineEventHandler(async (event) => {
 	})
 
 	if (!offerings) {
-		return sendError(
-			event,
-			createError({
-				statusCode: 400,
-				statusMessage: 'Id is incorrect',
-			})
-		)
+		throw createError({
+			statusCode: 400,
+			statusMessage: 'Id is incorrect',
+		})
 	}
 
 	return {
-		data: offerings.map((offering) => offeringTransformer(offering)),
+		data: offerings.map((offering) => toOfferingDto(offering)),
 		status: 'Success!',
 	}
 })

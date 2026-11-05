@@ -1,22 +1,20 @@
-import { getPractitionersByUserId } from '~/server/db/practitioners'
-import { getUserById } from '~/server/db/users'
-import { offeringTransformer } from '~/server/transformers/offering'
-import { studioTransformer } from '~/server/transformers/studio'
-import { userTransformer } from '~/server/transformers/user'
+import { PractitionerRepo, toOfferingDto } from '~/server/domains/offering'
+import { toStudioDto } from '~/server/domains/studio'
+import { UserRepo, toUserDto } from '~/server/domains/user'
 
 export default defineEventHandler(async (event) => {
 	const id = getRouterParam(event, 'id')
 
 	if (!id) {
 		throw createError({
-			status: 400,
-			message: "Practitioner's id is missing",
+			statusCode: 400,
+			statusMessage: "Practitioner's id is missing",
 		})
 	}
 
 	try {
-		const user = await getUserById(id)
-		const practitioners = await getPractitionersByUserId({
+		const user = await UserRepo.findById(id)
+		const practitioners = await PractitionerRepo.findManyByUserId({
 			where: {
 				userId: id,
 			},
@@ -30,38 +28,39 @@ export default defineEventHandler(async (event) => {
 				offering: true,
 			},
 		})
+
 		const practitioner = {
-			id: practitioners[0].id,
+			id: practitioners[0]?.id,
 			userId: id,
 			studios: practitioners
 				// @ts-ignore
-				.map((el) => (el.studio ? studioTransformer(el.studio) : null))
+				.map((el) => (el.studio ? toStudioDto(el.studio) : null))
 				.filter((el) => el),
 			offerings: practitioners
 				// @ts-ignore
-				.map((el) => (el.offering ? offeringTransformer(el.offering) : null))
+				.map((el) => (el.offering ? toOfferingDto(el.offering) : null))
 				.filter((el) => el),
 		}
 
-		if (!user || !practitioner) {
+		if (!user || !practitioners.length) {
 			throw createError({
-				status: 500,
-				message: 'Practitioner is not found',
+				statusCode: 404,
+				statusMessage: 'Practitioner is not found',
 			})
 		}
 
 		return {
 			data: {
-				...userTransformer(user),
+				...toUserDto(user),
 				offerings: practitioner.offerings,
 				studios: practitioner.studios,
 			},
 			status: 'Success!',
 		}
-	} catch (error) {
+	} catch (error: any) {
 		throw createError({
-			status: 500,
-			message: (error as Error).message,
+			statusCode: error.statusCode || 500,
+			statusMessage: error.message || error.statusMessage || 'Internal error',
 		})
 	}
 })

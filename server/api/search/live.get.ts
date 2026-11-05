@@ -1,14 +1,14 @@
-import { getOfferingsLiveCount } from '~/server/db/offerings'
+import { OfferingRepo } from '~/server/domains/offering'
 
 export default defineEventHandler(async () => {
 	try {
-		const count = await getOfferingsLiveCount()
+		const count = await OfferingRepo.countLive()
 
 		return {
 			data: count,
 			status: 'Success!',
 		}
 	} catch (error) {
-		throw createError({ status: 500 })
+		throw createError({ statusCode: 500 })
 	}
 })

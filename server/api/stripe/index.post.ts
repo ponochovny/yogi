@@ -1,4 +1,4 @@
-import { stripe } from '~/server/utils/stripe'
+import { PaymentService } from '~/server/domains/booking'
 
 interface IBody {
 	amount: number
@@ -13,20 +13,13 @@ export default defineEventHandler(async (event) => {
 	const { amount, currency, ticket_id, user_id, user_name } = body
 
 	try {
-		const paymentIntent = await stripe.paymentIntents.create({
+		return await PaymentService.createPaymentIntent({
 			amount,
 			currency,
-			metadata: {
-				ticket_id,
-				user_id,
-				user_name,
-			},
-			automatic_payment_methods: {
-				enabled: true,
-			},
+			ticket_id,
+			user_id,
+			user_name,
 		})
-
-		return { secret: paymentIntent.client_secret }
 	} catch (error) {
 		throw createError({
 			status: 500,

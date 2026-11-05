@@ -1,14 +1,14 @@
-import { getOfferings } from '~/server/db/offerings'
-import { offeringTransformer } from '~/server/transformers/offering'
+import { OfferingRepo, toOfferingDto } from '~/server/domains/offering'
 import type { IOfferingResponse } from '~/server/types/offering'
 
 export default defineEventHandler(async (event) => {
 	const query = getQuery(event)
-	const { types, location, virtual } = query as {
+	const { types, virtual } = query as {
 		types?: string
-		location?: string // TMarker
-		virtual?: string // boolean
+		location?: string
+		virtual?: string
 	}
+
 	function filtered(offerings: IOfferingResponse[]): IOfferingResponse[] {
 		return offerings.filter((offering) => {
 			const byTypes = types
@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
 	}
 
 	try {
-		const offerings = await getOfferings<IOfferingResponse[]>({
+		const offerings = await OfferingRepo.findMany<IOfferingResponse[]>({
 			include: {
 				studio: {
 					include: {
@@ -39,9 +39,7 @@ export default defineEventHandler(async (event) => {
 		})
 
 		return {
-			data: filtered(offerings).map((offering) =>
-				offeringTransformer(offering)
-			),
+			data: filtered(offerings).map((offering) => toOfferingDto(offering)),
 			status: 'Success!',
 		}
 	} catch (error) {

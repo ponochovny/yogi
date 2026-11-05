@@ -1,9 +1,6 @@
-import { getOfferings } from '~/server/db/offerings'
-import { getPractitioners } from '~/server/db/practitioners'
-import { getStudios } from '~/server/db/studio'
-import { offeringTransformer } from '~/server/transformers/offering'
-import { studioTransformer } from '~/server/transformers/studio'
-import { practitionerTransformer } from '~/server/transformers/user'
+import { OfferingRepo, toOfferingDto, PractitionerRepo } from '~/server/domains/offering'
+import { StudioRepo, toStudioDto } from '~/server/domains/studio'
+import { toPractitionerDto } from '~/server/domains/user'
 import type { IPractitionerResponse } from '~/server/types'
 import type { IOfferingResponse } from '~/server/types/offering'
 import type { IStudioResponse } from '~/server/types/studio'
@@ -13,11 +10,11 @@ export default defineEventHandler(async (event) => {
 	const { name } = query
 
 	if (typeof name !== 'string') {
-		throw createError({ status: 400, statusMessage: 'Query is incorrect' })
+		throw createError({ statusCode: 400, statusMessage: 'Query is incorrect' })
 	}
 
 	try {
-		const offeringsList = await getOfferings<IOfferingResponse[]>({
+		const offeringsList = await OfferingRepo.findMany<IOfferingResponse[]>({
 			include: {
 				banners: true,
 			},
@@ -29,7 +26,7 @@ export default defineEventHandler(async (event) => {
 			},
 			take: 5,
 		})
-		const studiosList = (await getStudios({
+		const studiosList = (await StudioRepo.findMany({
 			include: {
 				logo: true,
 			},
@@ -41,7 +38,9 @@ export default defineEventHandler(async (event) => {
 			},
 			take: 5,
 		})) as unknown as IStudioResponse[]
-		const practitionersList = await getPractitioners<IPractitionerResponse[]>({
+		const practitionersList = await PractitionerRepo.findMany<
+			IPractitionerResponse[]
+		>({
 			include: {
 				user: true,
 			},
@@ -57,7 +56,7 @@ export default defineEventHandler(async (event) => {
 		})
 		const pracs = [
 			...practitionersList.map((practitioner) =>
-				practitionerTransformer(practitioner.user)
+				toPractitionerDto(practitioner.user)
 			),
 		]
 		const uniquePractitionersList = [
@@ -66,9 +65,9 @@ export default defineEventHandler(async (event) => {
 
 		const fullList = {
 			offerings: [
-				...offeringsList.map((offering) => offeringTransformer(offering)),
+				...offeringsList.map((offering) => toOfferingDto(offering)),
 			],
-			studios: [...studiosList.map((studio) => studioTransformer(studio))],
+			studios: [...studiosList.map((studio) => toStudioDto(studio))],
 			practitioners: [...uniquePractitionersList],
 		}
 
@@ -77,6 +76,6 @@ export default defineEventHandler(async (event) => {
 			status: 'Success!',
 		}
 	} catch (error) {
-		throw createError({ status: 500 })
+		throw createError({ statusCode: 500 })
 	}
 })
