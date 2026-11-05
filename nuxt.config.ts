@@ -23,7 +23,12 @@ export default defineNuxtConfig({
 
 	modules: [...MODULES],
 
-	components: ['~/src/shared/ui', '~/components'],
+	components: [
+		{ path: '~/src/shared/ui', extensions: ['.vue'] },
+		{ path: '~/src/entities', extensions: ['.vue'], pathPrefix: false },
+		{ path: '~/src/features', extensions: ['.vue'], pathPrefix: false },
+		{ path: '~/src/widgets', extensions: ['.vue'], pathPrefix: false },
+	],
 
 	image: {
 		cloudinary: {
