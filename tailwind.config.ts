@@ -29,6 +29,14 @@ module.exports = {
 				ring: 'var(--ring)',
 				background: 'var(--background)',
 				foreground: 'var(--foreground)',
+				'site-bg': 'var(--site-bg)',
+				beige: {
+					DEFAULT: 'var(--site-bg)',
+					50: '#FFFCF7',
+					100: '#FEF3E4',
+					200: '#FDE4C3',
+					300: '#FBD4A3',
+				},
 				primary: {
 					DEFAULT: 'var(--primary)',
 					foreground: 'var(--primary-foreground)',

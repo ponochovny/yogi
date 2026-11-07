@@ -116,9 +116,14 @@ export default defineNuxtConfig({
 			title: 'Yogi - Your wellness home',
 			meta: [
 				{ name: 'description', content: 'All you need for your wellness' },
+				{ name: 'theme-color', content: '#FEF3E4' },
 			],
 			htmlAttrs: {
 				lang: 'en',
+				class: 'bg-[#FEF3E4]',
+			},
+			bodyAttrs: {
+				class: 'bg-[#FEF3E4]',
 			},
 			link: [
 				{
@@ -133,7 +138,6 @@ export default defineNuxtConfig({
 
 	routeRules: {
 		'/': { isr: 60 * 60 * 24 },
-		'/search': { ssr: false },
 		'/user/**': { ssr: false },
 		'/checkout': { ssr: false },
 	},
