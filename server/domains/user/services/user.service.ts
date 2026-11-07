@@ -21,8 +21,8 @@ export const UserService = {
 			name?: string
 			email?: string
 			bio?: string
-			interestsCategory?: string
-			interestsType?: string
+			interestsCategory?: string | string[]
+			interestsType?: string | string[]
 		},
 		avatarFile?: { filepath: string }
 	) => {
@@ -47,25 +47,26 @@ export const UserService = {
 			profileImage = cloudinaryResource.secure_url
 		}
 
-		await UserRepo.update(userId, {
+		const formatInterests = (value?: string | string[]) => {
+			if (value === undefined) return undefined
+			if (Array.isArray(value)) return value
+			if (typeof value === 'string') {
+				return value.length > 0 ? value.split(',').filter(Boolean) : []
+			}
+			return []
+		}
+
+		const updatedUser = await UserRepo.update(userId, {
 			email: data.email,
 			name: data.name,
 			bio: data.bio,
-			profileImage,
-			interestsType: data.interestsType?.split(','),
-			interestsCategory: data.interestsCategory?.split(','),
+			...(profileImage !== undefined ? { profileImage } : {}),
+			interestsType: formatInterests(data.interestsType),
+			interestsCategory: formatInterests(data.interestsCategory),
 		})
 
 		return {
-			user: {
-				name: data.name,
-				bio: data.bio,
-				email: data.email,
-				userId,
-				interestsType: data.interestsType?.split(','),
-				interestsCategory: data.interestsCategory?.split(','),
-				profileImage,
-			},
+			user: toUserDto(updatedUser),
 		}
 	},
 }

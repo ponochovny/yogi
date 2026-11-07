@@ -3,12 +3,14 @@ import { extractForm } from '~/server/domains/shared'
 
 export default defineEventHandler(async (event) => {
 	try {
+		const session = await getUserSession(event)
 		const { fields, files } = await extractForm<{
 			fields: { [key: string]: string } & { studioId: string }
 			files: any
 		}>(event)
 
-		const { userId, name, email, bio, interestsCategory, interestsType } = fields
+		const userId = session?.user?.id || fields.userId
+		const { name, email, bio, interestsCategory, interestsType } = fields
 		const avatar = files?.avatar ? files.avatar[0] : undefined
 
 		const result = await UserService.updateProfile(
@@ -16,6 +18,12 @@ export default defineEventHandler(async (event) => {
 			{ name, email, bio, interestsCategory, interestsType },
 			avatar
 		)
+
+		// Sync encrypted session cookie with updated user profile
+		await replaceUserSession(event, {
+			user: result.user,
+			loggedInAt: session?.loggedInAt || Date.now(),
+		})
 
 		return result
 	} catch (e: any) {

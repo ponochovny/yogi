@@ -78,7 +78,7 @@
 				<PopoverContent
 					class="w-auto p-0 rounded-t-none rounded-b-2xl mt-2 border-gray-200/80"
 				>
-					<CalendarPicker v-if="dateRange" v-model="dateRange" />
+					<LazyCalendarPicker v-if="dateRange" v-model="dateRange" />
 				</PopoverContent>
 			</Popover>
 			<Popover @update:open="priceChange">

@@ -4,8 +4,8 @@ import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { format } from 'date-fns'
 
-const BANNER_PLACEHOLDER = 'img/banner-placeholder2.jpeg'
-const LOGO_PLACEHOLDER = 'img/logo-placeholder.png'
+const BANNER_PLACEHOLDER = '/img/banner-placeholder2.jpeg'
+const LOGO_PLACEHOLDER = '/img/logo-placeholder.png'
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))

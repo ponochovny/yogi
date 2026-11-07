@@ -111,7 +111,7 @@ function offeringBanner() {
 	}
 	return {
 		placeholder: true,
-		url: 'img/banner-placeholder2.jpeg',
+		url: '/img/banner-placeholder2.jpeg',
 	}
 }
 

@@ -7,17 +7,27 @@ import { toOwnerDto, toPractitionerDto } from '~/server/domains/user'
 export const toStudioDto = (studio: IStudioResponse): TStudio => {
 	const { createdAt, updatedAt, ownerId, ...rest } = studio
 
-	const parsedLocation = JSON.parse(JSON.stringify(studio.location))
+	let parsedLocation = studio.location
+	if (typeof studio.location === 'string') {
+		try {
+			parsedLocation = JSON.parse(studio.location)
+		} catch {
+			parsedLocation = {
+				name: studio.location,
+				coords: [0, 0],
+			}
+		}
+	}
 
 	return {
 		...rest,
 		logo:
 			studio.logo && studio.logo.length
-				? Array.of(studio.logo.pop()).map(toMediaFileDto)[0]
+				? Array.of(studio.logo[studio.logo.length - 1]).map(toMediaFileDto)[0]
 				: { url: '' },
 		banner:
 			studio.banner && studio.banner.length
-				? Array.of(studio.banner.pop()).map(toMediaFileDto)
+				? Array.of(studio.banner[studio.banner.length - 1]).map(toMediaFileDto)
 				: [],
 		...(studio.owner && {
 			owner: toOwnerDto(studio.owner as IUserResponse & { _id: string }),
@@ -25,7 +35,7 @@ export const toStudioDto = (studio: IStudioResponse): TStudio => {
 		practitioners: studio.practitioners
 			? studio.practitioners.map((data) => toPractitionerDto(data.user))
 			: [],
-		location: typeof parsedLocation === 'string' ? JSON.parse(parsedLocation) : parsedLocation,
+		location: parsedLocation,
 	}
 }
 

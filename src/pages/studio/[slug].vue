@@ -184,7 +184,7 @@ useSeoMeta({
 	ogDescription: studio.value?.data.bio,
 	ogImage: studio.value?.data.banner.length
 		? studio.value?.data.banner[0].url
-		: 'img/banner-placeholder2.jpeg',
+		: '/img/banner-placeholder2.jpeg',
 	twitterCard: 'summary_large_image',
 })
 </script>

@@ -2,21 +2,19 @@
 	<div>
 		<NuxtLink
 			:to="`/offering/${offering.slug}`"
-			class="block h-32 bg-gray-200 rounded-2xl"
+			class="block h-32 bg-gray-200 rounded-2xl overflow-hidden"
 		>
 			<NuxtImg
-				:src="getImageUrl(offering.banners, 'banner').url"
+				:src="banner.src.value"
 				:alt="offering.name"
 				:title="offering.name"
-				:provider="
-					getImageUrl(offering.banners, 'banner').placeholder
-						? undefined
-						: 'cloudinary'
-				"
+				:provider="banner.provider.value"
+				placeholder="/img/banner-placeholder2.jpeg"
 				format="webp"
 				width="400"
 				sizes="400px"
-				class="w-full h-full object-cover object-center rounded-2xl"
+				class="w-full h-full object-cover object-center"
+				@error="banner.onError"
 			/>
 		</NuxtLink>
 		<div
@@ -59,21 +57,25 @@
 				{{ offering.location?.name || '' }}
 			</div>
 			<NuxtLink
-				:to="'studio/' + offering.studio?.slug"
+				v-if="offering.studio"
+				:to="`/studio/${offering.studio.slug}`"
 				class="flex gap-1 items-center"
 			>
-				<NuxtImg
-					v-if="offering.studio?.logo"
-					:src="offering.studio?.logo.url"
-					alt="Logo"
-					provider="cloudinary"
-					format="webp"
-					class="w-8 h-8 rounded-full object-cover object-center"
-					width="32"
-					height="32"
-				/>
-				<span class="text-sm font-semibold">
-					{{ offering.studio?.name }}
+				<div class="w-8 h-8 rounded-full bg-gray-100 overflow-hidden shrink-0">
+					<NuxtImg
+						:src="studioLogo.src.value"
+						alt="Logo"
+						:provider="studioLogo.provider.value"
+						placeholder="/img/logo-placeholder.png"
+						format="webp"
+						class="w-full h-full object-cover object-center rounded-full"
+						width="32"
+						height="32"
+						@error="studioLogo.onError"
+					/>
+				</div>
+				<span class="text-sm font-semibold truncate">
+					{{ offering.studio.name }}
 				</span>
 			</NuxtLink>
 		</div>
@@ -84,7 +86,7 @@
 import { defineComponent } from 'vue'
 import type { TOffering } from '~/src/app/types/offering'
 import { dateString } from '~/src/shared/lib/utils'
-import { getImageUrl } from '@/src/shared/lib/utils'
+import { useImageFallback } from '~/src/shared/lib/useImageFallback'
 
 export default defineComponent({
 	name: 'OfferingCard',
@@ -95,4 +97,14 @@ interface IProps {
 	offering: TOffering
 }
 const props = defineProps<IProps>()
+
+const banner = useImageFallback(
+	() => props.offering.banners?.[0]?.url,
+	'banner',
+)
+
+const studioLogo = useImageFallback(
+	() => props.offering.studio?.logo?.url,
+	'logo',
+)
 </script>

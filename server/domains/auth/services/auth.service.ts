@@ -27,7 +27,7 @@ export const AuthService = {
 			name,
 			email,
 			password,
-			profileImage: 'https://picsum.photos/200/200',
+			profileImage: null,
 		})
 
 		return toUserDto(user)

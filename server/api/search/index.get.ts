@@ -42,11 +42,27 @@ export default defineEventHandler(async (event) => {
 	const splice_to = +PER_PAGE
 
 	try {
-		if (ACTIVITY_TYPE === 'Offerings') {
+		const normActivityType = typeof ACTIVITY_TYPE === 'string' ? ACTIVITY_TYPE.trim().toLowerCase() : ''
+		const isOfferings = !normActivityType || normActivityType === 'offerings'
+		const isStudios =
+			normActivityType === 'studio & event hosts' || normActivityType === 'studios'
+		const isPractitioners = normActivityType === 'practitioners'
+
+		if (isOfferings) {
 			const offerings = await OfferingRepo.findMany<IOfferingResponse[]>({
 				include: {
 					banners: true,
 					tickets: true,
+					studio: {
+						include: {
+							logo: true,
+						},
+					},
+					practitioners: {
+						include: {
+							user: true,
+						},
+					},
 				},
 				where: {
 					name: {
@@ -116,7 +132,7 @@ export default defineEventHandler(async (event) => {
 			}
 		}
 
-		if (ACTIVITY_TYPE === 'Studio & Event Hosts') {
+		if (isStudios) {
 			let studios = (await StudioRepo.findMany({
 				include: {
 					owner: true,
@@ -130,7 +146,7 @@ export default defineEventHandler(async (event) => {
 				},
 				where: {
 					name: {
-						contains: typeof name !== 'string' ? '' : name,
+						contains: typeof search !== 'string' ? '' : search,
 						mode: 'insensitive',
 					},
 				},
@@ -152,7 +168,7 @@ export default defineEventHandler(async (event) => {
 			}
 		}
 
-		if (ACTIVITY_TYPE === 'Practitioners') {
+		if (isPractitioners) {
 			const practitioners = await PractitionerRepo.findMany<
 				IPractitionerResponse[]
 			>({

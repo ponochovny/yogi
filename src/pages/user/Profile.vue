@@ -98,7 +98,8 @@ function handleUpdateProfile() {
 			avatar: selectedFileAvatar.value,
 		},
 	})
-		.then((data) => {
+		.then(() => {
+			selectedFileAvatar.value = null
 			toast.success('Data has been updated')
 		})
 		.catch((error) => {
