@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/outline'
 
-defineProps<{ length?: number; classSlideContainer?: string }>()
+defineProps<{ length?: number; classSlideContainer?: string; equalHeight?: boolean }>()
 
 const isEnd = ref(true)
 const isBeginning = ref(true)
@@ -45,7 +45,6 @@ watch(
 				<ClientOnly>
 					<swiper-container
 						ref="swiperBasicRef"
-						class="swiper-basic"
 						slides-per-view="auto"
 						:space-between="10"
 						:breakpoints="{
@@ -57,6 +56,11 @@ watch(
 					>
 						<slot />
 					</swiper-container>
+					<template #fallback>
+						<div class="flex gap-2.5 sm:gap-6 overflow-hidden">
+							<slot />
+						</div>
+					</template>
 				</ClientOnly>
 			</div>
 			<div

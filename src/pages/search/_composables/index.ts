@@ -3,8 +3,10 @@ import type { ISearchParams, TSearchParams } from '~/src/app/types/search/types'
 import { searchDataByQuery } from '../model/services/searchDataByQuery'
 
 export default (filters: ISearchParams) => {
-	const priceFromCheck = isNumber(filters.price_from) && filters.price_from >= 0
-	const priceToCheck = isNumber(filters.price_to) && filters.price_to >= 0
+	const priceFromCheck =
+		typeof filters.price_from === 'number' && filters.price_from >= 0
+	const priceToCheck =
+		typeof filters.price_to === 'number' && filters.price_to >= 0
 
 	const allParams: TSearchParams = {
 		...(filters.activityType && { activityType: filters.activityType }),

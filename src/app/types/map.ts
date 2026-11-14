@@ -1,6 +1,6 @@
 export type TMarker = {
 	name: string
-	coords: number[]
+	coords: [number, number]
 }
 
 export interface IFeature {
@@ -12,7 +12,7 @@ export interface IFeature {
 	text?: string
 	place_name: string
 	//** lng-lat */
-	center: number[]
+	center: [number, number]
 	geometry?: IGeometry
 	address?: string
 	context?: IContext[]

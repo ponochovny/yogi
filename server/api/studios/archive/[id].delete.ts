@@ -1,27 +1,26 @@
-import { updateOfferingsByStudioId } from '~/server/db/offerings'
-import { toggleArchiveStudioById } from '~/server/db/studio'
-import { studioTransformer } from '~/server/transformers/studio'
+import { OfferingRepo } from '~/server/domains/offering'
+import { StudioRepo, toStudioDto } from '~/server/domains/studio'
 import type { IStudioResponse } from '~/server/types/studio'
 
 export default defineEventHandler(async (event) => {
 	const { id } = getRouterParams(event)
+	if (!id) {
+		throw createError({ statusCode: 400, statusMessage: 'Id is required' })
+	}
 	const { isArchived }: { isArchived: boolean } = await readBody(event)
 
-	const studio = await toggleArchiveStudioById(id, isArchived)
-	await updateOfferingsByStudioId({ isActive: false }, id)
+	const studio = await StudioRepo.toggleArchive(id, isArchived)
+	await OfferingRepo.updateManyByStudioId({ isActive: false }, id)
 
 	if (!studio) {
-		return sendError(
-			event,
-			createError({
-				statusCode: 400,
-				statusMessage: 'Slug is incorrect',
-			})
-		)
+		throw createError({
+			statusCode: 400,
+			statusMessage: 'Slug is incorrect',
+		})
 	}
 
 	return {
-		data: studioTransformer(studio as unknown as IStudioResponse),
+		data: toStudioDto(studio as unknown as IStudioResponse),
 		status: 'Success!',
 	}
 })

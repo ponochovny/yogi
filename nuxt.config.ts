@@ -1,7 +1,8 @@
+import tailwindcss from '@tailwindcss/vite'
+import { defineNuxtModule } from 'nuxt/kit'
+
 const MODULES = [
-	'@nuxtjs/tailwindcss',
 	'shadcn-nuxt',
-	'nuxt-lodash',
 	'@nuxt/image',
 	'nuxt-swiper',
 	'@vite-pwa/nuxt',
@@ -11,19 +12,52 @@ const MODULES = [
 	'@pinia/nuxt',
 	'nuxt-auth-utils',
 ]
-const PROD_MODULES = ['@zadigetvoltaire/nuxt-gtm']
+
+const shadcnComponentBarrelFix = defineNuxtModule({
+	setup(_, nuxt) {
+		nuxt.hook('components:dirs', (dirs) => {
+			const shadcnComponents = dirs.find(
+				(dir) =>
+					typeof dir !== 'string' &&
+					dir.path.endsWith('/src/shared/ui/shadcn')
+			)
+
+			if (shadcnComponents && typeof shadcnComponents !== 'string') {
+				shadcnComponents.ignore = [
+					...(shadcnComponents.ignore || []),
+					'**/index.ts',
+				]
+			}
+		})
+	},
+})
 
 export default defineNuxtConfig({
 	devtools: { enabled: false },
+
+	future: {
+		compatibilityVersion: 4,
+	},
 
 	dir: {
 		pages: './src/pages',
 		assets: './src/app/assets',
 	},
 
-	modules: [...MODULES],
+	css: ['~/src/app/assets/css/tailwind.css'],
 
-	components: ['~/src/shared/ui', '~/components'],
+	vite: {
+		plugins: [tailwindcss()],
+	},
+
+	modules: [...MODULES, shadcnComponentBarrelFix],
+
+	components: [
+		{ path: '~/src/shared/ui', pattern: '!shadcn/**', extensions: ['.vue'] },
+		{ path: '~/src/entities', extensions: ['.vue'], pathPrefix: false },
+		{ path: '~/src/features', extensions: ['.vue'], pathPrefix: false },
+		{ path: '~/src/widgets', extensions: ['.vue'], pathPrefix: false },
+	],
 
 	image: {
 		cloudinary: {
@@ -43,7 +77,6 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		// Session (nuxt-auth-utils)
 		session: {
-			name: 'nuxt-session',
 			password: process.env.NUXT_SESSION_PASSWORD || '',
 			maxAge: 60 * 60 * 24 * 7, // 7 days
 		},
@@ -62,40 +95,103 @@ export default defineNuxtConfig({
 		mapboxPublicApi: process.env.MAPBOX_PUBLIC_API,
 	},
 
-	$production: {
-		modules: [...MODULES, ...PROD_MODULES],
-		pwa: {
-			manifest: {
-				name: 'Yogiapp',
-				short_name: 'Yogiapp',
-				description:
-					'Wellness marketplace, book your next appointment, retreat, festival',
-				theme_color: '#FEF3E4',
-				icons: [
-					{
-						src: 'pwa-icon-192x192.png',
-						sizes: '192x192',
-						type: 'image/png',
-					},
-					{
-						src: 'pwa-icon-512x512.png',
-						sizes: '512x512',
-						type: 'image/png',
-					},
-				],
-			},
-			devOptions: {
-				enabled: true,
-				type: 'module',
-			},
+	pwa: {
+		registerType: 'autoUpdate',
+		manifest: {
+			name: 'Yogi - Your wellness home',
+			short_name: 'Yogi',
+			description:
+				'Wellness marketplace, book your next appointment, retreat, festival',
+			theme_color: '#FEF3E4',
+			background_color: '#FEF3E4',
+			display: 'standalone',
+			icons: [
+				{
+					src: '/pwa-icon-192x192.png',
+					sizes: '192x192',
+					type: 'image/png',
+				},
+				{
+					src: '/pwa-icon-512x512.png',
+					sizes: '512x512',
+					type: 'image/png',
+				},
+			],
 		},
-		// @ts-ignore
-		gtm: {
-			id: process.env.GOOGLE_TAG_MANAGER_ID || '',
+		generateSW: {
+			navigateFallback: '/',
+			globPatterns: ['**/*.{js,css,html,png,svg,ico,woff,woff2}'],
+			runtimeCaching: [
+				{
+					urlPattern: ({ request }) => request.mode === 'navigate',
+					handler: 'NetworkFirst',
+					options: {
+						cacheName: 'pages-cache',
+						expiration: {
+							maxEntries: 50,
+							maxAgeSeconds: 60 * 60 * 24 * 7,
+						},
+						networkTimeoutSeconds: 3,
+					},
+				},
+				{
+					urlPattern: ({ request }) =>
+						request.destination === 'script' || request.destination === 'style',
+					handler: 'StaleWhileRevalidate',
+					options: {
+						cacheName: 'static-resources',
+						expiration: {
+							maxEntries: 100,
+							maxAgeSeconds: 60 * 60 * 24 * 30,
+						},
+					},
+				},
+				{
+					urlPattern: ({ request }) =>
+						request.destination === 'image' || request.destination === 'font',
+					handler: 'CacheFirst',
+					options: {
+						cacheName: 'media-cache',
+						expiration: {
+							maxEntries: 100,
+							maxAgeSeconds: 60 * 60 * 24 * 30,
+						},
+						cacheableResponse: {
+							statuses: [0, 200],
+						},
+					},
+				},
+				{
+					urlPattern: ({ url, request }) =>
+						url.pathname.startsWith('/api/') && request.method === 'GET',
+					handler: 'NetworkFirst',
+					options: {
+						cacheName: 'api-cache',
+						expiration: {
+							maxEntries: 50,
+							maxAgeSeconds: 60 * 60 * 24,
+						},
+						networkTimeoutSeconds: 3,
+						cacheableResponse: {
+							statuses: [0, 200],
+						},
+					},
+				},
+			],
+		},
+		client: {
+			installPrompt: true,
+			periodicSyncForUpdates: 3600,
+		},
+		devOptions: {
 			enabled: true,
-			debug: true,
+			suppressWarnings: true,
+			type: 'module',
 		},
+	},
 
+	$production: {
+		modules: [...MODULES],
 		gtag: {
 			id: process.env.GOOGLE_TAG_ID,
 		},
@@ -108,13 +204,17 @@ export default defineNuxtConfig({
 			title: 'Yogi - Your wellness home',
 			meta: [
 				{ name: 'description', content: 'All you need for your wellness' },
+				{ name: 'theme-color', content: '#FEF3E4' },
 			],
 			htmlAttrs: {
 				lang: 'en',
+				class: 'bg-[#FEF3E4]',
+			},
+			bodyAttrs: {
+				class: 'bg-[#FEF3E4]',
 			},
 			link: [
 				{
-					hid: 'icon',
 					rel: 'icon',
 					type: 'image/x-icon',
 					href: '/logoBg.svg',
@@ -124,8 +224,7 @@ export default defineNuxtConfig({
 	},
 
 	routeRules: {
-		'/': { isr: 60 * 60 * 24 },
-		'/search': { ssr: false },
+		'/': { isr: 60 * 60 },
 		'/user/**': { ssr: false },
 		'/checkout': { ssr: false },
 	},

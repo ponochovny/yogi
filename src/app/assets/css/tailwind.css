@@ -1,78 +1,148 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer base {
-	:root {
-		--background: #ffffff;
-		--foreground: #020817;
+@theme {
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-site-bg: var(--site-bg);
 
-		--muted: #f1f5f9;
-		--muted-foreground: #64748b;
+	--color-beige: var(--site-bg);
+	--color-beige-50: #FFFCF7;
+	--color-beige-100: #FEF3E4;
+	--color-beige-200: #FDE4C3;
+	--color-beige-300: #FBD4A3;
 
-		--popover: #ffffff;
-		--popover-foreground: #020817;
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
 
-		--card: #ffffff;
-		--card-foreground: #020817;
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
 
-		--border: #e2e8f0;
-		--input: #e2e8f0;
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
 
-		--primary: #ea580c;
-		--primary-foreground: #f8fafc;
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
 
-		--secondary: #ef8248;
-		--secondary-foreground: #ef8248;
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
 
-		--accent: #f1f5f9;
-		--accent-foreground: #ef8248;
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
 
-		--destructive: #ef4444;
-		--destructive-foreground: #f8fafc;
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
 
-		--ring: #020817;
+	--radius-xl: calc(var(--radius) + 4px);
+	--radius-lg: var(--radius);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-sm: calc(var(--radius) - 4px);
 
-		--radius: 0.5rem;
+	--breakpoint-xs: 320px;
+	--breakpoint-sm: 614px;
+	--breakpoint-md: 768px;
+	--breakpoint-lg: 1024px;
+	--breakpoint-xl: 1280px;
+	--breakpoint-2xl: 1441px;
+
+	--animate-accordion-down: accordion-down 0.2s ease-out;
+	--animate-accordion-up: accordion-up 0.2s ease-out;
+	--animate-collapsible-down: collapsible-down 0.2s ease-in-out;
+	--animate-collapsible-up: collapsible-up 0.2s ease-in-out;
+
+	@keyframes accordion-down {
+		from { height: 0; }
+		to { height: var(--radix-accordion-content-height); }
 	}
-
-	.dark {
-		--background: #020817;
-		--foreground: #f8fafc;
-
-		--muted: #1e293b;
-		--muted-foreground: #94a3b8;
-
-		--popover: #020817;
-		--popover-foreground: #f8fafc;
-
-		--card: #020817;
-		--card-foreground: #f8fafc;
-
-		--border: #1e293b;
-		--input: #1e293b;
-
-		--primary: #f8fafc;
-		--primary-foreground: #ef8248;
-
-		--secondary: #1e293b;
-		--secondary-foreground: #f8fafc;
-
-		--accent: #1e293b;
-		--accent-foreground: #f8fafc;
-
-		--destructive: #7f1d1d;
-		--destructive-foreground: #f8fafc;
-
-		--ring: #cbd5e1;
+	@keyframes accordion-up {
+		from { height: var(--radix-accordion-content-height); }
+		to { height: 0; }
 	}
+	@keyframes collapsible-down {
+		from { height: 0; }
+		to { height: var(--radix-collapsible-content-height); }
+	}
+	@keyframes collapsible-up {
+		from { height: var(--radix-collapsible-content-height); }
+		to { height: 0; }
+	}
+}
+
+:root {
+	--site-bg: #FEF3E4;
+	--background: #ffffff;
+	--foreground: #020817;
+
+	--muted: #f1f5f9;
+	--muted-foreground: #64748b;
+
+	--popover: #ffffff;
+	--popover-foreground: #020817;
+
+	--card: #ffffff;
+	--card-foreground: #020817;
+
+	--border: #e2e8f0;
+	--input: #e2e8f0;
+
+	--primary: #ea580c;
+	--primary-foreground: #f8fafc;
+
+	--secondary: #ef8248;
+	--secondary-foreground: #ef8248;
+
+	--accent: #f1f5f9;
+	--accent-foreground: #ef8248;
+
+	--destructive: #ef4444;
+	--destructive-foreground: #f8fafc;
+
+	--ring: #020817;
+
+	--radius: 0.5rem;
+}
+
+.dark {
+	--background: #020817;
+	--foreground: #f8fafc;
+
+	--muted: #1e293b;
+	--muted-foreground: #94a3b8;
+
+	--popover: #020817;
+	--popover-foreground: #f8fafc;
+
+	--card: #020817;
+	--card-foreground: #f8fafc;
+
+	--border: #1e293b;
+	--input: #1e293b;
+
+	--primary: #f8fafc;
+	--primary-foreground: #ef8248;
+
+	--secondary: #1e293b;
+	--secondary-foreground: #f8fafc;
+
+	--accent: #1e293b;
+	--accent-foreground: #f8fafc;
+
+	--destructive: #7f1d1d;
+	--destructive-foreground: #f8fafc;
+
+	--ring: #cbd5e1;
 }
 
 @layer base {
 	* {
-		@apply border-border;
+		border-color: var(--border);
 	}
+
+	html,
 	body {
-		@apply bg-background text-foreground;
+		background-color: var(--site-bg);
+		color: var(--foreground);
 	}
 }

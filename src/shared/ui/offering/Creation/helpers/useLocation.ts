@@ -15,12 +15,12 @@ export default (
 		// 		props.offering.location?.coords[0],
 		// 	]
 		// }
-		return [0, 0]
+		return [0, 0] as [number, number]
 	}
 	const center = centerFn()
 
 	const _location = ref<{
-		center: number[]
+		center: [number, number]
 		id: string
 		place_name: string
 	} | null>({
@@ -39,7 +39,7 @@ export default (
 		() => _location.value,
 		(val) => {
 			location.value = {
-				coords: val ? [val?.center[1], val?.center[0]] : [0, 0],
+				coords: val ? [val.center[1], val.center[0]] : [0, 0],
 				name: val?.place_name || '',
 			}
 		}
@@ -64,8 +64,11 @@ export default (
 	function getMarkers(): TMarker | undefined {
 		if (_location.value) {
 			const formDataMarker = {
-				coords: [_location.value?.center[1], _location.value?.center[0]],
-				name: _location.value?.place_name,
+				coords: [
+					_location.value.center[1],
+					_location.value.center[0],
+				] as [number, number],
+				name: _location.value.place_name,
 			}
 			return { ...formDataMarker }
 		}

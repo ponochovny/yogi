@@ -1,11 +1,13 @@
-import { getStudioBySlug } from '~/server/db/studio'
-import { studioTransformer } from '~/server/transformers/studio'
+import { StudioRepo, toStudioDto } from '~/server/domains/studio'
 import type { IStudioResponse } from '~/server/types/studio'
 
 export default defineEventHandler(async (event) => {
 	const { slug } = getRouterParams(event)
+	if (!slug) {
+		throw createError({ statusCode: 400, statusMessage: 'Slug is required' })
+	}
 
-	const studio = await getStudioBySlug(slug, {
+	const studio = await StudioRepo.findBySlug(slug, {
 		include: {
 			logo: true,
 			owner: true,
@@ -21,17 +23,14 @@ export default defineEventHandler(async (event) => {
 	})
 
 	if (!studio) {
-		return sendError(
-			event,
-			createError({
-				statusCode: 400,
-				statusMessage: 'Slug is incorrect',
-			})
-		)
+		throw createError({
+			statusCode: 400,
+			statusMessage: 'Slug is incorrect',
+		})
 	}
 
 	return {
-		data: studioTransformer(studio as unknown as IStudioResponse),
+		data: toStudioDto(studio as unknown as IStudioResponse),
 		status: 'Success!',
 	}
 })

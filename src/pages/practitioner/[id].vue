@@ -16,7 +16,7 @@
 						/>
 						<div class="flex flex-col gap-y-3 justify-center">
 							<p class="text-3xl font-semibold">{{ practitioner.data.name }}</p>
-							<div class="flex gap-2">
+							<div v-if="practitioner.data.studios[0]" class="flex gap-2">
 								<img
 									:src="practitioner.data.studios[0].logo.url"
 									class="w-8 h-8 rounded-full object-cover object-center"

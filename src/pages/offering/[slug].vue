@@ -61,7 +61,7 @@
 			<div class="relative h-[250px] sm:h-[350px] xl:h-[450px] z-0">
 				<NuxtImg
 					v-if="!offering.data.banners.length"
-					src="img/banner-placeholder2.jpeg"
+					src="/img/banner-placeholder2.jpeg"
 					:alt="offering.data.name"
 					:title="offering.data.name"
 					class="object-cover w-full h-full rounded-3xl opacity-70"
@@ -69,6 +69,7 @@
 					format="webp"
 				/>
 				<SwiperBlockV2
+					v-else
 					:length="offering.data.banners.length"
 					class="h-[250px] sm:h-[350px] xl:h-[450px]"
 					classSlideContainer="overflow-hidden rounded-3xl"
@@ -77,20 +78,35 @@
 						v-for="(banner, idx) of offering.data.banners"
 						:key="idx"
 					>
-						<div class="h-[250px] sm:h-[350px] xl:h-[450px]">
+						<div
+							class="h-[250px] sm:h-[350px] xl:h-[450px] cursor-pointer bg-neutral-200/70 overflow-hidden rounded-3xl relative"
+							@click="openGallery(idx)"
+						>
 							<NuxtImg
 								:src="banner.url"
 								:alt="offering.data.name"
 								:title="offering.data.name"
 								class="object-cover w-full h-full rounded-3xl"
 								:provider="banner ? 'cloudinary' : undefined"
-								placeholder
+								placeholder="/img/banner-placeholder2.jpeg"
+								:loading="idx === 0 ? 'eager' : 'lazy'"
+								:fetchpriority="idx === 0 ? 'high' : 'auto'"
 								sizes="400px md:800px lg:1280px"
 								format="webp"
 							/>
 						</div>
 					</swiper-slide>
 				</SwiperBlockV2>
+
+				<button
+					v-if="offering.data.banners.length"
+					type="button"
+					@click="openGallery(0)"
+					class="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 flex items-center gap-2 px-3.5 py-2 bg-white/90 hover:bg-white text-gray-800 text-xs sm:text-sm font-semibold rounded-2xl shadow-md backdrop-blur-md transition-all duration-200 border border-black/5 hover:scale-105 active:scale-95 group cursor-pointer"
+				>
+					<PhotoIcon class="w-4 h-4 text-orange-500 group-hover:scale-110 transition-transform" />
+					<span>All photos ({{ offering.data.banners.length }})</span>
+				</button>
 			</div>
 			<div
 				class="relative bg-white rounded-3xl -mt-6 mx-auto w-full md:w-[99%] px-6 sm:px-10 lg:px-16 py-10 md:py-20 flex gap-8 flex-col-reverse lg:flex-row"
@@ -193,39 +209,66 @@
 					v-if="offering.data.tickets?.length"
 					class="bg-red-200/20 rounded-xl p-4 sm:p-6 md:p-10 w-full lg:w-[400px] self-start flex flex-col gap-4"
 				>
-					<button
-						v-for="ticket of offering.data.tickets"
-						:key="ticket.id"
-						@click="selectedTicket = ticket.id"
-						class="group"
-					>
+					<div class="flex items-center justify-between pb-1">
+						<h3 class="font-bold text-xl text-zinc-900">Tickets</h3>
+						<span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+							{{ offering.data.tickets.length }} {{ offering.data.tickets.length === 1 ? 'ticket' : 'tickets' }}
+						</span>
+					</div>
+
+					<div class="flex flex-col gap-3">
 						<div
-							class="flex gap-4 px-2 py-1 border rounded-lg border-gray-200 group-hover:border-orange-400/50 text-left text-zinc-900 transition-colors"
+							v-for="ticket of offering.data.tickets"
+							:key="ticket.id"
+							@click="selectedTicket = ticket.id; error = ''"
+							class="group flex items-start gap-3.5 p-3.5 sm:p-4 rounded-xl border transition-all duration-200 cursor-pointer select-none text-left"
 							:class="{
-								'hover:bg-orange-200/20 hover:border-orange-400/50':
-									selectedTicket !== ticket.id,
-								'bg-orange-200/20 border-orange-400/50':
+								'border-orange-500/80 bg-orange-50/80 shadow-sm ring-1 ring-orange-500/20':
 									selectedTicket === ticket.id,
+								'border-gray-200 bg-white/70 hover:bg-white hover:border-orange-300':
+									selectedTicket !== ticket.id,
 							}"
+							role="radio"
+							:aria-checked="selectedTicket === ticket.id"
 						>
-							<TicketIcon
-								class="w-10 stroke-1 shrink-0 transition-colors duration-300"
-								:class="{
-									'text-orange-400': selectedTicket === ticket.id,
-									'text-gray-200 group-hover:text-gray-400':
-										selectedTicket !== ticket.id,
-								}"
-							/>
-							<!-- <div v-else class="w-10 block"></div> -->
-							<div class="flex flex-col">
-								<p>{{ ticket.name }}</p>
-								<p class="text-xs">{{ ticket.description }}</p>
-								<span class="font-semibold text-lg">
-									{{ ticket.price }}
-								</span>
+							<!-- Large stylized radio button -->
+							<div class="pt-0.5 shrink-0">
+								<div
+									class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 shadow-sm"
+									:class="{
+										'border-orange-500 bg-orange-500':
+											selectedTicket === ticket.id,
+										'border-gray-300 bg-white group-hover:border-orange-400':
+											selectedTicket !== ticket.id,
+									}"
+								>
+									<div
+										class="w-2.5 h-2.5 rounded-full bg-white transition-all duration-200"
+										:class="{
+											'scale-100 opacity-100': selectedTicket === ticket.id,
+											'scale-0 opacity-0': selectedTicket !== ticket.id,
+										}"
+									/>
+								</div>
+							</div>
+
+							<!-- Ticket details -->
+							<div class="flex flex-col flex-1 min-w-0">
+								<div class="flex items-baseline justify-between gap-2">
+									<p class="font-bold text-base text-zinc-900 group-hover:text-orange-600 transition-colors">
+										{{ ticket.name }}
+									</p>
+									<span class="font-bold text-lg text-zinc-900 shrink-0">
+										{{ ticket.price }}
+									</span>
+								</div>
+								<p v-if="ticket.description" class="text-xs text-gray-600 mt-1 leading-relaxed">
+									{{ ticket.description }}
+								</p>
 							</div>
 						</div>
-					</button>
+					</div>
+
 					<div class="text-rose-500" :class="{ hidden: !error }">
 						{{ error && !selectedTicket ? error : '' }}
 					</div>
@@ -237,21 +280,29 @@
 					</Button>
 				</div>
 			</div>
+
+			<ImageGalleryModal
+				v-model:isOpen="isGalleryOpen"
+				:images="offering.data.banners"
+				:initialIndex="galleryInitialIndex"
+				:title="offering.data.name"
+			/>
 		</template>
 	</MainContainer>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import {
 	CalendarIcon,
 	MapPinIcon,
-	TicketIcon,
 	ClockIcon,
+	PhotoIcon,
 } from '@heroicons/vue/24/outline'
 import { dateString } from '~/src/shared/lib/utils'
 import type { TOffering } from '~/src/app/types/offering'
 import SwiperBlockV2 from '~/src/shared/ui/SwiperBlockV2.vue'
+import ImageGalleryModal from '~/src/widgets/ImageGalleryModal.vue'
 
 export default defineComponent({
 	name: 'SingleOffering',
@@ -261,6 +312,14 @@ export default defineComponent({
 const route = useRoute()
 const router = useRouter()
 const error = ref('')
+
+const isGalleryOpen = ref(false)
+const galleryInitialIndex = ref(0)
+
+function openGallery(index = 0) {
+	galleryInitialIndex.value = index
+	isGalleryOpen.value = true
+}
 
 const { data: offering } = await useFetch<{ data: TOffering }>(
 	`/api/offerings/${route.params.slug}`
@@ -285,8 +344,8 @@ useSeoMeta({
 	description: offering.value?.data.description,
 	ogDescription: offering.value?.data.description,
 	ogImage: offering.value?.data.banners.length
-		? offering.value?.data.banners[0].url
-		: 'img/banner-placeholder2.jpeg',
+		? offering.value?.data.banners[0]?.url
+		: '/img/banner-placeholder2.jpeg',
 	twitterCard: 'summary_large_image',
 })
 </script>

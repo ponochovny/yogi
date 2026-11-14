@@ -178,7 +178,7 @@ const isButtonDisabled = computed(() => {
 			mission: props.studio.mission,
 			logo: props.studio.logo ? props.studio.logo.url || '' : '',
 			banner: props.studio.banner.length
-				? props.studio.banner[0].url || ''
+				? props.studio.banner[0]?.url || ''
 				: '',
 			practitioners: props.studio.practitioners.map((el) => ({
 				name: el.name,
@@ -186,7 +186,8 @@ const isButtonDisabled = computed(() => {
 				id: el.id,
 			})),
 		}
-		const isEqualState = isEqual(currentFields, studioData)
+		const isEqualState =
+			JSON.stringify(currentFields) === JSON.stringify(studioData)
 
 		return isEqualState
 	}
@@ -221,8 +222,8 @@ const formData = reactive<{
 }>({
 	name: '',
 	location: null,
-	timezone: _timezones[0].tzId,
-	currency: _currencies[0].code,
+	timezone: _timezones[0]?.tzId || 'UTC',
+	currency: _currencies[0]?.code || 'USD',
 	categories: [],
 	types: [],
 	bio: '',
@@ -233,8 +234,8 @@ const formData = reactive<{
 function resetForm() {
 	formData.name = ''
 	formData.location = null
-	formData.timezone = _timezones[0].tzId
-	formData.currency = _currencies[0].code
+	formData.timezone = _timezones[0]?.tzId || 'UTC'
+	formData.currency = _currencies[0]?.code || 'USD'
 	formData.categories = []
 	formData.types = []
 	formData.bio = ''
@@ -248,21 +249,24 @@ watch(
 		if (!val) return
 
 		logoImageUrl.value = val.logo ? val.logo.url : ''
-		bannerImageUrl.value = val.banner.length ? val.banner[0].url : ''
+		bannerImageUrl.value = val.banner.length ? val.banner[0]?.url || '' : ''
 	}
 )
 
 onMounted(() => {
 	if (!(props.studio && props.updateData)) {
-		formData.name = randomNames[Math.floor(Math.random() * randomNames.length)]
+		formData.name =
+			randomNames[Math.floor(Math.random() * randomNames.length)] || ''
 	}
 })
 onBeforeMount(() => {
 	if (props.studio && props.updateData) {
 		const isCoords = props.studio.location?.coords
 		const loc = {
-			// @ts-ignore
-			center: [isCoords ? isCoords[1] : 0, isCoords ? isCoords[0] : 0] || [],
+			center: [
+				isCoords ? isCoords[1] : 0,
+				isCoords ? isCoords[0] : 0,
+			] as [number, number],
 			id: props.studio.location?.name || '',
 			place_name: props.studio.location?.name || '',
 		}
@@ -276,7 +280,7 @@ onBeforeMount(() => {
 		formData.mission = props.studio.mission
 		logoImageUrl.value = props.studio.logo ? props.studio.logo.url : ''
 		bannerImageUrl.value = props.studio.banner.length
-			? props.studio.banner[0].url
+			? props.studio.banner[0]?.url || ''
 			: ''
 		formData.practitioners = props.studio.practitioners.map((el) => ({
 			id: el.id,
@@ -323,7 +327,10 @@ function featureSelected(feature: IFeature) {
 function getMarkers(): TMarker | undefined {
 	if (formData.location) {
 		const formDataMarker = {
-			coords: [formData.location?.center[1], formData.location?.center[0]],
+			coords: [
+				formData.location.center[1],
+				formData.location.center[0],
+			] as [number, number],
 			name: formData.location?.place_name,
 		}
 		return { ...formDataMarker }
@@ -388,8 +395,8 @@ async function updateStudioHandler() {
 				...formData,
 				location: {
 					coords: formData.location
-						? [formData.location?.center[1], formData.location?.center[0]]
-						: [],
+						? [formData.location.center[1], formData.location.center[0]]
+						: [0, 0],
 					name: formData.location?.place_name || '',
 				},
 				mediaFiles: {
@@ -415,8 +422,8 @@ async function createStudioHandler() {
 			...formData,
 			location: {
 				coords: formData.location
-					? [formData.location?.center[1], formData.location?.center[0]]
-					: [],
+					? [formData.location.center[1], formData.location.center[0]]
+					: [0, 0],
 				name: formData.location?.place_name || '',
 			},
 			mediaFiles: {

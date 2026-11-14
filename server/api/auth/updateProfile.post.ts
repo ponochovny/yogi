@@ -1,38 +1,34 @@
-import { updateProfile } from '~/server/db/users'
-import { userTransformer } from '~/server/transformers/user'
-import updateProfileModel from './_models/updateProfile'
-
-const { extractFields, errorsChecker, updateAvatar } = updateProfileModel()
+import { UserService } from '~/server/domains/user'
+import { extractForm } from '~/server/domains/shared'
 
 export default defineEventHandler(async (event) => {
 	try {
-		const {
-			name,
-			bio,
-			email,
+		const session = await getUserSession(event)
+		const { fields, files } = await extractForm<{
+			fields: Record<string, string | undefined>
+			files: any
+		}>(event)
+
+		const userId = session?.user?.id || fields.userId
+		if (!userId) {
+			throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
+		}
+		const { name, email, bio, interestsCategory, interestsType } = fields
+		const avatar = files?.avatar ? files.avatar[0] : undefined
+
+		const result = await UserService.updateProfile(
 			userId,
-			interestsCategory,
-			interestsType,
-			avatar,
-		} = await extractFields(event)
+			{ name, email, bio, interestsCategory, interestsType },
+			avatar
+		)
 
-		await errorsChecker(event, userId, name, email)
-
-		const { profileImage } = await updateAvatar(avatar, userId)
-
-		const updatedUser = await updateProfile(userId, {
-			email,
-			name,
-			bio,
-			profileImage,
-			interestsType: interestsType?.split(','),
-			interestsCategory: interestsCategory?.split(','),
+		// Sync encrypted session cookie with updated user profile
+		await replaceUserSession(event, {
+			user: result.user,
+			loggedInAt: session?.loggedInAt || Date.now(),
 		})
-		const user = userTransformer(updatedUser)
 
-		await setUserSession(event, { user, loggedInAt: Date.now() })
-
-		return { user }
+		return result
 	} catch (e: any) {
 		throw createError({
 			statusCode: e.statusCode || 500,

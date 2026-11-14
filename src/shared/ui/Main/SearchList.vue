@@ -27,22 +27,25 @@
 				<button
 					v-for="offering of data.offerings"
 					:key="offering.id"
-					class="flex gap-3 hover:bg-gray-100/60 transition-colors text-left px-3 py-1.5 rounded-lg"
+					class="flex gap-3 hover:bg-gray-100/60 transition-colors text-left px-3 py-1.5 rounded-lg items-center"
 					@click="goTo(`/offering/${offering.slug}`)"
 				>
-					<NuxtImg
-						:src="getImageUrl(offering.banners, 'banner').url"
-						class="w-8 h-6 rounded-md object-cover object-center mt-1"
-						:provider="
-							getImageUrl(offering.banners, 'banner').placeholder
-								? undefined
-								: 'cloudinary'
-						"
-						width="100"
-						height="auto"
-						format="webp"
-					/>
-					<div class="flex flex-col gap-0">
+					<div class="w-8 h-6 rounded-md bg-gray-200 shrink-0 overflow-hidden relative">
+						<NuxtImg
+							:src="getImageUrl(offering.banners, 'banner').url"
+							class="w-full h-full rounded-md object-cover object-center"
+							:provider="
+								getImageUrl(offering.banners, 'banner').placeholder
+									? undefined
+									: 'cloudinary'
+							"
+							placeholder="/img/banner-placeholder2.jpeg"
+							width="64"
+							height="48"
+							format="webp"
+						/>
+					</div>
+					<div class="flex flex-col gap-0 min-w-0">
 						<p
 							class="capitalize font-bold text-xs"
 							:class="{
@@ -54,7 +57,7 @@
 						>
 							{{ offering.activity }}
 						</p>
-						<p class="font-semibold text-sm text-zinc-900">
+						<p class="font-semibold text-sm text-zinc-900 truncate">
 							{{ offering.name }}
 						</p>
 						<div class="flex gap-1 text-xs">
@@ -85,21 +88,31 @@
 				<button
 					v-for="studio of data.studios"
 					:key="studio.id"
-					class="flex gap-3 hover:bg-gray-100/60 transition-colors text-left px-3 py-1.5 rounded-lg"
+					class="flex gap-3 hover:bg-gray-100/60 transition-colors text-left px-3 py-1.5 rounded-lg items-center"
 					@click="goTo(`/studio/${studio.slug}`)"
 				>
-					<NuxtImg
-						v-if="studio.logo.url"
-						:src="studio.logo.url || ''"
-						class="w-8 h-8 rounded-full object-cover object-center mt-1"
-						provider="cloudinary"
-						width="32"
-						height="32"
-						format="webp"
-					/>
-					<div v-else class="w-8 h-8 rounded-full bg-gray-100"></div>
-					<div class="flex flex-col gap-0">
-						<p class="font-semibold text-sm text-zinc-900">{{ studio.name }}</p>
+					<div class="w-8 h-8 rounded-full bg-gray-200 shrink-0 overflow-hidden relative flex items-center justify-center">
+						<NuxtImg
+							v-if="studio.logo && studio.logo.url"
+							:src="studio.logo.url"
+							class="w-full h-full rounded-full object-cover object-center"
+							provider="cloudinary"
+							placeholder="/img/logo-placeholder.png"
+							width="32"
+							height="32"
+							format="webp"
+						/>
+						<NuxtImg
+							v-else
+							src="/img/logo-placeholder.png"
+							class="w-full h-full rounded-full object-cover object-center opacity-70"
+							width="32"
+							height="32"
+							format="webp"
+						/>
+					</div>
+					<div class="flex flex-col gap-0 min-w-0">
+						<p class="font-semibold text-sm text-zinc-900 truncate">{{ studio.name }}</p>
 						<div class="flex gap-1 text-xs">
 							<div
 								class="mb-1 truncate text-gray-600 font-semibold"
@@ -125,18 +138,28 @@
 					class="flex gap-3 hover:bg-gray-100/60 transition-colors text-left px-3 py-1.5 rounded-lg items-center"
 					@click="goTo(`/practitioner/${practitioner.id}`)"
 				>
-					<NuxtImg
-						v-if="practitioner.profileImage"
-						:src="practitioner.profileImage || ''"
-						class="w-8 h-8 rounded-full object-cover object-center mt-1"
-						provider="cloudinary"
-						width="32"
-						height="32"
-						format="webp"
-					/>
-					<div v-else class="w-8 h-8 rounded-full bg-gray-100"></div>
+					<div class="w-8 h-8 rounded-full bg-gray-200 shrink-0 overflow-hidden relative flex items-center justify-center">
+						<NuxtImg
+							v-if="practitioner.profileImage"
+							:src="practitioner.profileImage"
+							class="w-full h-full rounded-full object-cover object-center"
+							provider="cloudinary"
+							placeholder="/img/logo-placeholder.png"
+							width="32"
+							height="32"
+							format="webp"
+						/>
+						<NuxtImg
+							v-else
+							src="/img/logo-placeholder.png"
+							class="w-full h-full rounded-full object-cover object-center opacity-70"
+							width="32"
+							height="32"
+							format="webp"
+						/>
+					</div>
 					<div class="flex flex-col gap-0 items-center">
-						<p class="font-semibold text-sm text-zinc-900">
+						<p class="font-semibold text-sm text-zinc-900 truncate">
 							{{ practitioner.name }}
 						</p>
 					</div>

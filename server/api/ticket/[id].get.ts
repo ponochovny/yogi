@@ -1,11 +1,13 @@
-import { getTicketById } from '~/server/db/tickets'
-import { ticketTransformer } from '~/server/transformers/ticket'
+import { TicketRepo, toTicketDto } from '~/server/domains/offering'
 import type { ITicketResponse } from '~/server/types/ticket'
 
 export default defineEventHandler(async (event) => {
 	const { id } = getRouterParams(event)
+	if (!id) {
+		throw createError({ statusCode: 400, statusMessage: 'Id is required' })
+	}
 
-	const ticket = (await getTicketById(id, {
+	const ticket = (await TicketRepo.findById(id, {
 		include: {
 			offering: {
 				include: {
@@ -17,17 +19,14 @@ export default defineEventHandler(async (event) => {
 	})) as unknown as ITicketResponse
 
 	if (!ticket) {
-		return sendError(
-			event,
-			createError({
-				statusCode: 400,
-				statusMessage: 'Id is incorrect',
-			})
-		)
+		throw createError({
+			statusCode: 400,
+			statusMessage: 'Id is incorrect',
+		})
 	}
 
 	return {
-		data: ticketTransformer(ticket),
+		data: toTicketDto(ticket),
 		status: 'Success!',
 	}
 })

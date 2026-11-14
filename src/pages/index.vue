@@ -29,40 +29,19 @@
 				</p>
 				<MainSearch />
 			</div>
+
 			<!-- Slider with categories which link to search page -->
 			<div class="flex flex-col md:gap-y-24 gap-y-16">
-				<!-- <div>
-					<p class="font-bold text-3xl mb-12">All offerings</p>
-					<div class="grid grid-cols-4 gap-x-4 gap-y-7">
-						<OfferingCard
-							v-for="offering of offerings?.data"
-							:key="offering?.id"
-							:offering="offering"
-						/>
-					</div>
-				</div> -->
-				<div>
-					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
-						Studios & Event Hosts
-					</p>
-					<SwiperBlockV2
-						:length="studios?.data.length"
-						classSlideContainer="overflow-hidden rounded-2xl"
-					>
-						<swiper-slide
-							v-for="studio of studios?.data"
-							:key="studio?.id"
-							class="xl:min-w-[405px] xl:max-w-[405px] min-w-[305px] max-w-[305px]"
-						>
-							<StudioCard :studio="studio" />
-						</swiper-slide>
-					</SwiperBlockV2>
-					<MainNoContent
-						v-if="!studios?.data.length"
-						title="There are no corresponding studios"
-						text="Here you may find Studios & Event Hosts"
-					/>
-				</div>
+				<!-- Studios & Event Hosts list -->
+				<HomeStudioSection
+					title="Studios & Event Hosts"
+					viewAllLink="/search?activityType=Studio+%26+Event+Hosts"
+					viewAllText="Explore all"
+					:studios="studios?.data"
+					:pending="studiosPending"
+				/>
+
+				<!-- Quote randomized -->
 				<div
 					class="relative rounded-3xl bg-gradient-to-r from-cyan-600 from-10% to-orange-800/50 to-100% sm:to-90% md:py-20 md:px-32 py-8 sm:px-16 px-8 pr-4 flex text-white items-center z-10 overflow-hidden sm:flex-row flex-col gap-4 sm:gap-0"
 				>
@@ -72,106 +51,59 @@
 							backgroundImage: `url('img/decoration.svg')`,
 							backgroundRepeat: 'no-repeat',
 						}"
-					></div>
+					/>
 					<div class="w-[50%]">
 						<span class="font-semibold text-lg sm:text-xl">
 							Quote of the day
 						</span>
 					</div>
-					<div class="flex flex-col gap-1 sm:gap-3">
+					<div v-if="quotePending" class="flex flex-col gap-2 w-full animate-pulse">
+						<div class="h-6 w-3/4 bg-white/20 rounded" />
+						<div class="h-4 w-1/3 bg-white/20 rounded" />
+					</div>
+					<div v-else class="flex flex-col gap-1 sm:gap-3">
 						<span class="text-lg sm:text-xl">
-							&laquo;{{ quote?.data.quote }}&raquo;
+							&laquo;{{ quote?.data?.quote }}&raquo;
 						</span>
 						<span class="font-semibold text-sm sm:text-base">
-							{{ quote?.data.author }}
+							{{ quote?.data?.author }}
 						</span>
 					</div>
 				</div>
-				<div>
-					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
-						Upcoming virtual
-					</p>
-					<SwiperBlockV2
-						:length="offeringsOnline?.data.length"
-						classSlideContainer="overflow-hidden rounded-2xl"
-					>
-						<swiper-slide
-							v-for="offering of offeringsOnline?.data"
-							:key="offering?.id"
-							class="min-w-[300px] max-w-[300px]"
-						>
-							<OfferingCard
-								:offering="offering"
-								class="min-w-[300px] max-w-[300px]"
-							/>
-						</swiper-slide>
-					</SwiperBlockV2>
-					<MainNoContent
-						v-if="!offeringsOnline?.data.length"
-						title="There are no corresponding offerings"
-						text="Here you may find Virtual Offerings"
-					/>
-				</div>
-				<div>
-					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
-						Wellness getaways
-					</p>
-					<SwiperBlockV2
-						:length="offeringsWellness?.data.length"
-						classSlideContainer="overflow-hidden rounded-2xl"
-					>
-						<swiper-slide
-							v-for="offering of offeringsWellness?.data"
-							:key="offering?.id"
-							class="min-w-[300px] max-w-[300px]"
-						>
-							<OfferingCard :offering="offering" />
-						</swiper-slide>
-					</SwiperBlockV2>
-					<MainNoContent
-						v-if="!offeringsWellness?.data.length"
-						title="There are no corresponding offerings"
-						text="Here you may find Wellness Offerings"
-					/>
-				</div>
-				<div>
-					<p class="font-bold md:text-3xl text-2xl md:mb-12 mb-8">
-						Deeper Education
-					</p>
-					<SwiperBlockV2
-						:length="offeringsEducation?.data.length"
-						classSlideContainer="overflow-hidden rounded-2xl"
-					>
-						<swiper-slide
-							v-for="offering of offeringsEducation?.data"
-							:key="offering?.id"
-							class="min-w-[300px] max-w-[300px]"
-						>
-							<OfferingCard
-								:offering="offering"
-								class="min-w-[300px] max-w-[300px]"
-							/>
-						</swiper-slide>
-					</SwiperBlockV2>
-					<MainNoContent
-						v-if="!offeringsEducation?.data.length"
-						title="There are no corresponding offerings"
-						text="Here you may find Educational Offerings"
-					/>
-				</div>
+
+				<!-- Upcoming virtual list -->
+				<HomeOfferingSection
+					title="Upcoming virtual"
+					viewAllLink="/search?virtual=true"
+					viewAllText="Explore virtual"
+					:offerings="offeringsOnline?.data"
+					:pending="offeringsOnlinePending"
+					emptyTitle="There are no corresponding offerings"
+					emptyText="Here you may find Virtual Offerings"
+				/>
+
+				<!-- Wellness getaways list -->
+				<HomeOfferingSection
+					title="Wellness getaways"
+					viewAllLink="/search?types=Festival,Retreat"
+					viewAllText="Explore getaways"
+					:offerings="offeringsWellness?.data"
+					:pending="offeringsWellnessPending"
+					emptyTitle="There are no corresponding offerings"
+					emptyText="Here you may find Wellness Offerings"
+				/>
+
+				<!-- Deeper Education list -->
+				<HomeOfferingSection
+					title="Deeper Education"
+					viewAllLink="/search?types=Course,Teacher+Training,Workshop"
+					viewAllText="Explore education"
+					:offerings="offeringsEducation?.data"
+					:pending="offeringsEducationPending"
+					emptyTitle="There are no corresponding offerings"
+					emptyText="Here you may find Educational Offerings"
+				/>
 			</div>
-			<!-- Popular locally list -->
-
-			<!-- Studios & Hosts list -->
-			<!-- Quote randomized -->
-			<!-- Upcoming virtual list -->
-			<!-- Wellness getaways list -->
-			<!-- Deeper Education list -->
-
-			<!-- Recommended for you list -->
-			<!-- Private sessions search -->
-			<!-- Subscribe form -->
-			<!-- Block with contacts & Site links -->
 		</MainContainer>
 	</div>
 </template>
@@ -184,34 +116,53 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
+import { useOffering } from '~/src/entities/offering'
+import { useStudio } from '~/src/entities/studio'
+import HomeOfferingSection from '~/src/widgets/home/HomeOfferingSection.vue'
+import HomeStudioSection from '~/src/widgets/home/HomeStudioSection.vue'
+
 const { getOfferings } = useOffering()
 const { getStudiosOpen } = useStudio()
 
-const { data: offeringsWellness } = await getOfferings(
-	new URLSearchParams({
-		types: 'Festival, Retreat',
-		limit: '8',
-	}).toString(),
-	true
+const { data: studios, pending: studiosPending } = await getStudiosOpen(
+	new URLSearchParams({ limit: '10' }).toString(),
+	{ key: 'home-studios' }
 )
-const { data: offeringsEducation } = await getOfferings(
-	new URLSearchParams({
-		types: 'Course,Teacher Training,Workshop',
-		limit: '8',
-	}).toString(),
-	true
-)
-const { data: offeringsOnline } = await getOfferings(
-	new URLSearchParams({
-		virtual: 'true',
-		limit: '8',
-	}).toString(),
-	true
-)
-const { data: studios } = await getStudiosOpen(
-	new URLSearchParams({ limit: '10' }).toString()
-)
-const { data: quote } = useFetch('/api/quote')
+
+const { data: quote, pending: quotePending } = await useFetch<{
+	data: { quote: string; author: string }
+}>('/api/quote', {
+	key: 'home-quote',
+	getCachedData: (k, nuxtApp) =>
+		nuxtApp.payload.data[k] || nuxtApp.static.data[k],
+})
+
+const { data: offeringsOnline, pending: offeringsOnlinePending } =
+	await getOfferings(
+		new URLSearchParams({
+			virtual: 'true',
+			limit: '8',
+		}).toString(),
+		{ key: 'home-offerings-online' }
+	)
+
+const { data: offeringsWellness, pending: offeringsWellnessPending } =
+	await getOfferings(
+		new URLSearchParams({
+			types: 'Festival, Retreat',
+			limit: '8',
+		}).toString(),
+		{ key: 'home-offerings-wellness' }
+	)
+
+const { data: offeringsEducation, pending: offeringsEducationPending } =
+	await getOfferings(
+		new URLSearchParams({
+			types: 'Course,Teacher Training,Workshop',
+			limit: '8',
+		}).toString(),
+		{ key: 'home-offerings-education' }
+	)
 
 useSeoMeta({
 	title: 'Main page',

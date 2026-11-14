@@ -1,11 +1,7 @@
 <template>
-	<template v-if="isProduction">
-		<VitePwaManifest />
-	</template>
-	<div :class="{ dark: darkMode, 'bg-[#FEF3E4] min-h-screen': true }">
-		<!-- <Transition>
-			<LoadingPage v-if="isAuthInitLoading" />
-		</Transition> -->
+	<VitePwaManifest />
+	<div :class="{ dark: darkMode, 'bg-site-bg min-h-screen': true }">
+		<OfflineBanner />
 		<NuxtLoadingIndicator color="rgb(251 146 60)" />
 		<NuxtLayout>
 			<NuxtPage />
@@ -32,6 +28,12 @@ onBeforeMount(() => {
 useHead({
 	titleTemplate: (titleChunk) => {
 		return titleChunk ? `${titleChunk} - Yogi` : 'Yogi'
+	},
+	htmlAttrs: {
+		class: 'bg-[#FEF3E4]',
+	},
+	bodyAttrs: {
+		class: 'bg-[#FEF3E4]',
 	},
 })
 

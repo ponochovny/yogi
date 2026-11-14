@@ -10,13 +10,25 @@
 					We found {{ filters.total }} results for you
 				</p>
 			</div>
-			<div class="w-full" v-show="loading">
-				<LoadingIcon class="fill-primary mx-auto w-10 h-10" />
-			</div>
 			<div
 				class="grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 gap-x-4 gap-y-7 auto-rows-1fr"
 			>
-				<template v-if="filters.activityType === 'Offerings'">
+				<!-- Skeleton placeholders while loading -->
+				<template v-if="loading && searchResults.length === 0">
+					<div
+						v-for="n in 10"
+						:key="`sk-${n}`"
+						class="rounded-2xl overflow-hidden bg-white animate-pulse"
+					>
+						<div class="bg-gray-200 h-48 w-full" />
+						<div class="p-3 flex flex-col gap-2">
+							<div class="bg-gray-200 h-4 rounded w-3/4" />
+							<div class="bg-gray-200 h-3 rounded w-1/2" />
+							<div class="bg-gray-200 h-3 rounded w-1/3 mt-1" />
+						</div>
+					</div>
+				</template>
+				<template v-else-if="filters.activityType === 'Offerings'">
 					<OfferingCard
 						v-for="offering of (searchResults as TOffering[])"
 						:key="offering?.id"
