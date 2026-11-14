@@ -74,5 +74,8 @@
     "shadcn-nuxt": "^0.10.4",
     "typescript": "^5.7.3",
     "vue-tsc": "^2.2.0"
+  },
+  "engines": {
+    "node": "26.x"
   }
 }
