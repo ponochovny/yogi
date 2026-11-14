@@ -14,6 +14,7 @@
 					:src="getImageUrl([studio.data.banner[0]], 'banner').url"
 					:alt="studio.data.name"
 					:title="studio.data.name"
+					placeholder="/img/banner-placeholder2.jpeg"
 					sizes="400px md:800px lg:1280px"
 					class="object-cover object-center w-full h-full"
 					format="webp"

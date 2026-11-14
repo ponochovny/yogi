@@ -80,6 +80,16 @@
 								>
 									<Button
 										size="sm"
+										variant="default"
+										class="w-full justify-center bg-primary text-primary-foreground"
+										@click="
+											router.push(`/user/Studio/${studioId}/offerings/${offering.id}/attendance`)
+										"
+									>
+										<span>Check-in / QR</span>
+									</Button>
+									<Button
+										size="sm"
 										variant="outline"
 										class="w-full justify-center"
 										@click="

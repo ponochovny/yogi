@@ -107,10 +107,31 @@ export const useStudio = () => {
 		)
 	}
 
-	const getStudiosOpen = (queries?: string) => {
-		return useFetch<{ data: TStudio[] }>(
-			`/api/studios${queries ? '?' + queries : ''}`
-		)
+	interface GetStudiosOptions {
+		isLazy?: boolean
+		key?: string
+	}
+
+	const getStudiosOpen = (
+		queries?: string,
+		optionsOrLazy?: boolean | GetStudiosOptions
+	) => {
+		const uri = `/api/studios${queries ? '?' + queries : ''}`
+		const isLazy =
+			typeof optionsOrLazy === 'boolean'
+				? optionsOrLazy
+				: optionsOrLazy?.isLazy ?? false
+		const key =
+			typeof optionsOrLazy === 'object' && optionsOrLazy?.key
+				? optionsOrLazy.key
+				: `studios-${queries || 'all'}`
+
+		const fetchFn = isLazy ? useLazyFetch : useFetch
+		return fetchFn<{ data: TStudio[] }>(uri, {
+			key,
+			getCachedData: (k, nuxtApp) =>
+				nuxtApp.payload.data[k] || nuxtApp.static.data[k],
+		})
 	}
 
 	return {

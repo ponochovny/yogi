@@ -1,11 +1,7 @@
 <template>
-	<template v-if="isProduction">
-		<VitePwaManifest />
-	</template>
+	<VitePwaManifest />
 	<div :class="{ dark: darkMode, 'bg-site-bg min-h-screen': true }">
-		<!-- <Transition>
-			<LoadingPage v-if="isAuthInitLoading" />
-		</Transition> -->
+		<OfflineBanner />
 		<NuxtLoadingIndicator color="rgb(251 146 60)" />
 		<NuxtLayout>
 			<NuxtPage />

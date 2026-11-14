@@ -6,10 +6,10 @@ This repository is **Yogi**, a modern fullstack wellness marketplace and booking
 
 ## 1. Tech Stack Overview
 
-- **Framework**: Nuxt 3 (SSR, ISR, and CSR per route via `routeRules` in `nuxt.config.ts`).
+- **Framework**: Nuxt 4 (SSR, ISR, and CSR per route via `routeRules` in `nuxt.config.ts`, with `future.compatibilityVersion: 4`).
 - **Language**: TypeScript (`"strict": true`).
 - **Frontend Core**: Vue 3 Composition API with `<script setup lang="ts">`.
-- **UI & Styling**: Tailwind CSS, Shadcn Vue (Radix Vue primitives), Lucide Icons, Swiper.
+- **UI & Styling**: Tailwind CSS v4 (CSS-first `@theme` configuration via `@tailwindcss/vite`, without legacy `tailwind.config`), Shadcn Vue (Radix Vue primitives), Lucide Icons, Swiper.
 - **Form & Validation**: VeeValidate + Zod.
 - **State Management**: Pinia stores + Nuxt `useState`.
 - **Backend**: Nuxt Nitro server engine (`server/`).
@@ -21,7 +21,7 @@ This repository is **Yogi**, a modern fullstack wellness marketplace and booking
 
 ## 2. Architecture & Design Principles
 
-### 2.1 Feature-Sliced Design (FSD) in Nuxt 3
+### 2.1 Feature-Sliced Design (FSD) in Nuxt 4
 The project is actively migrating from monolithic Nuxt structure to **Feature-Sliced Design (FSD)** located under `src/`:
 
 ```

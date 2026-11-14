@@ -56,6 +56,11 @@ watch(
 					>
 						<slot />
 					</swiper-container>
+					<template #fallback>
+						<div class="flex gap-2.5 sm:gap-6 overflow-hidden">
+							<slot />
+						</div>
+					</template>
 				</ClientOnly>
 			</div>
 			<div

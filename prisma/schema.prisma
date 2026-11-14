@@ -35,6 +35,10 @@ model User {
   // Purchase history
   // Waitlist
   purchases Purchase[]
+
+  // Studio staff & attendance
+  staffOf            StudioStaff[]
+  scannedAttendances Attendance[]  @relation("scannedByUser")
 }
 
 model Practitioner {
@@ -81,6 +85,9 @@ model Studio {
 
   // Practitioners
   practitioners Practitioner[]
+
+  // Staff (Owners, Managers, Instructors, Door staff)
+  staff StudioStaff[]
 
   // ownerId String @db.ObjectId
   // owner User @relation(fields: [ownerId], references: [id])
@@ -132,6 +139,9 @@ model Offering {
 
   // Practitioners
   practitioners Practitioner[]
+
+  // Attendances
+  attendances Attendance[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -192,6 +202,55 @@ model Purchase {
   paymentId    String  @unique
   receiptEmail String
   userName     String?
+
+  // QR security salt & status
+  qrSecret     String?
+  status       String  @default("PAID") // PAID, REFUNDED, CANCELLED
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  attendances  Attendance[]
+}
+
+model Attendance {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  purchaseId      String    @db.ObjectId
+  purchase        Purchase  @relation(fields: [purchaseId], references: [id])
+  offeringId      String    @db.ObjectId
+  offering        Offering  @relation(fields: [offeringId], references: [id])
+  scannedByUserId String?   @db.ObjectId
+  scannedByUser   User?     @relation("scannedByUser", fields: [scannedByUserId], references: [id])
+
+  checkedInAt     DateTime  @default(now())
+  syncedAt        DateTime?
+  clientScanTime  DateTime?
+  checkInMethod   String    @default("QR_SCAN") // QR_SCAN, MANUAL, OFFLINE_SYNC
+  status          String    @default("CHECKED_IN") // CHECKED_IN, REVOKED
+  deviceId        String?
+  notes           String?
+  sessionDate     String?   // For multi-day retreats / festivals: e.g. "2026-11-14"
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([purchaseId])
+  @@index([offeringId])
+  @@index([offeringId, sessionDate])
+}
+
+model StudioStaff {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  studioId  String   @db.ObjectId
+  studio    Studio   @relation(fields: [studioId], references: [id])
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  role      String   @default("INSTRUCTOR") // OWNER, MANAGER, INSTRUCTOR, DOOR_STAFF
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([studioId, userId])
 }
 
 model Tag {

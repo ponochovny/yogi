@@ -101,14 +101,31 @@ export const useOffering = () => {
 		})
 	}
 
-	const getOfferings = (queries?: string, isLazy?: boolean) => {
-		const uri = `/api/offerings${queries ? '?' + queries : ''}`
+	interface GetOfferingsOptions {
+		isLazy?: boolean
+		key?: string
+	}
 
-		if (isLazy) {
-			return useLazyFetch<{ data: TOffering[] }>(uri)
-		} else {
-			return useFetch<{ data: TOffering[] }>(uri)
-		}
+	const getOfferings = (
+		queries?: string,
+		optionsOrLazy?: boolean | GetOfferingsOptions
+	) => {
+		const uri = `/api/offerings${queries ? '?' + queries : ''}`
+		const isLazy =
+			typeof optionsOrLazy === 'boolean'
+				? optionsOrLazy
+				: optionsOrLazy?.isLazy ?? false
+		const key =
+			typeof optionsOrLazy === 'object' && optionsOrLazy?.key
+				? optionsOrLazy.key
+				: `offerings-${queries || 'all'}`
+
+		const fetchFn = isLazy ? useLazyFetch : useFetch
+		return fetchFn<{ data: TOffering[] }>(uri, {
+			key,
+			getCachedData: (k, nuxtApp) =>
+				nuxtApp.payload.data[k] || nuxtApp.static.data[k],
+		})
 	}
 
 	const getOfferingsByStudioId = <T>(

@@ -32,13 +32,13 @@ export const absoluteUrl = (path: string): string => {
 }
 
 export const getImageUrl = (
-	images: { url: string }[],
+	images: { url: string }[] | null | undefined,
 	type: 'banner' | 'logo'
 ) => {
-	if (images.length && images[0].url) {
+	if (images && images.length && images[0]?.url) {
 		return {
 			placeholder: false,
-			url: images[0].url,
+			url: images[0]?.url,
 		}
 	}
 
@@ -48,7 +48,7 @@ export const getImageUrl = (
 			type === 'logo'
 				? LOGO_PLACEHOLDER
 				: type === 'banner'
-				? BANNER_PLACEHOLDER
-				: BANNER_PLACEHOLDER,
+					? BANNER_PLACEHOLDER
+					: BANNER_PLACEHOLDER,
 	}
 }
