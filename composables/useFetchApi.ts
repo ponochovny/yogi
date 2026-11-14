@@ -1,4 +1,5 @@
-export default <T>(url: string, options: any = {}): Promise<T> => {
+export default <T = any>(url: string, options: any = {}): Promise<T> => {
+	// @ts-expect-error Nitro $fetch typing mismatch with generic T
 	return $fetch<T>(url, {
 		...options,
 		headers: {
