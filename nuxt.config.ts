@@ -1,4 +1,5 @@
 import tailwindcss from '@tailwindcss/vite'
+import { defineNuxtModule } from 'nuxt/kit'
 
 const MODULES = [
 	'shadcn-nuxt',
@@ -11,6 +12,25 @@ const MODULES = [
 	'@pinia/nuxt',
 	'nuxt-auth-utils',
 ]
+
+const shadcnComponentBarrelFix = defineNuxtModule({
+	setup(_, nuxt) {
+		nuxt.hook('components:dirs', (dirs) => {
+			const shadcnComponents = dirs.find(
+				(dir) =>
+					typeof dir !== 'string' &&
+					dir.path.endsWith('/src/shared/ui/shadcn')
+			)
+
+			if (shadcnComponents && typeof shadcnComponents !== 'string') {
+				shadcnComponents.ignore = [
+					...(shadcnComponents.ignore || []),
+					'**/index.ts',
+				]
+			}
+		})
+	},
+})
 
 export default defineNuxtConfig({
 	devtools: { enabled: false },
@@ -30,7 +50,7 @@ export default defineNuxtConfig({
 		plugins: [tailwindcss()],
 	},
 
-	modules: [...MODULES],
+	modules: [...MODULES, shadcnComponentBarrelFix],
 
 	components: [
 		{ path: '~/src/shared/ui', pattern: '!shadcn/**', extensions: ['.vue'] },
@@ -98,7 +118,7 @@ export default defineNuxtConfig({
 				},
 			],
 		},
-		workbox: {
+		generateSW: {
 			navigateFallback: '/',
 			globPatterns: ['**/*.{js,css,html,png,svg,ico,woff,woff2}'],
 			runtimeCaching: [
