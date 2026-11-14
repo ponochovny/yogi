@@ -83,7 +83,7 @@ const data = reactive({
 })
 
 async function handleLogin(redirect?: string) {
-	const { login } = useAuth()
+	const { login, loggedIn } = useAuth()
 
 	data.loading = true
 	try {
@@ -91,14 +91,19 @@ async function handleLogin(redirect?: string) {
 			email: data.email,
 			password: data.password,
 		})
-		navigateTo(redirect ? '/' + redirect : '/')
+		if (!loggedIn.value) {
+			toast.error('Unable to establish a session. Please try again.')
+			data.loading = false
+			return
+		}
+		await navigateTo(redirect ? '/' + redirect : '/')
 	} catch (error: any) {
 		toast.error(error.data.statusMessage)
 		data.loading = false
 	}
 }
 async function handleRegister(redirect?: string) {
-	const { register } = useAuth()
+	const { register, loggedIn } = useAuth()
 
 	data.loading = true
 	try {
@@ -108,7 +113,12 @@ async function handleRegister(redirect?: string) {
 			password: data.password,
 			repeatPassword: data.repeatPassword,
 		})
-		navigateTo(redirect ? '/' + redirect : '/')
+		if (!loggedIn.value) {
+			toast.error('Unable to establish a session. Please try again.')
+			data.loading = false
+			return
+		}
+		await navigateTo(redirect ? '/' + redirect : '/')
 	} catch (error: any) {
 		toast.error(error.data.statusMessage)
 		data.loading = false

@@ -24,6 +24,7 @@ export default defineEventHandler(async (event) => {
 			user: result.user,
 			loggedInAt: session?.loggedInAt || Date.now(),
 		})
+		const user = userTransformer(updatedUser)
 
 		return result
 	} catch (e: any) {
