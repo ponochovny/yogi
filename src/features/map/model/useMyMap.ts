@@ -2,7 +2,14 @@ import { identifyInputMapType } from '~/src/shared/helpers'
 import type { IFeature } from '~/src/app/types/map'
 
 export const useMyMap = () => {
-	const tiles = ref([
+	type TileLayer = {
+		url: string
+		attrs?: string
+		subdomains?: string
+		maxZoom?: number
+		minZoom?: number
+	}
+	const tiles = ref<[TileLayer, TileLayer, TileLayer]>([
 		{
 			url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png',
 			attrs:
@@ -33,7 +40,10 @@ export const useMyMap = () => {
 
 			if (type === 'coords') {
 				const coords = val.split(',')
-				featuresByCoords([+coords[0], +coords[1]])
+				const [latitude, longitude] = coords
+				if (latitude !== undefined && longitude !== undefined) {
+					featuresByCoords([+latitude, +longitude])
+				}
 			} else {
 				featuresByText(val)
 			}
@@ -42,7 +52,7 @@ export const useMyMap = () => {
 
 	const searchResults = ref<IFeature[]>([])
 
-	function fetchFeaturesByCoords(coords: number[]) {
+	function fetchFeaturesByCoords(coords: [number, number]) {
 		const coordsParam = encodeURIComponent(`${coords[1]},${coords[0]}`)
 		return $fetch<any>('/api/map/search?coords=' + coordsParam)
 	}
@@ -52,12 +62,12 @@ export const useMyMap = () => {
 		return $fetch<any>('/api/map/search?text=' + text)
 	}
 
-	async function featuresByCoords(coords: number[]) {
+	async function featuresByCoords(coords: [number, number]) {
 		const res = await fetchFeaturesByCoords(coords)
 		searchResults.value = res.data?.features || []
 	}
 
-	const featuresByText = useDebounce(async function (val: any) {
+	const featuresByText = useDebounceFn(async function (val: string) {
 		const res = await fetchFeaturesByText(val)
 		searchResults.value = res.data?.features || []
 	}, 1000)
@@ -70,4 +80,3 @@ export const useMyMap = () => {
 		fetchFeaturesByCoords,
 	}
 }
-

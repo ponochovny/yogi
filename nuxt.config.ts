@@ -215,7 +215,6 @@ export default defineNuxtConfig({
 			},
 			link: [
 				{
-					hid: 'icon',
 					rel: 'icon',
 					type: 'image/x-icon',
 					href: '/logoBg.svg',

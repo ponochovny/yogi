@@ -159,11 +159,11 @@ definePageMeta({
 })
 const route = useRoute()
 const router = useRouter()
-const { id: studioId } = route.params
+const studioId = typeof route.params.id === 'string' ? route.params.id : ''
 const tab = ref<'create' | 'list'>('create')
 const { getOfferingsByStudioId } = useOffering()
 
-if (!studioId || !isString(studioId)) {
+if (!studioId) {
 	router.push('/')
 }
 
@@ -175,7 +175,7 @@ const {
 	data: TOffering[]
 	refresh: () => void
 	// eslint-disable-next-line indent
-}>(!studioId || !isString(studioId) ? '' : studioId, { immediate: false })
+}>(studioId, { immediate: false })
 
 onMounted(() => refresh())
 

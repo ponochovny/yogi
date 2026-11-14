@@ -124,7 +124,7 @@ export const AttendanceService = {
 				avatarUrl: p.user?.profileImage || null,
 				expectedSig,
 				isCheckedIn,
-				checkedInAt: isCheckedIn ? p.attendances[0].checkedInAt : null,
+				checkedInAt: p.attendances?.[0]?.checkedInAt ?? null,
 			}
 		})
 
@@ -162,4 +162,3 @@ export const AttendanceService = {
 		}
 	},
 }
-

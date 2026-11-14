@@ -3,6 +3,9 @@ import type { IOfferingResponse } from '~/server/types/offering'
 
 export default defineEventHandler(async (event) => {
 	const { slug } = getRouterParams(event)
+	if (!slug) {
+		throw createError({ statusCode: 400, statusMessage: 'Slug is required' })
+	}
 
 	const offering = await OfferingRepo.findBySlug<IOfferingResponse | null>(slug, {
 		include: {

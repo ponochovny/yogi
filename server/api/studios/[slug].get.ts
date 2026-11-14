@@ -3,6 +3,9 @@ import type { IStudioResponse } from '~/server/types/studio'
 
 export default defineEventHandler(async (event) => {
 	const { slug } = getRouterParams(event)
+	if (!slug) {
+		throw createError({ statusCode: 400, statusMessage: 'Slug is required' })
+	}
 
 	const studio = await StudioRepo.findBySlug(slug, {
 		include: {

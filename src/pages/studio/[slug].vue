@@ -7,11 +7,11 @@
 			>
 				<NuxtImg
 					:provider="
-						getImageUrl([studio.data.banner[0]], 'banner').placeholder
+						getImageUrl(studio.data.banner, 'banner').placeholder
 							? undefined
 							: 'cloudinary'
 					"
-					:src="getImageUrl([studio.data.banner[0]], 'banner').url"
+					:src="getImageUrl(studio.data.banner, 'banner').url"
 					:alt="studio.data.name"
 					:title="studio.data.name"
 					placeholder="/img/banner-placeholder2.jpeg"
@@ -184,7 +184,7 @@ useSeoMeta({
 	description: studio.value?.data.bio,
 	ogDescription: studio.value?.data.bio,
 	ogImage: studio.value?.data.banner.length
-		? studio.value?.data.banner[0].url
+		? studio.value?.data.banner[0]?.url
 		: '/img/banner-placeholder2.jpeg',
 	twitterCard: 'summary_large_image',
 })

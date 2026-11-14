@@ -175,24 +175,25 @@ function update() {
 function dateChange(val: boolean) {
 	if (val) return
 
-	const _isArray = isArray(dateRange.value)
-	if (
-		!formData.date.start &&
-		_isArray &&
-		format((dateRange.value as Date[])[0], 'yyyy-MM-dd') ===
-			format((dateRange.value as Date[])[1], 'yyyy-MM-dd')
-	) {
-		return
-	}
-	if (_isArray) {
-		const dates = [...(dateRange.value as Date[])]
+	if (Array.isArray(dateRange.value)) {
+		const dates = dateRange.value
+		const startDate = dates[0]
+		if (!startDate) return
+		if (
+			!formData.date.start &&
+			dates[1] &&
+			format(startDate, 'yyyy-MM-dd') === format(dates[1], 'yyyy-MM-dd')
+		) {
+			return
+		}
 		const _isEndDate = dates.length > 1
 
-		formData.date.start = dates[0]
-		formData.date.end = _isEndDate ? dates[1] : dates[0]
+		formData.date.start = startDate
+		formData.date.end = _isEndDate ? dates[1] ?? startDate : startDate
 	} else {
-		formData.date.start = dateRange.value as Date
-		formData.date.end = dateRange.value as Date
+		if (!dateRange.value) return
+		formData.date.start = dateRange.value
+		formData.date.end = dateRange.value
 	}
 	update()
 }
@@ -227,7 +228,7 @@ watch(formData, (val) => {
 function routerPushWithFormData(val: ISearchParams, isReset?: boolean) {
 	const { query } = route
 
-	const newQuery = useCloneDeep(query)
+	const newQuery = structuredClone(query)
 
 	if (val.activityType) {
 		newQuery.activityType = val.activityType
@@ -288,7 +289,7 @@ function setActivityType(type: TDataType) {
 }
 
 /** PRICE */
-const PRICE_DEFAULT = [0, 0]
+const PRICE_DEFAULT: [number, number] = [0, 0]
 const _priceRange = ref(PRICE_DEFAULT)
 const priceSelected = ref(PRICE_DEFAULT)
 const isPriceDefault = computed(

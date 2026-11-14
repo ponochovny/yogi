@@ -280,7 +280,7 @@ const router = useRouter()
 // 	id: props.offering?.location?.name || '',
 // 	place_name: props.offering?.location?.name || '',
 // }
-const initialLocation = {
+const initialLocation: TMarker = {
 	coords: [0, 0],
 	name: '',
 }
@@ -313,7 +313,7 @@ const { values, meta, errors, handleSubmit, resetForm, defineField } = useForm({
 		categories: props.offering?.categories || [],
 		types: props.offering?.types || [],
 		location: initialLocation,
-		timezone: props.offering?.timezone || _timezones[0].tzId,
+		timezone: props.offering?.timezone || _timezones[0]?.tzId || 'UTC',
 		practitioners: props.offering?.practitioners.map((el) => el.id) || [],
 		tickets: props.offering?.tickets.map((el) => transformedTicket(el)) || [
 			{
@@ -349,13 +349,13 @@ onBeforeMount(() => {
 	const center = (location?: TMarker) => {
 		if (!location) {
 			return {
-				center: [0, 0],
+				center: [0, 0] as [number, number],
 				id: '',
 				place_name: '',
 			}
 		}
 		return {
-			center: [location.coords[1], location.coords[0]],
+			center: [location.coords[1], location.coords[0]] as [number, number],
 			id: location.name,
 			place_name: location.name,
 		}

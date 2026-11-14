@@ -207,9 +207,9 @@ function onDrop(files: File[] | null) {
 
 	newFilesData.forEach((fileData, index) => {
 		previewFile(fileData.file, (result) => {
-			filesData.value[
-				filesData.value.length - newFilesData.length + index
-			].preview = result
+			const currentFile =
+				filesData.value[filesData.value.length - newFilesData.length + index]
+			if (currentFile) currentFile.preview = result
 		})
 	})
 
@@ -244,10 +244,20 @@ function startDrag(evt: any, idx: number) {
 }
 function dropDragged(ev: any, idx: number) {
 	const to = idx
-	const from = ev.dataTransfer.getData('itemID')
+	const from = Number(ev.dataTransfer.getData('itemID'))
+	if (
+		!Number.isInteger(from) ||
+		from < 0 ||
+		from >= filesData.value.length ||
+		to < 0 ||
+		to >= filesData.value.length
+	) {
+		return
+	}
 
 	const tempFilesData = filesData.value
 	const element = tempFilesData[from]
+	if (!element) return
 
 	tempFilesData.splice(from, 1)
 	tempFilesData.splice(to, 0, element)
@@ -286,17 +296,23 @@ const selectedCropFile = ref({
 })
 
 function cropFile(idx: number) {
+	const file = filesData.value[idx]
+	if (!file) return
+
 	openCropper.value = true
 
 	selectedCropFile.value = {
 		idx,
-		url: filesData.value[idx].cropped.preview || filesData.value[idx].preview,
+		url: file.cropped.preview || file.preview,
 	}
 }
 function handleCroppedFile(file: File) {
 	const idx = selectedCropFile.value.idx
+	const currentFile = filesData.value[idx]
+	if (!currentFile) return
+
 	filesData.value[idx] = {
-		...filesData.value[idx],
+		...currentFile,
 		name: file.name,
 		size: file.size,
 		type: file.type,
@@ -321,7 +337,9 @@ function handleCroppedFile(file: File) {
 function handleResetCroppedFile() {
 	const idx = selectedCropFile.value.idx
 	const original = filesData.value[idx]
-	const originalFile = filesData.value[idx].file
+	if (!original) return
+
+	const originalFile = original.file
 	filesData.value[idx] = {
 		id: null,
 		name: originalFile?.name || original.name,

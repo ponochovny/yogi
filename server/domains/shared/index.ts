@@ -3,4 +3,4 @@ export { badRequest, unauthorized, forbidden, notFound, internalError, domainErr
 export { uploadToCloudinary } from './cloudinary'
 export type { ICloudinaryResource } from './cloudinary'
 export { stripe } from './stripe'
-export { extractForm, extractFormFiles } from './form'
+export { extractForm, extractFormFiles, requireFormField } from './form'

@@ -344,7 +344,7 @@ useSeoMeta({
 	description: offering.value?.data.description,
 	ogDescription: offering.value?.data.description,
 	ogImage: offering.value?.data.banners.length
-		? offering.value?.data.banners[0].url
+		? offering.value?.data.banners[0]?.url
 		: '/img/banner-placeholder2.jpeg',
 	twitterCard: 'summary_large_image',
 })

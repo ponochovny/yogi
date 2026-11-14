@@ -42,3 +42,20 @@ export const extractFormFiles = <T>(event: H3Event<EventHandlerRequest>): Promis
 		})
 	})
 }
+
+export const requireFormField = (
+	fields: Record<string, string | string[] | undefined>,
+	name: string
+): string => {
+	const field = fields[name]
+	const value = Array.isArray(field) ? field[0] : field
+
+	if (typeof value !== 'string') {
+		throw createError({
+			statusCode: 400,
+			statusMessage: `Missing required form field: ${name}`,
+		})
+	}
+
+	return value
+}

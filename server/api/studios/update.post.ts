@@ -2,7 +2,7 @@ import formidable from 'formidable'
 import { StudioRepo } from '~/server/domains/studio'
 import { PractitionerRepo } from '~/server/domains/offering'
 import { MediaFileRepo } from '~/server/domains/user'
-import { uploadToCloudinary } from '~/server/domains/shared'
+import { requireFormField, uploadToCloudinary } from '~/server/domains/shared'
 import type { TUpdateStudioData } from '~/server/types/studio'
 
 export default defineEventHandler(async (event) => {
@@ -19,45 +19,45 @@ export default defineEventHandler(async (event) => {
 	})
 
 	const { fields, files } = formExtracted as {
-		fields: { [key: string]: string[] }
+		fields: Record<string, string[] | undefined>
 		files: any
 	}
 
 	const studioData: TUpdateStudioData = {
-		name: fields.name[0],
-		location: fields.location[0],
-		timezone: fields.timezone[0],
-		currency: fields.currency[0],
-		categories: fields.categories[0].split(','),
-		types: fields.types[0].split(','),
-		bio: fields.bio[0],
-		mission: fields.mission[0],
+		name: requireFormField(fields, 'name'),
+		location: requireFormField(fields, 'location'),
+		timezone: requireFormField(fields, 'timezone'),
+		currency: requireFormField(fields, 'currency'),
+		categories: requireFormField(fields, 'categories').split(','),
+		types: requireFormField(fields, 'types').split(','),
+		bio: requireFormField(fields, 'bio'),
+		mission: requireFormField(fields, 'mission'),
 	}
 
-	const studio = await StudioRepo.update(studioData, fields.studio_id[0])
+	const studio = await StudioRepo.update(
+		studioData,
+		requireFormField(fields, 'studio_id')
+	)
 
 	// Practitioners
-	if (fields['practitioners[]']) {
-		const practitionerPromises = Object.keys(fields['practitioners[]']).map(
-			async (key: string) => {
-				const exist = await PractitionerRepo.findByStudioId(
-					fields['practitioners[]'][key as any],
-					studio.id
-				)
-				if (exist) return
+	const practitioners = fields['practitioners[]'] ?? []
+	if (practitioners.length) {
+		const practitionerPromises = practitioners.map(async (userId) => {
+			const exist = await PractitionerRepo.findByStudioId(userId, studio.id)
+			if (exist) return
 
-				return PractitionerRepo.attachToStudio({
-					userId: fields['practitioners[]'][key as any],
-					studioId: studio.id,
-				})
-			}
-		)
+			return PractitionerRepo.attachToStudio({
+				userId,
+				studioId: studio.id,
+			})
+		})
 		await Promise.all(practitionerPromises)
 	}
 
 	// Media files
 	const filePromises = Object.keys(files).map(async (key) => {
-		const file = files[key][0]
+		const file = files[key]?.[0]
+		if (!file) return
 		const cloudinaryResource = await uploadToCloudinary(file.filepath)
 
 		return MediaFileRepo.create({

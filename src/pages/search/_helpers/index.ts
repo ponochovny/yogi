@@ -10,14 +10,16 @@ export const compareFilters = (
 	filters: ISearchParams,
 	newFilters: Partial<ISearchParams>
 ) => {
-	const restFilters = useOmit(filters, [
-		'page',
-		'count',
-		'total',
-		'search',
-		'location',
-	])
-	const restNewFilters = useOmit(newFilters, ['search', 'location'])
+	const restFilters = { ...filters }
+	delete restFilters.page
+	delete restFilters.count
+	delete restFilters.total
+	delete restFilters.search
+	delete restFilters.location
+
+	const restNewFilters = { ...newFilters }
+	delete restNewFilters.search
+	delete restNewFilters.location
 
 	const areSameFilters =
 		JSON.stringify(restNewFilters) === JSON.stringify(restFilters)

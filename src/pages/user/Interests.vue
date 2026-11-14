@@ -84,7 +84,7 @@ const actionButtonDisabled = computed(() => {
 		interestsCategory: user.value?.interestsCategory.sort() || [],
 		interestsType: user.value?.interestsType.sort() || [],
 	}
-	return isEqual(obj1, obj2)
+	return JSON.stringify(obj1) === JSON.stringify(obj2)
 })
 function setUpdatedData(type: 'categories' | 'types', val: string) {
 	const idx = updatedData[type].findIndex((el: string) => el === val)

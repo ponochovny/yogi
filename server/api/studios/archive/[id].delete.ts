@@ -4,6 +4,9 @@ import type { IStudioResponse } from '~/server/types/studio'
 
 export default defineEventHandler(async (event) => {
 	const { id } = getRouterParams(event)
+	if (!id) {
+		throw createError({ statusCode: 400, statusMessage: 'Id is required' })
+	}
 	const { isArchived }: { isArchived: boolean } = await readBody(event)
 
 	const studio = await StudioRepo.toggleArchive(id, isArchived)

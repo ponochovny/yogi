@@ -66,7 +66,7 @@ const actionButtonDisabled = computed(() => {
 		bio: user.value?.bio || '',
 	}
 	const isAvatarChanged = avatarUrl.value !== user.value?.profileImage
-	return isEqual(obj1, obj2) && !isAvatarChanged
+	return JSON.stringify(obj1) === JSON.stringify(obj2) && !isAvatarChanged
 })
 
 onMounted(() => {

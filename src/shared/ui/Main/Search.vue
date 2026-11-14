@@ -310,9 +310,9 @@ async function shortSearchHandler(val: string) {
 	searchResults.value = data
 	searchResultsFetching.value = false
 }
-const globalSearchDebounce = useDebounce(async (e: any) => {
+const globalSearchDebounce = useDebounceFn(async (e: Event) => {
 	if (props.variant === 'secondary') return
-	if (!e?.target) return
+	if (!(e.target instanceof HTMLInputElement)) return
 
 	await shortSearchHandler(e.target.value)
 

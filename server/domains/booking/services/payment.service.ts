@@ -43,12 +43,19 @@ export const PaymentService = {
 				break
 			case 'payment_intent.succeeded': {
 				const intendSucceeded = hookEvent.data.object
+				const { user_id, user_name, ticket_id } = intendSucceeded.metadata
+				if (!user_id || !user_name || !ticket_id) {
+					throw createError({
+						statusCode: 400,
+						statusMessage: 'Payment intent metadata is incomplete',
+					})
+				}
 				const purchaseData: ICreatePurchaseData = {
 					id: intendSucceeded.id,
 					receipt_email: intendSucceeded.receipt_email || '',
-					user_id: intendSucceeded.metadata.user_id,
-					user_name: intendSucceeded.metadata.user_name,
-					ticket_id: intendSucceeded.metadata.ticket_id,
+					user_id,
+					user_name,
+					ticket_id,
 				}
 				await PurchaseRepo.create(purchaseData)
 				break

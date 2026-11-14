@@ -27,8 +27,13 @@ export const UserRepo = {
 	},
 
 	searchByName: (string: string) => {
-		return prisma.user.findRaw({
-			filter: { name: { $regex: string, $options: 'i' } },
+		return prisma.user.findMany({
+			where: {
+				name: {
+					contains: string,
+					mode: 'insensitive',
+				},
+			},
 		})
 	},
 

@@ -161,7 +161,7 @@ const user = useAuthUser() as Ref<TUser>
 const _currencies = currencies
 const isLiveOfferings = ref(false)
 
-const currencySelected = ref(_currencies[0].code)
+const currencySelected = ref(_currencies[0]?.code || 'USD')
 
 function loginLink() {
 	// @ts-ignore

@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref, computed, type ComputedRef } from 'vue'
 
 const BANNER_PLACEHOLDER = '/img/banner-placeholder2.jpeg'
 const LOGO_PLACEHOLDER = '/img/logo-placeholder.png'
@@ -6,8 +6,8 @@ const LOGO_PLACEHOLDER = '/img/logo-placeholder.png'
 type ImageType = 'banner' | 'logo'
 
 interface ImageFallbackResult {
-	src: ReturnType<typeof computed<string>>
-	provider: ReturnType<typeof computed<'cloudinary' | undefined>>
+	src: ComputedRef<string>
+	provider: ComputedRef<'cloudinary' | undefined>
 	onError: () => void
 }
 
@@ -42,4 +42,3 @@ export function useImageFallback(
 
 	return { src, provider, onError }
 }
-

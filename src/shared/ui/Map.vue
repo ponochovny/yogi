@@ -137,11 +137,11 @@ export default defineComponent({
 <script lang="ts" setup>
 interface IProps {
 	search?: string
-	theme?: number
+	theme?: 0 | 1 | 2
 	maxZoom?: number
 	minZoom?: number
 	zoom?: number
-	center?: number[]
+	center?: [number, number]
 	allowMarkerCreation?: boolean
 	searchable?: boolean
 	markers?: TMarker[]
@@ -167,8 +167,8 @@ const emit = defineEmits([
 
 const show = ref(false)
 const _zoom = ref(14)
-const _center = ref<number[]>([0, 0])
-const _theme = ref<number>(1)
+const _center = ref<[number, number]>([0, 0])
+const _theme = ref<0 | 1 | 2>(1)
 // watch(
 // 	() => [props.zoom, props.center, props.theme],
 // 	([newZoom, newCenter, newTheme], [oldZoom, oldCenter, oldTheme]) => {
@@ -194,13 +194,13 @@ onMounted(() => {
 	show.value = true
 })
 
-function shortenCoords(coords: number[]): number[] {
+function shortenCoords(coords: [number, number]): [number, number] {
 	return [+coords[0].toFixed(6), +coords[1].toFixed(6)]
 }
 /**
  * () => '14.121212, 10.111111'
  */
-function coordsToStr(coords: number[]): string {
+function coordsToStr(coords: [number, number]): string {
 	return `${coords[0]},${coords[1]}`
 }
 function zoomByType(type: string) {
@@ -213,8 +213,8 @@ function zoomByType(type: string) {
 	return 17
 }
 
-function setParams(coords: number[], zoomNumber: number) {
-	const coordsWithXOffset: number[] = [coords[0], coords[1] - 0.001]
+function setParams(coords: [number, number], zoomNumber: number) {
+	const coordsWithXOffset: [number, number] = [coords[0], coords[1] - 0.001]
 	_center.value = coordsWithXOffset
 	setTimeout(() => {
 		_zoom.value = zoomNumber
@@ -229,7 +229,7 @@ function mapClicked(e: { latlng: { lat: number; lng: number } }) {
 
 const isOnlyUpdateSearch = ref(false)
 const singleMarker = ref<TMarker | null>(null)
-function newSingleMarker(coords: number[]) {
+function newSingleMarker(coords: [number, number]) {
 	if (singleMarker.value) {
 		singleMarker.value = null
 
@@ -262,7 +262,7 @@ onMounted(() => {
 })
 function selectFeature(feature: IFeature) {
 	const { center, id, place_name } = feature
-	const coords: number[] = [center[1], center[0]]
+	const coords: [number, number] = [center[1], center[0]]
 	const type = id.split('.')[0] || ''
 	const zoom = zoomByType(type)
 	setSingleMarker({ name: place_name, coords })
@@ -275,8 +275,9 @@ function selectFeature(feature: IFeature) {
 
 const { search: _search, searchResults, featuresByCoords, tiles } = useMyMap()
 
-const debounceSearch = useDebounce((e) => {
-	_search.value = e.target.value
+const debounceSearch = useDebounceFn((e: Event) => {
+	const target = e.target
+	if (target instanceof HTMLInputElement) _search.value = target.value
 }, 750)
 
 watch(

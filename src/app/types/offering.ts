@@ -112,7 +112,7 @@ export const offeringDataCreationSchema = z.object({
 		.array(z.string())
 		.min(1, { message: 'Choose at least 1 practitioner' }),
 	location: z.object({
-		coords: z.array(z.number()),
+		coords: z.tuple([z.number(), z.number()]),
 		name: z.string().min(1, { message: 'Location is required' }),
 	}),
 	// .optional()

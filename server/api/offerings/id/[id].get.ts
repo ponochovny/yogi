@@ -3,6 +3,9 @@ import type { IOfferingResponse } from '~/server/types/offering'
 
 export default defineEventHandler(async (event) => {
 	const { id } = getRouterParams(event)
+	if (!id) {
+		throw createError({ statusCode: 400, statusMessage: 'Id is required' })
+	}
 
 	const offering = await OfferingRepo.findById<IOfferingResponse | null>(id, {
 		include: {

@@ -1,55 +1,61 @@
 import { offeringDataCreationSchema } from '~/src/app/types/offering'
 import { OfferingService } from '~/server/domains/offering'
-import { extractForm } from '~/server/domains/shared'
+import { extractForm, requireFormField } from '~/server/domains/shared'
 
-const parseArrayField = (fields: { [key: string]: string }, field: string) => {
+const parseArrayField = (
+	fields: Record<string, string | string[] | undefined>,
+	field: string
+) => {
 	const fieldKey = field + '[]'
-	const isSingleTicket = typeof fields[fieldKey] === 'string'
+	const value = fields[fieldKey]
+	if (value === undefined) return []
 
-	let result
-	try {
-		result = JSON.parse(fields[fieldKey])
-	} catch {
-		result = fields[fieldKey]
-	}
-	if (isSingleTicket) return [result]
-
-	return (fields[fieldKey] as unknown as string[])?.map((ticket) => {
+	const parseValue = (item: string) => {
 		try {
-			return JSON.parse(ticket)
+			return JSON.parse(item)
 		} catch {
-			return ticket
+			return item
 		}
-	})
+	}
+
+	if (Array.isArray(value)) return value.map(parseValue)
+
+	const parsed = parseValue(value)
+	return Array.isArray(parsed) ? parsed : [parsed]
 }
 
 export default defineEventHandler(async (event) => {
 	const { fields, files } = await extractForm<{
-		fields: { [key: string]: string } & { studioId: string }
+		fields: Record<string, string | string[] | undefined>
 		files: any
 	}>(event)
 
-	const studioId = fields.studioId
+	const uploadedBanners = files['fileToUpload[]']
+	const bannerFiles = Array.isArray(uploadedBanners)
+		? uploadedBanners
+		: uploadedBanners
+			? [uploadedBanners]
+			: []
 
 	const offeringData = {
-		name: fields.name,
-		description: fields.description,
-		activity: fields.activity,
-		slug: fields.name,
-		types: fields.types.split(','),
-		categories: fields.categories.split(','),
-		duration: +fields.duration,
-		spots: +fields.spots,
-		location: JSON.parse(fields.location as unknown as string),
-		timezone: fields.timezone,
-		start: new Date(fields.start),
-		end: new Date(fields.end),
-		is_private: fields.is_private === 'true',
+		name: requireFormField(fields, 'name'),
+		description: requireFormField(fields, 'description'),
+		activity: requireFormField(fields, 'activity'),
+		slug: requireFormField(fields, 'name'),
+		types: requireFormField(fields, 'types').split(','),
+		categories: requireFormField(fields, 'categories').split(','),
+		duration: +requireFormField(fields, 'duration'),
+		spots: +requireFormField(fields, 'spots'),
+		location: JSON.parse(requireFormField(fields, 'location')),
+		timezone: requireFormField(fields, 'timezone'),
+		start: new Date(requireFormField(fields, 'start')),
+		end: new Date(requireFormField(fields, 'end')),
+		is_private: requireFormField(fields, 'is_private') === 'true',
 		isActive: false,
 		tickets: parseArrayField(fields, 'tickets'),
 		practitioners: parseArrayField(fields, 'practitioners'),
-		banners: files[`fileToUpload[]`] || [],
-		studioId,
+		banners: bannerFiles,
+		studioId: requireFormField(fields, 'studioId'),
 	}
 
 	const parsed = offeringDataCreationSchema.safeParse(offeringData)
@@ -60,11 +66,10 @@ export default defineEventHandler(async (event) => {
 		})
 	}
 
-	const { banners, practitioners, tickets, location, ...restOfferingData } =
-		offeringData
+	const { practitioners, tickets, location, ...restOfferingData } = parsed.data
 
 	return OfferingService.createOffering(
 		{ ...restOfferingData, location: JSON.stringify(location) },
-		{ tickets, practitioners, banners }
+		{ tickets, practitioners, banners: bannerFiles }
 	)
 })

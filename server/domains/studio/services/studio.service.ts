@@ -1,5 +1,5 @@
 import { generateSlug } from '~/src/shared/lib/utils'
-import { uploadToCloudinary } from '~/server/domains/shared'
+import { requireFormField, uploadToCloudinary } from '~/server/domains/shared'
 import { StudioRepo } from '../repositories/studio.repo'
 import { PractitionerRepo } from '~/server/domains/offering'
 import { MediaFileRepo } from '~/server/domains/user'
@@ -8,40 +8,42 @@ import type { IMediaFile } from '~/server/types'
 
 export const StudioService = {
 	createStudio: async (
-		fields: { [key: string]: string[] },
+		fields: Record<string, string[] | undefined>,
 		files: any,
 		userId: string
 	) => {
-		const slug = generateSlug(fields.name[0])
+		const name = requireFormField(fields, 'name')
+		const slug = generateSlug(name)
 
 		const studioData: TCreateStudioData = {
-			name: fields.name[0],
+			name,
 			slug,
-			location: fields.location[0],
-			timezone: fields.timezone[0],
-			currency: fields.currency[0],
-			categories: fields.categories[0].split(','),
-			types: fields.types[0].split(','),
-			bio: fields.bio[0],
-			mission: fields.mission[0],
+			location: requireFormField(fields, 'location'),
+			timezone: requireFormField(fields, 'timezone'),
+			currency: requireFormField(fields, 'currency'),
+			categories: requireFormField(fields, 'categories').split(','),
+			types: requireFormField(fields, 'types').split(','),
+			bio: requireFormField(fields, 'bio'),
+			mission: requireFormField(fields, 'mission'),
 			ownerId: userId,
 		}
 
 		const studio = await StudioRepo.create(studioData)
 
-		if (fields[`practitioners[]`]) {
-			const practitionerPromises = Object.keys(fields[`practitioners[]`]).map(
-				(key: string) =>
-					PractitionerRepo.attachToStudio({
-						userId: fields[`practitioners[]`][key as any],
-						studioId: studio.id,
-					})
+		const practitioners = fields['practitioners[]'] ?? []
+		if (practitioners.length) {
+			const practitionerPromises = practitioners.map((practitionerId) =>
+				PractitionerRepo.attachToStudio({
+					userId: practitionerId,
+					studioId: studio.id,
+				})
 			)
 			await Promise.all(practitionerPromises)
 		}
 
 		const filePromises = Object.keys(files).map(async (key) => {
-			const file = files[key][0]
+			const file = files[key]?.[0]
+			if (!file) return
 			const cloudinaryResource = await uploadToCloudinary(file.filepath)
 
 			const mediaFile: IMediaFile = {
@@ -59,4 +61,3 @@ export const StudioService = {
 		return { data: studio, status: 'Success!' }
 	},
 }
-

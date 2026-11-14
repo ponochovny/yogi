@@ -6,11 +6,10 @@ export function getLowestAndHighestTicketPriceByOffering(offering: IOfferingResp
 	let maxPrice = -Infinity
 
 	if (offering.tickets && offering.tickets.length > 0) {
-		const sorted = offering.tickets.sort((a, b) => b.price - a.price)
-		const localMaxPrice = sorted[0].price
-		const localMinPrice = sorted[sorted.length - 1].price
-		if (localMaxPrice > maxPrice) maxPrice = localMaxPrice
-		if (localMinPrice < minPrice) minPrice = localMinPrice
+		for (const ticket of offering.tickets) {
+			minPrice = Math.min(minPrice, ticket.price)
+			maxPrice = Math.max(maxPrice, ticket.price)
+		}
 	}
 
 	return { minPrice, maxPrice }
@@ -22,10 +21,10 @@ export function getLowestAndHighestTicketPrice(offerings: TOffering[]) {
 
 	offerings.forEach((offering) => {
 		if (offering.tickets && offering.tickets.length > 0) {
-			const localMaxPrice = offering.tickets[0].price_int
-			const localMinPrice = offering.tickets[offering.tickets.length - 1].price_int
-			if (localMaxPrice > maxPrice) maxPrice = localMaxPrice
-			if (localMinPrice < minPrice) minPrice = localMinPrice
+			for (const ticket of offering.tickets) {
+				minPrice = Math.min(minPrice, ticket.price_int)
+				maxPrice = Math.max(maxPrice, ticket.price_int)
+			}
 		}
 	})
 

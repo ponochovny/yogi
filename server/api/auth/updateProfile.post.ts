@@ -5,11 +5,14 @@ export default defineEventHandler(async (event) => {
 	try {
 		const session = await getUserSession(event)
 		const { fields, files } = await extractForm<{
-			fields: { [key: string]: string } & { studioId: string }
+			fields: Record<string, string | undefined>
 			files: any
 		}>(event)
 
 		const userId = session?.user?.id || fields.userId
+		if (!userId) {
+			throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
+		}
 		const { name, email, bio, interestsCategory, interestsType } = fields
 		const avatar = files?.avatar ? files.avatar[0] : undefined
 

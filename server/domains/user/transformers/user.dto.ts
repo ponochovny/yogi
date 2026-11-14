@@ -10,7 +10,7 @@ export const toPractitionerDto = (user: IUserResponse): TPractitioner => {
 	return { ...rest }
 }
 
-export const toUserSearchDto = (user: IUserResponse & { _id: any }) => {
+export const toUserSearchDto = (user: IUserResponse) => {
 	const { password, createdAt, updatedAt, interestsCategory, interestsType, email, ...rest } = user
 	return { ...rest }
 }
@@ -18,9 +18,4 @@ export const toUserSearchDto = (user: IUserResponse & { _id: any }) => {
 export const toOwnerDto = (user: IUserResponse & { _id: any }): TOwner => {
 	const { password, createdAt, updatedAt, interestsCategory, interestsType, email, ...rest } = user
 	return { ...rest }
-}
-
-export const toUserSearchDtoRaw = (user: IUserResponse & { _id: any }) => {
-	const { _id, ...rest } = toUserSearchDto(user)
-	return { ...rest, id: _id.$oid }
 }

@@ -3,6 +3,9 @@ import type { ITicketResponse } from '~/server/types/ticket'
 
 export default defineEventHandler(async (event) => {
 	const { id } = getRouterParams(event)
+	if (!id) {
+		throw createError({ statusCode: 400, statusMessage: 'Id is required' })
+	}
 
 	const ticket = (await TicketRepo.findById(id, {
 		include: {

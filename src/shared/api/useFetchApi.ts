@@ -1,12 +1,8 @@
-export const useFetchApi: typeof $fetch = (url, options = {}) => {
-	const headers = useRequestHeaders(['cookie'])
-
-	return $fetch(url, {
-		...options,
-		headers: {
-			...headers,
+export const useFetchApi = $fetch.create({
+	onRequest({ options }) {
+		options.headers = {
+			...useRequestHeaders(['cookie']),
 			...options.headers,
-		},
-	})
-}
-
+		}
+	},
+})

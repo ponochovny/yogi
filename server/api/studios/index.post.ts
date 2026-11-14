@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
 	const form = formidable({})
 
 	const formExtracted = await new Promise<{
-		fields: { [key: string]: string[] }
+		fields: Record<string, string[] | undefined>
 		files: any
 	}>((resolve, reject) => {
 		form.parse(event.node.req, (error, fields, files) => {

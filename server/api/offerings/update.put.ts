@@ -115,7 +115,7 @@ export default defineEventHandler(async (event) => {
 
 	if (fields.bannersOrder) {
 		const bannersOrder = JSON.parse(fields.bannersOrder) as (string | null)[]
-		const bannersDelete = JSON.parse(fields.bannersDelete) as string[]
+		const bannersDelete = JSON.parse(fields.bannersDelete || '[]') as string[]
 		const orderArr = bannersOrder.map((el) =>
 			el && bannersDelete.includes(el) ? null : el
 		)
@@ -162,7 +162,7 @@ export default defineEventHandler(async (event) => {
 	// Tickets
 	if (fields['tickets[]']) {
 		const ticketPromises = []
-		for (const ticket of fields['tickets[]']) {
+		for (const ticket of fields['tickets[]'] ?? []) {
 			const ticketData = JSON.parse(ticket)
 
 			ticketPromises.push(
