@@ -9,6 +9,7 @@ const MODULES = [
 	'@vee-validate/nuxt',
 	'nuxt-gtag',
 	'@pinia/nuxt',
+	'nuxt-auth-utils',
 ]
 const PROD_MODULES = ['@zadigetvoltaire/nuxt-gtm']
 
@@ -40,8 +41,12 @@ export default defineNuxtConfig({
 	},
 
 	runtimeConfig: {
-		jwtAccessSecret: process.env.JWT_ACCESS_TOKEN_SECRET,
-		jwtRefreshSecret: process.env.JWT_REFRESH_TOKEN_SECRET,
+		// Session (nuxt-auth-utils)
+		session: {
+			name: 'nuxt-session',
+			password: process.env.NUXT_SESSION_PASSWORD || '',
+			maxAge: 60 * 60 * 24 * 7, // 7 days
+		},
 		// Cloudinary
 		cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME,
 		cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,

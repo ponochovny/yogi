@@ -1,7 +1,14 @@
-import { userTransformer } from '~/server/transformers/user'
-
 export default defineEventHandler(async (event) => {
+	const session = await getUserSession(event)
+
+	if (!session?.user) {
+		throw createError({
+			statusCode: 401,
+			statusMessage: 'Unauthorized',
+		})
+	}
+
 	return {
-		user: userTransformer(event.context.auth.user),
+		user: session.user,
 	}
 })

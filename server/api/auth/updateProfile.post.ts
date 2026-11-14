@@ -1,4 +1,5 @@
 import { updateProfile } from '~/server/db/users'
+import { userTransformer } from '~/server/transformers/user'
 import updateProfileModel from './_models/updateProfile'
 
 const { extractFields, errorsChecker, updateAvatar } = updateProfileModel()
@@ -19,7 +20,7 @@ export default defineEventHandler(async (event) => {
 
 		const { profileImage } = await updateAvatar(avatar, userId)
 
-		await updateProfile(userId, {
+		const updatedUser = await updateProfile(userId, {
 			email,
 			name,
 			bio,
@@ -27,18 +28,11 @@ export default defineEventHandler(async (event) => {
 			interestsType: interestsType?.split(','),
 			interestsCategory: interestsCategory?.split(','),
 		})
+		const user = userTransformer(updatedUser)
 
-		return {
-			user: {
-				name,
-				bio,
-				email,
-				userId,
-				interestsType: interestsType?.split(','),
-				interestsCategory: interestsCategory?.split(','),
-				profileImage,
-			},
-		}
+		await setUserSession(event, { user, loggedInAt: Date.now() })
+
+		return { user }
 	} catch (e: any) {
 		throw createError({
 			statusCode: e.statusCode || 500,

@@ -36,10 +36,9 @@
     "date-fns": "^2.30.0",
     "formidable": "^3.5.2",
     "hash-sum": "^2.0.0",
-    "jsonwebtoken": "^9.0.2",
-    "jwt-decode": "^4.0.0",
     "lucide-vue-next": "^0.344.0",
     "nuxt": "^3.15.2",
+    "nuxt-auth-utils": "^0.5.15",
     "nuxt-gtag": "^3.0.2",
     "nuxt-swiper": "latest",
     "pinia": "^2.3.0",
@@ -64,8 +63,6 @@
     "@types/date-fns": "^2.6.3",
     "@types/formidable": "^3.4.5",
     "@types/hash-sum": "^1.0.2",
-    "@types/jsonwebtoken": "^9.0.7",
-    "@types/jwt-decode": "^3.1.0",
     "@vue-leaflet/vue-leaflet": "^0.10.1",
     "@zadigetvoltaire/nuxt-gtm": "^0.0.13",
     "eslint": "^8.57.1",
@@ -77,5 +74,8 @@
     "shadcn-nuxt": "^0.10.4",
     "typescript": "^5.7.3",
     "vue-tsc": "^2.2.0"
+  },
+  "engines": {
+    "node": "26.x"
   }
 }

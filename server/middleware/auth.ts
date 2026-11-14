@@ -1,6 +1,4 @@
 import UrlPattern from 'url-pattern'
-import { verifyAccessToken } from '../utils/jwt'
-import { getUserById } from '../db/users'
 
 /**
  * Protected routes that require authentication
@@ -23,69 +21,21 @@ const isProtectedEndpoint = (url: string): boolean => {
 	})
 }
 
-/**
- * Extracts access token from Authorization header
- */
-const extractAccessToken = (event: any): string | null => {
-	const authHeader = event.node.req.headers['authorization']
-	if (!authHeader) return null
-
-	const parts = authHeader.split(' ')
-	if (parts.length !== 2 || parts[0] !== 'Bearer') return null
-
-	return parts[1]
-}
-
 export default defineEventHandler(async (event) => {
-	const url = event.node.req.url || ''
+	const session = await getUserSession(event)
 
-	// Check if current route is protected
-	if (!isProtectedEndpoint(url)) {
-		return
+	// Attach authenticated user to event context for backward compatibility
+	if (session?.user) {
+		event.context.auth = { user: session.user }
 	}
 
-	try {
-		// Extract access token
-		const accessToken = extractAccessToken(event)
+	const url = event.node.req.url || ''
 
-		if (!accessToken) {
-			throw createError({
-				statusCode: 401,
-				statusMessage: 'Authorization token is missing',
-			})
-		}
-
-		// Verify token
-		const decoded = verifyAccessToken(accessToken)
-
-		if (!decoded) {
-			throw createError({
-				statusCode: 401,
-				statusMessage: 'Authorization token is invalid or expired',
-			})
-		}
-
-		// Get user
-		const user = await getUserById(decoded.userId)
-
-		if (!user) {
-			throw createError({
-				statusCode: 401,
-				statusMessage: 'User not found',
-			})
-		}
-
-		// Store user in event context
-		event.context.auth = { user }
-	} catch (error: any) {
-		if (error.statusCode) {
-			throw error
-		}
-
-		console.error('Auth middleware error:', error)
+	// Enforce authentication on protected endpoints
+	if (isProtectedEndpoint(url) && !session?.user) {
 		throw createError({
 			statusCode: 401,
-			statusMessage: 'Unauthorized',
+			statusMessage: 'Unauthorized: Session required',
 		})
 	}
 })

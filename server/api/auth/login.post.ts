@@ -1,12 +1,7 @@
 import bcrypt from 'bcryptjs'
 import { getUserByEmail } from '../../db/users'
-import { generateTokens, sendRefreshToken } from '~/server/utils/jwt'
 import type { IUserResponse } from '~/server/types'
 import { userTransformer } from '~/server/transformers/user'
-import {
-	createRefreshToken,
-	deleteRefreshToken,
-} from '~/server/db/refreshTokens'
 
 export default defineEventHandler(async (event) => {
 	try {
@@ -42,31 +37,17 @@ export default defineEventHandler(async (event) => {
 			})
 		}
 
-		// Generate tokens
-		const { accessToken, refreshToken } = generateTokens(user)
+		const userDto = userTransformer(user)
 
-		// Delete old refresh token if it exists
-		const oldRefreshToken = getCookie(event, 'refresh_token')
-		if (oldRefreshToken) {
-			try {
-				await deleteRefreshToken(oldRefreshToken)
-			} catch (error) {
-				// Token already deleted or doesn't exist - that's ok
-			}
-		}
-
-		// Save new refresh token to database
-		await createRefreshToken({
-			token: refreshToken,
-			userId: user.id,
+		// Set encrypted session cookie via nuxt-auth-utils
+		await setUserSession(event, {
+			user: userDto,
+			loggedInAt: Date.now(),
 		})
 
-		// Send refresh token as HTTP-only cookie
-		sendRefreshToken(event, refreshToken)
-
 		return {
-			user: userTransformer(user),
-			access_token: accessToken,
+			user: userDto,
+			success: true,
 		}
 	} catch (error: any) {
 		if (error.statusCode) {
